@@ -160,6 +160,7 @@ const World: React.FC = () => {
               facing={p.facing}
               pose={p.pose}
               headTilt={p.hero ? heroTilt : p.id === "irin" ? -4 : 0}
+              smile={p.id === "irin" ? clamp01((g - (ls(6) + 70)) / 18) : 0}
               label={p.label}
               labelClamp={[130, 880]}
             />

@@ -23,6 +23,8 @@ export type PersonProps = {
   pose?: "stand" | "point" | "sit" | "lie";
   /** head tilt in degrees, negative = look up */
   headTilt?: number;
+  /** 0 neutral .. 1 smile (a lopsided smirk) */
+  smile?: number;
   /** draw the Thai name tag above the head */
   label?: boolean;
   /** keep the name tag's x inside [min, max] (e.g. clear of the platform UI on the right edge) */
@@ -60,7 +62,7 @@ const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: numbe
   </g>
 );
 
-const Head: React.FC<{ c: CastMember; tilt: number }> = ({ c, tilt }) => {
+const Head: React.FC<{ c: CastMember; tilt: number; smile: number }> = ({ c, tilt, smile }) => {
   const has = (a: string) => c.accessories.includes(a as never);
   return (
     <g transform={`translate(0,-84) rotate(${tilt})`}>
@@ -85,7 +87,15 @@ const Head: React.FC<{ c: CastMember; tilt: number }> = ({ c, tilt }) => {
         {has("beard") && <path d="M-34 4 Q-30 44 2 46 Q34 44 36 2 Q26 22 2 20 Q-22 22 -34 4 Z" fill={c.hair} />}
         <circle cx={17} cy={-2} r={3.6} fill="#1b1b1b" />
         <circle cx={18.2} cy={-3.2} r={1.1} fill="#fff" />
-        <path d={`M8 ${has("beard") ? 16 : 13} Q16 ${has("beard") ? 18 : 15} 25 ${has("beard") ? 16 : 13}`} stroke="#8a4a3a" strokeWidth={2.6} fill="none" strokeLinecap="round" />
+        {(() => {
+          const y0 = has("beard") ? 16 : 13;
+          return (
+            <g>
+              <path d={`M8 ${y0} Q17 ${y0 + 2 + 13 * smile} 26 ${y0 - 6 * smile}`} stroke="#8a4a3a" strokeWidth={2.6} fill="none" strokeLinecap="round" />
+              {smile > 0.3 && <circle cx={22} cy={y0 + 4} r={5} fill="#f08a7a" opacity={0.35 * smile} />}
+            </g>
+          );
+        })()}
         {has("glasses") && <g stroke="#222" strokeWidth={2.4} fill="none"><circle cx={17} cy={-2} r={9} /><path d="M8 -2 L-6 -4" /></g>}
         {has("shades") && <rect x={6} y={-9} width={26} height={11} rx={4} fill="#111" />}
       </g>
@@ -93,7 +103,7 @@ const Head: React.FC<{ c: CastMember; tilt: number }> = ({ c, tilt }) => {
   );
 };
 
-export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, walk, frame, dirt = 0, facing = 1, pose = "stand", headTilt = 0, label = false, labelClamp }) => {
+export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, walk, frame, dirt = 0, facing = 1, pose = "stand", headTilt = 0, smile = 0, label = false, labelClamp }) => {
   const c = CAST[id];
   const has = (a: string) => c.accessories.includes(a as never);
   const k = scale * (c.legLength / 108);
@@ -154,7 +164,7 @@ export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, wa
             </g>
             <Leg thigh={thighA} knee={kneeA} look={look} bare={dress} />
             <g transform={`translate(${lean * 0.6},0)`}>
-              <Head c={c} tilt={tilt} />
+              <Head c={c} tilt={tilt} smile={smile} />
             </g>
             <g transform={`translate(0,${shoulderY})`}>
               <Arm shoulder={frontArm} elbow={frontElbow} look={look} sleeve={c.sleeve} />

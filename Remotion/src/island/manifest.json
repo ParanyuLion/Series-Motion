@@ -1,122 +1,122 @@
 {
  "fps": 30,
- "total": 1734,
- "storyEnd": 1587,
- "outroStart": 1599,
+ "total": 1950,
+ "storyEnd": 1803,
+ "outroStart": 1815,
  "shots": [
   {
    "text": "ผมเตือนพวกเขาแล้ว แต่ไม่มีใครฟัง",
    "audio": "island1/n0.mp3",
-   "audioFrames": 78,
+   "audioFrames": 91,
    "leadFrames": 21,
    "frames": 180
   },
   {
    "text": "เช้านั้น ผมตื่นขึ้นมาบนหาดทราย ไม่รู้ว่ามาที่นี่ได้ยังไง",
    "audio": "island1/n1.mp3",
-   "audioFrames": 144,
+   "audioFrames": 147,
    "leadFrames": 15,
-   "frames": 186
+   "frames": 189
   },
   {
    "text": "รอบตัวผมมีคนแปลกหน้าอีกหกคน ทุกคนงงเหมือนกัน",
    "audio": "island1/n2.mp3",
-   "audioFrames": 122,
-   "leadFrames": 15,
-   "frames": 164
-  },
-  {
-   "text": "ผมเป็นชาวประมง ผมรู้ว่าทะเลที่นี่ผิดปกติ",
-   "audio": "island1/n3.mp3",
-   "audioFrames": 100,
-   "leadFrames": 15,
-   "frames": 142
-  },
-  {
-   "text": "ไม่มีนก ไม่มีคลื่น รอยน้ำบนต้นไม้สูงเกินหัวผม",
-   "audio": "island1/n4.mp3",
-   "audioFrames": 121,
-   "leadFrames": 15,
-   "frames": 163
-  },
-  {
-   "text": "แปลว่าสักคืน น้ำจะขึ้นมาถึงที่ที่พวกเรานอน",
-   "audio": "island1/n5.mp3",
-   "audioFrames": 108,
-   "leadFrames": 15,
-   "frames": 150
-  },
-  {
-   "text": "ผมบอกให้ทุกคนย้ายขึ้นที่สูง แต่คุณหนูไอริณแค่ยิ้มมุมปาก",
-   "audio": "island1/n6.mp3",
-   "audioFrames": 137,
-   "leadFrames": 15,
-   "frames": 179
-  },
-  {
-   "text": "\"ที่นี่ฉันเป็นคนตัดสินใจ\" เธอว่า แล้วทุกคนก็หันไปเชื่อเธอ",
-   "audio": "island1/n7.mp3",
    "audioFrames": 148,
    "leadFrames": 15,
    "frames": 190
   },
   {
+   "text": "ผมเป็นชาวประมง ผมรู้ว่าทะเลที่นี่ผิดปกติ",
+   "audio": "island1/n3.mp3",
+   "audioFrames": 113,
+   "leadFrames": 15,
+   "frames": 155
+  },
+  {
+   "text": "ไม่มีนก ไม่มีคลื่น รอยน้ำบนต้นไม้สูงเกินหัวผม",
+   "audio": "island1/n4.mp3",
+   "audioFrames": 163,
+   "leadFrames": 15,
+   "frames": 205
+  },
+  {
+   "text": "แปลว่าสักคืน น้ำจะขึ้นมาถึงที่ที่พวกเรานอน",
+   "audio": "island1/n5.mp3",
+   "audioFrames": 132,
+   "leadFrames": 15,
+   "frames": 174
+  },
+  {
+   "text": "ผมบอกให้ทุกคนย้ายขึ้นที่สูง แต่คุณหนูไอริณแค่ยิ้มมุมปาก",
+   "audio": "island1/n6.mp3",
+   "audioFrames": 160,
+   "leadFrames": 15,
+   "frames": 202
+  },
+  {
+   "text": "\"ที่นี่ฉันเป็นคนตัดสินใจ\" เธอว่า แล้วทุกคนก็หันไปเชื่อเธอ",
+   "audio": "island1/n7.mp3",
+   "audioFrames": 193,
+   "leadFrames": 15,
+   "frames": 235
+  },
+  {
    "text": "ตอนนั้นผมยังไม่รู้ ว่าประโยคนั้นต้องแลกด้วยชีวิตคน",
    "audio": "island1/n8.mp3",
-   "audioFrames": 127,
+   "audioFrames": 160,
    "leadFrames": 15,
-   "frames": 169
+   "frames": 202
   },
   {
    "text": "แล้วฟ้าก็เปลี่ยนสี",
    "audio": "island1/n9.mp3",
-   "audioFrames": 49,
+   "audioFrames": 56,
    "leadFrames": 15,
-   "frames": 76
+   "frames": 83
   }
  ],
  "starts": [
   0,
   180,
-  366,
-  530,
-  672,
-  835,
-  985,
-  1164,
-  1354,
-  1523
+  369,
+  559,
+  714,
+  919,
+  1093,
+  1295,
+  1530,
+  1732
  ],
  "cues": {
   "hookCut": 180,
-  "mapIn": 545,
-  "mapOut": 958,
-  "skyChange": 1538,
-  "walkOutStart": 545,
-  "walkOutEnd": 667,
-  "walkBackStart": 964,
-  "walkBackEnd": 1086,
+  "mapIn": 574,
+  "mapOut": 1066,
+  "skyChange": 1747,
+  "walkOutStart": 574,
+  "walkOutEnd": 696,
+  "walkBackStart": 1072,
+  "walkBackEnd": 1194,
   "flash0": 62,
   "flash1": 90,
   "lineStart0": 21,
-  "lineEnd0": 99,
+  "lineEnd0": 112,
   "lineStart1": 195,
-  "lineEnd1": 339,
-  "lineStart2": 381,
-  "lineEnd2": 503,
-  "lineStart3": 545,
-  "lineEnd3": 645,
-  "lineStart4": 687,
-  "lineEnd4": 808,
-  "lineStart5": 850,
-  "lineEnd5": 958,
-  "lineStart6": 1000,
-  "lineEnd6": 1137,
-  "lineStart7": 1179,
-  "lineEnd7": 1327,
-  "lineStart8": 1369,
-  "lineEnd8": 1496,
-  "lineStart9": 1538,
-  "lineEnd9": 1587
+  "lineEnd1": 342,
+  "lineStart2": 384,
+  "lineEnd2": 532,
+  "lineStart3": 574,
+  "lineEnd3": 687,
+  "lineStart4": 729,
+  "lineEnd4": 892,
+  "lineStart5": 934,
+  "lineEnd5": 1066,
+  "lineStart6": 1108,
+  "lineEnd6": 1268,
+  "lineStart7": 1310,
+  "lineEnd7": 1503,
+  "lineStart8": 1545,
+  "lineEnd8": 1705,
+  "lineStart9": 1747,
+  "lineEnd9": 1803
  }
 }

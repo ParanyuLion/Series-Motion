@@ -3,10 +3,10 @@
   python scripts/tts_gemini.py --sample            # same line in several voices -> out/voice_test/*.mp3
   python scripts/tts_gemini.py --voice Sulafat     # real narration -> public/audio/n0..n3.mp3 (Edge TTS files are backed up)
 
-Optional env vars: GEMINI_TTS_MODEL (default gemini-2.5-flash-preview-tts), GEMINI_TTS_STYLE.
+Optional env vars: GEMINI_TTS_MODEL (default gemini-3.8-flash-tts), GEMINI_TTS_STYLE.
 The key is only read from the environment and is never printed or written to disk.
 """
-import argparse, base64, json, os, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request, wave
+import argparse, base64, hashlib, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request, wave
 from pathlib import Path
 
 def load_dotenv(path: str = ".env") -> None:
@@ -22,7 +22,7 @@ def load_dotenv(path: str = ".env") -> None:
 
 
 load_dotenv()
-MODEL = os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-flash-preview-tts")
+MODEL = os.environ.get("GEMINI_TTS_MODEL", "gemini-3.8-flash-tts")
 STYLE = os.environ.get(
     "GEMINI_TTS_STYLE",
     "อ่านเป็นภาษาไทยด้วยน้ำเสียงผู้เล่านิทานที่อบอุ่น นุ่มนวล เป็นธรรมชาติเหมือนคนจริงๆ จังหวะช้าสบายๆ มีหยุดหายใจตามเครื่องหมายวรรคตอน:",
@@ -41,7 +41,7 @@ def synth(text: str, voice: str, out_mp3: Path, speed: float = 1.0) -> None:
     }
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
     req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json", "x-goog-api-key": KEY})
-    for attempt in range(4):
+    for attempt in range(8):
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
                 data = json.load(r)
@@ -49,8 +49,16 @@ def synth(text: str, voice: str, out_mp3: Path, speed: float = 1.0) -> None:
             pcm = base64.b64decode(part["data"])
             break
         except urllib.error.HTTPError as e:
-            msg = e.read().decode(errors="replace")[:400]
-            if e.code in (429, 500, 503) and attempt < 3:
+            raw = e.read().decode(errors="replace")
+            msg = raw[:400]
+            if e.code == 429:
+                m = re.search(r'"retryDelay":\s*"(\d+)', raw)
+                delay = int(m.group(1)) if m else None
+                if delay is not None and delay <= 90 and attempt < 7:  # per-minute limit: wait it out
+                    print(f"  rate limited, waiting {delay + 2}s ...", flush=True)
+                    time.sleep(delay + 2)
+                    continue
+            elif e.code in (500, 503) and attempt < 7:
                 time.sleep(4 * (attempt + 1))
                 continue
             raise RuntimeError(f"HTTP {e.code} from Gemini (model {MODEL}): {msg}")
@@ -71,6 +79,7 @@ def main() -> None:
     ap.add_argument("--sample", action="store_true")
     ap.add_argument("--voice", default="Sulafat")
     ap.add_argument("--speed", type=float, default=1.0, help="playback speed, pitch preserved (e.g. 1.1)")
+    ap.add_argument("--post-speed", type=float, default=1.0, help="extra speed-up applied when copying cached lines into place (free: no new API calls)")
     ap.add_argument("--script", default="scripts/narration.json", help="JSON array of narration lines")
     ap.add_argument("--out-dir", default="public/audio", help="where n0.mp3, n1.mp3 ... are written")
     args = ap.parse_args()
@@ -87,23 +96,31 @@ def main() -> None:
     keep_backup = audio == Path("public/audio")  # only the pilot's Edge TTS files are backed up
     # Synthesise everything into a temp folder first; the real files are replaced only if EVERY line succeeded,
     # so a quota error or an interruption can never leave a mix of two voices behind.
-    tmp = Path(tempfile.mkdtemp(prefix="tts_", dir=audio))
-    try:
-        for i, t in enumerate(lines):
-            try:
-                synth(t, args.voice, tmp / f"n{i}.mp3", args.speed)
-            except (RuntimeError, subprocess.CalledProcessError) as e:
-                sys.exit(f"Line {i} failed, nothing was replaced in {audio}: {e}")
-            print("synthesised line", i)
-        if keep_backup:
-            backup.mkdir(exist_ok=True)
-        for i in range(len(lines)):
-            f = audio / f"n{i}.mp3"
-            if keep_backup and f.exists() and not (backup / f.name).exists():
-                shutil.copy(f, backup / f.name)
-            shutil.move(str(tmp / f"n{i}.mp3"), str(f)); print("wrote", f)
-    finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+    # Finished lines are cached (keyed by script, voice, speed and model) so a re-run after a quota error
+    # does not pay for lines that already succeeded.
+    key = hashlib.sha1(json.dumps([lines, args.voice, args.speed, MODEL, STYLE], ensure_ascii=False).encode()).hexdigest()[:12]
+    tmp = Path("out/tts_cache") / key
+    tmp.mkdir(parents=True, exist_ok=True)
+    for i, t in enumerate(lines):
+        if (tmp / f"n{i}.mp3").exists():
+            print("cached line", i)
+            continue
+        try:
+            synth(t, args.voice, tmp / f"n{i}.mp3", args.speed)
+        except (RuntimeError, subprocess.CalledProcessError) as e:
+            sys.exit(f"Line {i} failed, nothing was replaced in {audio} (finished lines are cached, re-run to resume): {e}")
+        print("synthesised line", i, flush=True)
+    if keep_backup:
+        backup.mkdir(exist_ok=True)
+    for i in range(len(lines)):
+        f = audio / f"n{i}.mp3"
+        if keep_backup and f.exists() and not (backup / f.name).exists():
+            shutil.copy(f, backup / f.name)
+        if args.post_speed == 1.0:
+            shutil.copy(str(tmp / f"n{i}.mp3"), str(f))
+        else:
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(tmp / f"n{i}.mp3"), "-af", f"atempo={args.post_speed}", "-b:a", "192k", str(f)], check=True)
+        print("wrote", f)
     if keep_backup:
         print("Now run: node scripts/manifest.mjs && python scripts/bed.py && npx remotion render src/index.ts Story out/story.mp4")
     else:
