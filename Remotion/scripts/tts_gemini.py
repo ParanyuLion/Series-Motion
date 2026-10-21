@@ -71,20 +71,25 @@ def main() -> None:
     ap.add_argument("--sample", action="store_true")
     ap.add_argument("--voice", default="Sulafat")
     ap.add_argument("--speed", type=float, default=1.0, help="playback speed, pitch preserved (e.g. 1.1)")
+    ap.add_argument("--script", default="scripts/narration.json", help="JSON array of narration lines")
+    ap.add_argument("--out-dir", default="public/audio", help="where n0.mp3, n1.mp3 ... are written")
     args = ap.parse_args()
     if not KEY:
         sys.exit("GEMINI_API_KEY is not set in this terminal. Set it, then restart the terminal / VS Code.")
-    lines = json.load(open("scripts/narration.json", encoding="utf-8"))
+    lines = json.load(open(args.script, encoding="utf-8"))
     if args.sample:
         out = Path("out/voice_test"); out.mkdir(parents=True, exist_ok=True)
         for v in SAMPLE_VOICES:
             synth(lines[0] + " " + lines[1], v, out / f"{v}.mp3"); print("wrote", out / f"{v}.mp3")
         return
-    audio = Path("public/audio")
-    backup = Path("public/audio_edge"); backup.mkdir(exist_ok=True)
+    audio = Path(args.out_dir); audio.mkdir(parents=True, exist_ok=True)
+    backup = Path("public/audio_edge")
+    keep_backup = audio == Path("public/audio")  # only the pilot's Edge TTS files are backed up
+    if keep_backup:
+        backup.mkdir(exist_ok=True)
     for i, t in enumerate(lines):
         f = audio / f"n{i}.mp3"
-        if f.exists() and not (backup / f.name).exists():
+        if keep_backup and f.exists() and not (backup / f.name).exists():
             shutil.copy(f, backup / f.name)
         synth(t, args.voice, f, args.speed); print("wrote", f)
     print("Now run: node scripts/manifest.mjs && python scripts/bed.py && npx remotion render src/index.ts Story out/story.mp4")

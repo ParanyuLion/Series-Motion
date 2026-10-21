@@ -1,0 +1,116 @@
+{
+ "fps": 30,
+ "total": 1704,
+ "storyEnd": 1557,
+ "outroStart": 1569,
+ "shots": [
+  {
+   "text": "ผมเตือนพวกเขาแล้ว แต่ไม่มีใครฟัง",
+   "audio": "island1/n0.mp3",
+   "audioFrames": 78,
+   "leadFrames": 21,
+   "frames": 150
+  },
+  {
+   "text": "เช้านั้น ผมตื่นขึ้นมาบนหาดทราย ไม่รู้ว่ามาที่นี่ได้ยังไง",
+   "audio": "island1/n1.mp3",
+   "audioFrames": 144,
+   "leadFrames": 15,
+   "frames": 186
+  },
+  {
+   "text": "รอบตัวผมมีคนแปลกหน้าอีกหกคน ทุกคนงงเหมือนกัน",
+   "audio": "island1/n2.mp3",
+   "audioFrames": 122,
+   "leadFrames": 15,
+   "frames": 164
+  },
+  {
+   "text": "ผมเป็นชาวประมง ผมรู้ว่าทะเลที่นี่ผิดปกติ",
+   "audio": "island1/n3.mp3",
+   "audioFrames": 100,
+   "leadFrames": 15,
+   "frames": 142
+  },
+  {
+   "text": "ไม่มีนก ไม่มีคลื่น รอยน้ำบนต้นไม้สูงเกินหัวผม",
+   "audio": "island1/n4.mp3",
+   "audioFrames": 121,
+   "leadFrames": 15,
+   "frames": 163
+  },
+  {
+   "text": "แปลว่าสักคืน น้ำจะขึ้นมาถึงที่ที่พวกเรานอน",
+   "audio": "island1/n5.mp3",
+   "audioFrames": 108,
+   "leadFrames": 15,
+   "frames": 150
+  },
+  {
+   "text": "ผมบอกให้ทุกคนย้ายขึ้นที่สูง แต่คุณหนูไอริณแค่ยิ้มมุมปาก",
+   "audio": "island1/n6.mp3",
+   "audioFrames": 137,
+   "leadFrames": 15,
+   "frames": 179
+  },
+  {
+   "text": "\"ที่นี่ฉันเป็นคนตัดสินใจ\" เธอว่า แล้วทุกคนก็หันไปเชื่อเธอ",
+   "audio": "island1/n7.mp3",
+   "audioFrames": 148,
+   "leadFrames": 15,
+   "frames": 190
+  },
+  {
+   "text": "ตอนนั้นผมยังไม่รู้ ว่าประโยคนั้นต้องแลกด้วยชีวิตคน",
+   "audio": "island1/n8.mp3",
+   "audioFrames": 127,
+   "leadFrames": 15,
+   "frames": 169
+  },
+  {
+   "text": "แล้วฟ้าก็เปลี่ยนสี",
+   "audio": "island1/n9.mp3",
+   "audioFrames": 49,
+   "leadFrames": 15,
+   "frames": 76
+  }
+ ],
+ "starts": [
+  0,
+  150,
+  336,
+  500,
+  642,
+  805,
+  955,
+  1134,
+  1324,
+  1493
+ ],
+ "cues": {
+  "hookCut": 150,
+  "mapIn": 515,
+  "mapOut": 928,
+  "skyChange": 1508,
+  "lineStart0": 21,
+  "lineEnd0": 99,
+  "lineStart1": 165,
+  "lineEnd1": 309,
+  "lineStart2": 351,
+  "lineEnd2": 473,
+  "lineStart3": 515,
+  "lineEnd3": 615,
+  "lineStart4": 657,
+  "lineEnd4": 778,
+  "lineStart5": 820,
+  "lineEnd5": 928,
+  "lineStart6": 970,
+  "lineEnd6": 1107,
+  "lineStart7": 1149,
+  "lineEnd7": 1297,
+  "lineStart8": 1339,
+  "lineEnd8": 1466,
+  "lineStart9": 1508,
+  "lineEnd9": 1557
+ }
+}
