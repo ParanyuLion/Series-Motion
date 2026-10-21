@@ -11,7 +11,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--script", required=True)
 ap.add_argument("--out-dir", required=True)
 ap.add_argument("--voice", default="th-TH-NiwatNeural")
-ap.add_argument("--rate", default="-17%", help="slower than default so total length matches the ~7.5 chars/s budget")
+ap.add_argument("--rate", default="-27%", help="slower than default so total length matches the ~7.5 chars/s budget")
 ap.add_argument("--pitch", default="-6Hz")
 a = ap.parse_args()
 
@@ -21,6 +21,7 @@ out = Path(a.out_dir); out.mkdir(parents=True, exist_ok=True)
 
 async def one(i: int, text: str) -> None:
     raw = out / f"n{i}.raw.mp3"
+    raw.unlink(missing_ok=True)
     for _ in range(8):
         try:
             await edge_tts.Communicate(text, a.voice, rate=a.rate, pitch=a.pitch).save(str(raw))
@@ -31,9 +32,9 @@ async def one(i: int, text: str) -> None:
         sys.exit(f"Edge TTS failed on line {i}")
     # trim leading/trailing silence like the Gemini path does
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af",
-                    "silenceremove=start_periods=1:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_threshold=-48dB,areverse,volume=6dB,alimiter=limit=0.92",
+                    "silenceremove=start_periods=1:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_threshold=-48dB,areverse,loudnorm=I=-17:TP=-1.5:LRA=11",
                     "-b:a", "192k", str(out / f"n{i}.mp3")], check=True)
-    raw.unlink()
+    raw.unlink(missing_ok=True)
     print("wrote", out / f"n{i}.mp3")
 
 

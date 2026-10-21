@@ -6,7 +6,7 @@
 Optional env vars: GEMINI_TTS_MODEL (default gemini-2.5-flash-preview-tts), GEMINI_TTS_STYLE.
 The key is only read from the environment and is never printed or written to disk.
 """
-import argparse, base64, json, os, shutil, subprocess, sys, time, urllib.error, urllib.request, wave
+import argparse, base64, json, os, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request, wave
 from pathlib import Path
 
 def load_dotenv(path: str = ".env") -> None:
@@ -53,17 +53,17 @@ def synth(text: str, voice: str, out_mp3: Path, speed: float = 1.0) -> None:
             if e.code in (429, 500, 503) and attempt < 3:
                 time.sleep(4 * (attempt + 1))
                 continue
-            sys.exit(f"HTTP {e.code} from Gemini (model {MODEL}): {msg}")
+            raise RuntimeError(f"HTTP {e.code} from Gemini (model {MODEL}): {msg}")
         except (KeyError, IndexError):
             if attempt < 3:  # the TTS models occasionally return text instead of audio
                 time.sleep(2)
                 continue
-            sys.exit("Gemini did not return audio: " + json.dumps(data)[:400])
+            raise RuntimeError("Gemini did not return audio: " + json.dumps(data)[:400])
     wav_path = out_mp3.with_suffix(".wav")
     with wave.open(str(wav_path), "wb") as w:  # Gemini returns raw 24 kHz, 16-bit, mono PCM
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes(pcm)
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav_path), "-af", f"atempo={speed},silenceremove=start_periods=1:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_threshold=-48dB,areverse", "-ar", "44100", "-b:a", "192k", str(out_mp3)], check=True)
-    wav_path.unlink()
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav_path), "-af", f"atempo={speed},silenceremove=start_periods=1:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_threshold=-48dB,areverse,loudnorm=I=-17:TP=-1.5:LRA=11", "-ar", "44100", "-b:a", "192k", str(out_mp3)], check=True)
+    wav_path.unlink(missing_ok=True)
 
 
 def main() -> None:
@@ -85,14 +85,28 @@ def main() -> None:
     audio = Path(args.out_dir); audio.mkdir(parents=True, exist_ok=True)
     backup = Path("public/audio_edge")
     keep_backup = audio == Path("public/audio")  # only the pilot's Edge TTS files are backed up
+    # Synthesise everything into a temp folder first; the real files are replaced only if EVERY line succeeded,
+    # so a quota error or an interruption can never leave a mix of two voices behind.
+    tmp = Path(tempfile.mkdtemp(prefix="tts_", dir=audio))
+    try:
+        for i, t in enumerate(lines):
+            try:
+                synth(t, args.voice, tmp / f"n{i}.mp3", args.speed)
+            except (RuntimeError, subprocess.CalledProcessError) as e:
+                sys.exit(f"Line {i} failed, nothing was replaced in {audio}: {e}")
+            print("synthesised line", i)
+        if keep_backup:
+            backup.mkdir(exist_ok=True)
+        for i in range(len(lines)):
+            f = audio / f"n{i}.mp3"
+            if keep_backup and f.exists() and not (backup / f.name).exists():
+                shutil.copy(f, backup / f.name)
+            shutil.move(str(tmp / f"n{i}.mp3"), str(f)); print("wrote", f)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
     if keep_backup:
-        backup.mkdir(exist_ok=True)
-    for i, t in enumerate(lines):
-        f = audio / f"n{i}.mp3"
-        if keep_backup and f.exists() and not (backup / f.name).exists():
-            shutil.copy(f, backup / f.name)
-        synth(t, args.voice, f, args.speed); print("wrote", f)
-    print("Now run: node scripts/manifest.mjs && python scripts/bed.py && npx remotion render src/index.ts Story out/story.mp4")
-
+        print("Now run: node scripts/manifest.mjs && python scripts/bed.py && npx remotion render src/index.ts Story out/story.mp4")
+    else:
+        print("Now run: node scripts/island/manifest.mjs && python scripts/island/bed.py && node scripts/island/verify.mjs && npx remotion render src/index.ts Island1 out/island_part1.mp4")
 
 main()

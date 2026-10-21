@@ -1,4 +1,5 @@
 // Sanity checks for src/island/manifest.json. Exits non-zero with a message on the first failure.
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 
 const path = "src/island/manifest.json";
@@ -14,4 +15,10 @@ if (m.storyEnd / m.fps > 65) fail(`story ends at ${(m.storyEnd / m.fps).toFixed(
 for (let i = 1; i < m.starts.length; i++) if (m.starts[i] <= m.starts[i - 1]) fail(`starts not increasing at shot ${i}`);
 for (const [k, v] of Object.entries(m.cues)) if (!(v >= 0 && v <= m.total)) fail(`cue ${k}=${v} outside 0..${m.total}`);
 if (!(m.cues.hookCut < m.cues.lineStart1)) fail("cues.hookCut must come before cues.lineStart1");
+const bed = "public/island1/bed.wav";
+if (existsSync(bed)) {
+  const out = execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", bed]).toString();
+  const bedSecs = parseFloat(out);
+  if (Math.abs(bedSecs - m.total / m.fps) > 0.15) fail(`bed.wav is ${bedSecs.toFixed(1)} s but the video is ${secs.toFixed(1)} s: re-run python scripts/island/bed.py`);
+}
 console.log(`OK: ${secs.toFixed(1)} s total, story ends ${(m.storyEnd / m.fps).toFixed(1)} s`);

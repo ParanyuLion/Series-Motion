@@ -1,1 +1,1 @@
-voice=edge:th-TH-NiwatNeural rate=-27% pitch=-6Hz (PROVISIONAL - Gemini free-tier quota exhausted)
+voice=edge:th-TH-NiwatNeural rate=-27% pitch=-6Hz loudnorm I=-17 (PROVISIONAL - Gemini free-tier quota exhausted)

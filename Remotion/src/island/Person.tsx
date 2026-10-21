@@ -25,6 +25,8 @@ export type PersonProps = {
   headTilt?: number;
   /** draw the Thai name tag above the head */
   label?: boolean;
+  /** keep the name tag's x inside [min, max] (e.g. clear of the platform UI on the right edge) */
+  labelClamp?: [number, number];
 };
 
 const hex = (c: string) => [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
@@ -52,7 +54,7 @@ const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: numbe
     <rect x={-8} y={-4} width={16} height={46} rx={8} fill={look.skin} />
     {sleeve > 0 && <rect x={-8} y={-4} width={16} height={Math.min(46, sleeve) + 4} rx={8} fill={look.top} />}
     <g transform={`translate(0,40) rotate(${elbow})`}>
-      <rect x={-7} y={-2} width={14} height={40} rx={7} fill={sleeve >= 46 && sleeve > 60 ? look.top : look.skin} />
+      <rect x={-7} y={-2} width={14} height={40} rx={7} fill={look.skin} />
       <circle cx={0} cy={40} r={9} fill={look.skin} />
     </g>
   </g>
@@ -91,7 +93,7 @@ const Head: React.FC<{ c: CastMember; tilt: number }> = ({ c, tilt }) => {
   );
 };
 
-export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, walk, frame, dirt = 0, facing = 1, pose = "stand", headTilt = 0, label = false }) => {
+export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, walk, frame, dirt = 0, facing = 1, pose = "stand", headTilt = 0, label = false, labelClamp }) => {
   const c = CAST[id];
   const has = (a: string) => c.accessories.includes(a as never);
   const k = scale * (c.legLength / 108);
@@ -161,7 +163,7 @@ export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, wa
         </g>
       </g>
       {label && (
-        <g transform={`translate(${x},${labelY})`}>
+        <g transform={`translate(${labelClamp ? Math.min(labelClamp[1], Math.max(labelClamp[0], x)) : x},${labelY})`}>
           <rect x={-(c.name.length * 8 + 22)} y={-24} width={c.name.length * 16 + 44} height={42} rx={21} fill="#0b0d10" opacity={0.7} />
           <text x={0} y={7} textAnchor="middle" fontFamily={fontFamily} fontSize={26} fill="#f1f1f1">{c.name}</text>
         </g>

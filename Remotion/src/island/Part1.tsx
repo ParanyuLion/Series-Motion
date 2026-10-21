@@ -17,7 +17,6 @@ const LIFT = 260; // whole scene moves up so the figures stay above the subtitle
 const WALK_SPEED = 9; // px per frame at full walk, matches the 0.2 rad/frame stride
 const PHASE_SPEED = 0.2;
 const HERO_SCREEN_X = 330;
-const SCROLL_MAX = 1100;
 
 // ---------------- staging, all derived from manifest cues ----------------
 type Spot = { x: number; y: number; scale: number };
@@ -30,14 +29,12 @@ const SPOTS: Record<CastId, Spot> = {
   jay: { x: 520, y: BEACH_Y - 60, scale: 0.85 },
   ton: { x: 930, y: BEACH_Y - 60, scale: 0.85 },
 };
+const TAG_FRAMES = 26; // a name tag shows for this long; the wake-ups are this far apart, so tags never overlap
 const WAKE_ORDER: CastId[] = ["nathee", "jay", "ploy", "kong", "ton", "irin", "wichai"];
-const wakeAt = (id: CastId) => (id === "nathee" ? ls(1) + 8 : ls(2) - 20 + (WAKE_ORDER.indexOf(id) - 1) * 24);
+const wakeAt = (id: CastId) => (id === "nathee" ? ls(1) + 8 : ls(2) - 20 + (WAKE_ORDER.indexOf(id) - 1) * TAG_FRAMES);
 
-const WALK_FRAMES = Math.round(SCROLL_MAX / WALK_SPEED);
-const walkOutStart = cues.mapIn;
-const walkOutEnd = walkOutStart + WALK_FRAMES;
-const walkBackStart = le(5) + 6;
-const walkBackEnd = walkBackStart + WALK_FRAMES;
+const { walkOutStart, walkOutEnd, walkBackStart, walkBackEnd } = cues;
+const SCROLL_MAX = (walkOutEnd - walkOutStart) * WALK_SPEED;
 
 /** world scroll in px: 0 -> SCROLL_MAX while the hero walks to the palms, then back to 0 */
 const scrollAt = (g: number) => {
@@ -118,7 +115,7 @@ const World: React.FC = () => {
   const camX = interpolate(zoom, [1, 1.3], [540, 780], CLAMP);
   const shake = inHook ? Math.sin(g * 1.7) * 6 * clamp01((g - 20) / 30) : 0;
 
-  const hookFlash = Math.max(0, 1 - Math.abs(g - 62) / 3) * 0.9 + Math.max(0, 1 - Math.abs(g - 90) / 3) * 0.7;
+  const hookFlash = Math.max(0, 1 - Math.abs(g - cues.flash0) / 3) * 0.9 + Math.max(0, 1 - Math.abs(g - cues.flash1) / 3) * 0.7;
 
   const ids = Object.keys(SPOTS) as CastId[];
   const phase = g * PHASE_SPEED;
@@ -139,7 +136,7 @@ const World: React.FC = () => {
       let facing: 1 | -1 = hero ? heroFacing(g) : -1;
       if (!hero && id !== "irin" && g >= ls(7)) facing = s.x < SPOTS.irin.x ? 1 : -1;
       const tagStart = wakeAt(id) + 22;
-      const label = g >= tagStart && g < tagStart + 80;
+      const label = g >= tagStart && g < tagStart + TAG_FRAMES;
       return { id, s, x, hero, pose, grime: grimeTarget, facing, label };
     })
     .sort((a, b) => a.s.y - b.s.y);
@@ -164,6 +161,7 @@ const World: React.FC = () => {
               pose={p.pose}
               headTilt={p.hero ? heroTilt : p.id === "irin" ? -4 : 0}
               label={p.label}
+              labelClamp={[130, 880]}
             />
           ))}
           {inHook && <SlippingHand g={g} />}
@@ -181,8 +179,8 @@ const World: React.FC = () => {
       )}
 
       {/* opening hook title cards */}
-      <Card g={g} from={100} to={cues.hookCut} style={{ top: 560, fontSize: 60, lineHeight: 1.5 }}>
-        ตื่นมาบนเกาะร้างพร้อมคนแปลกหน้า 6 คน...<br />มีแค่ผมที่รู้ว่า<br />เราไม่ควรอยู่ที่นี่
+      <Card g={g} from={100} to={cues.hookCut} style={{ top: 520, right: 160, fontSize: 52, lineHeight: 1.55 }}>
+        ตื่นมาบนเกาะร้าง<br />พร้อมคนแปลกหน้า 6 คน...<br />มีแค่ผมที่รู้ว่า<br />เราไม่ควรอยู่ที่นี่
       </Card>
       <Card g={g} from={cues.hookCut + 6} to={cues.hookCut + 55} style={{ top: 640, fontSize: 56 }}>
         เมื่อวาน

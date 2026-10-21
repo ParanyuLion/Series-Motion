@@ -1,7 +1,7 @@
 """Gloomy music + sound-effect bed for Island Part 1 -> public/island1/bed.wav
 Everything is synthesised with numpy (no licensing issues). Reads src/island/manifest.json.
   python scripts/island/bed.py
-Walk windows must match src/island/Part1.tsx (WALK_SPEED 9 px/frame, SCROLL_MAX 1100, PHASE_SPEED 0.2).
+Walk windows and flash frames come from the manifest cues (single source of truth with Part1.tsx).
 """
 import json
 import numpy as np
@@ -113,7 +113,7 @@ rain_gain = 0.085 * (np.where(tt < hook_end - 0.2, 1.0, 0.0) * ramp(0.0, 1.0)) +
 sfx += np.stack([rain * rain_gain, np.roll(rain, 700) * rain_gain])
 
 # thunder at the two flashes of the hook (frames 62 and 90) and a rumble into the sky change
-for fr in (62, 90):
+for fr in (cues["flash0"], cues["flash1"]):
     n = int(2.2 * SR)
     t = np.arange(n) / SR
     thunder = lowpass(rng.standard_normal(n), 140) * np.exp(-t / 0.9) * np.minimum(1, t / 0.05) * 0.6
@@ -128,8 +128,7 @@ hit = np.sin(2 * np.pi * 52 * t) * np.exp(-t / 0.7) * 0.7 + highpass(rng.standar
 put(sfx, hit, hook_end - 0.04, 0.5)
 
 # footsteps on wet sand: the hero walks out to the palm and back (same windows as Part1.tsx)
-WALK_FRAMES = round(1100 / 9)
-windows = [(cues["mapIn"], cues["mapIn"] + WALK_FRAMES), (cues["lineEnd5"] + 6, cues["lineEnd5"] + 6 + WALK_FRAMES)]
+windows = [(cues["walkOutStart"], cues["walkOutEnd"]), (cues["walkBackStart"], cues["walkBackEnd"])]
 step_frames = []
 for a, b in windows:
     k = int(np.floor((a * 0.2 - np.pi / 2) / np.pi)) + 1
