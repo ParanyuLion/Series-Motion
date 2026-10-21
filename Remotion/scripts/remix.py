@@ -8,10 +8,12 @@ import argparse, json, subprocess
 ap = argparse.ArgumentParser()
 ap.add_argument("src"); ap.add_argument("dst")
 ap.add_argument("--bed-gain", type=float, default=0.6)
+ap.add_argument("--manifest", default="src/manifest.json")
+ap.add_argument("--bed", default="public/audio/bed.wav")
 a = ap.parse_args()
 
-m = json.load(open("src/manifest.json", encoding="utf-8"))
-cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", a.src, "-i", "public/audio/bed.wav"]
+m = json.load(open(a.manifest, encoding="utf-8"))
+cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", a.src, "-i", a.bed]
 for s in m["shots"]:
     cmd += ["-i", f"public/{s['audio']}"]
 chains, labels = [f"[1:a]volume={a.bed_gain}[bed]"], ["[bed]"]

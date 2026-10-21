@@ -31,7 +31,7 @@ async def one(i: int, text: str) -> None:
         sys.exit(f"Edge TTS failed on line {i}")
     # trim leading/trailing silence like the Gemini path does
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af",
-                    "silenceremove=start_periods=1:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_threshold=-48dB,areverse",
+                    "silenceremove=start_periods=1:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_threshold=-48dB,areverse,volume=6dB,alimiter=limit=0.92",
                     "-b:a", "192k", str(out / f"n{i}.mp3")], check=True)
     raw.unlink()
     print("wrote", out / f"n{i}.mp3")
