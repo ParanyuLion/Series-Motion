@@ -1,0 +1,93 @@
+"""Thai narration with Gemini TTS (needs the GEMINI_API_KEY environment variable).
+
+  python scripts/tts_gemini.py --sample            # same line in several voices -> out/voice_test/*.mp3
+  python scripts/tts_gemini.py --voice Sulafat     # real narration -> public/audio/n0..n3.mp3 (Edge TTS files are backed up)
+
+Optional env vars: GEMINI_TTS_MODEL (default gemini-2.5-flash-preview-tts), GEMINI_TTS_STYLE.
+The key is only read from the environment and is never printed or written to disk.
+"""
+import argparse, base64, json, os, shutil, subprocess, sys, time, urllib.error, urllib.request, wave
+from pathlib import Path
+
+def load_dotenv(path: str = ".env") -> None:
+    """Tiny .env reader (KEY=value per line); real environment variables take priority."""
+    p = Path(path)
+    if not p.exists():
+        return
+    for line in p.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+load_dotenv()
+MODEL = os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-flash-preview-tts")
+STYLE = os.environ.get(
+    "GEMINI_TTS_STYLE",
+    "อ่านเป็นภาษาไทยด้วยน้ำเสียงผู้เล่านิทานที่อบอุ่น นุ่มนวล เป็นธรรมชาติเหมือนคนจริงๆ จังหวะช้าสบายๆ มีหยุดหายใจตามเครื่องหมายวรรคตอน:",
+)
+SAMPLE_VOICES = ["Sulafat", "Achird", "Kore", "Leda", "Puck", "Charon"]
+KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+
+
+def synth(text: str, voice: str, out_mp3: Path, speed: float = 1.0) -> None:
+    body = {
+        "contents": [{"parts": [{"text": f"{STYLE}\n{text}"}]}],
+        "generationConfig": {
+            "responseModalities": ["AUDIO"],
+            "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}},
+        },
+    }
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
+    req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json", "x-goog-api-key": KEY})
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                data = json.load(r)
+            part = data["candidates"][0]["content"]["parts"][0]["inlineData"]
+            pcm = base64.b64decode(part["data"])
+            break
+        except urllib.error.HTTPError as e:
+            msg = e.read().decode(errors="replace")[:400]
+            if e.code in (429, 500, 503) and attempt < 3:
+                time.sleep(4 * (attempt + 1))
+                continue
+            sys.exit(f"HTTP {e.code} from Gemini (model {MODEL}): {msg}")
+        except (KeyError, IndexError):
+            if attempt < 3:  # the TTS models occasionally return text instead of audio
+                time.sleep(2)
+                continue
+            sys.exit("Gemini did not return audio: " + json.dumps(data)[:400])
+    wav_path = out_mp3.with_suffix(".wav")
+    with wave.open(str(wav_path), "wb") as w:  # Gemini returns raw 24 kHz, 16-bit, mono PCM
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes(pcm)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav_path), "-af", f"atempo={speed},silenceremove=start_periods=1:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_threshold=-48dB,areverse", "-ar", "44100", "-b:a", "192k", str(out_mp3)], check=True)
+    wav_path.unlink()
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--sample", action="store_true")
+    ap.add_argument("--voice", default="Sulafat")
+    ap.add_argument("--speed", type=float, default=1.0, help="playback speed, pitch preserved (e.g. 1.1)")
+    args = ap.parse_args()
+    if not KEY:
+        sys.exit("GEMINI_API_KEY is not set in this terminal. Set it, then restart the terminal / VS Code.")
+    lines = json.load(open("scripts/narration.json", encoding="utf-8"))
+    if args.sample:
+        out = Path("out/voice_test"); out.mkdir(parents=True, exist_ok=True)
+        for v in SAMPLE_VOICES:
+            synth(lines[0] + " " + lines[1], v, out / f"{v}.mp3"); print("wrote", out / f"{v}.mp3")
+        return
+    audio = Path("public/audio")
+    backup = Path("public/audio_edge"); backup.mkdir(exist_ok=True)
+    for i, t in enumerate(lines):
+        f = audio / f"n{i}.mp3"
+        if f.exists() and not (backup / f.name).exists():
+            shutil.copy(f, backup / f.name)
+        synth(t, args.voice, f, args.speed); print("wrote", f)
+    print("Now run: node scripts/manifest.mjs && python scripts/bed.py && npx remotion render src/index.ts Story out/story.mp4")
+
+
+main()
