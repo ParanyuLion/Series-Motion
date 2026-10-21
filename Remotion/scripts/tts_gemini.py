@@ -101,12 +101,28 @@ def main() -> None:
     key = hashlib.sha1(json.dumps([lines, args.voice, args.speed, MODEL, STYLE], ensure_ascii=False).encode()).hexdigest()[:12]
     tmp = Path("out/tts_cache") / key
     tmp.mkdir(parents=True, exist_ok=True)
-    for i, t in enumerate(lines):
+    for i, line in enumerate(lines):
         if (tmp / f"n{i}.mp3").exists():
             print("cached line", i)
             continue
+        # a line is a string (narrator) or {"text", "segments": [{"voice", "text"}]} when several speakers share a subtitle
+        segs = line["segments"] if isinstance(line, dict) else [{"voice": args.voice, "text": line}]
+        parts = []
         try:
-            synth(t, args.voice, tmp / f"n{i}.mp3", args.speed)
+            for j, seg in enumerate(segs):
+                part = tmp / f"n{i}.s{j}.mp3"
+                if not part.exists():
+                    synth(seg["text"], seg.get("voice", args.voice), part, args.speed)
+                parts.append(part)
+            if len(parts) == 1:
+                shutil.copy(parts[0], tmp / f"n{i}.mp3")
+            else:  # join the speakers with a short gap
+                cmd = ["ffmpeg", "-y", "-loglevel", "error"]
+                for part in parts:
+                    cmd += ["-i", str(part)]
+                chain = "aevalsrc=0:d=0.14:s=44100[gap];" + "".join(f"[{k}:a]" + ("[gap]" if k < len(parts) - 1 else "") for k in range(len(parts)))
+                cmd += ["-filter_complex", chain + f"concat=n={2 * len(parts) - 1}:v=0:a=1[o]", "-map", "[o]", "-b:a", "192k", str(tmp / f"n{i}.mp3")]
+                subprocess.run(cmd, check=True)
         except (RuntimeError, subprocess.CalledProcessError) as e:
             sys.exit(f"Line {i} failed, nothing was replaced in {audio} (finished lines are cached, re-run to resume): {e}")
         print("synthesised line", i, flush=True)

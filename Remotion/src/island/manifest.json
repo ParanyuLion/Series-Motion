@@ -1,122 +1,122 @@
 {
  "fps": 30,
- "total": 1950,
- "storyEnd": 1803,
- "outroStart": 1815,
+ "total": 1778,
+ "storyEnd": 1631,
+ "outroStart": 1643,
  "shots": [
   {
    "text": "ผมเตือนพวกเขาแล้ว แต่ไม่มีใครฟัง",
    "audio": "island1/n0.mp3",
-   "audioFrames": 91,
+   "audioFrames": 78,
    "leadFrames": 21,
    "frames": 180
   },
   {
    "text": "เช้านั้น ผมตื่นขึ้นมาบนหาดทราย ไม่รู้ว่ามาที่นี่ได้ยังไง",
    "audio": "island1/n1.mp3",
-   "audioFrames": 147,
+   "audioFrames": 144,
    "leadFrames": 15,
-   "frames": 189
+   "frames": 186
   },
   {
    "text": "รอบตัวผมมีคนแปลกหน้าอีกหกคน ทุกคนงงเหมือนกัน",
    "audio": "island1/n2.mp3",
-   "audioFrames": 148,
+   "audioFrames": 122,
    "leadFrames": 15,
-   "frames": 190
+   "frames": 164
   },
   {
    "text": "ผมเป็นชาวประมง ผมรู้ว่าทะเลที่นี่ผิดปกติ",
    "audio": "island1/n3.mp3",
-   "audioFrames": 113,
+   "audioFrames": 100,
    "leadFrames": 15,
-   "frames": 155
+   "frames": 142
   },
   {
    "text": "ไม่มีนก ไม่มีคลื่น รอยน้ำบนต้นไม้สูงเกินหัวผม",
    "audio": "island1/n4.mp3",
-   "audioFrames": 163,
+   "audioFrames": 121,
    "leadFrames": 15,
-   "frames": 205
+   "frames": 163
   },
   {
    "text": "แปลว่าสักคืน น้ำจะขึ้นมาถึงที่ที่พวกเรานอน",
    "audio": "island1/n5.mp3",
-   "audioFrames": 132,
+   "audioFrames": 108,
    "leadFrames": 15,
-   "frames": 174
+   "frames": 150
   },
   {
    "text": "ผมบอกให้ทุกคนย้ายขึ้นที่สูง แต่คุณหนูไอริณแค่ยิ้มมุมปาก",
    "audio": "island1/n6.mp3",
-   "audioFrames": 160,
+   "audioFrames": 137,
    "leadFrames": 15,
-   "frames": 202
+   "frames": 179
   },
   {
    "text": "\"ที่นี่ฉันเป็นคนตัดสินใจ\" เธอว่า แล้วทุกคนก็หันไปเชื่อเธอ",
    "audio": "island1/n7.mp3",
-   "audioFrames": 193,
+   "audioFrames": 192,
    "leadFrames": 15,
-   "frames": 235
+   "frames": 234
   },
   {
    "text": "ตอนนั้นผมยังไม่รู้ ว่าประโยคนั้นต้องแลกด้วยชีวิตคน",
    "audio": "island1/n8.mp3",
-   "audioFrames": 160,
+   "audioFrames": 127,
    "leadFrames": 15,
-   "frames": 202
+   "frames": 169
   },
   {
    "text": "แล้วฟ้าก็เปลี่ยนสี",
    "audio": "island1/n9.mp3",
-   "audioFrames": 56,
+   "audioFrames": 49,
    "leadFrames": 15,
-   "frames": 83
+   "frames": 76
   }
  ],
  "starts": [
   0,
   180,
-  369,
-  559,
-  714,
-  919,
-  1093,
-  1295,
-  1530,
-  1732
+  366,
+  530,
+  672,
+  835,
+  985,
+  1164,
+  1398,
+  1567
  ],
  "cues": {
   "hookCut": 180,
-  "mapIn": 574,
-  "mapOut": 1066,
-  "skyChange": 1747,
-  "walkOutStart": 574,
-  "walkOutEnd": 696,
-  "walkBackStart": 1072,
-  "walkBackEnd": 1194,
+  "mapIn": 545,
+  "mapOut": 958,
+  "skyChange": 1582,
+  "walkOutStart": 545,
+  "walkOutEnd": 667,
+  "walkBackStart": 964,
+  "walkBackEnd": 1086,
   "flash0": 62,
   "flash1": 90,
   "lineStart0": 21,
-  "lineEnd0": 112,
+  "lineEnd0": 99,
   "lineStart1": 195,
-  "lineEnd1": 342,
-  "lineStart2": 384,
-  "lineEnd2": 532,
-  "lineStart3": 574,
-  "lineEnd3": 687,
-  "lineStart4": 729,
-  "lineEnd4": 892,
-  "lineStart5": 934,
-  "lineEnd5": 1066,
-  "lineStart6": 1108,
-  "lineEnd6": 1268,
-  "lineStart7": 1310,
-  "lineEnd7": 1503,
-  "lineStart8": 1545,
-  "lineEnd8": 1705,
-  "lineStart9": 1747,
-  "lineEnd9": 1803
+  "lineEnd1": 339,
+  "lineStart2": 381,
+  "lineEnd2": 503,
+  "lineStart3": 545,
+  "lineEnd3": 645,
+  "lineStart4": 687,
+  "lineEnd4": 808,
+  "lineStart5": 850,
+  "lineEnd5": 958,
+  "lineStart6": 1000,
+  "lineEnd6": 1137,
+  "lineStart7": 1179,
+  "lineEnd7": 1371,
+  "lineStart8": 1413,
+  "lineEnd8": 1540,
+  "lineStart9": 1582,
+  "lineEnd9": 1631
  }
 }

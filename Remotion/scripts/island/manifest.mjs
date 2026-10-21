@@ -13,7 +13,7 @@ const OUTRO_FRAMES = 135;     // 4.5 s "next part" card
 const WALK_SPEED = 9;         // ground px per frame at full walk (stride-matched to phase speed 0.2)
 const SCROLL_MAX = 1100;      // how far the hero walks along the shore
 
-const lines = JSON.parse(readFileSync("scripts/island/part1.narration.json", "utf8"));
+const lines = JSON.parse(readFileSync("scripts/island/part1.narration.json", "utf8")).map((l) => (typeof l === "string" ? l : l.text));
 const lengths = lines.map((_, i) => {
   const out = execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", `public/island1/n${i}.mp3`]).toString();
   return Math.ceil(parseFloat(out) * FPS);
