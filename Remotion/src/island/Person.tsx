@@ -21,6 +21,8 @@ export type PersonProps = {
   dirt?: number;
   facing?: 1 | -1;
   pose?: "stand" | "point" | "sit" | "lie";
+  /** head tilt in degrees, negative = look up */
+  headTilt?: number;
   /** draw the Thai name tag above the head */
   label?: boolean;
 };
@@ -89,7 +91,7 @@ const Head: React.FC<{ c: CastMember; tilt: number }> = ({ c, tilt }) => {
   );
 };
 
-export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, walk, frame, dirt = 0, facing = 1, pose = "stand", label = false }) => {
+export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, walk, frame, dirt = 0, facing = 1, pose = "stand", headTilt = 0, label = false }) => {
   const c = CAST[id];
   const has = (a: string) => c.accessories.includes(a as never);
   const k = scale * (c.legLength / 108);
@@ -107,10 +109,10 @@ export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, wa
   let frontElbow = -14;
   let bob = -6 * w * Math.abs(Math.cos(p)) + Math.sin(frame * 0.09) * 1.2 * (1 - w);
   let lift = 0;
-  let tilt = 0;
+  let tilt = headTilt;
   if (pose === "point") { frontArm = -85; frontElbow = -4; }
   if (pose === "sit") { thighA = -90; thighB = -90; kneeA = 0; kneeB = 0; frontArm = -20; backArm = -10; lift = 106; bob = 0; }
-  if (pose === "lie") { frontArm = 18; backArm = 10; frontElbow = -6; bob = 0; tilt = 0; }
+  if (pose === "lie") { frontArm = 18; backArm = 10; frontElbow = -6; bob = 0; }
   const lean = 4 * w;
   const bodyW = c.width;
   const shoulderY = -(c.torso - 26);

@@ -59,9 +59,13 @@ type Props = {
   showCamp?: boolean;
   /** camp position on the beach (x only; moves with scroll) */
   campX?: number;
+  /** x of the first palm at scroll 0; later palms repeat every 1500 px */
+  treeX0?: number;
+  /** extra px of sand below the frame (when the whole world is shifted up) */
+  bottomExtend?: number;
 };
 
-export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showWaterline = false, showCamp = false, campX = 330 }) => {
+export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showWaterline = false, showCamp = false, campX = 330, treeX0 = 760, bottomExtend = 0 }) => {
   const s = Math.min(1, Math.max(0, stormAmount));
   const sky1 = interpolateColors(s, [0, 1], [PALETTE_A.sky1, SICK.sky1]);
   const sky2 = interpolateColors(s, [0, 1], [PALETTE_A.sky2, SICK.sky2]);
@@ -69,7 +73,7 @@ export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showW
   const fog = mix(PALETTE_A.fog, "#d9d89a", s * 0.5);
   const treeSpacing = 1500;
   const treeOff = mod(scroll * 0.85, treeSpacing);
-  const trees = [0, 1, 2].map((k) => ({ x: 760 + k * treeSpacing - treeOff, seed: k }));
+  const trees = [0, 1, 2].map((k) => ({ x: treeX0 + k * treeSpacing - treeOff, seed: k }));
   const sandOff = mod(scroll, 240);
   const fire = 0.85 + 0.15 * Math.sin(frame * 0.7) + 0.08 * Math.sin(frame * 1.9);
   const cx = campX - scroll;
@@ -114,7 +118,7 @@ export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showW
       <rect y={HORIZON_Y - 70} width={W} height={260} fill="url(#isl-fog)" />
 
       {/* beach */}
-      <rect y={SHORE_Y} width={W} height={H - SHORE_Y} fill="url(#isl-sand)" />
+      <rect y={SHORE_Y} width={W} height={H - SHORE_Y + bottomExtend} fill="url(#isl-sand)" />
       <path d={`M0 ${SHORE_Y} ${Array.from({ length: 12 }, (_, j) => `L${j * 100} ${SHORE_Y + 10 + Math.sin(frame * 0.04 + j) * 6}`).join(" ")}`} stroke="#aeb4b6" strokeWidth={5} fill="none" opacity={0.5} />
       {Array.from({ length: 28 }, (_, i) => (
         <circle key={i} cx={mod(rnd(i) * 1200 - sandOff * 1, 1200) - 60} cy={SHORE_Y + 90 + rnd(i + 5) * 420} r={2 + rnd(i + 9) * 3} fill="#3f4240" opacity={0.35} />
