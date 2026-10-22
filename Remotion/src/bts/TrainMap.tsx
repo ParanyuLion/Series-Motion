@@ -30,6 +30,11 @@ export const TrainMap: React.FC<{ progress: number; markers: MapMarker[] }> = ({
   const p = clamp01(progress);
   const card = ease(p / 0.2);
   const infected = markers.filter((m) => m.kind === "infected" && p >= 0.4 + m.appearAt * 0.5);
+  const youM = markers.find((m) => m.kind === "you");
+  const youCar = youM ? youM.car : 3;
+  const carX = (car: number, pos: number) => X0 + (car - 1) * (CAR_W + GAP) + pos * CAR_W;
+  const allInfected = markers.filter((m) => m.kind === "infected");
+  const zx = allInfected.length ? allInfected.reduce((s, m) => s + carX(m.car, m.pos), 0) / allInfected.length : 0;
   return (
     <svg width={900} height={460} viewBox="0 0 900 460" style={{ opacity: card, transform: `translateY(${(1 - card) * 40}px)` }}>
       <rect x={4} y={4} width={892} height={452} rx={34} fill="#0f1215" opacity={0.9} stroke="#4a5158" strokeWidth={4} />
@@ -37,7 +42,7 @@ export const TrainMap: React.FC<{ progress: number; markers: MapMarker[] }> = ({
       {/* cars: car 1 at the left; the walkway between cars is open (a gap with a floor line) */}
       {[1, 2, 3, 4].map((n, i) => {
         const x = X0 + i * (CAR_W + GAP);
-        const hi = n === 3;
+        const hi = n === youCar;
         const draw = clamp01((p - 0.1 - i * 0.05) / 0.2);
         return (
           <g key={n} opacity={draw}>
@@ -65,10 +70,10 @@ export const TrainMap: React.FC<{ progress: number; markers: MapMarker[] }> = ({
         );
       })}
       {markers.some((m) => m.kind === "you") && p > 0.7 && (
-        <text x={X0 + 2 * (CAR_W + GAP) + 0.58 * CAR_W} y={CAR_Y - 22} textAnchor="middle" fontFamily={fontFamily} fontSize={38} fill="#ffd86b" opacity={ease((p - 0.7) / 0.15)}>คุณ</text>
+        <text x={youM ? carX(youM.car, youM.pos) : 0} y={CAR_Y - 22} textAnchor="middle" fontFamily={fontFamily} fontSize={38} fill="#ffd86b" opacity={ease((p - 0.7) / 0.15)}>คุณ</text>
       )}
       {infected.length > 0 && (
-        <text x={X0 + 2 * (CAR_W + GAP) + 0.2 * CAR_W} y={CAR_Y + CAR_H + 82} textAnchor="middle" fontFamily={fontFamily} fontSize={30} fill="#ff9a8a">ซอมบี้</text>
+        <text x={zx} y={CAR_Y + CAR_H + 82} textAnchor="middle" fontFamily={fontFamily} fontSize={30} fill="#ff9a8a">ซอมบี้</text>
       )}
       {/* legend */}
       <g transform="translate(70,392)" opacity={clamp01((p - 0.6) / 0.2)}>

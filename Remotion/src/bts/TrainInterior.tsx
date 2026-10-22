@@ -70,16 +70,19 @@ export type TrainInteriorProps = {
   carNumber?: 1 | 2 | 3 | 4;
   /** drawn behind the window pillars, e.g. station boards sliding past */
   windowChildren?: React.ReactNode;
+  /** draw the car mirrored about x = 550 (the walkway at the left end); the two texts are flipped back */
+  mirror?: boolean;
 };
 
-export const TrainInterior: React.FC<TrainInteriorProps> = ({ frame, scroll, doors = 0, lights = 1, station = "สยาม", carNumber = 3, windowChildren }) => {
+export const TrainInterior: React.FC<TrainInteriorProps> = ({ frame, scroll, doors = 0, lights = 1, station = "สยาม", carNumber = 3, windowChildren, mirror = false }) => {
+  const unflip = (x: number) => (mirror ? `translate(${2 * x},0) scale(-1,1)` : undefined);
   const flick = lights < 1 ? lights * (0.82 + 0.18 * Math.sin(frame * 1.3)) : 1;
   const pillars = Array.from({ length: 9 }, (_, k) => LEFT + 120 + k * 360);
   const poles = [-300, 700, 1260, 1620];
   const paneW = DOOR_W / 2;
   const open = Math.min(1, Math.max(0, doors));
   return (
-    <g>
+    <g transform={mirror ? "translate(1100,0) scale(-1,1)" : undefined}>
       <defs>
         <linearGradient id="bts-sky" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#9fcbe8" />
@@ -151,7 +154,7 @@ export const TrainInterior: React.FC<TrainInteriorProps> = ({ frame, scroll, doo
           <rect x={DOOR_X + paneW} y={1120} width={paneW} height={12} fill="#2f8f4e" />
         </g>
         <rect x={DOOR_X + DOOR_W / 2 - 150} y={CEIL_Y + 46} width={300} height={60} rx={8} fill="#0d3d2a" />
-        <text x={DOOR_X + DOOR_W / 2} y={CEIL_Y + 90} textAnchor="middle" fontFamily={fontFamily} fontSize={38} fill="#ffffff">{station}</text>
+        <text transform={unflip(DOOR_X + DOOR_W / 2)} x={DOOR_X + DOOR_W / 2} y={CEIL_Y + 90} textAnchor="middle" fontFamily={fontFamily} fontSize={38} fill="#ffffff">{station}</text>
       </g>
 
       {/* open walkway to the next car */}
@@ -159,7 +162,7 @@ export const TrainInterior: React.FC<TrainInteriorProps> = ({ frame, scroll, doo
         <rect x={WALKWAY_X} y={WIN_TOP - 40} width={RIGHT - WALKWAY_X} height={FLOOR_Y - WIN_TOP + 40} fill="#4a4d52" />
         {Array.from({ length: 6 }, (_, i) => <rect key={i} x={WALKWAY_X + 20 + i * 46} y={WIN_TOP - 30} width={22} height={FLOOR_Y - WIN_TOP + 30} fill="#2c2f33" opacity={0.7} />)}
         <rect x={WALKWAY_X} y={WIN_TOP - 40} width={14} height={FLOOR_Y - WIN_TOP + 40} fill="#8c918f" />
-        <text x={WALKWAY_X + 120} y={WIN_TOP - 56} textAnchor="middle" fontFamily={fontFamily} fontSize={30} fill="#5a5648">{carNumber === 4 ? "" : `→ ตู้ ${carNumber + 1}`}</text>
+        <text transform={unflip(WALKWAY_X + 120)} x={WALKWAY_X + 120} y={WIN_TOP - 56} textAnchor="middle" fontFamily={fontFamily} fontSize={30} fill="#5a5648">{carNumber === 4 ? "" : `→ ตู้ ${carNumber + 1}`}</text>
       </g>
 
       {/* floor */}
