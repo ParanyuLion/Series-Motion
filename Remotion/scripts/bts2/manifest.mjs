@@ -42,17 +42,20 @@ const ls = (i) => starts[i] + shots[i].leadFrames;
 const le = (i) => ls(i) + shots[i].audioFrames;
 const cues = {
   hookCut: HOOK_FRAMES,
-  driverEnters: ls(1),
-  zombiesApproach: ls(2),
-  biteAt: ls(3) + 10,
-  cabCloses: le(3),
-  countdownStart: le(3),   // the driver's 60 s clock, seen by the viewer only
-  youSee: ls(4),
-  youShout: ls(5),
+  driverEnters: ls(1),       // he hears the commotion and walks in
+  zombiesApproach: ls(2),    // he reaches the zombies and warns them
+  realiseAt: le(2) - 70,     // his face turns to worry ("เพิ่งนึกได้")
+  shoutAt: ls(3),            // everybody shouts at him to run
+  fallAt: ls(4),             // the zombie starts to topple
+  biteAt: ls(4) + 40,        // impact and the bite on a fingertip
+  cabCloses: le(4),
+  countdownStart: le(4),     // the driver's 60 s clock, seen by the viewer only
+  youSee: ls(5),
+  youShout: ls(5) + 50,
   unclePale: ls(6),
-  uncleRises: ls(7) + 15,  // the clock reads 0:00 here
+  uncleRises: ls(7) + 15,    // the clock reads 0:00 here
   stationPass: ls(8) + 30,
-  silenceAt: ls(8),        // the sound bed drops out: the speaker stays silent
+  silenceAt: ls(8),          // the sound bed drops out: the speaker stays silent
   questionAt: ls(9),
 };
 shots.forEach((_, i) => { cues[`lineStart${i}`] = ls(i); cues[`lineEnd${i}`] = le(i); });

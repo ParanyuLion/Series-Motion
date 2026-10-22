@@ -15,6 +15,8 @@ if (m.storyEnd / m.fps > 67) fail(`story ends at ${(m.storyEnd / m.fps).toFixed(
 for (let i = 1; i < m.starts.length; i++) if (m.starts[i] <= m.starts[i - 1]) fail(`starts not increasing at shot ${i}`);
 for (const [k, v] of Object.entries(m.cues)) if (!(v >= 0 && v <= m.total)) fail(`cue ${k}=${v} outside 0..${m.total}`);
 if (!(m.cues.hookCut < m.cues.lineStart1)) fail("cues.hookCut must come before cues.lineStart1");
+for (const k of ["realiseAt", "shoutAt", "fallAt"]) if (!(k in m.cues)) fail(`cue ${k} is missing: re-run node scripts/bts2/manifest.mjs`);
+for (const [a, b] of [["zombiesApproach", "realiseAt"], ["realiseAt", "shoutAt"], ["shoutAt", "fallAt"], ["fallAt", "biteAt"], ["biteAt", "cabCloses"]]) if (!(m.cues[a] < m.cues[b])) fail(`cue ${a} must come before ${b}`);
 if (!(m.cues.countdownStart < m.cues.uncleRises)) fail("the countdown must start before the uncle rises");
 for (const shot of m.shots) {
   const f = `public/${shot.audio}`;

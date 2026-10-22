@@ -1,71 +1,71 @@
 {
  "fps": 30,
- "total": 1671,
- "storyEnd": 1524,
- "outroStart": 1536,
+ "total": 1627,
+ "storyEnd": 1480,
+ "outroStart": 1492,
  "shots": [
   {
-   "text": "จะเกิดอะไรขึ้น ถ้าคุณเห็นซอมบี้กัดคนขับ แล้วไม่มีใครเชื่อ",
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณเห็นคนขับ BTS เดินเข้าไปเตือนซอมบี้",
    "audio": "bts2/n0.mp3",
-   "audioFrames": 142,
+   "audioFrames": 133,
    "leadFrames": 21,
-   "frames": 213
+   "frames": 204
   },
   {
-   "text": "คนขับเดินเข้ามาในตู้ ตะโกนให้ทุกคนใจเย็นๆ",
+   "text": "คนขับได้ยินเสียงโวยวาย เลยเดินมาดูว่าเกิดอะไรขึ้น",
    "audio": "bts2/n1.mp3",
+   "audioFrames": 115,
+   "leadFrames": 6,
+   "frames": 129
+  },
+  {
+   "text": "เขาเดินไปตักเตือนซอมบี้ แล้วเพิ่งนึกได้ว่ามีอะไรแปลกๆ",
+   "audio": "bts2/n2.mp3",
+   "audioFrames": 145,
+   "leadFrames": 6,
+   "frames": 159
+  },
+  {
+   "text": "ทุกคนตะโกนให้เขาหนี แต่มันสายไปแล้ว",
+   "audio": "bts2/n3.mp3",
+   "audioFrames": 109,
+   "leadFrames": 6,
+   "frames": 123
+  },
+  {
+   "text": "ซอมบี้ล้มลงมางับปลายนิ้วเขา เขาตกใจ รีบวิ่งกลับห้องคนขับ",
+   "audio": "bts2/n4.mp3",
+   "audioFrames": 163,
+   "leadFrames": 6,
+   "frames": 177
+  },
+  {
+   "text": "คุณรู้ว่าเขาเหลือเวลาแค่หนึ่งนาที แต่ไม่มีใครเชื่อคุณ",
+   "audio": "bts2/n5.mp3",
+   "audioFrames": 141,
+   "leadFrames": 6,
+   "frames": 155
+  },
+  {
+   "text": "ลุงประเสริฐเหงื่อท่วมหน้า มือซ่อนอยู่ใต้เสื้อ",
+   "audio": "bts2/n6.mp3",
+   "audioFrames": 131,
+   "leadFrames": 6,
+   "frames": 145
+  },
+  {
+   "text": "แล้วเขาก็ลุกขึ้นมา ซอมบี้ตัวที่สามเกิดขึ้นกลางตู้",
+   "audio": "bts2/n7.mp3",
    "audioFrames": 125,
    "leadFrames": 6,
    "frames": 139
   },
   {
-   "text": "ซอมบี้เดินเข้าหาเขาอย่างช้าๆ แต่เขาไม่ทันหลบ",
-   "audio": "bts2/n2.mp3",
-   "audioFrames": 129,
-   "leadFrames": 6,
-   "frames": 143
-  },
-  {
-   "text": "เขาถูกกัดที่แขน แล้วบอกว่า ไม่เป็นไร รีบกลับเข้าห้องคนขับ",
-   "audio": "bts2/n3.mp3",
-   "audioFrames": 173,
-   "leadFrames": 6,
-   "frames": 187
-  },
-  {
-   "text": "แต่คุณเห็นแผลนั้น คุณรู้ว่าเขาเหลือเวลาแค่หนึ่งนาที",
-   "audio": "bts2/n4.mp3",
-   "audioFrames": 138,
-   "leadFrames": 6,
-   "frames": 152
-  },
-  {
-   "text": "คุณตะโกนบอกทุกคน แต่ไม่มีใครเชื่อ เพราะเขาคือคนขับ",
-   "audio": "bts2/n5.mp3",
-   "audioFrames": 148,
-   "leadFrames": 6,
-   "frames": 162
-  },
-  {
-   "text": "ลุงประเสริฐเหงื่อท่วมหน้า มือซ่อนอยู่ใต้เสื้อ",
-   "audio": "bts2/n6.mp3",
-   "audioFrames": 114,
-   "leadFrames": 6,
-   "frames": 128
-  },
-  {
-   "text": "แล้วเขาก็ลุกขึ้นมา ซอมบี้ตัวที่สามเกิดขึ้นกลางตู้",
-   "audio": "bts2/n7.mp3",
-   "audioFrames": 140,
-   "leadFrames": 6,
-   "frames": 154
-  },
-  {
    "text": "รถไฟผ่านสถานีไปโดยไม่จอด และไม่มีเสียงประกาศอีกเลย",
    "audio": "bts2/n8.mp3",
-   "audioFrames": 143,
+   "audioFrames": 146,
    "leadFrames": 6,
-   "frames": 157
+   "frames": 160
   },
   {
    "text": "ถ้าเป็นคุณ จะเข้าไปในห้องคนขับไหม",
@@ -77,49 +77,52 @@
  ],
  "starts": [
   0,
-  213,
-  352,
-  495,
-  682,
-  834,
-  996,
-  1124,
-  1278,
-  1435
+  204,
+  333,
+  492,
+  615,
+  792,
+  947,
+  1092,
+  1231,
+  1391
  ],
  "cues": {
-  "hookCut": 213,
-  "driverEnters": 219,
-  "zombiesApproach": 358,
-  "biteAt": 511,
-  "cabCloses": 674,
-  "countdownStart": 674,
-  "youSee": 688,
-  "youShout": 840,
-  "unclePale": 1002,
-  "uncleRises": 1145,
-  "stationPass": 1314,
-  "silenceAt": 1284,
-  "questionAt": 1441,
+  "hookCut": 204,
+  "driverEnters": 210,
+  "zombiesApproach": 339,
+  "realiseAt": 414,
+  "shoutAt": 498,
+  "fallAt": 621,
+  "biteAt": 661,
+  "cabCloses": 784,
+  "countdownStart": 784,
+  "youSee": 798,
+  "youShout": 848,
+  "unclePale": 953,
+  "uncleRises": 1113,
+  "stationPass": 1267,
+  "silenceAt": 1237,
+  "questionAt": 1397,
   "lineStart0": 21,
-  "lineEnd0": 163,
-  "lineStart1": 219,
-  "lineEnd1": 344,
-  "lineStart2": 358,
-  "lineEnd2": 487,
-  "lineStart3": 501,
-  "lineEnd3": 674,
-  "lineStart4": 688,
-  "lineEnd4": 826,
-  "lineStart5": 840,
-  "lineEnd5": 988,
-  "lineStart6": 1002,
-  "lineEnd6": 1116,
-  "lineStart7": 1130,
-  "lineEnd7": 1270,
-  "lineStart8": 1284,
-  "lineEnd8": 1427,
-  "lineStart9": 1441,
-  "lineEnd9": 1524
+  "lineEnd0": 154,
+  "lineStart1": 210,
+  "lineEnd1": 325,
+  "lineStart2": 339,
+  "lineEnd2": 484,
+  "lineStart3": 498,
+  "lineEnd3": 607,
+  "lineStart4": 621,
+  "lineEnd4": 784,
+  "lineStart5": 798,
+  "lineEnd5": 939,
+  "lineStart6": 953,
+  "lineEnd6": 1084,
+  "lineStart7": 1098,
+  "lineEnd7": 1223,
+  "lineStart8": 1237,
+  "lineEnd8": 1383,
+  "lineStart9": 1397,
+  "lineEnd9": 1480
  }
 }

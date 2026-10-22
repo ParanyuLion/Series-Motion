@@ -29,6 +29,16 @@ STYLE = os.environ.get(
 )
 SAMPLE_VOICES = ["Sulafat", "Achird", "Kore", "Leda", "Puck", "Charon"]
 KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+# Vertex AI backend (billed per use, no free-tier daily cap): set TTS_BACKEND=vertex plus GOOGLE_CLOUD_PROJECT and
+# GOOGLE_CLOUD_LOCATION; it authenticates with the machine's `gcloud auth application-default login` token (no key file).
+VERTEX = os.environ.get("TTS_BACKEND", "").lower() == "vertex"
+
+
+def vertex_token() -> str:
+    out = subprocess.run("gcloud auth application-default print-access-token", shell=True, capture_output=True, text=True)
+    if out.returncode != 0 or not out.stdout.strip():
+        sys.exit("Vertex backend: could not get a token. Run: gcloud auth application-default login")
+    return out.stdout.strip()
 
 
 def synth(text: str, voice: str, out_mp3: Path, speed: float = 1.0) -> None:
@@ -39,9 +49,16 @@ def synth(text: str, voice: str, out_mp3: Path, speed: float = 1.0) -> None:
             "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}},
         },
     }
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
-    req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json", "x-goog-api-key": KEY})
+    if VERTEX:
+        proj, loc = os.environ["GOOGLE_CLOUD_PROJECT"], os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
+        host = "aiplatform.googleapis.com" if loc == "global" else f"{loc}-aiplatform.googleapis.com"
+        url = f"https://{host}/v1/projects/{proj}/locations/{loc}/publishers/google/models/{MODEL}:generateContent"
+        body["contents"][0]["role"] = "user"
+    else:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
     for attempt in range(8):
+        headers = {"Content-Type": "application/json", **({"Authorization": f"Bearer {vertex_token()}"} if VERTEX else {"x-goog-api-key": KEY})}
+        req = urllib.request.Request(url, json.dumps(body).encode(), headers)
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
                 data = json.load(r)
@@ -61,7 +78,7 @@ def synth(text: str, voice: str, out_mp3: Path, speed: float = 1.0) -> None:
             elif e.code in (500, 503) and attempt < 7:
                 time.sleep(4 * (attempt + 1))
                 continue
-            raise RuntimeError(f"HTTP {e.code} from Gemini (model {MODEL}): {msg}")
+            raise RuntimeError(f"HTTP {e.code} from {'Vertex AI' if VERTEX else 'Gemini'} (model {MODEL}): {msg}")
         except (KeyError, IndexError):
             if attempt < 3:  # the TTS models occasionally return text instead of audio
                 time.sleep(2)
@@ -85,7 +102,7 @@ def main() -> None:
     ap.add_argument("--script", default="scripts/narration.json", help="JSON array of narration lines")
     ap.add_argument("--out-dir", default="public/audio", help="where n0.mp3, n1.mp3 ... are written")
     args = ap.parse_args()
-    if not KEY:
+    if not KEY and not VERTEX:
         sys.exit("GEMINI_API_KEY is not set in this terminal. Set it, then restart the terminal / VS Code.")
     lines = json.load(open(args.script, encoding="utf-8"))
     if args.sample:
