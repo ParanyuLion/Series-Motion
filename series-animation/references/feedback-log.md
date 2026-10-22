@@ -27,3 +27,11 @@ Newest at the bottom. One line per piece of feedback: what the user said, what w
 - 2026-10-22: "there is floating grass at the left of the screen" → removed the foreground fern; rule: nothing floats.
 - 2026-10-22: turned the whole workflow into this skill so preferences are not forgotten.
 - 2026-10-22: wants the skill in a visible folder at the repository root so it is easy to find if the project is open-sourced → moved to `series-animation/` (master); `.claude/skills/series-animation/SKILL.md` is a pointer.
+
+## BTS zombie series
+
+- 2026-10-22: changed the story to "what if you were on the BTS with zombies and had to survive"; student male; second-person "คุณ"; slow zombies, bite, 1 minute to turn; the driver is bitten and turns in the cab; the cab door opens from both sides; cars joined by an open walkway; ending: glad to survive but must run; the island series is paused. Recorded in `series-bible-bts.md`.
+- 2026-10-22: look: option A (bright morning carriage) with yellow seats; student in a white long-sleeve shirt, green tie, black trousers.
+- 2026-10-22: wanted more content per clip: 3 to 5 events per part; more carried by on-screen graphics (countdown, train map, station boards) than by narration.
+- 2026-10-22: "you" must have a near-bite (not an infection); approved the design document, including the cast and the order of deaths ("ok") → `docs/superpowers/specs/2026-10-22-bts-zombie-series-design.md`.
+
