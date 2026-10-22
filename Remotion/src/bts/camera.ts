@@ -19,16 +19,16 @@ const KEYS: Key[] = [
   [c.doorsClose + 50, 380, 1010, 1.9],
   [c.hookCut - 20, 640, 1060, 1.05],
   // an ordinary car: medium shot of "you" and the passengers, a slow push
-  [ls(1), 680, 1060, 1.05],
-  [ls(2) - 10, 740, 1060, 1.25],
+  [ls(1), 740, 1060, 1.05],
+  [ls(2) - 10, 760, 1060, 1.25],
   // the man by the doors: swing to him, close on the shaking, the bite
   [c.manTurns - 10, 430, 1040, 1.35],
-  [c.manTurns + 90, 340, 1010, 2.0],
+  [c.manTurns + 90, 340, 1050, 2.0],
   [c.biteAt - 20, 410, 1030, 1.7],
   [c.biteAt + 40, 470, 1050, 1.4],
   // the clock: on the woman while the countdown runs
   [c.countdownStart + 90, 480, 1040, 1.35],
-  [c.womanRises - 14, 470, 1010, 1.75],
+  [c.womanRises - 14, 470, 1040, 1.75],
   // panic: pull out and follow the crowd, the station board flashes past
   [c.womanRises + 60, 640, 1050, 1.1],
   [c.stationPass, 760, 1050, 1.0],

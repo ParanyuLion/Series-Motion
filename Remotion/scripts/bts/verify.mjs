@@ -16,6 +16,12 @@ for (let i = 1; i < m.starts.length; i++) if (m.starts[i] <= m.starts[i - 1]) fa
 for (const [k, v] of Object.entries(m.cues)) if (!(v >= 0 && v <= m.total)) fail(`cue ${k}=${v} outside 0..${m.total}`);
 if (!(m.cues.hookCut < m.cues.lineStart1)) fail("cues.hookCut must come before cues.lineStart1");
 if (!(m.cues.countdownStart < m.cues.womanRises)) fail("the countdown must start before the woman rises");
+for (const shot of m.shots) {
+  const f = `public/${shot.audio}`;
+  if (!existsSync(f)) fail(`${f} is missing`);
+  const d = parseFloat(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f]).toString());
+  if (!(d > 1)) fail(`${f} is only ${d.toFixed(2)} s long`);
+}
 const bed = "public/bts1/bed.wav";
 if (existsSync(bed)) {
   const out = execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", bed]).toString();

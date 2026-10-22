@@ -7,14 +7,14 @@ export type MapMarker = { id: string; car: 1 | 2 | 3 | 4; pos: number; kind: "yo
 // Coordinates are inside a 900x460 card. `progress` 0..1 draws the card in, markers pop in at `appearAt` (0..1) inside it.
 export const PART1_MARKERS: MapMarker[] = [
   { id: "cab", car: 1, pos: 0.06, kind: "driver", appearAt: 0.0 },
-  { id: "aunt", car: 2, pos: 0.45, kind: "ok", appearAt: 0.15 },
-  { id: "uncle", car: 3, pos: 0.52, kind: "ok", appearAt: 0.25 },
-  { id: "nun", car: 3, pos: 0.7, kind: "ok", appearAt: 0.3 },
-  { id: "mike", car: 3, pos: 0.84, kind: "ok", appearAt: 0.35 },
-  { id: "you", car: 3, pos: 0.36, kind: "you", appearAt: 0.55 },
-  { id: "nueng", car: 4, pos: 0.5, kind: "ok", appearAt: 0.65 },
-  { id: "man1", car: 3, pos: 0.12, kind: "infected", appearAt: 0.8 },
-  { id: "woman1", car: 3, pos: 0.2, kind: "infected", appearAt: 0.9 },
+  { id: "aunt", car: 4, pos: 0.2, kind: "ok", appearAt: 0.15 },
+  { id: "uncle", car: 4, pos: 0.42, kind: "ok", appearAt: 0.25 },
+  { id: "mike", car: 4, pos: 0.64, kind: "ok", appearAt: 0.35 },
+  { id: "nun", car: 3, pos: 0.88, kind: "ok", appearAt: 0.45 },
+  { id: "nueng", car: 3, pos: 0.74, kind: "ok", appearAt: 0.55 },
+  { id: "you", car: 3, pos: 0.58, kind: "you", appearAt: 0.65 },
+  { id: "man1", car: 3, pos: 0.1, kind: "infected", appearAt: 0.8 },
+  { id: "woman1", car: 3, pos: 0.3, kind: "infected", appearAt: 0.9 },
 ];
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
@@ -65,13 +65,16 @@ export const TrainMap: React.FC<{ progress: number; markers: MapMarker[] }> = ({
         );
       })}
       {markers.some((m) => m.kind === "you") && p > 0.7 && (
-        <text x={X0 + 2 * (CAR_W + GAP) + 0.36 * CAR_W} y={CAR_Y - 22} textAnchor="middle" fontFamily={fontFamily} fontSize={34} fill="#ffd86b" opacity={ease((p - 0.7) / 0.15)}>คุณ</text>
+        <text x={X0 + 2 * (CAR_W + GAP) + 0.58 * CAR_W} y={CAR_Y - 22} textAnchor="middle" fontFamily={fontFamily} fontSize={38} fill="#ffd86b" opacity={ease((p - 0.7) / 0.15)}>คุณ</text>
+      )}
+      {infected.length > 0 && (
+        <text x={X0 + 2 * (CAR_W + GAP) + 0.2 * CAR_W} y={CAR_Y + CAR_H + 82} textAnchor="middle" fontFamily={fontFamily} fontSize={30} fill="#ff9a8a">ซอมบี้</text>
       )}
       {/* legend */}
       <g transform="translate(70,392)" opacity={clamp01((p - 0.6) / 0.2)}>
-        <circle cx={10} cy={0} r={10} fill={COLORS.you} /><text x={32} y={10} fontFamily={fontFamily} fontSize={28} fill="#d9dde0">คุณ</text>
-        <circle cx={150} cy={0} r={10} fill={COLORS.ok} /><text x={172} y={10} fontFamily={fontFamily} fontSize={28} fill="#d9dde0">ผู้โดยสาร</text>
-        <circle cx={360} cy={0} r={10} fill={COLORS.infected} /><text x={382} y={10} fontFamily={fontFamily} fontSize={28} fill="#d9dde0">{`ติดเชื้อ ${infected.length}`}</text>
+        <circle cx={10} cy={0} r={10} fill={COLORS.you} /><text x={32} y={10} fontFamily={fontFamily} fontSize={32} fill="#d9dde0">คุณ</text>
+        <circle cx={150} cy={0} r={10} fill={COLORS.ok} /><text x={172} y={10} fontFamily={fontFamily} fontSize={32} fill="#d9dde0">ผู้โดยสาร</text>
+        <circle cx={360} cy={0} r={10} fill={COLORS.infected} /><text x={382} y={10} fontFamily={fontFamily} fontSize={32} fill="#d9dde0">{`ซอมบี้ ${infected.length}`}</text>
       </g>
     </svg>
   );

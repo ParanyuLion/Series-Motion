@@ -137,9 +137,7 @@ def main() -> None:
         else:
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(tmp / f"n{i}.mp3"), "-af", f"atempo={args.post_speed}", "-b:a", "192k", str(f)], check=True)
         print("wrote", f)
-    if keep_backup:
-        print("Now run: node scripts/manifest.mjs && python scripts/bed.py && npx remotion render src/index.ts Story out/story.mp4")
-    else:
-        print("Now run: node scripts/island/manifest.mjs && python scripts/island/bed.py && node scripts/island/verify.mjs && npx remotion render src/index.ts Island1 out/island_part1.mp4")
+    print("Done. Now re-run this series manifest, bed and verify scripts (see series-animation/references/pipeline.md), then render.")
+
 
 main()

@@ -83,10 +83,10 @@ sfx += np.stack([crowd, np.roll(crowd, 1500)])
 n = int(0.5 * SR)
 tk = np.arange(n) / SR
 door = (np.sin(2 * np.pi * 70 * tk) * np.exp(-tk / 0.12) * 0.9 + highpass(rng.standard_normal(n), 1500) * np.exp(-tk / 0.05) * 0.4)
-put(sfx, door, dstart - 0.05, 0.5)
+put(sfx, door, dstart + 0.45, 0.5)  # the doors finish closing about 15 frames after the cue
 n = int(1.2 * SR)
 tk = np.arange(n) / SR
-put(sfx, lowpass(rng.standard_normal(n), 900) * np.sin(np.pi * np.clip(tk / 1.2, 0, 1)) ** 2 * 0.2, dstart - 0.55, 0.4)  # the doors' pneumatic hiss
+put(sfx, lowpass(rng.standard_normal(n), 900) * np.sin(np.pi * np.clip(tk / 1.2, 0, 1)) ** 2 * 0.2, dstart - 0.2, 0.4)  # the doors' pneumatic hiss
 
 # ---- tension drone ----
 drone = np.zeros(N)
@@ -140,10 +140,10 @@ tk = np.arange(n) / SR
 put(sfx, np.sin(2 * np.pi * 45 * tk) * np.exp(-tk / 0.35) * 0.9, T["womanRises"], 0.5)
 
 # ---- panic: scuffles and a rising rush while the others flee ----
-rush = lowpass(rng.standard_normal(N), 2500) * 0.06 * ramp(sec(starts[5]) , sec(starts[5]) + 1.0) * (1 - ramp(sec(starts[6]) + 1.5, sec(starts[6]) + 4.0))
+rush = lowpass(rng.standard_normal(N), 2500) * 0.06 * ramp(T['lineStart5'], T['lineStart5'] + 1.0) * (1 - ramp(T['lineStart6'] + 1.5, T['lineStart6'] + 4.0))
 sfx += np.stack([rush, np.roll(rush, 600)])
 for k in range(14):
-    tk0 = sec(starts[5]) + 0.3 + k * 0.28
+    tk0 = T['lineStart5'] + 0.3 + k * 0.28
     n = int(0.11 * SR)
     tk = np.arange(n) / SR
     put(sfx, highpass(lowpass(rng.standard_normal(n), 1800), 200) * np.exp(-tk / 0.04) * 0.35, tk0, 0.25 + 0.5 * rng.random())

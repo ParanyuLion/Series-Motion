@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, Easing, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
 import manifest from "./manifest.json";
 import { fontFamily } from "../island/fonts";
 import { PASSENGER_IDS, PassengerId } from "./cast";
@@ -19,7 +19,6 @@ const W = 1080;
 const H = 1920;
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
-const CLAMP = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const ramp = (g: number, a: number, b: number) => clamp01((g - a) / Math.max(1, b - a));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const PHASE_SPEED = 0.22;
@@ -46,18 +45,21 @@ const lightsAt = (g: number) => {
 // ---------------- the passengers: position, pose, infection, all derived from cues ----------------
 type Pp = { id: PassengerId; x: number; y: number; facing: 1 | -1; pose: "stand" | "sit" | "hold" | "shamble" | "fall"; walk: number; infection: number; fear: number; headTilt: number; label: boolean };
 
+// name tags appear one at a time: the introductions start with line 1, the schoolboy's when "you" reach him
 const TAGS: { id: PassengerId; t: number }[] = [
-  { id: "you", t: 195 },
-  { id: "nun", t: 223 },
-  { id: "mike", t: 251 },
-  { id: "aunt", t: 279 },
-  { id: "uncle", t: 307 },
-  { id: "nueng", t: 1090 },
+  { id: "you", t: ls(1) },
+  { id: "nun", t: ls(1) + TAG_FRAMES },
+  { id: "mike", t: ls(1) + 2 * TAG_FRAMES },
+  { id: "aunt", t: ls(1) + 3 * TAG_FRAMES },
+  { id: "uncle", t: ls(1) + 4 * TAG_FRAMES },
+  { id: "nueng", t: c.retreatStart + 100 },
 ];
 
 const FLEE_END = 2100;
-// zombies are slow: the man edges along, then speeds up a little once the others have fled (about 0.7 to 0.9 px per frame)
-const manX = (g: number) => (g < c.manTurns + 147 ? 330 : 330 + Math.min(g, c.womanRises) * 0 + 0.25 * Math.max(0, Math.min(g, c.womanRises) - (c.manTurns + 147)) + 0.7 * Math.max(0, Math.min(g, 1000) - c.womanRises) + 0.9 * Math.max(0, g - 1000));
+// zombies are slow (0.25 to 0.5 px per frame) and stay well short of "you" until the retreat
+const SLOW_UNTIL = c.retreatStart - 24;
+const manX = (g: number) => 330 + 0.25 * Math.max(0, Math.min(g, c.womanRises) - (c.manTurns + 147)) + 0.4 * Math.max(0, Math.min(g, SLOW_UNTIL) - c.womanRises) + 0.45 * Math.max(0, g - SLOW_UNTIL);
+const womanX = (g: number) => 470 + 0.4 * Math.max(0, Math.min(g, SLOW_UNTIL) - c.womanRises) + 0.5 * Math.max(0, g - SLOW_UNTIL);
 
 const staging = (g: number): Pp[] => {
   const retreat = ramp(g, c.retreatStart, c.retreatStart + 95);
@@ -69,7 +71,7 @@ const staging = (g: number): Pp[] => {
   };
 
   // "you": hold the pole, then back away to the end of the car
-  add({ id: "you", x: lerp(690, 1500, retreat), y: FLOOR_Y + 40, facing: g >= le(6) ? -1 : 1, pose: retreat > 0 && retreat < 1 ? "stand" : g < c.retreatStart ? "hold" : "stand", walk: retreat > 0 && retreat < 1 ? 1 : 0, fear: panic * 0.5 });
+  add({ id: "you", x: lerp(800, 1500, retreat), y: FLOOR_Y + 40, facing: g >= le(6) ? -1 : 1, pose: retreat > 0 && retreat < 1 ? "stand" : g < c.retreatStart ? "hold" : "stand", walk: retreat > 0 && retreat < 1 ? 1 : 0, fear: panic * 0.5 });
   // the schoolboy sits alone at the far end, trembling, then you pull him behind you
   const nuengBehind = ramp(g, ls(7), ls(7) + 40);
   add({ id: "nueng", x: lerp(1630, 1580, nuengBehind), y: FLOOR_Y + 20, facing: -1, pose: g < ls(7) ? "sit" : "stand", fear: Math.max(panic * 0.6, ramp(g, c.retreatStart, c.retreatStart + 60)) });
@@ -78,7 +80,7 @@ const staging = (g: number): Pp[] => {
     const t = ramp(g, t0, t0 + 150);
     add({ id, x: lerp(x0, stopX, t), y, facing: t > 0 ? 1 : -1, pose: t > 0 && t < 1 ? "stand" : pose, walk: t > 0 && t < 1 ? 1 : 0, fear: panic });
   };
-  flee("nun", 1250, FLOOR_Y + 55, ls(5) + 30, "hold", 1700);
+  flee("nun", 1180, FLOOR_Y + 55, ls(5) + 30, "hold", 1700);
   flee("mike", 1010, FLOOR_Y + 30, ls(5) + 12, "stand");
   flee("aunt", 1100, FLOOR_Y + 20, ls(5) + 22, "sit");
   flee("uncle", 900, FLOOR_Y + 45, ls(5) + 6, "stand");
@@ -91,14 +93,14 @@ const staging = (g: number): Pp[] => {
   // the bitten woman: fear, sits, the clock runs, she rises as a zombie
   const womanInf = ramp(g, c.countdownStart, c.womanRises);
   const risen = g >= c.womanRises;
-  add({ id: "woman1", x: risen ? 470 + (g - c.womanRises) * 0.6 : 470, y: FLOOR_Y + 55, facing: risen ? 1 : -1, pose: risen ? "shamble" : g < c.biteAt + 12 ? "stand" : "sit", walk: risen ? 1 : 0, infection: risen ? 1 : womanInf, fear: g >= c.biteAt && !risen ? 0.8 : 0, headTilt: g >= c.biteAt && !risen ? -8 + womanInf * 14 : 0 });
+  add({ id: "woman1", x: risen ? womanX(g) : 470, y: FLOOR_Y + 55, facing: risen ? 1 : -1, pose: risen ? "shamble" : g < c.biteAt + 12 ? "stand" : "sit", walk: risen ? 1 : 0, infection: risen ? 1 : womanInf, fear: g >= c.biteAt && !risen ? 0.8 : 0, headTilt: g >= c.biteAt && !risen ? -8 + womanInf * 14 : 0 });
   return out.sort((a, b) => a.y - b.y);
 };
 
 // ---------------- effects drawn in world coordinates ----------------
 const ReachingHand: React.FC<{ g: number }> = ({ g }) => {
-  if (g < 18 || g > c.doorsClose + 14) return null;
-  const reach = Math.max(ramp(g, 18, c.doorsClose - 4) * (1 - ramp(g, c.doorsClose - 2, c.doorsClose + 12)), 0);
+  if (g < c.doorsClose - 23 || g > c.doorsClose + 14) return null;
+  const reach = Math.max(ramp(g, c.doorsClose - 23, c.doorsClose - 4) * (1 - ramp(g, c.doorsClose - 2, c.doorsClose + 12)), 0);
   const x = lerp(60, 330, reach);
   return (
     <g fill="#141414" opacity={0.92}>
@@ -156,7 +158,7 @@ const Speaker: React.FC<{ g: number }> = ({ g }) => {
   );
 };
 
-/** The cab door at the front of the train: a pale, sweating driver stands in the doorway as the door slides open. */
+/** The cab door at the front of the train: the driver (healthy; he is bitten in Part 2) stands in the doorway as the door slides open. */
 const CabInsert: React.FC<{ g: number }> = ({ g }) => {
   const open = ramp(g, c.cabOpens, c.cabOpens + 34);
   return (
@@ -176,7 +178,7 @@ const CabInsert: React.FC<{ g: number }> = ({ g }) => {
       <rect x={250} y={350} width={580} height={1090} fill="#10161b" />
       <rect x={250} y={350} width={580} height={1090} fill="url(#cab-glow)" />
       {[0, 1, 2, 3].map((i) => <rect key={i} x={300 + i * 120} y={430} width={70} height={46} rx={8} fill={i === 1 ? "#d9534f" : "#2f8f4e"} opacity={0.8} />)}
-      <Passenger id="driver" x={540} y={1440} scale={2.2} facing={1} phase={0} walk={0} frame={g} infection={0.3} pose="stand" headTilt={10} />
+      <Passenger id="driver" x={540} y={1440} scale={2.2} facing={1} phase={0} walk={0} frame={g} infection={0} pose="stand" headTilt={0} />
       <g transform={`translate(${-open * 300},0)`}>
         <rect x={250} y={350} width={300} height={1090} fill="#59626b" stroke="#2a2f33" strokeWidth={8} />
         <rect x={300} y={420} width={200} height={300} fill="#a8c0d0" opacity={0.5} />
@@ -232,7 +234,7 @@ const World: React.FC = () => {
     <AbsoluteFill style={{ backgroundColor: "#000", opacity: fade }}>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
         <g transform={`translate(${ANCHOR.x},${ANCHOR.y}) rotate(${cam.rot}) scale(${cam.zoom}) translate(${-cam.fx},${-cam.fy})`}>
-          <TrainInterior frame={g} scroll={scroll} doors={doorsAt(g)} lights={lightsAt(g)} station="สยาม" carNumber={3} windowChildren={showBoard ? <StationBoard x={boardX} name="ชิดลม" /> : null} />
+          <TrainInterior frame={g} scroll={scroll} doors={doorsAt(g)} lights={lightsAt(g)} station={g < c.stationPass ? "สยาม" : "ชิดลม"} carNumber={3} windowChildren={showBoard ? <StationBoard x={boardX} name="ชิดลม" /> : null} />
           {people.map((p) => (
             <Passenger key={p.id} id={p.id} x={p.x} y={p.y} scale={1.7} facing={p.facing} phase={g * PHASE_SPEED + (PASSENGER_IDS.indexOf(p.id)) * 0.9} walk={p.walk} frame={g} infection={p.infection} pose={p.pose} headTilt={p.headTilt} label={p.label} fear={p.fear} />
           ))}
@@ -272,7 +274,7 @@ const World: React.FC = () => {
 
       {/* hook: flash and the series title */}
       <AbsoluteFill style={{ backgroundColor: "#eef4f2", opacity: hookFlash, mixBlendMode: "screen" }} />
-      <Card g={g} from={100} to={c.hookCut} style={{ top: 250, fontSize: 56, lineHeight: 1.55 }}>
+      <Card g={g} from={c.hookCut - 80} to={c.hookCut} style={{ top: 300, left: 110, right: 200, fontSize: 56, lineHeight: 1.55, background: "rgba(11,13,16,0.66)", borderRadius: 32, padding: "26px 20px" }}>
         จะเกิดอะไรขึ้น<br />ถ้าคุณอยู่บน BTS<br />ที่มีซอมบี้
       </Card>
 
@@ -318,7 +320,3 @@ export const Part1: React.FC = () => (
 );
 
 export const PART1_TOTAL = total;
-// keep the easing import used if later shots need it
-export const _ease = Easing.inOut(Easing.cubic);
-void interpolate;
-void CLAMP;
