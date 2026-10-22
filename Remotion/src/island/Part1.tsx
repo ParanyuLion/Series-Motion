@@ -7,6 +7,7 @@ import { BEACH_Y, H, IslandWorld, W } from "./IslandWorld";
 import { MapCard, PART1_MARKERS } from "./MapCard";
 import { Person } from "./Person";
 import { IslandAerial } from "./IslandAerial";
+import { ForegroundFrame } from "./IslandDetails";
 import { ANCHOR, cameraAt } from "./camera";
 import { Glow } from "../World";
 
@@ -175,6 +176,8 @@ const World: React.FC = () => {
           {(inHook || stormAmt > 0.3) && <Rain frame={g} opacity={inHook ? 1 : (stormAmt - 0.3) / 0.7} />}
         </g>
       </svg>
+
+      {!inHook && <ForegroundFrame frame={g} camX={cam.fx} camY={cam.fy} opacity={0.92 * (1 - aerialOpacity)} />}
 
       {inAerial && (
         <AbsoluteFill style={{ opacity: aerialOpacity, backgroundColor: "#000" }}>

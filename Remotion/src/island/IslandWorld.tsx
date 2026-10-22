@@ -2,6 +2,7 @@ import React from "react";
 import { interpolateColors } from "remotion";
 import { Glow } from "../World";
 import { mix } from "./Person";
+import { SandDetail, SeaStacks, VegetationEdge } from "./IslandDetails";
 
 export const W = 1080;
 export const H = 1920;
@@ -122,6 +123,9 @@ export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showW
         return <path key={i} d={`M-900 ${y} ${Array.from({ length: 30 }, (_, j) => `L${j * 100 - 900} ${y + Math.sin(frame * 0.03 + j * 0.9 + i) * amp}`).join(" ")}`} stroke={mix(sea, "#8c949a", 0.14)} strokeWidth={2} fill="none" opacity={0.6} />;
       })}
       <rect x={-900} y={HORIZON_Y - 70} width={W + 1800} height={260} fill="url(#isl-fog)" />
+      <SeaStacks scroll={scroll} />
+      {/* low haze where the storm front meets the horizon */}
+      <rect x={-900} y={HORIZON_Y - 190} width={W + 1800} height={200} fill={mix(sky2, "#14181b", 0.35)} opacity={0.28} />
       {/* second, slower fog band drifting across the sea */}
       <g opacity={0.5}>
         {[0, 1, 2].map((i) => (
@@ -145,6 +149,8 @@ export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showW
         <circle key={i} cx={mod(rnd(i) * 2800 - sandOff * 1, 2800) - 900} cy={SHORE_Y + 90 + rnd(i + 5) * 420} r={2 + rnd(i + 9) * 3} fill="#3f4240" opacity={0.35} />
       ))}
 
+      <SandDetail scroll={scroll} frame={frame} />
+      <VegetationEdge scroll={scroll} frame={frame} />
       {/* palms at the edge of the beach (waterline stain high on the trunks) */}
       {trees.map((t) => (
         <Palm key={t.seed} x={t.x} base={SHORE_Y + 130} h={760} lean={t.seed % 2 ? -60 : 70} stain={showWaterline} seed={t.seed} frame={frame} />
