@@ -97,8 +97,8 @@ export const TrainInterior: React.FC<TrainInteriorProps> = ({ frame, scroll, doo
       </defs>
 
       {/* wall, ceiling, route-map strip */}
-      <rect x={LEFT} y={CEIL_Y - 200} width={RIGHT - LEFT} height={FLOOR_Y - CEIL_Y + 200} fill={WALL} />
-      <rect x={LEFT} y={CEIL_Y - 200} width={RIGHT - LEFT} height={200} fill="#eceae1" />
+      <rect x={LEFT} y={CEIL_Y - 1600} width={RIGHT - LEFT} height={FLOOR_Y - CEIL_Y + 1600} fill={WALL} />
+      <rect x={LEFT} y={CEIL_Y - 1600} width={RIGHT - LEFT} height={1600} fill="#eceae1" />
       <rect x={LEFT} y={CEIL_Y} width={RIGHT - LEFT} height={30} fill="#c9c6b8" />
       {Array.from({ length: 6 }, (_, i) => (
         <rect key={i} x={LEFT + 140 + i * 520} y={CEIL_Y + 6} width={300} height={16} rx={8} fill="#ffffff" opacity={flick} />
@@ -190,7 +190,7 @@ export const TrainInterior: React.FC<TrainInteriorProps> = ({ frame, scroll, doo
 
       {/* morning light: a soft veil from the windows and a dimming layer when the lights fail */}
       <rect x={LEFT} y={CEIL_Y} width={RIGHT - LEFT} height={FLOOR_Y - CEIL_Y} fill="url(#bts-shaft)" opacity={0.25} />
-      {flick < 1 && <rect x={LEFT} y={CEIL_Y - 200} width={RIGHT - LEFT} height={1500} fill="#10141a" opacity={(1 - flick) * 0.75} />}
+      {flick < 1 && <rect x={LEFT} y={CEIL_Y - 1600} width={RIGHT - LEFT} height={2900} fill="#10141a" opacity={(1 - flick) * 0.75} />}
     </g>
   );
 };

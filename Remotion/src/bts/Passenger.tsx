@@ -125,7 +125,7 @@ export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, fac
   let lift = 0;
   let lean = 4 * w;
   let tilt = headTilt;
-  if (pose === "sit") { thighA = -90; thighB = -90; kneeA = 0; kneeB = 90; frontArm = -20; backArm = -10; lift = 56; bob = 0; }
+  if (pose === "sit") { thighA = -90; thighB = -90; kneeA = 90; kneeB = 90; frontArm = -20; backArm = -10; lift = 56; bob = 0; }
   if (pose === "hold") { frontArm = -150; frontElbow = -8; }
   if (pose === "shamble") {
     // slow zombie walk: both arms forward, head tilted, a short shuffle at about a third of walking speed

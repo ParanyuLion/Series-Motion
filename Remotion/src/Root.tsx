@@ -11,6 +11,8 @@ import island from "./island/manifest.json";
 import { BtsCastPreview } from "./bts/CastPreview";
 import { BtsSetPreview } from "./bts/SetPreview";
 import { BtsGraphicsPreview } from "./bts/GraphicsPreview";
+import { Part1 as BtsPart1 } from "./bts/Part1";
+import bts from "./bts/manifest.json";
 
 export const Root: React.FC = () => (
   <>
@@ -21,6 +23,7 @@ export const Root: React.FC = () => (
     <Composition id="BtsCastPreview" component={BtsCastPreview} durationInFrames={60} fps={30} width={1080} height={760} defaultProps={{ walk: 0 }} />
     <Composition id="BtsSetPreview" component={BtsSetPreview} durationInFrames={3} fps={30} width={1080} height={1920} />
     <Composition id="BtsGraphicsPreview" component={BtsGraphicsPreview} durationInFrames={6} fps={30} width={1080} height={700} />
+    <Composition id="Bts1" component={BtsPart1} durationInFrames={bts.total} fps={bts.fps} width={W} height={H} />
     <Composition id="CastPreview" component={CastPreview} durationInFrames={60} fps={30} width={1080} height={600} defaultProps={{ dirt: 0, walk: 0 }} />
   </>
 );
