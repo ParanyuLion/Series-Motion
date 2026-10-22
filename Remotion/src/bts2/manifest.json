@@ -1,43 +1,43 @@
 {
  "fps": 30,
- "total": 1686,
- "storyEnd": 1539,
- "outroStart": 1551,
+ "total": 1671,
+ "storyEnd": 1524,
+ "outroStart": 1536,
  "shots": [
   {
    "text": "จะเกิดอะไรขึ้น ถ้าคุณเห็นซอมบี้กัดคนขับ แล้วไม่มีใครเชื่อ",
    "audio": "bts2/n0.mp3",
-   "audioFrames": 154,
+   "audioFrames": 142,
    "leadFrames": 21,
-   "frames": 225
+   "frames": 213
   },
   {
    "text": "คนขับเดินเข้ามาในตู้ ตะโกนให้ทุกคนใจเย็นๆ",
    "audio": "bts2/n1.mp3",
-   "audioFrames": 117,
+   "audioFrames": 125,
    "leadFrames": 6,
-   "frames": 131
+   "frames": 139
   },
   {
    "text": "ซอมบี้เดินเข้าหาเขาอย่างช้าๆ แต่เขาไม่ทันหลบ",
    "audio": "bts2/n2.mp3",
-   "audioFrames": 117,
+   "audioFrames": 129,
    "leadFrames": 6,
-   "frames": 131
+   "frames": 143
   },
   {
    "text": "เขาถูกกัดที่แขน แล้วบอกว่า ไม่เป็นไร รีบกลับเข้าห้องคนขับ",
    "audio": "bts2/n3.mp3",
-   "audioFrames": 154,
+   "audioFrames": 173,
    "leadFrames": 6,
-   "frames": 168
+   "frames": 187
   },
   {
    "text": "แต่คุณเห็นแผลนั้น คุณรู้ว่าเขาเหลือเวลาแค่หนึ่งนาที",
    "audio": "bts2/n4.mp3",
-   "audioFrames": 121,
+   "audioFrames": 138,
    "leadFrames": 6,
-   "frames": 135
+   "frames": 152
   },
   {
    "text": "คุณตะโกนบอกทุกคน แต่ไม่มีใครเชื่อ เพราะเขาคือคนขับ",
@@ -49,77 +49,77 @@
   {
    "text": "ลุงประเสริฐเหงื่อท่วมหน้า มือซ่อนอยู่ใต้เสื้อ",
    "audio": "bts2/n6.mp3",
-   "audioFrames": 126,
+   "audioFrames": 114,
    "leadFrames": 6,
-   "frames": 140
+   "frames": 128
   },
   {
    "text": "แล้วเขาก็ลุกขึ้นมา ซอมบี้ตัวที่สามเกิดขึ้นกลางตู้",
    "audio": "bts2/n7.mp3",
-   "audioFrames": 154,
+   "audioFrames": 140,
    "leadFrames": 6,
-   "frames": 168
+   "frames": 154
   },
   {
    "text": "รถไฟผ่านสถานีไปโดยไม่จอด และไม่มีเสียงประกาศอีกเลย",
    "audio": "bts2/n8.mp3",
-   "audioFrames": 188,
+   "audioFrames": 143,
    "leadFrames": 6,
-   "frames": 202
+   "frames": 157
   },
   {
    "text": "ถ้าเป็นคุณ จะเข้าไปในห้องคนขับไหม",
    "audio": "bts2/n9.mp3",
-   "audioFrames": 71,
+   "audioFrames": 83,
    "leadFrames": 6,
-   "frames": 89
+   "frames": 101
   }
  ],
  "starts": [
   0,
-  225,
-  356,
-  487,
-  655,
-  790,
-  952,
-  1092,
-  1260,
-  1462
+  213,
+  352,
+  495,
+  682,
+  834,
+  996,
+  1124,
+  1278,
+  1435
  ],
  "cues": {
-  "hookCut": 225,
-  "driverEnters": 231,
-  "zombiesApproach": 362,
-  "biteAt": 503,
-  "cabCloses": 647,
-  "countdownStart": 647,
-  "youSee": 661,
-  "youShout": 796,
-  "unclePale": 958,
-  "uncleRises": 1113,
-  "stationPass": 1296,
-  "silenceAt": 1266,
-  "questionAt": 1468,
+  "hookCut": 213,
+  "driverEnters": 219,
+  "zombiesApproach": 358,
+  "biteAt": 511,
+  "cabCloses": 674,
+  "countdownStart": 674,
+  "youSee": 688,
+  "youShout": 840,
+  "unclePale": 1002,
+  "uncleRises": 1145,
+  "stationPass": 1314,
+  "silenceAt": 1284,
+  "questionAt": 1441,
   "lineStart0": 21,
-  "lineEnd0": 175,
-  "lineStart1": 231,
-  "lineEnd1": 348,
-  "lineStart2": 362,
-  "lineEnd2": 479,
-  "lineStart3": 493,
-  "lineEnd3": 647,
-  "lineStart4": 661,
-  "lineEnd4": 782,
-  "lineStart5": 796,
-  "lineEnd5": 944,
-  "lineStart6": 958,
-  "lineEnd6": 1084,
-  "lineStart7": 1098,
-  "lineEnd7": 1252,
-  "lineStart8": 1266,
-  "lineEnd8": 1454,
-  "lineStart9": 1468,
-  "lineEnd9": 1539
+  "lineEnd0": 163,
+  "lineStart1": 219,
+  "lineEnd1": 344,
+  "lineStart2": 358,
+  "lineEnd2": 487,
+  "lineStart3": 501,
+  "lineEnd3": 674,
+  "lineStart4": 688,
+  "lineEnd4": 826,
+  "lineStart5": 840,
+  "lineEnd5": 988,
+  "lineStart6": 1002,
+  "lineEnd6": 1116,
+  "lineStart7": 1130,
+  "lineEnd7": 1270,
+  "lineStart8": 1284,
+  "lineEnd8": 1427,
+  "lineStart9": 1441,
+  "lineEnd9": 1524
  }
 }

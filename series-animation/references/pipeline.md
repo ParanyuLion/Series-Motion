@@ -27,7 +27,7 @@ Command: `GEMINI_TTS_MODEL=<model> python scripts/tts_gemini.py --script <json> 
 - **Part 1 audio as shipped:** lines 0 to 8 from `gemini-3.1-flash-tts-preview` (Charon, Irin's quote in Leda), line 9 from `gemini-2.5-flash-preview-tts` (the 3.1 daily quota ran out), speed 1.1 then post-speed 1.25. Recorded in `scripts/island/voice.txt`.
 - **Charon is slow:** unsped it would run the story to about 75 s. Check the length after generating: `node scripts/island/manifest.mjs` (it throws if line 0 does not fit the hook) then `node scripts/island/verify.mjs`.
 
-**BTS Part 2** used `gemini-2.5-flash-preview-tts` for all ten lines (the 3.1 quota was spent on Part 1 that day); the 2.5 voice speaks slower, so the post-speed was 1.3 instead of 1.2. Changing `--post-speed` re-uses the cache (no new requests) and the manifest re-derives every cue: the uncle rose exactly at 0:00 after a speed change.
+**BTS Part 2** first used `gemini-2.5-flash-preview-tts` for all ten lines (the 3.1 quota was spent on Part 1 that day; the 2.5 voice is slower, post-speed 1.3) and was then regenerated on 3.1 with a new key (post-speed 1.2). An "API key not valid" 400 means the `.env` value is wrong: stop and tell the user. Changing `--post-speed` re-uses the cache (no new requests) and the manifest re-derives every cue: the uncle rose exactly at 0:00 after a speed change.
 
 **Edge TTS fallback** (no key, provisional only): `python scripts/island/tts_edge.py --script <json> --out-dir public/island1` maps Charon to `th-TH-NiwatNeural` (rate -27%, pitch -6Hz) and Leda to `th-TH-PremwadeeNeural`. The service is unofficial and flaky (the script retries). Use it to keep working when Gemini is out of quota, then regenerate with Gemini; timing follows automatically.
 
