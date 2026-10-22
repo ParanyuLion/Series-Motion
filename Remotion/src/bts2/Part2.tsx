@@ -42,7 +42,7 @@ const lightsAt = (g: number) => {
 };
 
 // ---------------- the cast: position, pose, infection, all derived from cues ----------------
-type Pp = { id: PassengerId; x: number; y: number; facing: 1 | -1; pose: "stand" | "sit" | "hold" | "shamble" | "fall"; walk: number; infection: number; fear: number; headTilt: number; label: boolean };
+type Pp = { id: PassengerId; x: number; y: number; facing: 1 | -1; pose: "stand" | "sit" | "hold" | "shamble" | "fall"; walk: number; infection: number; fear: number; headTilt: number; label: boolean; rot: number };
 
 // one name tag at a time
 const TAGS: { id: PassengerId; t: number }[] = [
@@ -54,54 +54,68 @@ const TAGS: { id: PassengerId; t: number }[] = [
 const SURVIVOR_X = { uncle: 1230, nun: 1330, you: 1430, nueng: 1530, mike: 1620, aunt: 1700 };
 const DRIVER_START = 100; // just outside the left edge of the first shot
 const DRIVER_STOP = 520;
-// at the bite the man is more than an arm's reach (250 px) from the driver, so the zombies never overlap him before the silhouette cut
-const MAN_AT_BITE = DRIVER_STOP - 15 + 250;
-const WOMAN_AT_BITE = MAN_AT_BITE + 130;
+const DRIVER_BACK = 30; // he steps back this far when he sees the grey skin
+const GAP_AT_FALL = 150; // the man's feet are this far from the driver when he topples
+const FALL_FROM = c.fallAt + 5; // the topple runs from here to biteAt (35 frames, still slow)
+const FALL_DEG = 88;
 const BITE_TURN = c.biteAt + 10;
+const RUN_FROM = c.biteAt + 12; // the driver runs back to the cab once the silhouette flash is over
+const RUN_TO = c.cabCloses + CAB_INSERT_FRAMES - 6;
+const GET_UP = c.youShout + 60; // the fallen zombie gets up when the "you" close-up has ended
+const GET_UP_FRAMES = 40;
+const MAN_AT_FALL = DRIVER_STOP - DRIVER_BACK + GAP_AT_FALL;
+const WOMAN_AT_FALL = MAN_AT_FALL + 130;
+const smooth = (t: number) => t * t * (3 - 2 * t);
 
-// zombies are slow: 0.5 px per frame toward the driver, then 0.25 px per frame toward the group, never touching it
-const manX = (g: number) => MAN_AT_BITE - 0.5 * (BITE_TURN - Math.min(g, BITE_TURN)) + 0.25 * Math.max(0, g - BITE_TURN);
-const womanX = (g: number) => WOMAN_AT_BITE - 0.45 * (BITE_TURN - Math.min(g, BITE_TURN)) + 0.25 * Math.max(0, g - BITE_TURN);
+// zombies are slow: 0.5 px per frame toward the driver; the man falls forward onto him, gets up much later and heads for the group
+const manX = (g: number) => (g < FALL_FROM ? MAN_AT_FALL + 0.5 * (FALL_FROM - g) : MAN_AT_FALL + 0.25 * Math.max(0, g - (GET_UP + GET_UP_FRAMES)));
+const manRot = (g: number) => FALL_DEG * (g < GET_UP ? smooth(ramp(g, FALL_FROM, c.biteAt)) : 1 - smooth(ramp(g, GET_UP, GET_UP + GET_UP_FRAMES)));
+const womanX = (g: number) => WOMAN_AT_FALL + 0.45 * (BITE_TURN - Math.min(g, BITE_TURN)) + 0.25 * Math.max(0, g - BITE_TURN);
 const driverX = (g: number) => {
-  if (g < c.biteAt + 25) return lerp(DRIVER_START, DRIVER_STOP, ramp(g, c.driverEnters, c.zombiesApproach)) - 15 * ramp(g, c.zombiesApproach + 40, c.biteAt);
-  return lerp(DRIVER_STOP - 15, -250, ramp(g, c.biteAt + 25, c.cabCloses + CAB_INSERT_FRAMES));
+  if (g < c.zombiesApproach) return lerp(DRIVER_START, DRIVER_STOP, ramp(g, c.driverEnters, c.zombiesApproach));
+  if (g < RUN_FROM) return DRIVER_STOP - DRIVER_BACK * ramp(g, c.shoutAt, c.fallAt);
+  return lerp(DRIVER_STOP - DRIVER_BACK, 150, ramp(g, RUN_FROM, RUN_TO));
 };
 
 const staging = (g: number): Pp[] => {
   const out: Pp[] = [];
-  const add = (p: Omit<Pp, "label" | "walk" | "infection" | "fear" | "headTilt" | "facing" | "pose"> & Partial<Pp>) => {
+  const add = (p: Omit<Pp, "label" | "walk" | "infection" | "fear" | "headTilt" | "facing" | "pose" | "rot"> & Partial<Pp>) => {
     const tag = TAGS.find((t) => t.id === p.id);
-    out.push({ facing: 1, pose: "stand", walk: 0, infection: 0, fear: 0, headTilt: 0, ...p, label: !!tag && g >= tag.t && g < tag.t + TAG_FRAMES } as Pp);
+    out.push({ facing: 1, pose: "stand", walk: 0, infection: 0, fear: 0, headTilt: 0, rot: 0, ...p, label: !!tag && g >= tag.t && g < tag.t + TAG_FRAMES } as Pp);
   };
   const shake = (amp: number) => Math.sin(g * 0.9) * amp;
   const doubt = ramp(g, c.youShout, c.youShout + 20) * (1 - ramp(g, c.youShout + 100, c.youShout + 125)); // others shake their heads at "you"
   const flee = ramp(g, c.uncleRises, c.uncleRises + 150);
+  const shout = ramp(g, c.shoutAt, c.shoutAt + 8) * (1 - ramp(g, BITE_TURN + 20, BITE_TURN + 50)); // arms up: run!
 
-  // the driver: walks in, hands up, is bitten, hurries back to the cab
+  // the driver: walks in, warns the zombies with a raised hand, sees the grey skin, turns to run, is bitten, runs to the cab
   const dx = driverX(g);
-  const walking = (g >= c.driverEnters && g < c.zombiesApproach) || g >= c.biteAt + 25;
-  const back = g >= c.biteAt + 25;
-  add({ id: "driver", x: dx, y: FLOOR_Y + 40, facing: back ? -1 : 1, pose: "stand", walk: walking ? 1 : 0, fear: back ? 0.15 : 0.45, infection: ramp(g, c.biteAt, c.cabCloses) * 0.3 });
+  const enteringWalk = g >= c.driverEnters && g < c.zombiesApproach;
+  const turning = g >= c.shoutAt;
+  const running = g >= RUN_FROM;
+  add({ id: "driver", x: dx, y: FLOOR_Y + 40, facing: turning ? -1 : 1, pose: "stand", walk: enteringWalk ? 1 : running ? 1 : g >= c.shoutAt && g < c.fallAt ? 0.5 : 0, fear: running ? 0.5 : lerp(0.4, 0.85, ramp(g, c.realiseAt, c.realiseAt + 20)), infection: ramp(g, c.biteAt, c.cabCloses) * 0.3 });
 
-  // the two zombies from Part 1: toward the driver, then back toward the group
+  // the two zombies from Part 1 shamble toward the driver; the man topples onto him (rotation about his feet), the woman turns back to the group
+  const manUp = g >= GET_UP + GET_UP_FRAMES;
+  const manDown = g >= FALL_FROM && !manUp;
+  add({ id: "man1", x: manX(g), y: FLOOR_Y + 36, facing: manUp ? 1 : -1, pose: "shamble", walk: manDown ? 0 : 1, infection: 1, headTilt: 12, rot: (manUp ? 1 : -1) * manRot(g) });
   const turned = g >= BITE_TURN;
-  add({ id: "man1", x: manX(g), y: FLOOR_Y + 40, facing: turned ? 1 : -1, pose: "shamble", walk: 1, infection: 1, headTilt: 12 });
   add({ id: "woman1", x: womanX(g), y: FLOOR_Y + 55, facing: turned ? 1 : -1, pose: "shamble", walk: 1, infection: 1, headTilt: 12 });
 
   // the survivors
   const youX = lerp(SURVIVOR_X.you, 1760, ramp(g, c.uncleRises + 30, c.uncleRises + 150));
-  const youFear = Math.max(0.25, 0.7 * ramp(g, c.youSee, c.youSee + 30), ramp(g, c.uncleRises - 60, c.uncleRises));
+  const youFear = Math.max(0.25, 0.9 * shout, 0.7 * ramp(g, c.youSee, c.youSee + 30), ramp(g, c.uncleRises - 60, c.uncleRises));
   const youMoving = g >= c.uncleRises + 30 && g < c.uncleRises + 150;
   add({ id: "you", x: youX, y: FLOOR_Y + 40, facing: g < c.uncleRises + 30 ? -1 : 1, pose: "stand", walk: youMoving ? 1 : 0, fear: youFear });
-  add({ id: "nueng", x: lerp(SURVIVOR_X.nueng, 1930, ramp(g, c.uncleRises + 25, c.uncleRises + 175)), y: FLOOR_Y + 20, facing: 1, pose: g < c.uncleRises + 25 ? "sit" : "stand", walk: g >= c.uncleRises + 25 && g < c.uncleRises + 175 ? 1 : 0, fear: 0.7 + 0.3 * flee, headTilt: g < c.uncleRises ? shake(3) : 0 });
-  add({ id: "nun", x: lerp(SURVIVOR_X.nun, 1850, ramp(g, c.uncleRises + 10, c.uncleRises + 140)), y: FLOOR_Y + 55, facing: 1, pose: "stand", walk: g >= c.uncleRises + 10 && g < c.uncleRises + 140 ? 1 : 0, fear: 0.3 + 0.6 * flee, headTilt: doubt * Math.sin(g * 0.5) * 9 });
-  add({ id: "mike", x: lerp(SURVIVOR_X.mike, 2100, ramp(g, c.uncleRises, c.uncleRises + 140)), y: FLOOR_Y + 30, facing: 1, pose: "stand", walk: g >= c.uncleRises && g < c.uncleRises + 140 ? 1 : 0, fear: 0.2 + 0.7 * flee, headTilt: doubt * Math.sin(g * 0.5 + 1) * 9 });
-  add({ id: "aunt", x: lerp(SURVIVOR_X.aunt, 2100, ramp(g, c.uncleRises + 15, c.uncleRises + 155)), y: FLOOR_Y + 20, facing: 1, pose: g < c.uncleRises + 15 ? "sit" : "stand", walk: g >= c.uncleRises + 15 && g < c.uncleRises + 155 ? 1 : 0, fear: 0.3 + 0.6 * flee, headTilt: doubt * Math.sin(g * 0.5 + 2) * 9 });
+  add({ id: "nueng", x: lerp(SURVIVOR_X.nueng, 1930, ramp(g, c.uncleRises + 25, c.uncleRises + 175)), y: FLOOR_Y + 20, facing: g < c.uncleRises + 25 ? -1 : 1, pose: g < c.uncleRises + 25 ? "sit" : "stand", walk: g >= c.uncleRises + 25 && g < c.uncleRises + 175 ? 1 : 0, fear: Math.max(0.7 + 0.3 * flee, shout), headTilt: g < c.uncleRises ? shake(3) : 0 });
+  add({ id: "nun", x: lerp(SURVIVOR_X.nun, 1850, ramp(g, c.uncleRises + 10, c.uncleRises + 140)), y: FLOOR_Y + 55, facing: g < c.uncleRises + 10 ? -1 : 1, pose: "stand", walk: g >= c.uncleRises + 10 && g < c.uncleRises + 140 ? 1 : 0, fear: Math.max(0.3 + 0.6 * flee, shout), headTilt: doubt * Math.sin(g * 0.5) * 9 });
+  add({ id: "mike", x: lerp(SURVIVOR_X.mike, 2100, ramp(g, c.uncleRises, c.uncleRises + 140)), y: FLOOR_Y + 30, facing: g < c.uncleRises ? -1 : 1, pose: "stand", walk: g >= c.uncleRises && g < c.uncleRises + 140 ? 1 : 0, fear: Math.max(0.2 + 0.7 * flee, shout), headTilt: doubt * Math.sin(g * 0.5 + 1) * 9 });
+  add({ id: "aunt", x: lerp(SURVIVOR_X.aunt, 2100, ramp(g, c.uncleRises + 15, c.uncleRises + 155)), y: FLOOR_Y + 20, facing: g < c.uncleRises + 15 ? -1 : 1, pose: g < c.uncleRises + 15 ? "sit" : "stand", walk: g >= c.uncleRises + 15 && g < c.uncleRises + 155 ? 1 : 0, fear: Math.max(0.3 + 0.6 * flee, shout), headTilt: doubt * Math.sin(g * 0.5 + 2) * 9 });
 
   // ลุงประเสริฐ: pale and sweating on the bench while the driver's clock runs, then the third zombie
   const risen = g >= c.uncleRises;
   const uncleInf = risen ? 1 : ramp(g, c.unclePale, c.uncleRises);
-  add({ id: "uncle", x: risen ? SURVIVOR_X.uncle + 0.4 * (g - c.uncleRises) : SURVIVOR_X.uncle, y: FLOOR_Y + 45, facing: risen ? 1 : -1, pose: risen ? "shamble" : "sit", walk: risen ? 1 : 0, infection: uncleInf, fear: risen ? 0 : 0.5 * ramp(g, c.unclePale, c.unclePale + 40), headTilt: risen ? 12 : uncleInf * 8 });
+  add({ id: "uncle", x: risen ? SURVIVOR_X.uncle + 0.4 * (g - c.uncleRises) : SURVIVOR_X.uncle, y: FLOOR_Y + 45, facing: risen ? 1 : -1, pose: risen ? "shamble" : "sit", walk: risen ? 1 : 0, infection: uncleInf, fear: risen ? 0 : Math.max(0.5 * ramp(g, c.unclePale, c.unclePale + 40), 0.6 * shout), headTilt: risen ? 12 : uncleInf * 8 });
   return out.sort((a, b) => a.y - b.y);
 };
 
@@ -126,12 +140,11 @@ const BiteSilhouette: React.FC<{ g: number }> = ({ g }) => {
   );
 };
 
-/** a small red mark on the driver's sleeve after the bite (no blood) */
-const SleeveMark: React.FC<{ x: number; g: number }> = ({ x, g }) => {
-  if (g < c.biteAt + 8 || g >= c.cabCloses + CAB_INSERT_FRAMES) return null;
-  const a = clamp01((g - c.biteAt - 8) / 20);
-  const back = g >= c.biteAt + 25;
-  return <ellipse cx={x + (back ? 6 : -6)} cy={FLOOR_Y + 40 - 245} rx={9} ry={7} fill="#a83a34" opacity={a * 0.9} />;
+/** a small red mark on the driver's fingertip after the bite (no blood); his hand trails behind him as he runs left */
+const FingerMark: React.FC<{ x: number; g: number }> = ({ x, g }) => {
+  if (g < c.biteAt + 6 || g >= c.cabCloses + CAB_INSERT_FRAMES) return null;
+  const a = clamp01((g - c.biteAt - 6) / 12);
+  return <ellipse cx={x - 30} cy={FLOOR_Y + 40 - 120} rx={7} ry={6} fill="#a83a34" opacity={a * 0.9} />;
 };
 
 // ---------------- screen-space pieces ----------------
@@ -168,8 +181,8 @@ const CabDoor: React.FC<{ g: number; open: number; infection?: number; mark?: bo
       <rect x={250} y={350} width={580} height={1090} fill="#10161b" />
       <rect x={250} y={350} width={580} height={1090} fill="url(#cab2-glow)" opacity={0.6 + 0.4 * Math.sin(g * 0.3)} />
       {[0, 1, 2, 3].map((i) => <rect key={i} x={300 + i * 120} y={430} width={70} height={46} rx={8} fill={i === 1 ? "#d9534f" : "#2f8f4e"} opacity={0.8} />)}
-      <Passenger id="driver" x={540} y={1440} scale={2.2} facing={1} phase={0} walk={0} frame={g} infection={infection} pose="stand" headTilt={0} fear={mark ? 0.2 : 0} />
-      {mark && <ellipse cx={534} cy={1440 - 317} rx={12} ry={9} fill="#a83a34" opacity={0.9} />}
+      <Passenger id="driver" x={540} y={1440} scale={2.2} facing={1} phase={0} walk={0} frame={g} infection={infection} pose="stand" headTilt={0} fear={mark ? 0.6 : 0} />
+      {mark && <ellipse cx={575} cy={1440 - 170} rx={10} ry={8} fill="#a83a34" opacity={0.9} />}
       <g transform={`translate(${-open * 300},0)`}>
         <rect x={250} y={350} width={300} height={1090} fill="#59626b" stroke="#2a2f33" strokeWidth={8} />
         <rect x={300} y={420} width={200} height={300} fill="#a8c0d0" opacity={0.5} />
@@ -239,6 +252,54 @@ const YouFace: React.FC<{ g: number }> = ({ g }) => {
   );
 };
 
+/** Front-facing close-up of the driver: cap and uniform, a calm smile that fades to shock when he sees the grey skin. */
+const DriverFace: React.FC<{ g: number }> = ({ g }) => {
+  const k = PASSENGERS.driver;
+  const worry = ramp(g, c.realiseAt + 8, c.realiseAt + 48);
+  const zoom = 1.02 + 0.1 * ramp(g, c.realiseAt, le(2) + 8);
+  const sway = Math.sin(g * 0.1) * 1.2 + worry * Math.sin(g * 0.8) * 0.8;
+  const blink = Math.max(0, 1 - Math.abs(((g % 80) - 30) / 3));
+  const smileY = lerp(76, 34, worry); // control point of the mouth: low = smile, high = frown
+  const open = Math.max(0, worry - 0.55) * 30;
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
+      <defs>
+        <linearGradient id="df-bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#56606a" />
+          <stop offset="1" stopColor="#12161a" />
+        </linearGradient>
+        <linearGradient id="df-shade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#0b0e12" stopOpacity={0} />
+          <stop offset="0.35" stopColor="#0b0e12" stopOpacity={0.85} />
+          <stop offset="1" stopColor="#0b0e12" stopOpacity={0.95} />
+        </linearGradient>
+      </defs>
+      <rect width={W} height={H} fill="url(#df-bg)" />
+      <g transform={`translate(540,800) scale(${zoom * 3.0}) rotate(${sway})`}>
+        <path d="M-210 330 Q-190 200 -90 176 L90 176 Q190 200 210 330 Z" fill={k.top} />
+        <path d="M-40 176 L0 230 L40 176 Z" fill="#e8eef2" />
+        <rect x={-34} y={96} width={68} height={92} rx={26} fill={k.skin} />
+        <ellipse cx={-96} cy={4} rx={13} ry={22} fill={k.skin} />
+        <ellipse cx={96} cy={4} rx={13} ry={22} fill={k.skin} />
+        <ellipse cx={0} cy={0} rx={92} ry={108} fill={k.skin} />
+        <path d="M-100 -30 Q-100 -130 0 -132 Q100 -130 100 -30 Z" fill={k.accent ?? "#1d2638"} />
+        <path d="M-108 -30 L108 -30 L96 -8 L-96 -8 Z" fill="#141b29" />
+        <path d="M-60 -44 Q-44 -56 -26 -46 M26 -46 Q44 -56 60 -44" stroke="#1b1b1b" strokeWidth={6} fill="none" strokeLinecap="round" transform={`translate(0,${-4 - worry * 10})`} />
+        {[-44, 44].map((ex, i) => (
+          <g key={i} transform={`translate(${ex},-14)`}>
+            <ellipse rx={24} ry={(22 + worry * 6) * (1 - blink * 0.9)} fill="#ffffff" stroke="#8a8a8a" strokeWidth={2} />
+            <circle cx={lerp(4, 10, worry)} cy={2} r={lerp(10, 5, worry)} fill="#1b1b1b" />
+          </g>
+        ))}
+        <path d="M0 -4 Q-8 24 -6 34 Q0 38 8 34" stroke="#b98a68" strokeWidth={4} fill="none" strokeLinecap="round" />
+        {open > 1 ? <ellipse cx={0} cy={66} rx={16 + open * 0.3} ry={open} fill="#5a2020" /> : <path d={`M-30 58 Q0 ${smileY} 30 58`} stroke="#8a3a30" strokeWidth={6} fill="none" strokeLinecap="round" />}
+        {worry > 0.3 && <path d="M70 -40 q6 12 0 22" stroke="#9ad0ff" strokeWidth={5} fill="none" strokeLinecap="round" opacity={worry} />}
+      </g>
+      <rect y={1300} width={W} height={620} fill="url(#df-shade)" />
+    </svg>
+  );
+};
+
 const World: React.FC = () => {
   const g = useCurrentFrame();
   const cam = cameraAt(g);
@@ -251,6 +312,7 @@ const World: React.FC = () => {
   const hookOn = g < c.hookCut + 8;
   const cabInsertOn = g >= c.cabCloses && g < c.cabCloses + CAB_INSERT_FRAMES;
   const youFaceOn = g >= c.youSee + 25 && g < c.youShout + 60;
+  const driverFaceOn = g >= c.realiseAt && g < le(2) + 8;
   const faceOn = g >= c.uncleRises && g < c.uncleRises + ZOMBIE_FACE_FRAMES + 5;
   const cdOn = g >= c.countdownStart && g < c.uncleRises + 24;
   const seconds = 60 * (1 - ramp(g, c.countdownStart, c.uncleRises));
@@ -262,13 +324,20 @@ const World: React.FC = () => {
         <g transform={`translate(${ANCHOR.x},${ANCHOR.y}) rotate(${cam.rot}) scale(${cam.zoom}) translate(${-cam.fx},${-cam.fy})`}>
           <TrainInterior frame={g} scroll={scroll} doors={0} lights={lightsAt(g)} station={g < c.stationPass ? "ชิดลม" : "เพลินจิต"} carNumber={3} windowChildren={showBoard ? <StationBoard x={boardX} name="เพลินจิต" /> : null} />
           {people.map((p) => (
-            <Passenger key={p.id} id={p.id} x={p.x} y={p.y} scale={1.7} facing={p.facing} phase={g * PHASE_SPEED + PASSENGER_IDS.indexOf(p.id) * 0.9} walk={p.walk} frame={g} infection={p.infection} pose={p.pose} headTilt={p.headTilt} label={p.label} fear={p.fear} />
+            <g key={p.id} transform={p.rot ? `rotate(${p.rot} ${p.x} ${p.y})` : undefined}>
+            <Passenger id={p.id} x={p.x} y={p.y} scale={1.7} facing={p.facing} phase={g * PHASE_SPEED + PASSENGER_IDS.indexOf(p.id) * 0.9} walk={p.walk} frame={g} infection={p.infection} pose={p.pose} headTilt={p.headTilt} label={p.label} fear={p.fear} />
+            </g>
           ))}
-          <SleeveMark x={dx} g={g} />
+          <FingerMark x={dx} g={g} />
         </g>
       </svg>
 
       <BiteSilhouette g={g} />
+      {driverFaceOn && (
+        <AbsoluteFill style={{ opacity: ramp(g, c.realiseAt, c.realiseAt + 7) * clamp01((le(2) + 8 - g) / 8) }}>
+          <DriverFace g={g} />
+        </AbsoluteFill>
+      )}
       {youFaceOn && (
         <AbsoluteFill style={{ opacity: ramp(g, c.youSee + 25, c.youSee + 32) * clamp01((c.youShout + 60 - g) / 8) }}>
           <YouFace g={g} />
@@ -298,7 +367,7 @@ const World: React.FC = () => {
 
       {/* hook: the series title card, on a dark plate, after the first line */}
       <Card g={g} from={Math.max(le(0), c.hookCut - 80)} to={c.hookCut} style={{ top: 300, left: 110, right: 200, fontSize: 56, lineHeight: 1.55, background: "rgba(11,13,16,0.66)", borderRadius: 32, padding: "26px 20px" }}>
-        คนขับเดินออกมาดู...<br />แล้วถูกกัด
+        คนขับเดินเข้าไปเตือน...<br />ซอมบี้
       </Card>
 
       {/* lighting and grade: vignette, cool-top warm-bottom split tone, film grain */}

@@ -11,16 +11,20 @@ const c = manifest.cues as Record<string, number>;
 type Key = [frame: number, fx: number, fy: number, zoom: number];
 
 const KEYS: Key[] = [
-  // the hook is a cab-door shot laid over the car; underneath the camera waits on the wide shot
+  // the hook is a cab-door shot laid over the car; underneath the camera waits on the first wide shot
   [0, 700, 1050, 1.0],
   [c.hookCut, 700, 1050, 1.0],
-  // the driver walks in from the left: follow him, then close on him and the nearest zombie
-  [c.driverEnters + 60, 760, 1050, 1.0],
-  [c.zombiesApproach + 20, 620, 1040, 1.35],
-  // the bite
-  [c.biteAt - 25, 590, 1040, 1.7],
-  [c.biteAt + 30, 560, 1040, 1.5],
-  [c.biteAt + 90, 400, 1050, 1.2],
+  // the driver walks in from the left and goes up to the zombies
+  [c.driverEnters + 60, 600, 1050, 1.0],
+  [c.zombiesApproach + 10, 640, 1040, 1.3],
+  // he realises: push in (the face-on close-up covers the middle of this), then pull wide as everybody shouts
+  [c.realiseAt, 620, 1040, 1.6],
+  [c.shoutAt, 1000, 1050, 0.9],
+  // the topple and the bite
+  [c.fallAt - 5, 700, 1045, 1.2],
+  [c.biteAt - 12, 590, 1040, 1.7],
+  [c.biteAt + 30, 540, 1040, 1.5],
+  [c.biteAt + 60, 400, 1050, 1.2],
   // back to the survivors: "you" see the wound
   [c.cabCloses, 900, 1050, 0.95],
   [c.youSee - 5, 1430, 1060, 1.2],
