@@ -1,0 +1,131 @@
+{
+ "fps": 30,
+ "total": 1695,
+ "storyEnd": 1548,
+ "outroStart": 1560,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณหนีซอมบี้ ในรถไฟฟ้าที่ไม่มีวันจอด",
+   "audio": "bts3/n0.mp3",
+   "audioFrames": 158,
+   "leadFrames": 21,
+   "frames": 229
+  },
+  {
+   "text": "รถไฟผ่านสถานีที่สาม ที่สี่ ที่ห้า โดยไม่ชะลอเลยสักนิด",
+   "audio": "bts3/n1.mp3",
+   "audioFrames": 202,
+   "leadFrames": 6,
+   "frames": 216
+  },
+  {
+   "text": "ซอมบี้สามตัวเดินช้า แต่ไม่หยุด คุณจึงถอยมาจนสุดตู้",
+   "audio": "bts3/n2.mp3",
+   "audioFrames": 168,
+   "leadFrames": 6,
+   "frames": 182
+  },
+  {
+   "text": "พี่นุ่นอยากไปหัวขบวนเพื่อหยุดรถ แต่ไมค์ไม่ยอมไปด้วย",
+   "audio": "bts3/n3.mp3",
+   "audioFrames": 124,
+   "leadFrames": 6,
+   "frames": 138
+  },
+  {
+   "text": "ทุกคนเริ่มเถียงกัน แล้วไมค์ก็ผลักพี่นุ่น",
+   "audio": "bts3/n4.mp3",
+   "audioFrames": 105,
+   "leadFrames": 6,
+   "frames": 119
+  },
+  {
+   "text": "พี่นุ่นเซไปชนน้องเต้ย เขาล้มลงตรงหน้าซอมบี้",
+   "audio": "bts3/n5.mp3",
+   "audioFrames": 126,
+   "leadFrames": 6,
+   "frames": 140
+  },
+  {
+   "text": "ซอมบี้งับข้อมือเขา เหลือเวลาแค่หนึ่งนาที",
+   "audio": "bts3/n6.mp3",
+   "audioFrames": 137,
+   "leadFrames": 6,
+   "frames": 151
+  },
+  {
+   "text": "ป้าสมจิตรกอดเขาไว้ ส่วนไมค์บอกให้ผลักเขาออกไป",
+   "audio": "bts3/n7.mp3",
+   "audioFrames": 116,
+   "leadFrames": 6,
+   "frames": 130
+  },
+  {
+   "text": "คุณมองผ่านกระจกไปข้างหน้า คนขับก้มฟุบอยู่บนคันบังคับ",
+   "audio": "bts3/n8.mp3",
+   "audioFrames": 148,
+   "leadFrames": 6,
+   "frames": 162
+  },
+  {
+   "text": "ถ้าเป็นคุณ จะผลักน้องเต้ยออกไปไหม",
+   "audio": "bts3/n9.mp3",
+   "audioFrames": 75,
+   "leadFrames": 6,
+   "frames": 93
+  }
+ ],
+ "starts": [
+  0,
+  229,
+  445,
+  627,
+  765,
+  884,
+  1024,
+  1175,
+  1305,
+  1467
+ ],
+ "cues": {
+  "hookCut": 229,
+  "board0": 240,
+  "board1": 307,
+  "board2": 374,
+  "mapIn": 451,
+  "mapOut": 619,
+  "enterAt": 451,
+  "nunPoints": 633,
+  "mikeNo": 673,
+  "argueAt": 771,
+  "shoveAt": 875,
+  "fallAt": 915,
+  "biteAt": 1055,
+  "countdownStart": 1070,
+  "countAt": 1191,
+  "faceAt": 1221,
+  "cabGlassAt": 1311,
+  "cabGlassEnd": 1469,
+  "questionAt": 1473,
+  "lineStart0": 21,
+  "lineEnd0": 179,
+  "lineStart1": 235,
+  "lineEnd1": 437,
+  "lineStart2": 451,
+  "lineEnd2": 619,
+  "lineStart3": 633,
+  "lineEnd3": 757,
+  "lineStart4": 771,
+  "lineEnd4": 876,
+  "lineStart5": 890,
+  "lineEnd5": 1016,
+  "lineStart6": 1030,
+  "lineEnd6": 1167,
+  "lineStart7": 1181,
+  "lineEnd7": 1297,
+  "lineStart8": 1311,
+  "lineEnd8": 1459,
+  "lineStart9": 1473,
+  "lineEnd9": 1548
+ }
+}
