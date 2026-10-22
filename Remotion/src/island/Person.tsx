@@ -137,7 +137,14 @@ export const Person: React.FC<PersonProps> = ({ id, x, y, scale = 1.5, phase, wa
   return (
     <g>
       <g transform={outer}>
-        <ellipse cx={4} cy={4} rx={pose === "lie" ? 90 : 52} ry={9} fill="#000" opacity={0.28} transform={pose === "lie" ? "rotate(90) translate(0,0)" : ""} />
+        <defs>
+          <filter id="p-blur" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="6" /></filter>
+          <filter id="p-blur-s" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="2.5" /></filter>
+        </defs>
+        <g transform={pose === "lie" ? "rotate(90)" : ""}>
+          <ellipse cx={-34 * facing} cy={6} rx={pose === "lie" ? 130 : 86} ry={11} fill="#000" opacity={0.3} filter="url(#p-blur)" />
+          <ellipse cx={3 * facing} cy={4} rx={pose === "lie" ? 70 : 38} ry={7} fill="#000" opacity={0.45} filter="url(#p-blur-s)" />
+        </g>
         <g transform={`translate(0,${bob + lift})`}>
           <g transform={`translate(0,${HIP_Y})`}>
             <g style={{ filter: "brightness(0.78)" }}>

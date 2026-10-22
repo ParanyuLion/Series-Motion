@@ -6,6 +6,9 @@ import { fontFamily } from "./fonts";
 import { BEACH_Y, H, IslandWorld, W } from "./IslandWorld";
 import { MapCard, PART1_MARKERS } from "./MapCard";
 import { Person } from "./Person";
+import { IslandAerial } from "./IslandAerial";
+import { ANCHOR, cameraAt } from "./camera";
+import { Glow } from "../World";
 
 const { cues, shots, starts, total } = manifest;
 const ls = (i: number) => (cues as Record<string, number>)[`lineStart${i}`];
@@ -13,7 +16,6 @@ const le = (i: number) => (cues as Record<string, number>)[`lineEnd${i}`];
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const CLAMP = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
-const LIFT = 260; // whole scene moves up so the figures stay above the subtitle band
 const WALK_SPEED = 9; // px per frame at full walk, matches the 0.2 rad/frame stride
 const PHASE_SPEED = 0.2;
 const HERO_SCREEN_X = 330;
@@ -108,18 +110,17 @@ const World: React.FC = () => {
   const cutDip = interpolate(g, [cues.hookCut - 8, cues.hookCut, cues.hookCut + 16], [0, 1, 0], CLAMP);
   const showCamp = g >= ls(7) - 20;
 
-  // camera: slow push-in, then a closer look at the villain's smile
-  const smileZoom = interpolate(g, [ls(6) + 40, ls(7) + 40, le(8) - 30, le(8)], [1, 1.18, 1.18, 1], CLAMP);
-  const baseZoom = 1 + 0.03 * clamp01((g - cues.hookCut) / (manifest.storyEnd - cues.hookCut));
-  const zoom = smileZoom * baseZoom;
-  const camX = interpolate(zoom, [1, 1.3], [540, 780], CLAMP);
+  // virtual camera (see camera.ts): subjects sit above the subtitle band; extra shake only inside the hook
+  const cam = cameraAt(g);
   const shake = inHook ? Math.sin(g * 1.7) * 6 * clamp01((g - 20) / 30) : 0;
+  const inAerial = g >= cues.aerialStart && g < cues.aerialEnd;
+  const aerialOpacity = clamp01((g - cues.aerialStart) / 8) * clamp01((cues.aerialEnd - g) / 8);
 
   const hookFlash = Math.max(0, 1 - Math.abs(g - cues.flash0) / 3) * 0.9 + Math.max(0, 1 - Math.abs(g - cues.flash1) / 3) * 0.7;
 
   const ids = Object.keys(SPOTS) as CastId[];
   const phase = g * PHASE_SPEED;
-  const mapProgress = clamp01((g - cues.mapIn) / 170);
+  const mapProgress = clamp01((g - cues.mapIn) / 120);
   const mapOpacity = clamp01((cues.mapOut - g) / 14);
   const highlight = g < ls(5) ? "waterline" : "camp";
   const heroTilt = g >= walkOutEnd && g < le(5) ? -22 : g >= cues.skyChange ? -24 : 0;
@@ -144,8 +145,8 @@ const World: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#000" }}>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
-        <g transform={`translate(${shake},${-LIFT}) translate(${camX},1560) scale(${zoom}) translate(${-camX},-1560)`}>
-          <IslandWorld frame={g} scroll={scroll} stormAmount={stormAmt} showWaterline showCamp={showCamp} campX={560} treeX0={1555} bottomExtend={LIFT + 40} />
+        <g transform={`translate(${ANCHOR.x + shake},${ANCHOR.y}) rotate(${cam.rot}) scale(${cam.zoom}) translate(${-cam.fx},${-cam.fy})`}>
+          <IslandWorld frame={g} scroll={scroll} stormAmount={stormAmt} showWaterline showCamp={showCamp} campX={560} treeX0={1555} bottomExtend={520} />
           {people.map((p) => (
             <Person
               key={p.id}
@@ -165,15 +166,34 @@ const World: React.FC = () => {
               labelClamp={[130, 880]}
             />
           ))}
+          {showCamp && (
+            <g style={{ mixBlendMode: "overlay" }}>
+              <Glow id="fire-warm" x={560 - scroll} y={BEACH_Y + 30} r={420 * (0.92 + 0.08 * Math.sin(g * 0.7))} color="#ff9a3c" opacity={0.85 * (1 - stormAmt * 0.4)} />
+            </g>
+          )}
           {inHook && <SlippingHand g={g} />}
           {(inHook || stormAmt > 0.3) && <Rain frame={g} opacity={inHook ? 1 : (stormAmt - 0.3) / 0.7} />}
         </g>
       </svg>
 
+      {inAerial && (
+        <AbsoluteFill style={{ opacity: aerialOpacity, backgroundColor: "#000" }}>
+          <IslandAerial frame={g} t={(g - cues.aerialStart) / (cues.aerialEnd - cues.aerialStart)} />
+        </AbsoluteFill>
+      )}
+
+      {/* lighting and grade: vignette, cool-to-warm split tone, film grain */}
+      <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 100%)" }} />
+      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(120,150,170,0.22) 0%, rgba(0,0,0,0) 45%, rgba(190,150,110,0.16) 100%)", mixBlendMode: "soft-light" }} />
+      <svg width={W} height={H} style={{ position: "absolute", inset: 0, opacity: 0.09, mixBlendMode: "overlay", pointerEvents: "none" }}>
+        <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed={g % 7} /><feColorMatrix type="saturate" values="0" /></filter>
+        <rect width={W} height={H} filter="url(#grain)" />
+      </svg>
+
       <AbsoluteFill style={{ backgroundColor: "#000", opacity: cutDip }} />
       <AbsoluteFill style={{ backgroundColor: "#dfe6ea", opacity: hookFlash, mixBlendMode: "screen" }} />
 
-      {g >= cues.mapIn - 4 && g < cues.mapOut && (
+      {g >= cues.mapIn && g < cues.mapOut && (
         <div style={{ position: "absolute", left: 90, top: 150, transform: "scale(0.8)", transformOrigin: "top left", opacity: mapOpacity }}>
           <MapCard progress={mapProgress} markers={PART1_MARKERS} highlight={highlight} />
         </div>

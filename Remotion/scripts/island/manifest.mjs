@@ -12,6 +12,7 @@ const OUTRO_GAP = 12;         // gap between the last word and the outro card
 const OUTRO_FRAMES = 135;     // 4.5 s "next part" card
 const WALK_SPEED = 9;         // ground px per frame at full walk (stride-matched to phase speed 0.2)
 const SCROLL_MAX = 1100;      // how far the hero walks along the shore
+const AERIAL_FRAMES = 105;    // 3.5 s cut to the aerial view of the island while the hero walks off-screen
 
 const lines = JSON.parse(readFileSync("scripts/island/part1.narration.json", "utf8")).map((l) => (typeof l === "string" ? l : l.text));
 const lengths = lines.map((_, i) => {
@@ -42,7 +43,8 @@ const lineStart = (i) => starts[i] + shots[i].leadFrames;
 const lineEnd = (i) => lineStart(i) + shots[i].audioFrames;
 const walkFrames = Math.round(SCROLL_MAX / WALK_SPEED);
 const cues = {
-  hookCut: HOOK_FRAMES, mapIn: lineStart(3), mapOut: lineEnd(5), skyChange: lineStart(9),
+  hookCut: HOOK_FRAMES, aerialStart: lineStart(3), aerialEnd: lineStart(3) + AERIAL_FRAMES,
+  mapIn: lineStart(3) + AERIAL_FRAMES, mapOut: lineEnd(5), skyChange: lineStart(9),
   walkOutStart: lineStart(3), walkOutEnd: lineStart(3) + walkFrames,
   walkBackStart: lineEnd(5) + 6, walkBackEnd: lineEnd(5) + 6 + walkFrames,
   flash0: 62, flash1: 90, // lightning flashes inside the hook

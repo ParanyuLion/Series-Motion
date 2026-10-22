@@ -89,7 +89,9 @@
  ],
  "cues": {
   "hookCut": 180,
-  "mapIn": 574,
+  "aerialStart": 574,
+  "aerialEnd": 679,
+  "mapIn": 679,
   "mapOut": 1063,
   "skyChange": 1692,
   "walkOutStart": 574,

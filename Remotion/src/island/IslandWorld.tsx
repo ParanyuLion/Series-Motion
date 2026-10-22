@@ -75,6 +75,7 @@ export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showW
   const treeOff = mod(scroll * 0.85, treeSpacing);
   const trees = [0, 1, 2].map((k) => ({ x: treeX0 + k * treeSpacing - treeOff, seed: k }));
   const sandOff = mod(scroll, 240);
+  const shaftOpacity = (1 - s * 0.75) * 0.85;
   const fire = 0.85 + 0.15 * Math.sin(frame * 0.7) + 0.08 * Math.sin(frame * 1.9);
   const cx = campX - scroll;
 
@@ -90,6 +91,11 @@ export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showW
           <stop offset="0.25" stopColor={PALETTE_A.sand} />
           <stop offset="1" stopColor={mix(PALETTE_A.sand, "#1c1e1d", 0.55)} />
         </linearGradient>
+        <linearGradient id="isl-shaft" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#f2f6f7" stopOpacity={0.34} />
+          <stop offset="0.55" stopColor="#f2f6f7" stopOpacity={0.1} />
+          <stop offset="1" stopColor="#f2f6f7" stopOpacity={0} />
+        </linearGradient>
         <linearGradient id="isl-fog" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={fog} stopOpacity={0} />
           <stop offset="0.5" stopColor={fog} stopOpacity={0.5} />
@@ -97,10 +103,10 @@ export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showW
         </linearGradient>
       </defs>
 
-      <rect width={W} height={SHORE_Y + 20} fill="url(#isl-sky)" />
+      <rect x={-900} width={W + 1800} height={SHORE_Y + 20} fill="url(#isl-sky)" />
       {/* slow, heavy clouds */}
-      {Array.from({ length: 6 }, (_, i) => {
-        const x = mod(rnd(i) * 1700 + frame * (0.12 + rnd(i + 3) * 0.1), 1700) - 300;
+      {Array.from({ length: 10 }, (_, i) => {
+        const x = mod(rnd(i) * 2900 + frame * (0.12 + rnd(i + 3) * 0.1), 2900) - 900;
         return <ellipse key={i} cx={x} cy={160 + i * 110} rx={320 + rnd(i + 8) * 200} ry={46 + rnd(i + 2) * 30} fill={mix(sky1, "#14181b", 0.35)} opacity={0.35} />;
       })}
       <circle cx={760} cy={430} r={110} fill="#c9ced1" opacity={0.18 * (1 - s)} />
@@ -109,19 +115,34 @@ export const IslandWorld: React.FC<Props> = ({ frame, scroll, stormAmount, showW
       <path d={`M${480 - scroll * 0.12} ${HORIZON_Y + 30} Q${680 - scroll * 0.12} 760 ${900 - scroll * 0.12} 840 Q${1100 - scroll * 0.12} 780 ${1400 - scroll * 0.12} ${HORIZON_Y + 30} Z`} fill={PALETTE_A.hills} opacity={0.85} />
 
       {/* sea */}
-      <rect y={HORIZON_Y} width={W} height={SHORE_Y - HORIZON_Y + 10} fill={sea} />
+      <rect x={-900} y={HORIZON_Y} width={W + 1800} height={SHORE_Y - HORIZON_Y + 10} fill={sea} />
       {Array.from({ length: 9 }, (_, i) => {
         const y = HORIZON_Y + 24 + i * 34;
         const amp = 3 + i * 0.5;
-        return <path key={i} d={`M0 ${y} ${Array.from({ length: 12 }, (_, j) => `L${j * 100} ${y + Math.sin(frame * 0.03 + j * 0.9 + i) * amp}`).join(" ")}`} stroke={mix(sea, "#8c949a", 0.14)} strokeWidth={2} fill="none" opacity={0.6} />;
+        return <path key={i} d={`M-900 ${y} ${Array.from({ length: 30 }, (_, j) => `L${j * 100 - 900} ${y + Math.sin(frame * 0.03 + j * 0.9 + i) * amp}`).join(" ")}`} stroke={mix(sea, "#8c949a", 0.14)} strokeWidth={2} fill="none" opacity={0.6} />;
       })}
-      <rect y={HORIZON_Y - 70} width={W} height={260} fill="url(#isl-fog)" />
+      <rect x={-900} y={HORIZON_Y - 70} width={W + 1800} height={260} fill="url(#isl-fog)" />
+      {/* second, slower fog band drifting across the sea */}
+      <g opacity={0.5}>
+        {[0, 1, 2].map((i) => (
+          <ellipse key={i} cx={mod(i * 900 + frame * 0.35, 2700) - 900} cy={HORIZON_Y + 70 + i * 36} rx={560} ry={40} fill={fog} opacity={0.22} />
+        ))}
+      </g>
+      {/* soft light breaking through the cloud: shafts across sea and beach, glints on the water */}
+      <g style={{ mixBlendMode: "screen" }} opacity={shaftOpacity}>
+        {[0, 1, 2, 3, 4].map((i) => (
+          <polygon key={i} points={`${700 + i * 55},-120 ${745 + i * 55 + i * 6},-120 ${-330 + i * 210},1900 ${-170 + i * 210},1900`} fill="url(#isl-shaft)" opacity={0.7 + 0.3 * Math.sin(frame * 0.02 + i * 1.7)} />
+        ))}
+        {Array.from({ length: 26 }, (_, i) => (
+          <rect key={i} x={120 + rnd(i) * 620} y={HORIZON_Y + 16 + rnd(i + 4) * (SHORE_Y - HORIZON_Y - 40)} width={26 + rnd(i + 9) * 40} height={3} rx={1.5} fill="#e9eef0" opacity={Math.max(0, Math.sin(frame * 0.05 + i * 2.3)) * 0.55} />
+        ))}
+      </g>
 
       {/* beach */}
-      <rect y={SHORE_Y} width={W} height={H - SHORE_Y + bottomExtend} fill="url(#isl-sand)" />
-      <path d={`M0 ${SHORE_Y} ${Array.from({ length: 12 }, (_, j) => `L${j * 100} ${SHORE_Y + 10 + Math.sin(frame * 0.04 + j) * 6}`).join(" ")}`} stroke="#aeb4b6" strokeWidth={5} fill="none" opacity={0.5} />
-      {Array.from({ length: 28 }, (_, i) => (
-        <circle key={i} cx={mod(rnd(i) * 1200 - sandOff * 1, 1200) - 60} cy={SHORE_Y + 90 + rnd(i + 5) * 420} r={2 + rnd(i + 9) * 3} fill="#3f4240" opacity={0.35} />
+      <rect x={-900} y={SHORE_Y} width={W + 1800} height={H - SHORE_Y + bottomExtend} fill="url(#isl-sand)" />
+      <path d={`M-900 ${SHORE_Y} ${Array.from({ length: 30 }, (_, j) => `L${j * 100 - 900} ${SHORE_Y + 10 + Math.sin(frame * 0.04 + j) * 6}`).join(" ")}`} stroke="#aeb4b6" strokeWidth={5} fill="none" opacity={0.5} />
+      {Array.from({ length: 70 }, (_, i) => (
+        <circle key={i} cx={mod(rnd(i) * 2800 - sandOff * 1, 2800) - 900} cy={SHORE_Y + 90 + rnd(i + 5) * 420} r={2 + rnd(i + 9) * 3} fill="#3f4240" opacity={0.35} />
       ))}
 
       {/* palms at the edge of the beach (waterline stain high on the trunks) */}
