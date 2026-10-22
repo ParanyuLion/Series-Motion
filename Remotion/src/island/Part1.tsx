@@ -7,6 +7,7 @@ import { BEACH_Y, H, IslandWorld, W } from "./IslandWorld";
 import { MapCard, PART1_MARKERS } from "./MapCard";
 import { Person } from "./Person";
 import { IslandAerial } from "./IslandAerial";
+import { FaceFront } from "./FaceFront";
 import { ForegroundFrame } from "./IslandDetails";
 import { ANCHOR, cameraAt } from "./camera";
 import { Glow } from "../World";
@@ -57,6 +58,10 @@ const poseOf = (id: CastId, g: number): PoseName => {
   if (g < t + 22) return "sit";
   return "stand";
 };
+
+// Irin's smile (on the words "แค่ยิ้มมุมปาก"): the camera cuts to a front-facing close-up of her face for its duration
+const SMILE_FROM = le(6) - 44;
+const SMILE_TO = ls(7) - 10;
 
 const storm = (g: number) => interpolate(g, [cues.skyChange, manifest.outroStart], [0, 1], { ...CLAMP, easing: Easing.in(Easing.quad) });
 
@@ -162,7 +167,7 @@ const World: React.FC = () => {
               facing={p.facing}
               pose={p.pose}
               headTilt={p.hero ? heroTilt : p.id === "irin" ? -4 : 0}
-              smile={p.id === "irin" ? clamp01((g - (ls(6) + 70)) / 18) : 0}
+              smile={p.id === "irin" ? clamp01((g - SMILE_FROM) / 18) : 0}
               label={p.label}
               labelClamp={[130, 880]}
             />
@@ -182,6 +187,12 @@ const World: React.FC = () => {
       {inAerial && (
         <AbsoluteFill style={{ opacity: aerialOpacity, backgroundColor: "#000" }}>
           <IslandAerial frame={g} t={(g - cues.aerialStart) / (cues.aerialEnd - cues.aerialStart)} />
+        </AbsoluteFill>
+      )}
+
+      {g >= SMILE_FROM - 5 && g < SMILE_TO + 5 && (
+        <AbsoluteFill style={{ opacity: clamp01((g - (SMILE_FROM - 5)) / 5) * clamp01((SMILE_TO + 5 - g) / 5) }}>
+          <FaceFront id="irin" frame={g} t={clamp01((g - SMILE_FROM) / (SMILE_TO - SMILE_FROM))} dirt={0.2} />
         </AbsoluteFill>
       )}
 
