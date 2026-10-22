@@ -25,3 +25,8 @@ Bright morning interior with **yellow seats** (the user picked option A and chan
 ## Voice
 
 Narrator: Gemini Charon proposed (as in the island series), second person, with a question to the viewer at the end of a part. A woman speaking aloud would use Leda. Other characters have no voices; the narrator reports what they say.
+
+## Opening line of every part
+
+The first spoken sentence is the hook, in the form "จะเกิดอะไรขึ้น ถ้าคุณ..." and it names the zombies. Part 1: "จะเกิดอะไรขึ้น ถ้าคุณอยู่บน BTS ตอนซอมบี้เข้ามาพอดี" (the user's own wording).
+

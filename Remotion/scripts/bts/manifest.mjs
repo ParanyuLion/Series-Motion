@@ -4,19 +4,21 @@ import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 
 const FPS = 30;
-const HOOK_FRAMES = 180;   // 6 s opening hook; narration line 0 plays inside it, then the title card holds
+const MIN_HOOK_FRAMES = 180;  // at least 6 s; narration line 0 plays inside it, then the title card holds
 const HOOK_LEAD = 21;      // 0.7 s before the first word
 const LEAD = 15;           // 0.5 s before each later line
 const TAIL = 27;           // 0.9 s after each later line
 const OUTRO_GAP = 12;      // gap between the last word and the outro card
 const OUTRO_FRAMES = 135;  // 4.5 s "next part" card
 
+const HOOK_TAIL = 70;       // frames after the first line for the doors, the zombie hand and the title card
 const lines = JSON.parse(readFileSync("scripts/bts/part1.narration.json", "utf8")).map((l) => (typeof l === "string" ? l : l.text));
 const lengths = lines.map((_, i) => {
   const out = execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", `public/bts1/n${i}.mp3`]).toString();
   return Math.ceil(parseFloat(out) * FPS);
 });
 
+const HOOK_FRAMES = Math.max(MIN_HOOK_FRAMES, HOOK_LEAD + lengths[0] + HOOK_TAIL);
 const shots = lines.map((text, i) => {
   const audioFrames = lengths[i];
   const leadFrames = i === 0 ? HOOK_LEAD : LEAD;
@@ -40,7 +42,7 @@ const ls = (i) => starts[i] + shots[i].leadFrames;
 const le = (i) => ls(i) + shots[i].audioFrames;
 const cues = {
   hookCut: HOOK_FRAMES,
-  doorsClose: ls(0) + 20,
+  doorsClose: le(0) - 30,   // the doors shut as the first line ends ("...ซอมบี้เข้ามาพอดี")
   manTurns: ls(2),
   biteAt: ls(3) + 20,
   countdownStart: ls(3) + 30,

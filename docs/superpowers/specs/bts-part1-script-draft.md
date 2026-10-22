@@ -6,7 +6,7 @@ Narrator: Gemini Charon (proposed), second person "คุณ", present tense. Th
 
 Narration (about 428 Thai characters, about 57 seconds of speech):
 
-1. ประตูปิดลงพอดี และไม่มีใครลงทัน
+1. จะเกิดอะไรขึ้น ถ้าคุณอยู่บน BTS ตอนซอมบี้เข้ามาพอดี
 2. คุณแค่ขึ้น BTS ที่สยาม เพื่อไปเรียนเหมือนทุกวัน
 3. ผู้ชายข้างประตูเริ่มตัวสั่น แล้วหันมาช้าๆ
 4. เขากัดผู้หญิงข้างๆ ทันที
@@ -21,7 +21,7 @@ Outro (on top of the 60 s): "ตอนต่อไป: คนขับกลั�
 
 Events (5, matching the approved plan for Part 1) and the picture plan (the assistant's proposal):
 
-- **(a) Hook, first ~6 s (line 1):** the doors slide shut at Siam with a hand reaching out too late; cut to a flash of a zombie hand on the glass; the title card.
+- **(a) Hook, first ~7 s (line 1, now the spoken hook "จะเกิดอะไรขึ้น ถ้าคุณอยู่บน BTS ตอนซอมบี้เข้ามาพอดี"; the doors shut as the line ends):** the doors slide shut at Siam with a hand reaching out too late; cut to a flash of a zombie hand on the glass; the title card.
 - **(b) The first bite (lines 2 to 4):** the man next to the doors shakes and turns; the bite is implied (a silhouette and a sound). The bitten woman gets a 60 second countdown over her.
 - **(c) The clock and the panic (lines 5 to 6):** passengers crowd away; the countdown reaches 0:00 and she stands up; the doors stay shut while the train runs; the station board for the next stop passes by.
 - **(d) Retreat to the end of the car (lines 7 to 8):** "you" retreat; the map of the train appears (car 3 of 4), showing where "you" are and where the infected are; "you" meet the schoolboy น้องเต้ย and pull him behind you. Name tags for the other passengers appear one at a time (พี่นุ่น, ไมค์, ป้าสมจิตร, ลุงประเสริฐ are among the crowd).

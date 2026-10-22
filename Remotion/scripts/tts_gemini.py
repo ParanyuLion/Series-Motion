@@ -80,6 +80,8 @@ def main() -> None:
     ap.add_argument("--voice", default="Sulafat")
     ap.add_argument("--speed", type=float, default=1.0, help="playback speed, pitch preserved (e.g. 1.1)")
     ap.add_argument("--post-speed", type=float, default=1.0, help="extra speed-up applied when copying cached lines into place (free: no new API calls)")
+    ap.add_argument("--reuse-from", default=None, help="a finished cache folder (out/tts_cache/<hash>) to copy lines from")
+    ap.add_argument("--redo", default="", help="comma-separated line numbers to synthesise again even when --reuse-from has them")
     ap.add_argument("--script", default="scripts/narration.json", help="JSON array of narration lines")
     ap.add_argument("--out-dir", default="public/audio", help="where n0.mp3, n1.mp3 ... are written")
     args = ap.parse_args()
@@ -101,6 +103,14 @@ def main() -> None:
     key = hashlib.sha1(json.dumps([lines, args.voice, args.speed, MODEL, STYLE], ensure_ascii=False).encode()).hexdigest()[:12]
     tmp = Path("out/tts_cache") / key
     tmp.mkdir(parents=True, exist_ok=True)
+    redo = {int(x) for x in args.redo.split(",") if x.strip()}
+    if args.reuse_from:
+        for i in range(len(lines)):
+            src = Path(args.reuse_from) / f"n{i}.mp3"
+            if i not in redo and src.exists() and not (tmp / f"n{i}.mp3").exists():
+                shutil.copy(src, tmp / f"n{i}.mp3")
+                for extra in Path(args.reuse_from).glob(f"n{i}.s*.mp3"):
+                    shutil.copy(extra, tmp / extra.name)
     for i, line in enumerate(lines):
         if (tmp / f"n{i}.mp3").exists():
             print("cached line", i)

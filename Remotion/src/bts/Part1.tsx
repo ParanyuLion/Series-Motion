@@ -274,7 +274,7 @@ const World: React.FC = () => {
 
       {/* hook: flash and the series title */}
       <AbsoluteFill style={{ backgroundColor: "#eef4f2", opacity: hookFlash, mixBlendMode: "screen" }} />
-      <Card g={g} from={c.hookCut - 80} to={c.hookCut} style={{ top: 300, left: 110, right: 200, fontSize: 56, lineHeight: 1.55, background: "rgba(11,13,16,0.66)", borderRadius: 32, padding: "26px 20px" }}>
+      <Card g={g} from={Math.max(le(0), c.hookCut - 80)} to={c.hookCut} style={{ top: 300, left: 110, right: 200, fontSize: 56, lineHeight: 1.55, background: "rgba(11,13,16,0.66)", borderRadius: 32, padding: "26px 20px" }}>
         จะเกิดอะไรขึ้น<br />ถ้าคุณอยู่บน BTS<br />ที่มีซอมบี้
       </Card>
 
