@@ -1,0 +1,124 @@
+{
+ "fps": 30,
+ "total": 1852,
+ "storyEnd": 1705,
+ "outroStart": 1717,
+ "shots": [
+  {
+   "text": "ประตูปิดลงพอดี และไม่มีใครลงทัน",
+   "audio": "bts1/n0.mp3",
+   "audioFrames": 109,
+   "leadFrames": 21,
+   "frames": 180
+  },
+  {
+   "text": "คุณแค่ขึ้น BTS ที่สยาม เพื่อไปเรียนเหมือนทุกวัน",
+   "audio": "bts1/n1.mp3",
+   "audioFrames": 136,
+   "leadFrames": 15,
+   "frames": 178
+  },
+  {
+   "text": "ผู้ชายข้างประตูเริ่มตัวสั่น แล้วหันมาช้าๆ",
+   "audio": "bts1/n2.mp3",
+   "audioFrames": 122,
+   "leadFrames": 15,
+   "frames": 164
+  },
+  {
+   "text": "เขากัดผู้หญิงข้างๆ ทันที",
+   "audio": "bts1/n3.mp3",
+   "audioFrames": 74,
+   "leadFrames": 15,
+   "frames": 116
+  },
+  {
+   "text": "คนที่ถูกกัด เหลือเวลาอีกหนึ่งนาที แล้วเธอก็ลุกขึ้นมา",
+   "audio": "bts1/n4.mp3",
+   "audioFrames": 158,
+   "leadFrames": 15,
+   "frames": 200
+  },
+  {
+   "text": "ทุกคนแตกตื่น แต่ประตูไม่เปิด จนกว่าจะถึงสถานีหน้า",
+   "audio": "bts1/n5.mp3",
+   "audioFrames": 129,
+   "leadFrames": 15,
+   "frames": 171
+  },
+  {
+   "text": "คุณถอยไปปลายตู้ เจอเด็กนักเรียนตัวสั่นอยู่คนเดียว",
+   "audio": "bts1/n6.mp3",
+   "audioFrames": 127,
+   "leadFrames": 15,
+   "frames": 169
+  },
+  {
+   "text": "คุณดึงเขามาข้างหลัง ซอมบี้เดินช้า แต่ตู้นี้ไม่มีที่หนี",
+   "audio": "bts1/n7.mp3",
+   "audioFrames": 164,
+   "leadFrames": 15,
+   "frames": 206
+  },
+  {
+   "text": "แล้วเสียงตามสายก็ดังขึ้น คนขับบอกว่าจะออกมาดู",
+   "audio": "bts1/n8.mp3",
+   "audioFrames": 130,
+   "leadFrames": 15,
+   "frames": 172
+  },
+  {
+   "text": "ประตูห้องคนขับเปิดออก ถ้าเป็นคุณ จะบอกเขาให้อยู่ในห้องไหม",
+   "audio": "bts1/n9.mp3",
+   "audioFrames": 134,
+   "leadFrames": 15,
+   "frames": 161
+  }
+ ],
+ "starts": [
+  0,
+  180,
+  358,
+  522,
+  638,
+  838,
+  1009,
+  1178,
+  1384,
+  1556
+ ],
+ "cues": {
+  "hookCut": 180,
+  "doorsClose": 41,
+  "manTurns": 373,
+  "biteAt": 557,
+  "countdownStart": 567,
+  "womanRises": 811,
+  "stationPass": 883,
+  "retreatStart": 1024,
+  "mapIn": 1064,
+  "mapOut": 1357,
+  "announceStart": 1399,
+  "cabOpens": 1611,
+  "lineStart0": 21,
+  "lineEnd0": 130,
+  "lineStart1": 195,
+  "lineEnd1": 331,
+  "lineStart2": 373,
+  "lineEnd2": 495,
+  "lineStart3": 537,
+  "lineEnd3": 611,
+  "lineStart4": 653,
+  "lineEnd4": 811,
+  "lineStart5": 853,
+  "lineEnd5": 982,
+  "lineStart6": 1024,
+  "lineEnd6": 1151,
+  "lineStart7": 1193,
+  "lineEnd7": 1357,
+  "lineStart8": 1399,
+  "lineEnd8": 1529,
+  "lineStart9": 1571,
+  "lineEnd9": 1705
+ }
+}
