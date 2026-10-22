@@ -26,3 +26,4 @@ Newest at the bottom. One line per piece of feedback: what the user said, what w
 - 2026-10-22: "when a character smiles, change the camera to see them face-on" → `FaceFront.tsx`, cut-in on Irin's smile.
 - 2026-10-22: "there is floating grass at the left of the screen" → removed the foreground fern; rule: nothing floats.
 - 2026-10-22: turned the whole workflow into this skill so preferences are not forgotten.
+- 2026-10-22: wants the skill in a visible folder at the repository root so it is easy to find if the project is open-sourced → moved to `series-animation/` (master); `.claude/skills/series-animation/SKILL.md` is a pointer.
