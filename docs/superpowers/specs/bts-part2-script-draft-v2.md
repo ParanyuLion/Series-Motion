@@ -7,11 +7,11 @@ Narrator: Gemini Charon, second person "คุณ". Opening hook rule kept: "จ
 
 Narration (10 lines, about 477 Thai characters without spaces; hook worded by the user, line 5 uses the user's idea that the zombie falls onto him):
 
-1. จะเกิดอะไรขึ้น ถ้าคุณเห็นคนขับรถไฟฟ้า BTS เดินเข้าไปเตือนซอมบี้
+1. จะเกิดอะไรขึ้น ถ้าคุณเห็นคนขับ BTS เดินเข้าไปเตือนซอมบี้
 2. คนขับได้ยินเสียงโวยวาย เลยเดินมาดูว่าเกิดอะไรขึ้น
 3. เขาเดินไปตักเตือนซอมบี้ แล้วเพิ่งนึกได้ว่ามีอะไรแปลกๆ
 4. ทุกคนตะโกนให้เขาหนี แต่มันสายไปแล้ว
-5. ซอมบี้ล้มลงมางับปลายนิ้วเขา เขาตกใจ แล้วรีบวิ่งกลับห้องคนขับ
+5. ซอมบี้ล้มลงมางับปลายนิ้วเขา เขาตกใจ รีบวิ่งกลับห้องคนขับ
 6. คุณรู้ว่าเขาเหลือเวลาแค่หนึ่งนาที แต่ไม่มีใครเชื่อคุณ
 7. ลุงประเสริฐเหงื่อท่วมหน้า มือซ่อนอยู่ใต้เสื้อ
 8. แล้วเขาก็ลุกขึ้นมา ซอมบี้ตัวที่สามเกิดขึ้นกลางตู้
@@ -31,4 +31,4 @@ Events and picture plan (changes from v1 in bold):
 
 What changed in the text: lines 2 to 6 are new (v1 had the driver shouting for calm, then "ไม่เป็นไร", and "you" shouting). The hook, lines 7 to 10 and the outro stay as they were, so the 10-line structure, the timing system and the sound plan carry over.
 
-Continuity and rules: the zombies still shamble slowly (0.25 to 0.5 px per frame) except for the one lunge; the bite is only a silhouette, a sound and a small red mark; nothing else about the survivors' positions changes.
+Continuity and rules: the zombies still shamble slowly (0.25 to 0.5 px per frame) with no jump (the bitten driver is caught when a zombie falls forward onto him); the bite is only a silhouette, a sound and a small red mark; nothing else about the survivors' positions changes.
