@@ -94,7 +94,7 @@ const staging = (g: number): Pp[] => {
   // พี่นุ่น: points toward the front, argues, is shoved and staggers into the boy
   const shove = ramp(g, c.shoveAt, c.fallAt - 4);
   const nunPoint = ramp(g, c.nunPoints, c.nunPoints + 12) * (1 - ramp(g, c.argueAt, c.argueAt + 10));
-  add({ id: "nun", x: retreatX(g, FINAL_X.nun) - 50 * smooth(shove), y: FLOOR_Y + 55, walk: retr, fear: Math.max(0.45 * nunPoint, argue * (0.5 + 0.4 * wob(0)), 0.9 * shove * (1 - ramp(g, c.fallAt + 20, c.fallAt + 50)), 0.4 * scared), headTilt: argue * wob(1) * 10 - 10 * shove });
+  add({ id: "nun", x: retreatX(g, FINAL_X.nun) - 50 * smooth(shove), y: FLOOR_Y + 55, facing: g >= c.mikeNo && g < c.fallAt + 20 ? 1 : -1, walk: retr, fear: Math.max(0.45 * nunPoint, argue * (0.5 + 0.4 * wob(0)), 0.9 * shove * (1 - ramp(g, c.fallAt + 20, c.fallAt + 50)), 0.4 * scared), headTilt: argue * wob(1) * 10 - 10 * shove });
 
   // ไมค์: says no, argues, shoves
   const push = ramp(g, c.shoveAt - 6, c.shoveAt + 4) * (1 - ramp(g, c.shoveAt + 14, c.shoveAt + 30));
