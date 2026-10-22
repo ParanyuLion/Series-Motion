@@ -180,13 +180,59 @@ n = int(2.0 * SR)
 tk = np.arange(n) / SR
 put(sfx, np.sin(2 * np.pi * 55 * tk) * np.exp(-tk / 0.9) * 0.5, outro, 0.5)
 
+
+# ---- energy layer (viewer feedback: silence loses attention; make it exciting) ----
+# a driving bass pulse that speeds up from the first shake to the end, so there is never a flat moment between lines
+t = T["manTurns"] - 1.0
+while t < dur - 1.5:
+    prog = min(1.0, (t - T["manTurns"]) / max(1.0, T["announceStart"] - T["manTurns"]))
+    period = 0.62 - 0.22 * max(0.0, prog)
+    n = int(0.3 * SR)
+    tk = np.arange(n) / SR
+    hit = np.sin(2 * np.pi * (48 + 10 * np.exp(-tk / 0.05)) * tk) * np.exp(-tk / 0.11) * 0.5
+    put(music, hit * (0.5 + 0.5 * min(1.0, max(0.0, (t - T["manTurns"] + 1.0) / 2.0))), t, 0.5)
+    t += period
+
+def riser(t_end, length=1.4, vel=1.0):
+    """noise and a sine sweeping up, ending in a low boom at t_end"""
+    n = int(length * SR)
+    tr = np.arange(n) / SR
+    env = (tr / length) ** 2.2
+    sweep = np.sin(2 * np.pi * np.cumsum(180 + 1500 * (tr / length) ** 2) / SR) * env * 0.16
+    noise = highpass(lowpass(rng.standard_normal(n), 5000), 600) * env * 0.22
+    put(music, (sweep + noise) * vel, t_end - length, 0.5)
+    nb = int(1.0 * SR)
+    tb = np.arange(nb) / SR
+    put(sfx, np.sin(2 * np.pi * 42 * tb) * np.exp(-tb / 0.3) * 0.9 * vel + highpass(rng.standard_normal(nb), 900) * np.exp(-tb / 0.06) * 0.25 * vel, t_end, 0.5)
+
+def stinger(t0, vel=1.0):
+    """a rising string-like screech with vibrato"""
+    n = int(0.7 * SR)
+    ts = np.arange(n) / SR
+    f = 700 + 1500 * ts / 0.7
+    ph = 2 * np.pi * np.cumsum(f * (1 + 0.012 * np.sin(2 * np.pi * 9 * ts))) / SR
+    sig = (np.sin(ph) + 0.4 * np.sin(2 * ph)) * np.exp(-ts / 0.45) * np.minimum(1, ts / 0.02) * 0.18 * vel
+    put(music, sig, t0, 0.5)
+
+riser(T["biteAt"] + 0.03, 1.2, 0.9)
+stinger(T["biteAt"], 1.0)
+riser(T["womanRises"], 1.6, 1.0)
+stinger(T["womanRises"], 1.0)
+riser(T["announceStart"] + 0.0, 1.0, 0.6)
+riser(T["cabOpens"], 1.2, 0.8)
+# a short swish on every line change keeps the edit alive
+for i in range(1, len(shots)):
+    n = int(0.28 * SR)
+    ts = np.arange(n) / SR
+    put(sfx, lowpass(rng.standard_normal(n), 3800) * np.sin(np.pi * np.clip(ts / 0.28, 0, 1)) ** 2 * 0.12, T[f"lineStart{i}"] - 0.2, 0.3 + 0.4 * (i % 2))
+
 music_wet = reverb(music)
 # ---- mix, duck under the narration, fade ----
 duck = np.ones(N)
 for i, s in enumerate(shots):
     a = int(sec(starts[i] + s["leadFrames"]) * SR)
     b = int(sec(starts[i] + s["leadFrames"] + s["audioFrames"]) * SR)
-    duck[a:b] = 0.5
+    duck[a:b] = 0.55
 k = int(0.25 * SR)
 duck = np.convolve(duck, np.ones(k) / k, mode="same")
 

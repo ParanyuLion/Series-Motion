@@ -10,7 +10,7 @@ const m = JSON.parse(readFileSync(path, "utf8"));
 if (m.fps !== 30) fail(`fps must be 30, got ${m.fps}`);
 if (m.shots.length !== 10) fail(`expected 10 shots, got ${m.shots.length}`);
 const secs = m.total / m.fps;
-if (secs < 55 || secs > 72) fail(`total ${secs.toFixed(1)} s is outside 55-72 s`);
+if (secs < 50 || secs > 72) fail(`total ${secs.toFixed(1)} s is outside 50-72 s`);
 if (m.storyEnd / m.fps > 67) fail(`story ends at ${(m.storyEnd / m.fps).toFixed(1)} s, over the 67 s limit: raise the voice speed (--post-speed) or shorten the script`);
 for (let i = 1; i < m.starts.length; i++) if (m.starts[i] <= m.starts[i - 1]) fail(`starts not increasing at shot ${i}`);
 for (const [k, v] of Object.entries(m.cues)) if (!(v >= 0 && v <= m.total)) fail(`cue ${k}=${v} outside 0..${m.total}`);

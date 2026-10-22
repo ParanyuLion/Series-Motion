@@ -30,7 +30,7 @@ const KEYS: Key[] = [
   [c.countdownStart + 90, 480, 1040, 1.35],
   [c.womanRises - 14, 470, 1040, 1.75],
   // panic: pull out and follow the crowd, the station board flashes past
-  [c.womanRises + 60, 640, 1050, 1.1],
+  [c.womanRises + 30, 640, 1050, 1.1],
   [c.stationPass, 760, 1050, 1.0],
   // the retreat: follow "you" toward the walkway
   [c.retreatStart, 760, 1050, 1.05],
