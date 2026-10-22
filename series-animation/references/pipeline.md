@@ -29,6 +29,8 @@ Command: `GEMINI_TTS_MODEL=<model> python scripts/tts_gemini.py --script <json> 
 
 **BTS Part 2** first used `gemini-2.5-flash-preview-tts` for all ten lines (the 3.1 quota was spent on Part 1 that day; the 2.5 voice is slower, post-speed 1.3) and was then regenerated on 3.1 with a new key (post-speed 1.2). An "API key not valid" 400 means the `.env` value is wrong: stop and tell the user. Changing `--post-speed` re-uses the cache (no new requests) and the manifest re-derives every cue: the uncle rose exactly at 0:00 after a speed change.
 
+**Vertex AI backend (no free-tier cap, billed per use):** when the free quota is gone, run the TTS script with `TTS_BACKEND=vertex`; it reads `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` from `Remotion/.env` and authenticates with `gcloud auth application-default login` (no key file; token from `gcloud auth application-default print-access-token`). `gemini-3.1-flash-tts-preview` exists in location `global` only (404 in asia-southeast1); the per-line cache is shared with the free backend, so lines are never paid for twice. Quotas are per Google project, so a second API key from the same project does not help. A 400 "API key not valid" on the free backend means a wrong `.env` value: stop and tell the user.
+
 **Edge TTS fallback** (no key, provisional only): `python scripts/island/tts_edge.py --script <json> --out-dir public/island1` maps Charon to `th-TH-NiwatNeural` (rate -27%, pitch -6Hz) and Leda to `th-TH-PremwadeeNeural`. The service is unofficial and flaky (the script retries). Use it to keep working when Gemini is out of quota, then regenerate with Gemini; timing follows automatically.
 
 ## Practical notes

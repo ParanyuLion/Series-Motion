@@ -111,6 +111,13 @@ for key, vel, pan in (("zombiesApproach", 0.6, 0.3), ("biteAt", 1.0, 0.4), ("unc
     put(sfx, groan(vel=vel), T[key] - 0.1, pan)
 put(sfx, groan(length=1.1, f0=150.0, vel=0.5), T["uncleRises"] + 1.4, 0.65)
 
+# ---- the survivors shout "run!" (no new voices: short voiced bursts, higher than the zombie groans) and the zombie topples ----
+for k, (dt, f0, pan) in enumerate(((0.0, 340.0, 0.7), (0.12, 280.0, 0.3), (0.3, 390.0, 0.8), (0.45, 310.0, 0.55))):
+    put(sfx, groan(length=0.7, f0=f0, vel=0.55), T["shoutAt"] + dt, pan)
+n = int(0.5 * SR)
+tk = np.arange(n) / SR
+put(sfx, np.sin(2 * np.pi * 52 * tk) * np.exp(-tk / 0.16) * 0.9 + highpass(lowpass(rng.standard_normal(n), 900), 120) * np.exp(-tk / 0.05) * 0.5, T["biteAt"] - 0.05, 0.4)  # the body hits the floor
+
 # ---- the bite: a hard cut of sound (silhouette shot), then a breath ----
 n = int(0.35 * SR)
 tk = np.arange(n) / SR
@@ -128,7 +135,7 @@ while t < end:
         beat = np.sin(2 * np.pi * 52 * tk) * np.exp(-tk / 0.07) * a * 0.9
         put(sfx, beat * (0.5 + 0.5 * prog) * q_at(t), t + off, 0.5)
     t += period
-# a tick on every second of the countdown, getting sharper
+# a tick on every half second of the countdown, getting sharper
 for k in range(int((end - T["countdownStart"]) * 2)):
     tk0 = T["countdownStart"] + k * 0.5
     n = int(0.04 * SR)
