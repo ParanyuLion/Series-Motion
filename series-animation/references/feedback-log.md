@@ -34,4 +34,5 @@ Newest at the bottom. One line per piece of feedback: what the user said, what w
 - 2026-10-22: look: option A (bright morning carriage) with yellow seats; student in a white long-sleeve shirt, green tie, black trousers.
 - 2026-10-22: wanted more content per clip: 3 to 5 events per part; more carried by on-screen graphics (countdown, train map, station boards) than by narration.
 - 2026-10-22: "you" must have a near-bite (not an infection); approved the design document, including the cast and the order of deaths ("ok") → `docs/superpowers/specs/2026-10-22-bts-zombie-series-design.md`.
+- 2026-10-22: BTS Part 1 built (`Remotion/src/bts/`, `scripts/bts/`, composition `Bts1`, output `out/bts_part1.mp4`, 61.7 s, -18.3 LUFS): narration Charon via gemini-3.1-flash-tts-preview at 1.1 x 1.2; cues drive the camera, countdown, map and sound. Not yet judged by the user: watching it, the sound, Thai pronunciation, pacing.
 

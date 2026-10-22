@@ -36,3 +36,8 @@ Command: `GEMINI_TTS_MODEL=<model> python scripts/tts_gemini.py --script <json> 
 - Remotion is free for individuals and companies of up to 3 people; mention the licence if the user's situation changes.
 - The brainstorming skill's visual companion (a local browser page for mockups) writes to `.superpowers/`; it is git-ignored and was stopped after use.
 - Platform policy notes from earlier research: YouTube asks for disclosure only for realistic AI content, not for stylised animation; "inauthentic content" rules target mass-produced repetitive videos, so each part needs a real story. TikTok and Meta rules for 2026 were not verified.
+
+## BTS series commands (same chain, folder `bts`)
+
+Run from `Remotion/`: `GEMINI_TTS_MODEL=gemini-3.1-flash-tts-preview python scripts/tts_gemini.py --script scripts/bts/part1.narration.json --out-dir public/bts1 --voice Charon --speed 1.1 --post-speed 1.2`, then `node scripts/bts/manifest.mjs`, `python scripts/bts/bed.py`, `node scripts/bts/verify.mjs`, `node scripts/bts/subtitle-check.mjs`, and `npx remotion render src/index.ts Bts1 out/bts_part1.mp4 --codec=h264` (about 6 minutes). Preview compositions for review stills: `BtsCastPreview`, `BtsSetPreview`, `BtsGraphicsPreview`. The cues (`doorsClose`, `manTurns`, `biteAt`, `countdownStart`, `womanRises`, `stationPass`, `retreatStart`, `mapIn/Out`, `announceStart`, `cabOpens`) drive the picture, the camera (`src/bts/camera.ts`) and the sound (`scripts/bts/bed.py`); change the audio speed and everything follows. For a new part copy the `bts` folders and compositions and keep the same cue style.
+
