@@ -21,10 +21,10 @@ const KEYS: Key[] = [
   [c.realiseAt, 620, 1040, 1.6],
   [c.shoutAt, 1000, 1050, 0.9],
   // the topple and the bite
-  [c.fallAt - 5, 700, 1045, 1.2],
-  [c.biteAt - 12, 590, 1040, 1.7],
-  [c.biteAt + 30, 540, 1040, 1.5],
-  [c.biteAt + 60, 400, 1050, 1.2],
+  [c.fallAt - 5, 700, 1030, 1.15],
+  [c.biteAt - 12, 560, 1010, 1.4],
+  [c.biteAt + 30, 520, 1010, 1.3],
+  [c.biteAt + 60, 400, 1020, 1.15],
   // back to the survivors: "you" see the wound
   [c.cabCloses, 900, 1050, 0.95],
   [c.youSee - 5, 1430, 1060, 1.2],

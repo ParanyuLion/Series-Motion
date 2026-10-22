@@ -29,6 +29,8 @@ export type PassengerProps = {
   label?: boolean;
   /** 0..1: wide eyes, hands up */
   fear?: number;
+  /** 0..1: opacity of a small red bite mark on the front fingertip (no blood) */
+  mark?: number;
 };
 
 type Look = { skin: string; top: string; bottom: string; shoe: string };
@@ -49,7 +51,7 @@ const Leg: React.FC<{ thigh: number; knee: number; look: Look }> = ({ thigh, kne
   </g>
 );
 
-const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: number }> = ({ shoulder, elbow, look, sleeve }) => (
+const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: number; mark?: number }> = ({ shoulder, elbow, look, sleeve, mark = 0 }) => (
   <g transform={`rotate(${shoulder})`}>
     <rect x={-8} y={-4} width={16} height={46} rx={8} fill={look.skin} />
     {sleeve > 0 && <rect x={-8} y={-4} width={16} height={Math.min(46, sleeve) + 4} rx={8} fill={look.top} />}
@@ -57,6 +59,7 @@ const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: numbe
       <rect x={-7} y={-2} width={14} height={40} rx={7} fill={look.skin} />
       {sleeve > 60 && <rect x={-7} y={-2} width={14} height={Math.min(34, sleeve - 46)} rx={7} fill={look.top} />}
       <circle cx={0} cy={40} r={9} fill={look.skin} />
+      {mark > 0 && <circle cx={0} cy={47} r={5} fill="#a83a34" opacity={mark} />}
     </g>
   </g>
 );
@@ -105,7 +108,7 @@ const Head: React.FC<{ c: PassengerData; skin: string; tilt: number; inf: number
   );
 };
 
-export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, facing = 1, phase, walk, frame, infection = 0, pose = "stand", headTilt = 0, label = false, fear = 0 }) => {
+export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, facing = 1, phase, walk, frame, infection = 0, pose = "stand", headTilt = 0, label = false, fear = 0, mark = 0 }) => {
   const c = PASSENGERS[id];
   const has = (a: string) => c.accessories.includes(a as never);
   const k = scale * (c.height / 108);
@@ -178,7 +181,7 @@ export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, fac
               <Head c={c} skin={skin} tilt={tilt} inf={infection} fear={fear} frame={frame} />
             </g>
             <g transform={`translate(0,${shoulderY})`}>
-              <Arm shoulder={frontArm} elbow={frontElbow} look={look} sleeve={c.sleeve} />
+              <Arm shoulder={frontArm} elbow={frontElbow} look={look} sleeve={c.sleeve} mark={mark} />
             </g>
           </g>
         </g>

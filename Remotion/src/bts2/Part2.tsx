@@ -42,7 +42,7 @@ const lightsAt = (g: number) => {
 };
 
 // ---------------- the cast: position, pose, infection, all derived from cues ----------------
-type Pp = { id: PassengerId; x: number; y: number; facing: 1 | -1; pose: "stand" | "sit" | "hold" | "shamble" | "fall"; walk: number; infection: number; fear: number; headTilt: number; label: boolean; rot: number };
+type Pp = { id: PassengerId; x: number; y: number; facing: 1 | -1; pose: "stand" | "sit" | "hold" | "shamble" | "fall"; walk: number; infection: number; fear: number; headTilt: number; label: boolean; rot: number; mark: number };
 
 // one name tag at a time
 const TAGS: { id: PassengerId; t: number }[] = [
@@ -54,8 +54,9 @@ const TAGS: { id: PassengerId; t: number }[] = [
 const SURVIVOR_X = { uncle: 1230, nun: 1330, you: 1430, nueng: 1530, mike: 1620, aunt: 1700 };
 const DRIVER_START = 100; // just outside the left edge of the first shot
 const DRIVER_STOP = 520;
-const DRIVER_BACK = 30; // he steps back this far when he sees the grey skin
-const GAP_AT_FALL = 150; // the man's feet are this far from the driver when he topples
+const DRIVER_BACK = 30;
+const DRIVER_LANE = 75; // as he turns to run he moves toward the camera so that he passes in front of the fallen zombie, never over it // he steps back this far when he sees the grey skin
+const GAP_AT_FALL = 230; // the man's feet are this far from the driver when he topples: his arms (about 150 px) reach him only as he falls
 const FALL_FROM = c.fallAt + 5; // the topple runs from here to biteAt (35 frames, still slow)
 const FALL_DEG = 88;
 const BITE_TURN = c.biteAt + 10;
@@ -79,9 +80,9 @@ const driverX = (g: number) => {
 
 const staging = (g: number): Pp[] => {
   const out: Pp[] = [];
-  const add = (p: Omit<Pp, "label" | "walk" | "infection" | "fear" | "headTilt" | "facing" | "pose" | "rot"> & Partial<Pp>) => {
+  const add = (p: Omit<Pp, "label" | "walk" | "infection" | "fear" | "headTilt" | "facing" | "pose" | "rot" | "mark"> & Partial<Pp>) => {
     const tag = TAGS.find((t) => t.id === p.id);
-    out.push({ facing: 1, pose: "stand", walk: 0, infection: 0, fear: 0, headTilt: 0, rot: 0, ...p, label: !!tag && g >= tag.t && g < tag.t + TAG_FRAMES } as Pp);
+    out.push({ facing: 1, pose: "stand", walk: 0, infection: 0, fear: 0, headTilt: 0, rot: 0, mark: 0, ...p, label: !!tag && g >= tag.t && g < tag.t + TAG_FRAMES } as Pp);
   };
   const shake = (amp: number) => Math.sin(g * 0.9) * amp;
   const doubt = ramp(g, c.youShout, c.youShout + 20) * (1 - ramp(g, c.youShout + 100, c.youShout + 125)); // others shake their heads at "you"
@@ -93,7 +94,7 @@ const staging = (g: number): Pp[] => {
   const enteringWalk = g >= c.driverEnters && g < c.zombiesApproach;
   const turning = g >= c.shoutAt;
   const running = g >= RUN_FROM;
-  add({ id: "driver", x: dx, y: FLOOR_Y + 40, facing: turning ? -1 : 1, pose: "stand", walk: enteringWalk ? 1 : running ? 1 : g >= c.shoutAt && g < c.fallAt ? 0.5 : 0, fear: running ? 0.5 : lerp(0.4, 0.85, ramp(g, c.realiseAt, c.realiseAt + 20)), infection: ramp(g, c.biteAt, c.cabCloses) * 0.3 });
+  add({ id: "driver", x: dx, y: FLOOR_Y + 40 + DRIVER_LANE * ramp(g, c.shoutAt, c.fallAt), mark: clamp01((g - c.biteAt - 6) / 12), facing: turning ? -1 : 1, pose: "stand", walk: enteringWalk ? 1 : running ? 1 : g >= c.shoutAt && g < c.fallAt ? 0.5 : 0, fear: running ? 0.5 : lerp(0.4, 0.85, ramp(g, c.realiseAt, c.realiseAt + 20)), infection: ramp(g, c.biteAt, c.cabCloses) * 0.3 });
 
   // the two zombies from Part 1 shamble toward the driver; the man topples onto him (rotation about his feet), the woman turns back to the group
   const manUp = g >= GET_UP + GET_UP_FRAMES;
@@ -128,23 +129,23 @@ const BiteSilhouette: React.FC<{ g: number }> = ({ g }) => {
       <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 42%, #f4f1e6 0%, #bdb7a4 38%, #0b0c0e 80%)" }} />
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0 }}>
         <g fill="#070707">
-          <ellipse cx={470} cy={760} rx={92} ry={100} />
-          <path d="M376 740 A94 94 0 0 1 564 740 Z" />
-          <path d="M540 724 L640 746 L636 764 L540 750 Z" />
-          <path d="M300 1100 Q310 880 470 860 Q640 880 650 1100 Z" />
-          <ellipse cx={620} cy={800} rx={82} ry={90} transform="rotate(24 620 800)" />
-          <path d="M470 1100 Q500 900 640 890 Q770 910 790 1100 Z" />
+          {/* the driver: head with cap at the left, his arm stretched toward the zombie, one finger out */}
+          <ellipse cx={170} cy={700} rx={84} ry={92} />
+          <path d="M82 690 A90 90 0 0 1 258 690 Z" />
+          <path d="M240 676 L330 696 L326 714 L240 700 Z" />
+          <path d="M60 1100 Q70 900 190 860 L420 830 L428 864 L250 910 Q200 960 190 1100 Z" />
+          <ellipse cx={444} cy={846} rx={38} ry={26} transform="rotate(-14 444 846)" />
+          <rect x={470} y={822} width={118} height={20} rx={10} transform="rotate(-10 470 832)" />
+          {/* the zombie: head on the floor side, mouth closing on the fingertip, one arm reaching */}
+          <ellipse cx={720} cy={820} rx={128} ry={138} />
+          <path d="M540 1100 Q570 900 720 940 Q900 960 930 1100 Z" />
+          <path d="M880 760 L1040 700 L1060 740 L900 810 Z" />
         </g>
+        <path d="M584 806 L670 826 L584 858 Z" fill="#d8d2bf" />
+        <rect x={560} y={814} width={40} height={18} rx={9} fill="#070707" transform="rotate(-6 560 824)" />
       </svg>
     </AbsoluteFill>
   );
-};
-
-/** a small red mark on the driver's fingertip after the bite (no blood); his hand trails behind him as he runs left */
-const FingerMark: React.FC<{ x: number; g: number }> = ({ x, g }) => {
-  if (g < c.biteAt + 6 || g >= c.cabCloses + CAB_INSERT_FRAMES) return null;
-  const a = clamp01((g - c.biteAt - 6) / 12);
-  return <ellipse cx={x - 30} cy={FLOOR_Y + 40 - 120} rx={7} ry={6} fill="#a83a34" opacity={a * 0.9} />;
 };
 
 // ---------------- screen-space pieces ----------------
@@ -181,8 +182,7 @@ const CabDoor: React.FC<{ g: number; open: number; infection?: number; mark?: bo
       <rect x={250} y={350} width={580} height={1090} fill="#10161b" />
       <rect x={250} y={350} width={580} height={1090} fill="url(#cab2-glow)" opacity={0.6 + 0.4 * Math.sin(g * 0.3)} />
       {[0, 1, 2, 3].map((i) => <rect key={i} x={300 + i * 120} y={430} width={70} height={46} rx={8} fill={i === 1 ? "#d9534f" : "#2f8f4e"} opacity={0.8} />)}
-      <Passenger id="driver" x={540} y={1440} scale={2.2} facing={1} phase={0} walk={0} frame={g} infection={infection} pose="stand" headTilt={0} fear={mark ? 0.6 : 0} />
-      {mark && <ellipse cx={575} cy={1440 - 170} rx={10} ry={8} fill="#a83a34" opacity={0.9} />}
+      <Passenger id="driver" x={540} y={1440} scale={2.2} facing={1} phase={0} walk={0} frame={g} infection={infection} pose="stand" headTilt={0} fear={mark ? 0.6 : 0} mark={mark ? 1 : 0} />
       <g transform={`translate(${-open * 300},0)`}>
         <rect x={250} y={350} width={300} height={1090} fill="#59626b" stroke="#2a2f33" strokeWidth={8} />
         <rect x={300} y={420} width={200} height={300} fill="#a8c0d0" opacity={0.5} />
@@ -325,10 +325,9 @@ const World: React.FC = () => {
           <TrainInterior frame={g} scroll={scroll} doors={0} lights={lightsAt(g)} station={g < c.stationPass ? "ชิดลม" : "เพลินจิต"} carNumber={3} windowChildren={showBoard ? <StationBoard x={boardX} name="เพลินจิต" /> : null} />
           {people.map((p) => (
             <g key={p.id} transform={p.rot ? `rotate(${p.rot} ${p.x} ${p.y})` : undefined}>
-            <Passenger id={p.id} x={p.x} y={p.y} scale={1.7} facing={p.facing} phase={g * PHASE_SPEED + PASSENGER_IDS.indexOf(p.id) * 0.9} walk={p.walk} frame={g} infection={p.infection} pose={p.pose} headTilt={p.headTilt} label={p.label} fear={p.fear} />
+            <Passenger id={p.id} x={p.x} y={p.y} scale={1.7} facing={p.facing} phase={g * PHASE_SPEED + PASSENGER_IDS.indexOf(p.id) * 0.9} walk={p.walk} frame={g} infection={p.infection} pose={p.pose} headTilt={p.headTilt} label={p.label} fear={p.fear} mark={p.mark} />
             </g>
           ))}
-          <FingerMark x={dx} g={g} />
         </g>
       </svg>
 
