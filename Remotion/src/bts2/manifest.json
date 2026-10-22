@@ -1,125 +1,125 @@
 {
  "fps": 30,
- "total": 1798,
- "storyEnd": 1651,
- "outroStart": 1663,
+ "total": 1686,
+ "storyEnd": 1539,
+ "outroStart": 1551,
  "shots": [
   {
    "text": "จะเกิดอะไรขึ้น ถ้าคุณเห็นซอมบี้กัดคนขับ แล้วไม่มีใครเชื่อ",
    "audio": "bts2/n0.mp3",
-   "audioFrames": 167,
+   "audioFrames": 154,
    "leadFrames": 21,
-   "frames": 238
+   "frames": 225
   },
   {
    "text": "คนขับเดินเข้ามาในตู้ ตะโกนให้ทุกคนใจเย็นๆ",
    "audio": "bts2/n1.mp3",
-   "audioFrames": 127,
+   "audioFrames": 117,
    "leadFrames": 6,
-   "frames": 141
+   "frames": 131
   },
   {
    "text": "ซอมบี้เดินเข้าหาเขาอย่างช้าๆ แต่เขาไม่ทันหลบ",
    "audio": "bts2/n2.mp3",
-   "audioFrames": 127,
+   "audioFrames": 117,
    "leadFrames": 6,
-   "frames": 141
+   "frames": 131
   },
   {
    "text": "เขาถูกกัดที่แขน แล้วบอกว่า ไม่เป็นไร รีบกลับเข้าห้องคนขับ",
    "audio": "bts2/n3.mp3",
-   "audioFrames": 167,
+   "audioFrames": 154,
    "leadFrames": 6,
-   "frames": 181
+   "frames": 168
   },
   {
    "text": "แต่คุณเห็นแผลนั้น คุณรู้ว่าเขาเหลือเวลาแค่หนึ่งนาที",
    "audio": "bts2/n4.mp3",
-   "audioFrames": 131,
+   "audioFrames": 121,
    "leadFrames": 6,
-   "frames": 145
+   "frames": 135
   },
   {
    "text": "คุณตะโกนบอกทุกคน แต่ไม่มีใครเชื่อ เพราะเขาคือคนขับ",
    "audio": "bts2/n5.mp3",
-   "audioFrames": 160,
+   "audioFrames": 148,
    "leadFrames": 6,
-   "frames": 174
+   "frames": 162
   },
   {
    "text": "ลุงประเสริฐเหงื่อท่วมหน้า มือซ่อนอยู่ใต้เสื้อ",
    "audio": "bts2/n6.mp3",
-   "audioFrames": 136,
+   "audioFrames": 126,
    "leadFrames": 6,
-   "frames": 150
+   "frames": 140
   },
   {
    "text": "แล้วเขาก็ลุกขึ้นมา ซอมบี้ตัวที่สามเกิดขึ้นกลางตู้",
    "audio": "bts2/n7.mp3",
-   "audioFrames": 167,
+   "audioFrames": 154,
    "leadFrames": 6,
-   "frames": 181
+   "frames": 168
   },
   {
    "text": "รถไฟผ่านสถานีไปโดยไม่จอด และไม่มีเสียงประกาศอีกเลย",
    "audio": "bts2/n8.mp3",
-   "audioFrames": 203,
+   "audioFrames": 188,
    "leadFrames": 6,
-   "frames": 217
+   "frames": 202
   },
   {
    "text": "ถ้าเป็นคุณ จะเข้าไปในห้องคนขับไหม",
    "audio": "bts2/n9.mp3",
-   "audioFrames": 77,
+   "audioFrames": 71,
    "leadFrames": 6,
-   "frames": 95
+   "frames": 89
   }
  ],
  "starts": [
   0,
-  238,
-  379,
-  520,
-  701,
-  846,
-  1020,
-  1170,
-  1351,
-  1568
+  225,
+  356,
+  487,
+  655,
+  790,
+  952,
+  1092,
+  1260,
+  1462
  ],
  "cues": {
-  "hookCut": 238,
-  "driverEnters": 244,
-  "zombiesApproach": 385,
-  "biteAt": 536,
-  "cabCloses": 693,
-  "countdownStart": 693,
-  "youSee": 707,
-  "youShout": 852,
-  "unclePale": 1026,
-  "uncleRises": 1191,
-  "stationPass": 1387,
-  "silenceAt": 1357,
-  "questionAt": 1574,
+  "hookCut": 225,
+  "driverEnters": 231,
+  "zombiesApproach": 362,
+  "biteAt": 503,
+  "cabCloses": 647,
+  "countdownStart": 647,
+  "youSee": 661,
+  "youShout": 796,
+  "unclePale": 958,
+  "uncleRises": 1113,
+  "stationPass": 1296,
+  "silenceAt": 1266,
+  "questionAt": 1468,
   "lineStart0": 21,
-  "lineEnd0": 188,
-  "lineStart1": 244,
-  "lineEnd1": 371,
-  "lineStart2": 385,
-  "lineEnd2": 512,
-  "lineStart3": 526,
-  "lineEnd3": 693,
-  "lineStart4": 707,
-  "lineEnd4": 838,
-  "lineStart5": 852,
-  "lineEnd5": 1012,
-  "lineStart6": 1026,
-  "lineEnd6": 1162,
-  "lineStart7": 1176,
-  "lineEnd7": 1343,
-  "lineStart8": 1357,
-  "lineEnd8": 1560,
-  "lineStart9": 1574,
-  "lineEnd9": 1651
+  "lineEnd0": 175,
+  "lineStart1": 231,
+  "lineEnd1": 348,
+  "lineStart2": 362,
+  "lineEnd2": 479,
+  "lineStart3": 493,
+  "lineEnd3": 647,
+  "lineStart4": 661,
+  "lineEnd4": 782,
+  "lineStart5": 796,
+  "lineEnd5": 944,
+  "lineStart6": 958,
+  "lineEnd6": 1084,
+  "lineStart7": 1098,
+  "lineEnd7": 1252,
+  "lineStart8": 1266,
+  "lineEnd8": 1454,
+  "lineStart9": 1468,
+  "lineEnd9": 1539
  }
 }

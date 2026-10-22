@@ -10,6 +10,7 @@ const ZOMBIE_SKIN = "#a9b996";
  */
 export const ZombieFace: React.FC<{ id?: PassengerId; frame: number; t: number }> = ({ id = "woman1", frame, t }) => {
   const c = PASSENGERS[id];
+  const bald = (c.accessories as string[]).includes("bald");
   const zoom = 1.02 + 0.12 * t;
   const sway = Math.sin(frame * 0.09) * 1.8;
   const jaw = 10 + Math.sin(frame * 0.12) * 3 + t * 8;
@@ -33,9 +34,9 @@ export const ZombieFace: React.FC<{ id?: PassengerId; frame: number; t: number }
         <rect x={-34} y={96} width={68} height={92} rx={26} fill={mix(ZOMBIE_SKIN, "#000000", 0.18)} />
         <ellipse cx={-96} cy={4} rx={13} ry={22} fill={mix(ZOMBIE_SKIN, "#000000", 0.1)} />
         <ellipse cx={96} cy={4} rx={13} ry={22} fill={mix(ZOMBIE_SKIN, "#000000", 0.1)} />
-        <circle cx={0} cy={-132} r={34} fill={c.hair} />
+        {!bald && <circle cx={0} cy={-132} r={34} fill={c.hair} />}
         <ellipse cx={0} cy={0} rx={92} ry={108} fill={ZOMBIE_SKIN} />
-        <path d="M-94 -14 Q-100 -118 0 -120 Q100 -118 94 -14 Q74 -86 0 -88 Q-74 -86 -94 -14 Z" fill={c.hair} />
+        {bald ? <path d="M-94 -14 Q-96 -40 -84 -58 L-84 -8 Z M94 -14 Q96 -40 84 -58 L84 -8 Z" fill={c.hair} /> : <path d="M-94 -14 Q-100 -118 0 -120 Q100 -118 94 -14 Q74 -86 0 -88 Q-74 -86 -94 -14 Z" fill={c.hair} />}
         <path d="M-56 -40 q10 12 4 30 M40 -50 q-8 14 -2 30 M0 -72 q4 14 -2 24 M60 -4 q-10 10 -6 24" stroke="#4a6a4a" strokeWidth={4} fill="none" opacity={0.7} />
         {[-44, 44].map((ex, i) => (
           <g key={i} transform={`translate(${ex},-14)`}>

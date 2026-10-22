@@ -13,6 +13,8 @@ import { BtsSetPreview } from "./bts/SetPreview";
 import { BtsGraphicsPreview } from "./bts/GraphicsPreview";
 import { Part1 as BtsPart1 } from "./bts/Part1";
 import bts from "./bts/manifest.json";
+import { Part2 as BtsPart2 } from "./bts2/Part2";
+import bts2 from "./bts2/manifest.json";
 
 export const Root: React.FC = () => (
   <>
@@ -24,6 +26,7 @@ export const Root: React.FC = () => (
     <Composition id="BtsSetPreview" component={BtsSetPreview} durationInFrames={3} fps={30} width={1080} height={1920} />
     <Composition id="BtsGraphicsPreview" component={BtsGraphicsPreview} durationInFrames={6} fps={30} width={1080} height={700} />
     <Composition id="Bts1" component={BtsPart1} durationInFrames={bts.total} fps={bts.fps} width={W} height={H} />
+    <Composition id="Bts2" component={BtsPart2} durationInFrames={bts2.total} fps={bts2.fps} width={W} height={H} />
     <Composition id="CastPreview" component={CastPreview} durationInFrames={60} fps={30} width={1080} height={600} defaultProps={{ dirt: 0, walk: 0 }} />
   </>
 );
