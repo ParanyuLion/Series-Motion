@@ -46,7 +46,7 @@ type Pp = { id: PassengerId; x: number; y: number; facing: 1 | -1; pose: "stand"
 
 // one name tag at a time
 const TAGS: { id: PassengerId; t: number }[] = [
-  { id: "driver", t: c.driverEnters + 40 },
+  { id: "driver", t: c.driverEnters + 115 }, // when he is inside the tag-safe screen area (x 130 to 880)
   { id: "uncle", t: c.unclePale + 20 },
 ];
 
@@ -54,13 +54,14 @@ const TAGS: { id: PassengerId; t: number }[] = [
 const SURVIVOR_X = { uncle: 1230, nun: 1330, you: 1430, nueng: 1530, mike: 1620, aunt: 1700 };
 const DRIVER_START = 100; // just outside the left edge of the first shot
 const DRIVER_STOP = 520;
-const MAN0 = 760;
-const WOMAN0 = 880;
+// at the bite the man is more than an arm's reach (250 px) from the driver, so the zombies never overlap him before the silhouette cut
+const MAN_AT_BITE = DRIVER_STOP - 15 + 250;
+const WOMAN_AT_BITE = MAN_AT_BITE + 130;
 const BITE_TURN = c.biteAt + 10;
 
 // zombies are slow: 0.5 px per frame toward the driver, then 0.25 px per frame toward the group, never touching it
-const manX = (g: number) => MAN0 - 0.5 * Math.max(0, Math.min(g, BITE_TURN) - c.hookCut) + 0.25 * Math.max(0, g - BITE_TURN);
-const womanX = (g: number) => WOMAN0 - 0.45 * Math.max(0, Math.min(g, BITE_TURN) - c.hookCut) + 0.25 * Math.max(0, g - BITE_TURN);
+const manX = (g: number) => MAN_AT_BITE - 0.5 * (BITE_TURN - Math.min(g, BITE_TURN)) + 0.25 * Math.max(0, g - BITE_TURN);
+const womanX = (g: number) => WOMAN_AT_BITE - 0.45 * (BITE_TURN - Math.min(g, BITE_TURN)) + 0.25 * Math.max(0, g - BITE_TURN);
 const driverX = (g: number) => {
   if (g < c.biteAt + 25) return lerp(DRIVER_START, DRIVER_STOP, ramp(g, c.driverEnters, c.zombiesApproach)) - 15 * ramp(g, c.zombiesApproach + 40, c.biteAt);
   return lerp(DRIVER_STOP - 15, -250, ramp(g, c.biteAt + 25, c.cabCloses + CAB_INSERT_FRAMES));
