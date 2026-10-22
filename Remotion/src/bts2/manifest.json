@@ -1,0 +1,125 @@
+{
+ "fps": 30,
+ "total": 1798,
+ "storyEnd": 1651,
+ "outroStart": 1663,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณเห็นซอมบี้กัดคนขับ แล้วไม่มีใครเชื่อ",
+   "audio": "bts2/n0.mp3",
+   "audioFrames": 167,
+   "leadFrames": 21,
+   "frames": 238
+  },
+  {
+   "text": "คนขับเดินเข้ามาในตู้ ตะโกนให้ทุกคนใจเย็นๆ",
+   "audio": "bts2/n1.mp3",
+   "audioFrames": 127,
+   "leadFrames": 6,
+   "frames": 141
+  },
+  {
+   "text": "ซอมบี้เดินเข้าหาเขาอย่างช้าๆ แต่เขาไม่ทันหลบ",
+   "audio": "bts2/n2.mp3",
+   "audioFrames": 127,
+   "leadFrames": 6,
+   "frames": 141
+  },
+  {
+   "text": "เขาถูกกัดที่แขน แล้วบอกว่า ไม่เป็นไร รีบกลับเข้าห้องคนขับ",
+   "audio": "bts2/n3.mp3",
+   "audioFrames": 167,
+   "leadFrames": 6,
+   "frames": 181
+  },
+  {
+   "text": "แต่คุณเห็นแผลนั้น คุณรู้ว่าเขาเหลือเวลาแค่หนึ่งนาที",
+   "audio": "bts2/n4.mp3",
+   "audioFrames": 131,
+   "leadFrames": 6,
+   "frames": 145
+  },
+  {
+   "text": "คุณตะโกนบอกทุกคน แต่ไม่มีใครเชื่อ เพราะเขาคือคนขับ",
+   "audio": "bts2/n5.mp3",
+   "audioFrames": 160,
+   "leadFrames": 6,
+   "frames": 174
+  },
+  {
+   "text": "ลุงประเสริฐเหงื่อท่วมหน้า มือซ่อนอยู่ใต้เสื้อ",
+   "audio": "bts2/n6.mp3",
+   "audioFrames": 136,
+   "leadFrames": 6,
+   "frames": 150
+  },
+  {
+   "text": "แล้วเขาก็ลุกขึ้นมา ซอมบี้ตัวที่สามเกิดขึ้นกลางตู้",
+   "audio": "bts2/n7.mp3",
+   "audioFrames": 167,
+   "leadFrames": 6,
+   "frames": 181
+  },
+  {
+   "text": "รถไฟผ่านสถานีไปโดยไม่จอด และไม่มีเสียงประกาศอีกเลย",
+   "audio": "bts2/n8.mp3",
+   "audioFrames": 203,
+   "leadFrames": 6,
+   "frames": 217
+  },
+  {
+   "text": "ถ้าเป็นคุณ จะเข้าไปในห้องคนขับไหม",
+   "audio": "bts2/n9.mp3",
+   "audioFrames": 77,
+   "leadFrames": 6,
+   "frames": 95
+  }
+ ],
+ "starts": [
+  0,
+  238,
+  379,
+  520,
+  701,
+  846,
+  1020,
+  1170,
+  1351,
+  1568
+ ],
+ "cues": {
+  "hookCut": 238,
+  "driverEnters": 244,
+  "zombiesApproach": 385,
+  "biteAt": 536,
+  "cabCloses": 693,
+  "countdownStart": 693,
+  "youSee": 707,
+  "youShout": 852,
+  "unclePale": 1026,
+  "uncleRises": 1191,
+  "stationPass": 1387,
+  "silenceAt": 1357,
+  "questionAt": 1574,
+  "lineStart0": 21,
+  "lineEnd0": 188,
+  "lineStart1": 244,
+  "lineEnd1": 371,
+  "lineStart2": 385,
+  "lineEnd2": 512,
+  "lineStart3": 526,
+  "lineEnd3": 693,
+  "lineStart4": 707,
+  "lineEnd4": 838,
+  "lineStart5": 852,
+  "lineEnd5": 1012,
+  "lineStart6": 1026,
+  "lineEnd6": 1162,
+  "lineStart7": 1176,
+  "lineEnd7": 1343,
+  "lineStart8": 1357,
+  "lineEnd8": 1560,
+  "lineStart9": 1574,
+  "lineEnd9": 1651
+ }
+}
