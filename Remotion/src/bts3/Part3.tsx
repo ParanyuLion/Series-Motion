@@ -29,7 +29,7 @@ const FALL_DEG = 88;
 
 // ---------------- the world: car 4 is the last car; its walkway to car 3 is at the LEFT end, so the interior is mirrored ----------------
 const OFF = 1500; // shifts the interior so that the walkway sits at x 600 to 840
-const REAR_X = 2000; // the closed rear end of the train
+const REAR_X = 2100; // the closed rear end of the train
 const CORRIDOR_X = 600; // left of this: the vestibule toward car 3
 
 /** puts children at a visual world x inside the mirrored interior without mirroring them (text stays readable) */
@@ -57,15 +57,16 @@ const TAGS: { id: PassengerId; t: number }[] = [
   { id: "nun", t: c.nunPoints },
   { id: "mike", t: c.mikeNo },
   { id: "nueng", t: c.argueAt + 10 },
-  { id: "aunt", t: c.argueAt + 50 },
+  { id: "aunt", t: c.countAt - 35 }, // when the camera is on the right and she is walking to the boy
 ];
 
 // where everybody ends up (left to right): the boy nearest the zombies, "you" at the back; they start 150 px nearer the walkway
-const FINAL_X = { nueng: 1420, nun: 1500, mike: 1620, aunt: 1745, you: 1870 };
+const FINAL_X = { nueng: 1360, nun: 1520, mike: 1660, aunt: 1800, you: 1930 };
 const RETREAT = 150;
 const retreatX = (g: number, final: number) => final - RETREAT * (1 - smooth(ramp(g, c.enterAt, c.enterAt + 110)));
 const retreating = (g: number) => g >= c.enterAt && g < c.enterAt + 110;
-const NUENG_STAND = 100; // after the bite he and ป้าสมจิตร drift a little toward the rear
+const FRONT_LANE = 95; // after the bite the boy and ป้าสมจิตร meet in the lane nearest the camera, so they pass in front of the others
+const MEET_X = { nueng: 1590, aunt: 1670 };
 
 // the zombies: 0.5 px per frame (the man leads), 0.25 after the bite; they never reach the survivors
 const MAN_AT_BITE = 650 + 0.5 * (c.biteAt - c.enterAt);
@@ -86,21 +87,22 @@ const staging = (g: number): Pp[] => {
   const fallA = FALL_DEG * smooth(ramp(g, c.fallAt, c.fallAt + FALL_FRAMES));
   const riseA = FALL_DEG * (1 - smooth(ramp(g, c.biteAt + 25, c.biteAt + 60)));
   const ang = g < c.biteAt + 25 ? fallA : riseA;
-  const drift = NUENG_STAND * smooth(ramp(g, c.countAt, le(9)));
-  add({ id: "nueng", x: retreatX(g, FINAL_X.nueng) + drift, y: FLOOR_Y + 20, walk: retr, fear: Math.max(0.5 * scared, 0.9 * argue), rot: -ang, mark: clamp01((g - c.biteAt - 12) / 12), headTilt: g < c.fallAt ? wob(1, 0.9) * 3 : 0 });
+  const meet = smooth(ramp(g, c.biteAt + 65, c.countAt + 40));
+  const walkingToAunt = meet > 0 && meet < 1;
+  add({ id: "nueng", x: lerp(retreatX(g, FINAL_X.nueng), MEET_X.nueng, meet), y: lerp(FLOOR_Y + 20, FLOOR_Y + 20 + FRONT_LANE, smooth(ramp(g, c.biteAt + 65, c.biteAt + 95))), facing: meet > 0 ? 1 : -1, walk: walkingToAunt ? 0.6 : retr, fear: Math.max(0.5 * scared, 0.9 * argue, 0.5 * meet), rot: -ang, mark: clamp01((g - c.biteAt - 12) / 12), headTilt: g < c.fallAt ? wob(1, 0.9) * 3 : 0 });
 
   // พี่นุ่น: points toward the front, argues, is shoved and staggers into the boy
   const shove = ramp(g, c.shoveAt, c.fallAt - 4);
   const nunPoint = ramp(g, c.nunPoints, c.nunPoints + 12) * (1 - ramp(g, c.argueAt, c.argueAt + 10));
-  add({ id: "nun", x: retreatX(g, FINAL_X.nun) - 75 * smooth(shove), y: FLOOR_Y + 55, walk: retr, fear: Math.max(0.45 * nunPoint, argue * (0.5 + 0.4 * wob(0)), 0.9 * shove * (1 - ramp(g, c.fallAt + 20, c.fallAt + 50)), 0.4 * scared), headTilt: argue * wob(1) * 10 - 10 * shove });
+  add({ id: "nun", x: retreatX(g, FINAL_X.nun) - 50 * smooth(shove), y: FLOOR_Y + 55, walk: retr, fear: Math.max(0.45 * nunPoint, argue * (0.5 + 0.4 * wob(0)), 0.9 * shove * (1 - ramp(g, c.fallAt + 20, c.fallAt + 50)), 0.4 * scared), headTilt: argue * wob(1) * 10 - 10 * shove });
 
   // ไมค์: says no, argues, shoves
   const push = ramp(g, c.shoveAt - 6, c.shoveAt + 4) * (1 - ramp(g, c.shoveAt + 14, c.shoveAt + 30));
   add({ id: "mike", x: retreatX(g, FINAL_X.mike) - 30 * push, y: FLOOR_Y + 30, walk: retr, fear: Math.max(0.15 * ramp(g, c.mikeNo, c.mikeNo + 10), argue * (0.5 + 0.4 * wob(2)), 0.7 * push, 0.3 * scared), headTilt: ramp(g, c.mikeNo, c.mikeNo + 6) * (1 - ramp(g, c.argueAt, c.argueAt + 6)) * wob(0, 0.8) * 12 + argue * wob(3) * 9 });
 
   // ป้าสมจิตร: frightened; after the bite she goes to the boy
-  const toBoy = smooth(ramp(g, c.biteAt + 30, c.countAt + 40));
-  add({ id: "aunt", x: lerp(retreatX(g, FINAL_X.aunt), FINAL_X.nueng + 120, toBoy), y: FLOOR_Y + 20, walk: toBoy > 0 && toBoy < 1 ? 0.6 : retr, fear: Math.max(0.5 * scared, 0.6 * argue), headTilt: argue * wob(4) * 6 });
+  const toBoy = smooth(ramp(g, c.biteAt + 65, c.countAt + 40));
+  add({ id: "aunt", x: lerp(retreatX(g, FINAL_X.aunt), MEET_X.aunt, toBoy), y: lerp(FLOOR_Y + 20, FLOOR_Y + 20 + FRONT_LANE, smooth(ramp(g, c.biteAt + 65, c.biteAt + 95))), facing: toBoy > 0 ? -1 : -1, walk: toBoy > 0 && toBoy < 1 ? 0.6 : retr, fear: Math.max(0.5 * scared, 0.6 * argue), headTilt: argue * wob(4) * 6 });
 
   // "you": at the back, watching; the worry grows
   add({ id: "you", x: retreatX(g, FINAL_X.you), y: FLOOR_Y + 40, walk: retr, fear: Math.max(0.3 * scared, 0.4 * argue, 0.6 * ramp(g, c.biteAt, c.countAt)) });
@@ -318,17 +320,17 @@ const CabGlass: React.FC<{ g: number }> = ({ g }) => {
           <g key={k}>
             <rect x={VP.x - 190 * s(k) - 5 * s(k)} y={CE(k)} width={10 * s(k)} height={FL(k) - CE(k)} fill="#e6e8ea" opacity={0.9} />
             <rect x={VP.x + 190 * s(k) - 5 * s(k)} y={CE(k)} width={10 * s(k)} height={FL(k) - CE(k)} fill="#e6e8ea" opacity={0.9} />
-            {k === 3 && <rect x={L(k)} y={CE(k)} width={R(k) - L(k)} height={FL(k) - CE(k)} fill="none" stroke="#14161a" strokeWidth={26 * s(k)} />}
+            {(k === 2 || k === 4) && <rect x={L(k)} y={CE(k)} width={R(k) - L(k)} height={FL(k) - CE(k)} fill="none" stroke="#14161a" strokeWidth={26 * s(k)} />}
           </g>
         ))}
         {/* the cab at the far end: a lit window, the console and the driver slumped over it */}
         <rect x={L(end)} y={CE(end)} width={R(end) - L(end)} height={FL(end) - CE(end)} fill="#1a2027" />
-        <rect x={cx - 120 * s(end) * 2.2} y={VP.y - 250 * s(end) * 1.6} width={240 * s(end) * 2.2} height={300 * s(end) * 1.6} rx={10} fill="#ff6a3a" opacity={0.25 + 0.2 * flick} />
-        <g transform={`rotate(62 ${cx} ${FL(end) - 40})`}>
-          <Passenger id="driver" x={cx} y={FL(end) - 40} scale={0.95} facing={1} phase={0} walk={0} frame={g} infection={0.6} pose="stand" headTilt={20} />
+        <ellipse cx={cx} cy={FL(end) - 120} rx={150} ry={170} fill="#ff6a3a" opacity={0.12 + 0.1 * flick} />
+        <g transform={`rotate(40 ${cx} ${FL(end) - 130})`}>
+          <Passenger id="driver" x={cx} y={FL(end) - 20} scale={0.95} facing={1} phase={0} walk={0} frame={g} infection={0.6} pose="stand" headTilt={30} />
         </g>
-        <rect x={cx - 150 * s(end) * 1.6} y={FL(end) - 70 * s(end) * 1.6} width={300 * s(end) * 1.6} height={64 * s(end) * 1.6} rx={6} fill="#0d1116" stroke="#59626b" strokeWidth={3} />
-        {[0, 1, 2, 3].map((i) => <rect key={i} x={cx - 100 * s(end) * 1.6 + i * 52 * s(end) * 1.6} y={FL(end) - 56 * s(end) * 1.6} width={30 * s(end) * 1.6} height={10 * s(end) * 1.6} fill={i === 1 ? "#d9534f" : "#2f8f4e"} opacity={0.9} />)}
+        <rect x={cx - 120} y={FL(end) - 130} width={240} height={120} rx={8} fill="#0d1116" stroke="#59626b" strokeWidth={4} />
+        {[0, 1, 2, 3].map((i) => <rect key={i} x={cx - 90 + i * 46} y={FL(end) - 112} width={28} height={10} fill={i === 1 ? "#d9534f" : "#2f8f4e"} opacity={0.9} />)}
       </g>
       <text x={540} y={300} textAnchor="middle" fontFamily={fontFamily} fontSize={40} fill="#f1f1f1" opacity={0.85}>ห้องคนขับ</text>
       <path d="M470 330 L540 380 L610 330" stroke="#f1f1f1" strokeWidth={6} fill="none" opacity={0.5 + 0.4 * Math.sin(g * 0.3)} strokeLinecap="round" />
