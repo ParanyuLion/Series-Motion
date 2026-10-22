@@ -196,10 +196,6 @@ export const ForegroundFrame: React.FC<{ frame: number; camX: number; camY: numb
           const sway = Math.sin(frame * 0.04 + i * 0.7) * 8;
           return <path key={i} d={`M${x} 1940 Q${x + 4 + sway * 0.5} ${1940 - h * 0.6} ${x + 18 + sway} ${1940 - h} Q${x + 14} ${1940 - h * 0.5} ${x + 26} 1940 Z`} />;
         })}
-        {/* a thin fern on the left edge */}
-        {Array.from({ length: 5 }, (_, i) => (
-          <path key={i} d={`M-30 ${1180 + i * 40} Q${40 + i * 10} ${1150 + i * 40 + Math.sin(frame * 0.03 + i) * 4} ${110 + i * 8} ${1210 + i * 36} Q${40 + i * 6} ${1190 + i * 40} -30 ${1200 + i * 40} Z`} opacity={0.85} />
-        ))}
       </g>
     </svg>
   );
