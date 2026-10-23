@@ -17,6 +17,8 @@ import { Part2 as BtsPart2 } from "./bts2/Part2";
 import bts2 from "./bts2/manifest.json";
 import { Part3 as BtsPart3 } from "./bts3/Part3";
 import bts3 from "./bts3/manifest.json";
+import { Part4 as BtsPart4 } from "./bts4/Part4";
+import bts4 from "./bts4/manifest.json";
 
 export const Root: React.FC = () => (
   <>
@@ -30,6 +32,7 @@ export const Root: React.FC = () => (
     <Composition id="Bts1" component={BtsPart1} durationInFrames={bts.total} fps={bts.fps} width={W} height={H} />
     <Composition id="Bts2" component={BtsPart2} durationInFrames={bts2.total} fps={bts2.fps} width={W} height={H} />
     <Composition id="Bts3" component={BtsPart3} durationInFrames={bts3.total} fps={bts3.fps} width={W} height={H} />
+    <Composition id="Bts4" component={BtsPart4} durationInFrames={bts4.total} fps={bts4.fps} width={W} height={H} />
     <Composition id="CastPreview" component={CastPreview} durationInFrames={60} fps={30} width={1080} height={600} defaultProps={{ dirt: 0, walk: 0 }} />
   </>
 );

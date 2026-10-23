@@ -35,6 +35,8 @@ export type PassengerProps = {
   item?: "umbrella" | "extinguisher" | "bag" | null;
   /** phase in radians: the front arm swings from -150 to -20 degrees (jab, spray or swing); undefined = off */
   swing?: number;
+  /** size of the swing in degrees around the forward position (default 65) */
+  swingAmp?: number;
 };
 
 type Look = { skin: string; top: string; bottom: string; shoe: string };
@@ -59,20 +61,21 @@ const Item: React.FC<{ kind: "umbrella" | "extinguisher" | "bag" }> = ({ kind })
   if (kind === "umbrella") {
     return (
       <g>
-        <rect x={-4} y={-30} width={8} height={190} rx={4} fill="#23262b" />
-        <path d="M-4 150 L0 196 L4 150 Z" fill="#8a8f94" />
-        <path d="M-16 -18 Q0 -70 16 -18 Z" fill="#d9534f" transform="translate(0,60)" />
-        <path d="M-4 -30 q0 -16 -14 -16" stroke="#23262b" strokeWidth={7} fill="none" strokeLinecap="round" />
+        <rect x={-4} y={-24} width={8} height={150} rx={4} fill="#23262b" />
+        <path d="M-3 28 Q-19 66 -4 108 L4 108 Q19 66 3 28 Z" fill="#d9534f" />
+        <path d="M-4 118 L0 142 L4 118 Z" fill="#8a8f94" />
+        <path d="M-4 -24 q0 -16 -14 -16" stroke="#23262b" strokeWidth={7} fill="none" strokeLinecap="round" />
       </g>
     );
   }
   if (kind === "extinguisher") {
+    // the cylinder stands upright when the arm points forward (local +x is world up), the nozzle points forward
     return (
       <g>
-        <rect x={-18} y={-14} width={36} height={92} rx={14} fill="#d9322b" />
-        <rect x={-18} y={20} width={36} height={14} fill="#f1f1f1" opacity={0.85} />
-        <rect x={-8} y={-30} width={16} height={20} rx={5} fill="#2a2e33" />
-        <path d="M8 -26 Q40 -40 52 -10 L58 14" stroke="#2a2e33" strokeWidth={7} fill="none" strokeLinecap="round" />
+        <rect x={-46} y={-18} width={96} height={36} rx={14} fill="#d9322b" />
+        <rect x={-6} y={-18} width={14} height={36} fill="#f1f1f1" opacity={0.85} />
+        <rect x={48} y={-8} width={18} height={16} rx={4} fill="#2a2e33" />
+        <path d="M64 0 Q76 6 70 34 L68 52" stroke="#2a2e33" strokeWidth={7} fill="none" strokeLinecap="round" />
       </g>
     );
   }
@@ -143,7 +146,7 @@ const Head: React.FC<{ c: PassengerData; skin: string; tilt: number; inf: number
   );
 };
 
-export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, facing = 1, phase, walk, frame, infection = 0, pose = "stand", headTilt = 0, label = false, fear = 0, mark = 0, item = null, swing }) => {
+export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, facing = 1, phase, walk, frame, infection = 0, pose = "stand", headTilt = 0, label = false, fear = 0, mark = 0, item = null, swing, swingAmp = 65 }) => {
   const c = PASSENGERS[id];
   const has = (a: string) => c.accessories.includes(a as never);
   const k = scale * (c.height / 108);
@@ -173,7 +176,7 @@ export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, fac
     frontArm = -62 + 6 * Math.sin(frame * 0.07); backArm = -56 + 6 * Math.sin(frame * 0.07 + 1); frontElbow = -8;
     bob = Math.sin(frame * 0.07) * 3; lean = 9; tilt = 15 + Math.sin(frame * 0.05) * 4;
   }
-  if (swing !== undefined) { frontArm = -85 - 65 * Math.sin(swing); frontElbow = -10; lean = 10; }
+  if (swing !== undefined) { frontArm = -85 - swingAmp * Math.sin(swing); frontElbow = -10; lean = 10; }
   const bodyW = c.width;
   const torso = 92;
   const shoulderY = -(torso - 26);
