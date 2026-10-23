@@ -2,6 +2,7 @@ import React from "react";
 import { fontFamily } from "../island/fonts";
 import { mix } from "../island/Person";
 import { PASSENGERS, PassengerData, PassengerId } from "./cast";
+import { SnakeTile } from "./SnakeTile";
 
 // Side-on rigged passenger, adapted from src/island/Person.tsx (read it for the swing maths).
 // Origin (0,0) is the ground point under the feet. SVG rotation is clockwise-positive, so a limb swinging
@@ -32,7 +33,7 @@ export type PassengerProps = {
   /** 0..1: opacity of a small red bite mark on the front fingertip (no blood) */
   mark?: number;
   /** something held in the front hand */
-  item?: "umbrella" | "extinguisher" | "bag" | null;
+  item?: "umbrella" | "extinguisher" | "bag" | "stick" | null;
   /** phase in radians: the front arm swings from -150 to -20 degrees (jab, spray or swing); undefined = off */
   swing?: number;
   /** size of the swing in degrees around the forward position (default 65) */
@@ -57,7 +58,15 @@ const Leg: React.FC<{ thigh: number; knee: number; look: Look }> = ({ thigh, kne
   </g>
 );
 
-const Item: React.FC<{ kind: "umbrella" | "extinguisher" | "bag" }> = ({ kind }) => {
+const Item: React.FC<{ kind: "umbrella" | "extinguisher" | "bag" | "stick" }> = ({ kind }) => {
+  if (kind === "stick") {
+    return (
+      <g>
+        <rect x={-3.5} y={-10} width={7} height={112} rx={3.5} fill="#7a5a36" />
+        <rect x={-5} y={96} width={10} height={8} rx={3} fill="#4a3620" />
+      </g>
+    );
+  }
   if (kind === "umbrella") {
     return (
       <g>
@@ -88,7 +97,7 @@ const Item: React.FC<{ kind: "umbrella" | "extinguisher" | "bag" }> = ({ kind })
   );
 };
 
-const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: number; mark?: number; item?: "umbrella" | "extinguisher" | "bag" | null }> = ({ shoulder, elbow, look, sleeve, mark = 0, item = null }) => (
+const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: number; mark?: number; item?: "umbrella" | "extinguisher" | "bag" | "stick" | null }> = ({ shoulder, elbow, look, sleeve, mark = 0, item = null }) => (
   <g transform={`rotate(${shoulder})`}>
     <rect x={-8} y={-4} width={16} height={46} rx={8} fill={look.skin} />
     {sleeve > 0 && <rect x={-8} y={-4} width={16} height={Math.min(46, sleeve) + 4} rx={8} fill={look.top} />}
@@ -134,8 +143,17 @@ const Head: React.FC<{ c: PassengerData; skin: string; tilt: number; inf: number
           </g>
         ) : (
           <g>
-            <circle cx={17} cy={-2} r={eyeR} fill="#1b1b1b" />
-            <circle cx={18.2} cy={-3.2} r={1.1} fill="#fff" />
+            {c.blind ? (
+              <g>
+                <ellipse cx={17} cy={-2} rx={6.4} ry={7} fill="#e4e7e6" stroke="#aeb4b2" strokeWidth={1.2} />
+                <ellipse cx={15.5} cy={-3} rx={3.2} ry={2.4} fill="#f6f7f5" opacity={0.9} />
+              </g>
+            ) : (
+              <g>
+                <circle cx={17} cy={-2} r={eyeR} fill="#1b1b1b" />
+                <circle cx={18.2} cy={-3.2} r={1.1} fill="#fff" />
+              </g>
+            )}
             <path d={`M8 13 Q17 ${15 - fear * 6} 26 13`} stroke="#8a4a3a" strokeWidth={2.6} fill="none" strokeLinecap="round" />
             {inf > 0.25 && inf < 0.75 && <path d="M26 -14 q4 7 0 12" stroke="#9ad0ff" strokeWidth={3} fill="none" strokeLinecap="round" />}
           </g>
@@ -208,6 +226,7 @@ export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, fac
               <rect x={-bodyW / 2} y={-8} width={bodyW} height={18} rx={8} fill={look.bottom} />
               {has("belly") && <ellipse cx={bodyW / 2 - 4} cy={-14} rx={22} ry={26} fill={look.top} />}
               {id === "you" && has("tie") && <path d={`M${bodyW / 2 - 6} ${bodyTop + 4} l9 10 -6 52 -3 6 -3 -6 -6 -52 z`} fill={c.accent} />}
+              {has("snakeShirt") && <g transform={`translate(${bodyW / 2 - 14},${bodyTop + 44})`}><SnakeTile size={36} /></g>}
               {has("lanyard") && (
                 <g>
                   <path d={`M${bodyW / 2 - 14} ${bodyTop + 2} L${bodyW / 2 - 4} ${bodyTop + 52}`} stroke="#e84a4a" strokeWidth={3} />

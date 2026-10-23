@@ -21,6 +21,8 @@ import { Part4 as BtsPart4 } from "./bts4/Part4";
 import bts4 from "./bts4/manifest.json";
 import { Part5 as BtsPart5 } from "./bts5/Part5";
 import bts5 from "./bts5/manifest.json";
+import { Part1 as BlindPart1 } from "./blind1/Part1";
+import blind1 from "./blind1/manifest.json";
 
 export const Root: React.FC = () => (
   <>
@@ -36,6 +38,7 @@ export const Root: React.FC = () => (
     <Composition id="Bts3" component={BtsPart3} durationInFrames={bts3.total} fps={bts3.fps} width={W} height={H} />
     <Composition id="Bts4" component={BtsPart4} durationInFrames={bts4.total} fps={bts4.fps} width={W} height={H} />
     <Composition id="Bts5" component={BtsPart5} durationInFrames={bts5.total} fps={bts5.fps} width={W} height={H} />
+    <Composition id="Blind1" component={BlindPart1} durationInFrames={blind1.total} fps={blind1.fps} width={W} height={H} />
     <Composition id="CastPreview" component={CastPreview} durationInFrames={60} fps={30} width={1080} height={600} defaultProps={{ dirt: 0, walk: 0 }} />
   </>
 );
