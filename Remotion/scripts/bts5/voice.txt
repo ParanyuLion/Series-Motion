@@ -1,0 +1,1 @@
+voice=Charon speed=1.1 post-speed=1.2 model=gemini-3.1-flash-tts-preview via Vertex AI (TTS_BACKEND=vertex, GOOGLE_CLOUD_LOCATION=global). Reproduce: TTS_BACKEND=vertex GEMINI_TTS_MODEL=gemini-3.1-flash-tts-preview python scripts/tts_gemini.py --script scripts/bts5/part5.narration.json --out-dir public/bts5 --voice Charon --speed 1.1 --post-speed 1.2

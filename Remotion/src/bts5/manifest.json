@@ -1,0 +1,131 @@
+{
+ "fps": 30,
+ "total": 1717,
+ "storyEnd": 1570,
+ "outroStart": 1582,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณต้องหยุดรถไฟที่คนขับกลายเป็นซอมบี้",
+   "audio": "bts5/n0.mp3",
+   "audioFrames": 147,
+   "leadFrames": 21,
+   "frames": 218
+  },
+  {
+   "text": "คุณเปิดประตูห้องคนขับ ซอมบี้ก้มทับคันเร่งอยู่ตรงหน้า",
+   "audio": "bts5/n1.mp3",
+   "audioFrames": 134,
+   "leadFrames": 6,
+   "frames": 148
+  },
+  {
+   "text": "มันหันมา พี่นุ่นเหวี่ยงถังดับเพลิงที่ว่างเปล่าเต็มแรง",
+   "audio": "bts5/n2.mp3",
+   "audioFrames": 143,
+   "leadFrames": 6,
+   "frames": 157
+  },
+  {
+   "text": "ไมค์กับคุณลากมันออกจากคันเร่ง แล้วผลักมันออกไปนอกห้อง",
+   "audio": "bts5/n3.mp3",
+   "audioFrames": 138,
+   "leadFrames": 6,
+   "frames": 152
+  },
+  {
+   "text": "ฝูงซอมบี้ตามมาทัน ไมค์รีบปิดและล็อกประตูห้องคนขับ",
+   "audio": "bts5/n4.mp3",
+   "audioFrames": 136,
+   "leadFrames": 6,
+   "frames": 150
+  },
+  {
+   "text": "คุณดึงเบรกสุดแรง รถไฟกรีดร้องและเริ่มช้าลง",
+   "audio": "bts5/n5.mp3",
+   "audioFrames": 157,
+   "leadFrames": 6,
+   "frames": 171
+  },
+  {
+   "text": "สถานีโผล่ขึ้นมา ชานชาลาว่างเปล่า รถไฟหยุดสนิท",
+   "audio": "bts5/n6.mp3",
+   "audioFrames": 168,
+   "leadFrames": 6,
+   "frames": 182
+  },
+  {
+   "text": "คุณเปิดประตูข้างห้องคนขับ อากาศข้างนอกไม่เคยหอมเท่านี้",
+   "audio": "bts5/n7.mp3",
+   "audioFrames": 145,
+   "leadFrames": 6,
+   "frames": 159
+  },
+  {
+   "text": "แต่ไกลออกไปบนชานชาลา มีเงาเดินช้าๆ ตรงมาหาพวกคุณ",
+   "audio": "bts5/n8.mp3",
+   "audioFrames": 149,
+   "leadFrames": 6,
+   "frames": 163
+  },
+  {
+   "text": "ถ้าเป็นคุณ จะวิ่งไปทางไหน",
+   "audio": "bts5/n9.mp3",
+   "audioFrames": 64,
+   "leadFrames": 6,
+   "frames": 82
+  }
+ ],
+ "starts": [
+  0,
+  218,
+  366,
+  523,
+  675,
+  825,
+  996,
+  1178,
+  1337,
+  1500
+ ],
+ "cues": {
+  "hookCut": 218,
+  "doorOpenAt": 224,
+  "turnAt": 372,
+  "faceEnd": 427,
+  "swingAt": 447,
+  "hitAt": 462,
+  "dragAt": 529,
+  "pushAt": 614,
+  "hordeAt": 681,
+  "lockAt": 756,
+  "brakeAt": 841,
+  "slowAt": 876,
+  "platformIn": 992,
+  "stopAt": 1077,
+  "sideDoorAt": 1184,
+  "outAt": 1229,
+  "shadowsAt": 1343,
+  "faceYouAt": 1501,
+  "questionAt": 1506,
+  "lineStart0": 21,
+  "lineEnd0": 168,
+  "lineStart1": 224,
+  "lineEnd1": 358,
+  "lineStart2": 372,
+  "lineEnd2": 515,
+  "lineStart3": 529,
+  "lineEnd3": 667,
+  "lineStart4": 681,
+  "lineEnd4": 817,
+  "lineStart5": 831,
+  "lineEnd5": 988,
+  "lineStart6": 1002,
+  "lineEnd6": 1170,
+  "lineStart7": 1184,
+  "lineEnd7": 1329,
+  "lineStart8": 1343,
+  "lineEnd8": 1492,
+  "lineStart9": 1506,
+  "lineEnd9": 1570
+ }
+}
