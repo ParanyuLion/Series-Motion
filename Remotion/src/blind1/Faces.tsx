@@ -6,51 +6,50 @@ const W = 1080;
 const H = 1920;
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
-/** the waking: a close-up of the eyes of a face, both eyes in frame; the pupils move under the closed lids; at `open` 1 both eyes are open */
-export const EyeOpen: React.FC<{ g: number; open: number }> = ({ g, open }) => {
-  const h = 4 + 96 * open;
-  const px = Math.sin(g * 0.09) * 20 * (1 - open) + Math.sin(g * 0.05) * 6 * open;
-  const py = Math.sin(g * 0.07) * 6;
+/** the waking, in the same face-on framing as the other face shots: the eyes are closed lids, then both open (`open` 0..1) */
+export const FaceWake: React.FC<{ g: number; open: number }> = ({ g, open }) => {
   const k = PASSENGERS.bvYou;
-  const Eye: React.FC<{ cx: number; id: string; flip: number }> = ({ cx, id, flip }) => {
-    const lid = `M${cx - 150} 900 Q${cx} ${900 - h * 1.35} ${cx + 150} 900 Q${cx} ${900 + h * 0.9} ${cx - 150} 900 Z`;
-    return (
-      <g>
-        <clipPath id={id}><path d={lid} /></clipPath>
-        <path d={`M${cx - 165} ${860 - h * 0.35} Q${cx} ${790 - h * 1.5} ${cx + 165} ${860 - h * 0.35}`} stroke="#8a6048" strokeWidth={6} fill="none" opacity={0.55} />
-        <ellipse cx={cx + px} cy={900 + py} rx={62} ry={50} fill="#5a3c2c" opacity={0.3 * (1 - open)} />
-        <g clipPath={`url(#${id})`}>
-          <rect x={cx - 170} y={700} width={340} height={400} fill="#e9e4dc" />
-          <circle cx={cx + px * 0.6} cy={900 + py} r={80} fill="url(#eo-iris)" />
-          <circle cx={cx + px * 0.6} cy={900 + py} r={30 - 3 * open} fill="#050403" />
-          <circle cx={cx + px * 0.6 - 18 * flip} cy={878 + py} r={14} fill="#fff" opacity={0.85} />
-          <path d={`M${cx - 150} 900 Q${cx} ${900 - h * 1.35} ${cx + 150} 900`} stroke="#00000040" strokeWidth={18} fill="none" />
-        </g>
-        <path d={lid} fill="none" stroke="#2a1a12" strokeWidth={7} />
-        {Array.from({ length: 11 }, (_, i) => {
-          const t = (i + 1) / 12;
-          const x = cx - 150 + t * 300;
-          const y = 900 - h * 1.35 * 2 * t * (1 - t);
-          return <line key={i} x1={x} y1={y} x2={x + (t - 0.5) * 36 * flip} y2={y - 24} stroke="#1a0f0a" strokeWidth={4} strokeLinecap="round" />;
-        })}
-      </g>
-    );
-  };
+  const breathe = Math.sin(g * 0.06) * 3;
+  const tilt = -6 * (1 - open);
+  const look = Math.sin(g * 0.05) * 5 * open;
+  const ry = 25 * open;
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
       <defs>
-        <radialGradient id="eo-bg" cx="0.5" cy="0.45" r="0.8"><stop offset="0" stopColor="#d9b49a" /><stop offset="1" stopColor="#4a342a" /></radialGradient>
-        <radialGradient id="eo-iris" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stopColor="#7a5230" /><stop offset="0.7" stopColor="#4a3020" /><stop offset="1" stopColor="#2a1a10" /></radialGradient>
+        <linearGradient id="fw-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#7d7a66" /><stop offset="1" stopColor="#25281f" /></linearGradient>
+        <linearGradient id="fw-shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#0b0e0a" stopOpacity={0} /><stop offset="0.35" stopColor="#0b0e0a" stopOpacity={0.8} /><stop offset="1" stopColor="#0b0e0a" stopOpacity={0.95} /></linearGradient>
+        {[-44, 44].map((ex) => <clipPath key={ex} id={`fw-eye${ex}`}><ellipse cx={ex} cy={-14} rx={25} ry={Math.max(0.01, ry)} /></clipPath>)}
       </defs>
-      <rect width={W} height={H} fill="url(#eo-bg)" />
-      {/* brows, the bridge of the nose, the hair at the top of the forehead */}
-      <path d="M90 720 Q250 640 430 700" stroke="#3a2418" strokeWidth={28} fill="none" strokeLinecap="round" opacity={0.85} />
-      <path d="M650 700 Q830 640 990 720" stroke="#3a2418" strokeWidth={28} fill="none" strokeLinecap="round" opacity={0.85} />
-      <path d="M520 800 Q500 960 470 1080 M560 800 Q580 960 610 1080" stroke="#a67a58" strokeWidth={10} fill="none" opacity={0.45} />
-      <ellipse cx={540} cy={1110} rx={90} ry={34} fill="#8a6048" opacity={0.25} />
-      <path d="M-20 420 Q540 300 1100 420 L1100 520 Q540 430 -20 520 Z" fill={k.hair} />
-      <Eye cx={300} id="eo-clip-l" flip={1} />
-      <Eye cx={780} id="eo-clip-r" flip={1} />
+      <rect width={W} height={H} fill="url(#fw-bg)" />
+      <g transform={`translate(540,${800 + breathe}) scale(3.0) rotate(${tilt})`}>
+        <path d="M-210 330 Q-190 200 -90 176 L90 176 Q190 200 210 330 Z" fill="#7d8a8f" />
+        <rect x={-34} y={96} width={68} height={92} rx={26} fill={k.skin} />
+        <ellipse cx={-96} cy={4} rx={13} ry={22} fill={k.skin} />
+        <ellipse cx={96} cy={4} rx={13} ry={22} fill={k.skin} />
+        <ellipse cx={0} cy={0} rx={92} ry={108} fill={k.skin} />
+        <path d="M-94 -14 Q-100 -118 0 -120 Q100 -118 94 -14 Q74 -86 0 -88 Q-74 -86 -94 -14 Z" fill={k.hair} />
+        <path d="M-62 -40 Q-44 -52 -26 -42 M26 -42 Q44 -52 62 -40" stroke="#1b1b1b" strokeWidth={6} fill="none" strokeLinecap="round" transform={`translate(0,${-14 - 4 * open})`} />
+        {[-44, 44].map((ex) => (
+          <g key={ex}>
+            {open < 0.04 ? (
+              <path d={`M${ex - 25} -14 Q${ex} -6 ${ex + 25} -14`} stroke="#2a1a12" strokeWidth={5} fill="none" strokeLinecap="round" />
+            ) : (
+              <g>
+                <g clipPath={`url(#fw-eye${ex})`}>
+                  <ellipse cx={ex} cy={-14} rx={25} ry={25} fill="#ffffff" />
+                  <circle cx={ex + look} cy={-13} r={10} fill="#1b1b1b" />
+                  <circle cx={ex + look + 3} cy={-17} r={3.2} fill="#fff" />
+                </g>
+                <ellipse cx={ex} cy={-14} rx={25} ry={ry} fill="none" stroke="#8a8a8a" strokeWidth={2} />
+                <path d={`M${ex - 25} -14 Q${ex} ${-14 - ry * 1.5} ${ex + 25} -14`} stroke="#2a1a12" strokeWidth={4} fill="none" strokeLinecap="round" />
+              </g>
+            )}
+          </g>
+        ))}
+        <path d="M0 -4 Q-8 24 -6 34 Q0 38 8 34" stroke="#b98a68" strokeWidth={4} fill="none" strokeLinecap="round" />
+        <path d="M-24 66 Q0 62 24 66" stroke="#8a3a30" strokeWidth={6} fill="none" strokeLinecap="round" />
+      </g>
+      <rect y={1300} width={W} height={620} fill="url(#fw-shade)" />
     </svg>
   );
 };

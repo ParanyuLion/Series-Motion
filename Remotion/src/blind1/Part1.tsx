@@ -6,7 +6,7 @@ import { PassengerId } from "../bts/cast";
 import { Passenger } from "../bts/Passenger";
 import { ANCHOR, Cam, makeCamera } from "../bts4/camera";
 import { GROUND_Y, HutInterior, Village } from "./Village";
-import { EyeOpen, FaceHead, FaceYou, PatternCard } from "./Faces";
+import { FaceHead, FaceWake, FaceYou, PatternCard } from "./Faces";
 
 const { cues, shots, starts, total, outroStart } = manifest;
 const c = cues as Record<string, number>;
@@ -209,7 +209,7 @@ const World: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#000", opacity: fade }}>
       <AbsoluteFill style={{ filter: "saturate(0.5) brightness(0.82) contrast(1.12)" }}>
-      <SceneBox g={g} from={0} to={EYE_END} first><EyeOpen g={g} open={eyeOpen} /></SceneBox>
+      <SceneBox g={g} from={0} to={EYE_END} first><FaceWake g={g} open={eyeOpen} /></SceneBox>
       <SceneBox g={g} from={HUT_FROM} to={HUT_END}>
         <Stage cam={camHut(g)}>
           <HutInterior />
