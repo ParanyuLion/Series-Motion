@@ -226,7 +226,7 @@ export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, fac
               <rect x={-bodyW / 2} y={-8} width={bodyW} height={18} rx={8} fill={look.bottom} />
               {has("belly") && <ellipse cx={bodyW / 2 - 4} cy={-14} rx={22} ry={26} fill={look.top} />}
               {id === "you" && has("tie") && <path d={`M${bodyW / 2 - 6} ${bodyTop + 4} l9 10 -6 52 -3 6 -3 -6 -6 -52 z`} fill={c.accent} />}
-              {has("snakeShirt") && <g transform={`translate(${bodyW / 2 - 14},${bodyTop + 44})`}><SnakeTile size={36} /></g>}
+              {has("snakeShirt") && <g transform={`translate(${bodyW / 2 - 14},${bodyTop + 44}) scale(${facing},1)`}><SnakeTile size={36} /></g>}
               {has("lanyard") && (
                 <g>
                   <path d={`M${bodyW / 2 - 14} ${bodyTop + 2} L${bodyW / 2 - 4} ${bodyTop + 52}`} stroke="#e84a4a" strokeWidth={3} />

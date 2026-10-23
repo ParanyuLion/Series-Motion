@@ -1,0 +1,11 @@
+# Series bible: "หมู่บ้านที่ทุกคนตาบอด" (series 3, started 2026-10-23)
+
+Design docs: `docs/superpowers/specs/2026-10-23-blind-village-series-design.md` (premise, truth, rules, format) and `...-story-plan.md` (the five parts and the eight threads that link them). Part 1 script: `blind-village-part1-script-draft.md`; plan `docs/superpowers/plans/2026-10-23-blind-village-part1.md`.
+
+Format and decisions (from the user): unsettling horror from the abnormal, no ghosts; 5 parts of about 1:30; one narrator, Gemini **Charon**, cold calm style (`GEMINI_TTS_STYLE`), speed 1.1 x post-speed 1.245 (about 1.37, chosen by the user); every part opens with the hook "จะเกิดอะไรขึ้น ถ้าคุณ...".
+
+Truth (told only at the end): the snakes with human heads keep humans for entertainment, blinded everybody, and let seeing people arrive on purpose; the village head is the first seeing man, turned into a snake, wearing a human shape; he knew from the first minute; "you" are turned into a snake too; the last scene is the head going to welcome a new arrival while "you", as a snake, watch from the trees.
+
+Look: hazy green-gold village; villagers have clouded white eyes (no pupils), same ochre shirt with the snake-with-a-human-head tile (`src/bts/SnakeTile.tsx`, calm blank face; the eyes open only in the deliberate final scare); "you" (`bvYou`) are the only person with pupils; no mirrors, a lid on the well; the dusk bell struck once is the sound motif; everyone turns to the forest together. Code: `src/blind1/` (`Part1.tsx`, `Village.tsx`, `Faces.tsx`), cast ids `bvYou`, `bvHead`, `bvCook`, `bvChild`, `bvMan`, `bvWoman`, `bvElder` in `src/bts/cast.ts`, `Passenger` props `blind` look, `snakeShirt` accessory and the `stick` item.
+
+Part 1 built (2026-10-23): waking eye close-up; hut; the head (stick, white eyes, "มีคนมาที่นี่อีกแล้วหรอ", "คุณตาบอดใช่ไหม", the answer "ใช่"); the walk with the same shirt on everyone; the pattern card; the covered cup and well; dusk bell; the villagers gather, face the village and turn to the forest together at `turnAt`; the final push-in on the trees and the watching pattern. Continuity for part 2: dusk of day one; the head leads "you" to the long table where he tells the story of the man who could see (his own story, in the third person).

@@ -139,8 +139,8 @@ export const Village: React.FC<{ dusk?: number; bell?: number; x0?: number; x1?:
     <TreeBand x0={x0} x1={400} y={1360} h={900} fill="#2f4630" seed={31} step={90} />
     <rect x={x0} y={GROUND_Y - 140} width={x1 - x0} height={260} fill="url(#vl-fog)" opacity={0.7} />
     {/* dusk: a warm cast, then the dark of evening */}
-    <rect x={x0} y={-1500} width={x1 - x0} height={3400} fill="#ff9a4a" opacity={0.2 * dusk} />
-    <rect x={x0} y={-1500} width={x1 - x0} height={3400} fill="#10182a" opacity={0.42 * dusk} />
+    <rect x={x0} y={-1500} width={x1 - x0} height={5200} fill="#ff9a4a" opacity={0.2 * dusk} />
+    <rect x={x0} y={-1500} width={x1 - x0} height={5200} fill="#10182a" opacity={0.42 * dusk} />
   </g>
 );
 
@@ -172,8 +172,8 @@ export const HutInterior: React.FC = () => (
     <rect x={380} y={GROUND_Y + 20} width={520} height={120} rx={10} fill="#b89a58" />
     {Array.from({ length: 14 }, (_, i) => <line key={i} x1={380 + i * 40} y1={GROUND_Y + 22} x2={380 + i * 40} y2={GROUND_Y + 138} stroke="#8a6f3a" strokeWidth={3} />)}
     {/* a clay pot, herbs, a cloth with the pattern on the wall */}
-    <ellipse cx={1050} cy={GROUND_Y - 36} rx={44} ry={56} fill="#9a5a3a" />
-    <rect x={1020} y={GROUND_Y - 100} width={60} height={20} rx={8} fill="#8a4a2e" />
+    <ellipse cx={1600} cy={GROUND_Y - 36} rx={44} ry={56} fill="#9a5a3a" />
+    <rect x={1570} y={GROUND_Y - 100} width={60} height={20} rx={8} fill="#8a4a2e" />
     {[0, 1, 2].map((i) => (
       <g key={i}>
         <line x1={120 + i * 120} y1={560} x2={120 + i * 120} y2={640} stroke="#3a2a18" strokeWidth={2} />

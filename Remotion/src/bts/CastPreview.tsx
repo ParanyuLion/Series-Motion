@@ -15,7 +15,7 @@ export const BtsCastPreview: React.FC<{ walk?: number }> = ({ walk = 0 }) => {
     <AbsoluteFill style={{ background: "linear-gradient(#e7e3d6,#bdb9ab)" }}>
       <svg width={1080} height={760} viewBox="0 0 1080 760">
         {rows.map((r) =>
-          PASSENGER_IDS.map((id, i) => (
+          PASSENGER_IDS.filter((id) => !id.startsWith("bv")).map((id, i) => (
             <Passenger key={`${r.y}-${id}`} id={id} x={70 + i * 117} y={r.y} scale={0.58} phase={f * 0.2} walk={r.pose === "shamble" ? 1 : walk} frame={f} infection={r.inf} pose={r.pose} label={r.y === 250} />
           ))
         )}

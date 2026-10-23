@@ -24,7 +24,7 @@ const FADE = 10;
 
 // ---------------- the cast on stage ----------------
 type Pp = { key: string; id: PassengerId; x: number; y: number; facing: 1 | -1; walk: number; fear: number; headTilt: number; label: boolean; rot: number; stick: boolean; armA?: number; dim: number };
-const TAGS: { id: PassengerId; t: number }[] = [{ id: "bvHead", t: c.headEnters + 100 }];
+const TAGS: { id: PassengerId; t: number }[] = [{ id: "bvHead", t: c.askAt + 4 }];
 
 const P = (g: number, o: Partial<Pp> & { key: string; id: PassengerId; x: number; y: number }): Pp => {
   const tag = TAGS.find((t) => t.id === o.id);
@@ -61,11 +61,11 @@ const YOU_X = 860;
 const stageHut = (g: number): Pp[] => {
   const up = smooth(ramp(g, c.eyeOpenAt + 45, c.eyeOpenAt + 110));
   const out: Pp[] = [];
-  out.push(P(g, { key: "you", id: "bvYou", x: YOU_X, y: GROUND_Y + 60, facing: 1, rot: up < 1 ? -88 * (1 - up) : 0, fear: 0.2 + 0.3 * ramp(g, c.stickAt, c.headEnters), headTilt: up < 1 ? 0 : -4 }));
+  out.push(P(g, { key: "you", id: "bvYou", x: YOU_X, y: GROUND_Y + 60, facing: 1, rot: up < 1 ? -88 * (1 - up) : 0, fear: 0.1 + 0.15 * ramp(g, c.stickAt, c.headEnters), headTilt: up < 1 ? 0 : -4 }));
   // the head: a dark shape in the bright doorway, then in the room
-  const come = ramp(g, c.stickAt + 30, c.askAt - 40);
+  const come = ramp(g, c.stickAt + 30, c.headEnters + 50);
   const hx = lerp(1420, 1090, smooth(come));
-  const dim = lerp(0.18, 1, smooth(ramp(hx, 1300, 1160) * 0 + clamp01((1300 - hx) / 140)));
+  const dim = lerp(0.18, 1, smooth(clamp01((1300 - hx) / 140)));
   if (g >= c.stickAt + 20) out.push(P(g, { key: "head", id: "bvHead", x: hx, y: GROUND_Y + 70, facing: -1, walk: come > 0 && come < 1 ? 0.55 : 0, stick: true, dim }));
   return out;
 };
@@ -83,23 +83,24 @@ const camHut = makeCamera("hut", [
 // Scene 3: the village walk, the bell
 // ====================================================================================================================
 const VIL_FROM = c.walkAt - 4;
-const headX = (g: number) => Math.min(3950, Math.max(600, 600 + 3.75 * (g - c.walkAt)));
+const HEAD_STOP = 3420;
+const headX = (g: number) => Math.min(HEAD_STOP, Math.max(600, 600 + 3.75 * (g - c.walkAt)));
 const bellSwing = (g: number) => (g < c.bellAt ? 0 : 16 * Math.sin((g - c.bellAt) * 0.5) * Math.exp(-(g - c.bellAt) / 70));
 const duskAt = (g: number) => 0.9 * smooth(ramp(g, c.bellAt - 70, c.bellAt + 110));
 
 type V = { id: PassengerId; x0: number; lane: number; vx: number; final: number; fl: number };
 const VILLAGERS: V[] = [
-  { id: "bvCook", x0: 760, lane: 5, vx: 0, final: 3500, fl: 0 },
-  { id: "bvMan", x0: 1251, lane: 175, vx: -1.0, final: 3595, fl: 60 },
-  { id: "bvChild", x0: 1180, lane: 190, vx: 0.8, final: 3690, fl: 120 },
-  { id: "bvWoman", x0: 2750, lane: 185, vx: -0.9, final: 3785, fl: 180 },
-  { id: "bvElder", x0: 2000, lane: 10, vx: 0, final: 3880, fl: 0 },
-  { id: "bvMan", x0: 3500, lane: 0, vx: -1.1, final: 3975, fl: 60 },
-  { id: "bvWoman", x0: 2650, lane: 195, vx: 0.7, final: 4070, fl: 120 },
-  { id: "bvCook", x0: 3050, lane: 5, vx: 0, final: 4165, fl: 180 },
-  { id: "bvChild", x0: 3330, lane: 170, vx: -0.8, final: 4260, fl: 0 },
-  { id: "bvElder", x0: 3400, lane: 15, vx: 0, final: 4355, fl: 60 },
-  { id: "bvMan", x0: 3550, lane: 180, vx: 0, final: 4450, fl: 120 },
+  { id: "bvCook", x0: 760, lane: 5, vx: 0, final: 3560, fl: 0 },
+  { id: "bvMan", x0: 1251, lane: 175, vx: -1.0, final: 3650, fl: 60 },
+  { id: "bvChild", x0: 1180, lane: 12, vx: 0.8, final: 3740, fl: 120 },
+  { id: "bvWoman", x0: 2750, lane: 185, vx: -0.9, final: 3830, fl: 180 },
+  { id: "bvElder", x0: 2000, lane: 10, vx: 0, final: 3920, fl: 0 },
+  { id: "bvMan", x0: 3500, lane: 0, vx: -1.1, final: 4010, fl: 60 },
+  { id: "bvWoman", x0: 2650, lane: 12, vx: 0.7, final: 4100, fl: 120 },
+  { id: "bvCook", x0: 3050, lane: 5, vx: 0, final: 4190, fl: 180 },
+  { id: "bvChild", x0: 3330, lane: 170, vx: -0.8, final: 4280, fl: 0 },
+  { id: "bvElder", x0: 3400, lane: 15, vx: 0, final: 4370, fl: 60 },
+  { id: "bvMan", x0: 3550, lane: 180, vx: 0, final: 4460, fl: 120 },
 ];
 
 const stageVillage = (g: number): Pp[] => {
@@ -109,16 +110,16 @@ const stageVillage = (g: number): Pp[] => {
   const turned = g >= c.turnAt;
   // the head leads, tapping; "you" follow a little behind
   const hx = headX(g);
-  const walking = g < c.bellAt + 20 && hx < 3949;
+  const walking = hx < HEAD_STOP - 1;
   out.push(P(g, { key: "head", id: "bvHead", x: hx, y: GROUND_Y + 70, facing: 1, walk: walking ? 0.8 : 0, stick: true }));
   const youRows = ramp(g, c.turnAt - 70, c.turnAt - 5);
-  const yx = lerp(hx - 170, 4560, smooth(youRows));
-  out.push(P(g, { key: "you", id: "bvYou", x: yx, y: GROUND_Y + lerp(112, 165, youRows), facing: youRows > 0.9 ? -1 : 1, walk: walking || (youRows > 0 && youRows < 1) ? 0.8 : 0, fear: Math.max(0.15, 0.55 * ramp(g, c.fearAt, c.fearAt + 40)), headTilt: 4 * ramp(g, c.fearAt, c.fearAt + 40) }));
+  const yx = lerp(hx - 170, 3330, smooth(youRows));
+  out.push(P(g, { key: "you", id: "bvYou", x: yx, y: GROUND_Y + lerp(112, 165, youRows), facing: 1, walk: walking || (youRows > 0 && youRows < 1) ? 0.8 : 0, fear: Math.max(0.1, 0.25 * ramp(g, c.fearAt, c.fearAt + 40)), headTilt: 4 * ramp(g, c.fearAt, c.fearAt + 40) }));
   VILLAGERS.forEach((v, i) => {
     const wander = v.x0 + v.vx * t;
     const x = lerp(wander, v.final, gather);
     const moving = Math.abs(v.vx) > 0 && gather < 0.98;
-    const dir: 1 | -1 = turned ? 1 : gather > 0.5 ? 1 : v.vx < 0 ? -1 : v.vx > 0 ? 1 : i % 2 ? -1 : 1;
+    const dir: 1 | -1 = turned ? 1 : gather >= 0.98 ? -1 : gather > 0.02 ? (v.final >= wander ? 1 : -1) : v.vx < 0 ? -1 : v.vx > 0 ? 1 : i % 2 ? -1 : 1;
     out.push(P(g, { key: `v${i}`, id: v.id, x, y: GROUND_Y + lerp(v.lane, v.fl, gather), facing: dir, walk: moving ? 0.7 : gather > 0 && gather < 0.98 ? 0.7 : 0, headTilt: 0 }));
   });
   return out;
@@ -136,12 +137,13 @@ const camKeys = (): [number, number, number, number][] => {
     [c.fearAt, hx(c.fearAt) - 40, 1140, 1.5],
     [c.noMirrorAt, hx(c.noMirrorAt) + 150, 1150, 1.15],
     [c.noMirrorAt + 120, 3300, 1150, 1.1],
-    [c.bellAt - 60, 3900, 1100, 1.05],
-    [c.turnAt, 4100, 1100, 1.2],
-    [c.turnAt + 40, 4100, 1090, 0.95],
-    [c.questionAt, 4300, 1090, 1.0],
-    [c.questionAt + 60, 4650, 1050, 1.4],
-    [outroStart, 4700, 1040, 1.5],
+    [c.bellAt - 20, 4100, 1100, 1.0],
+    [c.bellAt + 40, 4000, 1100, 1.0],
+    [c.turnAt - 10, 3850, 1100, 0.95],
+    [c.turnAt + 60, 3850, 1100, 0.95],
+    [c.questionAt, 4200, 1090, 1.0],
+    [c.questionAt + 60, 4650, 1070, 1.35],
+    [outroStart, 4700, 1070, 1.35],
   ];
 };
 const camVil = makeCamera("village", camKeys());
@@ -173,8 +175,8 @@ const Card: React.FC<{ g: number; from: number; to: number; children: React.Reac
   return <div style={{ position: "absolute", left: 80, right: 160, textAlign: "center", fontFamily, color: "#fff", opacity: o, textShadow: "0 2px 12px rgba(0,0,0,0.95)", ...style }}>{children}</div>;
 };
 
-const SaidCard: React.FC<{ g: number; from: number; to: number; who?: string; children: React.ReactNode }> = ({ g, from, to, who, children }) => (
-  <Card g={g} from={from} to={to} style={{ top: 330, left: 150, right: 190, fontSize: 56, lineHeight: 1.45, background: "rgba(11,13,10,0.68)", borderRadius: 30, padding: "20px 18px" }}>
+const SaidCard: React.FC<{ g: number; from: number; to: number; who?: string; top?: number; children: React.ReactNode }> = ({ g, from, to, who, top = 330, children }) => (
+  <Card g={g} from={from} to={to} style={{ top, left: 150, right: 190, fontSize: 56, lineHeight: 1.45, background: "rgba(11,13,10,0.68)", borderRadius: 30, padding: "20px 18px" }}>
     {who && <div style={{ fontSize: 30, color: "#cdbb7a", marginBottom: 4 }}>{who}</div>}
     {children}
   </Card>
@@ -199,7 +201,7 @@ const World: React.FC = () => {
   const g = useCurrentFrame();
   const fade = 0.35 + 0.65 * ramp(g, 0, 10);
   const eyeOpen = smooth(ramp(g, c.eyeOpenAt - 10, c.eyeOpenAt + 25));
-  const youFaceOn = g >= c.answerAt && g < c.answerAt + 112;
+  const youFaceOn = g >= c.answerAt && g < le(5) + 14;
   const headFaceOn = g >= c.smileAt && g < c.smileAt + 58;
   const patternOn = g >= c.patternAt && g < le(9) + 6;
   const dusk = duskAt(g);
@@ -221,8 +223,8 @@ const World: React.FC = () => {
       </SceneBox>
 
       {youFaceOn && (
-        <AbsoluteFill style={{ opacity: ramp(g, c.answerAt, c.answerAt + 8) * clamp01((c.answerAt + 112 - g) / 8) }}>
-          <FaceYou g={g} still={ramp(g, c.answerAt + 10, c.answerAt + 30)} zoom={1 + 0.06 * ramp(g, c.answerAt, c.answerAt + 110)} />
+        <AbsoluteFill style={{ opacity: ramp(g, c.answerAt, c.answerAt + 8) * clamp01((le(5) + 14 - g) / 8) }}>
+          <FaceYou g={g} still={ramp(g, c.answerAt + 10, c.answerAt + 30)} zoom={1 + 0.06 * ramp(g, c.answerAt, le(5) + 10)} />
         </AbsoluteFill>
       )}
       {headFaceOn && (
@@ -243,9 +245,9 @@ const World: React.FC = () => {
 
       <SaidCard g={g} from={c.headEnters + 95} to={c.askAt - 6} who="หัวหน้า">มีคนมาที่นี่อีกแล้วหรอ</SaidCard>
       <SaidCard g={g} from={c.askAt + 50} to={c.answerAt - 6} who="หัวหน้า">คุณตาบอดใช่ไหม?</SaidCard>
-      <SaidCard g={g} from={c.answerAt + 82} to={c.answerAt + 108} who="คุณ">ใช่</SaidCard>
+      <SaidCard g={g} from={le(5) - 26} to={le(5) + 10} who="คุณ" top={190}>ใช่</SaidCard>
       <SaidCard g={g} from={c.noMirrorAt + 90} to={c.noMirrorAt + 150} who="ชาวบ้าน">คนใหม่...</SaidCard>
-      <SaidCard g={g} from={c.turnAt + 25} to={c.turnAt + 100} who="ทุกคน">ยินดีต้อนรับ</SaidCard>
+      <SaidCard g={g} from={le(13) - 45} to={le(13) + 5} who="ทุกคน">ยินดีต้อนรับ</SaidCard>
 
       <Card g={g} from={Math.max(le(0), c.hookCut - 80)} to={c.hookCut} style={{ top: 190, left: 120, right: 170, fontSize: 54, lineHeight: 1.5, background: "rgba(11,13,10,0.66)", borderRadius: 32, padding: "22px 16px" }}>
         ตื่นขึ้นมา...<br />ในหมู่บ้านที่ไม่มีใครมองเห็น
