@@ -6,42 +6,51 @@ const W = 1080;
 const H = 1920;
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
-/** the waking: an extreme close-up of one closed eye; the pupil moves under the lid; at `open` 1 the eye is wide open */
+/** the waking: a close-up of the eyes of a face, both eyes in frame; the pupils move under the closed lids; at `open` 1 both eyes are open */
 export const EyeOpen: React.FC<{ g: number; open: number }> = ({ g, open }) => {
-  const h = 6 + 230 * open;
-  const px = Math.sin(g * 0.09) * 50 * (1 - open) + Math.sin(g * 0.05) * 14 * open;
-  const py = Math.sin(g * 0.07) * 14;
-  const lid = `M200 900 Q540 ${900 - h * 1.35} 880 900 Q540 ${900 + h * 0.9} 200 900 Z`;
+  const h = 4 + 96 * open;
+  const px = Math.sin(g * 0.09) * 20 * (1 - open) + Math.sin(g * 0.05) * 6 * open;
+  const py = Math.sin(g * 0.07) * 6;
   const k = PASSENGERS.bvYou;
+  const Eye: React.FC<{ cx: number; id: string; flip: number }> = ({ cx, id, flip }) => {
+    const lid = `M${cx - 150} 900 Q${cx} ${900 - h * 1.35} ${cx + 150} 900 Q${cx} ${900 + h * 0.9} ${cx - 150} 900 Z`;
+    return (
+      <g>
+        <clipPath id={id}><path d={lid} /></clipPath>
+        <path d={`M${cx - 165} ${860 - h * 0.35} Q${cx} ${790 - h * 1.5} ${cx + 165} ${860 - h * 0.35}`} stroke="#8a6048" strokeWidth={6} fill="none" opacity={0.55} />
+        <ellipse cx={cx + px} cy={900 + py} rx={62} ry={50} fill="#5a3c2c" opacity={0.3 * (1 - open)} />
+        <g clipPath={`url(#${id})`}>
+          <rect x={cx - 170} y={700} width={340} height={400} fill="#e9e4dc" />
+          <circle cx={cx + px * 0.6} cy={900 + py} r={80} fill="url(#eo-iris)" />
+          <circle cx={cx + px * 0.6} cy={900 + py} r={30 - 3 * open} fill="#050403" />
+          <circle cx={cx + px * 0.6 - 18 * flip} cy={878 + py} r={14} fill="#fff" opacity={0.85} />
+          <path d={`M${cx - 150} 900 Q${cx} ${900 - h * 1.35} ${cx + 150} 900`} stroke="#00000040" strokeWidth={18} fill="none" />
+        </g>
+        <path d={lid} fill="none" stroke="#2a1a12" strokeWidth={7} />
+        {Array.from({ length: 11 }, (_, i) => {
+          const t = (i + 1) / 12;
+          const x = cx - 150 + t * 300;
+          const y = 900 - h * 1.35 * 2 * t * (1 - t);
+          return <line key={i} x1={x} y1={y} x2={x + (t - 0.5) * 36 * flip} y2={y - 24} stroke="#1a0f0a" strokeWidth={4} strokeLinecap="round" />;
+        })}
+      </g>
+    );
+  };
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
       <defs>
-        <radialGradient id="eo-bg" cx="0.5" cy="0.45" r="0.8"><stop offset="0" stopColor="#e9c7a8" /><stop offset="1" stopColor="#6a4a38" /></radialGradient>
+        <radialGradient id="eo-bg" cx="0.5" cy="0.45" r="0.8"><stop offset="0" stopColor="#d9b49a" /><stop offset="1" stopColor="#4a342a" /></radialGradient>
         <radialGradient id="eo-iris" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stopColor="#7a5230" /><stop offset="0.7" stopColor="#4a3020" /><stop offset="1" stopColor="#2a1a10" /></radialGradient>
-        <clipPath id="eo-clip"><path d={lid} /></clipPath>
       </defs>
       <rect width={W} height={H} fill="url(#eo-bg)" />
-      {/* brow and lid creases */}
-      <path d="M150 700 Q540 560 940 700" stroke="#3a2418" strokeWidth={34} fill="none" strokeLinecap="round" opacity={0.85} />
-      <path d={`M190 ${880 - h * 0.4} Q540 ${780 - h * 1.5} 890 ${880 - h * 0.4}`} stroke="#a67a58" strokeWidth={8} fill="none" opacity={0.6} />
-      <ellipse cx={540} cy={1000} rx={360} ry={150} fill={k.skin} opacity={0.2} />
-      {/* the pupil's bulge under the closed lid */}
-      <ellipse cx={540 + px} cy={900 + py} rx={115} ry={95} fill="#6a4a38" opacity={0.35 * (1 - open)} />
-      <g clipPath="url(#eo-clip)">
-        <rect x={180} y={600} width={720} height={600} fill="#f1ece4" />
-        <circle cx={540 + px * 0.5} cy={900 + py} r={150} fill="url(#eo-iris)" />
-        <circle cx={540 + px * 0.5} cy={900 + py} r={56 - 6 * open} fill="#050403" />
-        <circle cx={500 + px * 0.5} cy={858 + py} r={26} fill="#fff" opacity={0.9} />
-        <circle cx={580 + px * 0.5} cy={942 + py} r={11} fill="#fff" opacity={0.6} />
-        <path d={`M200 900 Q540 ${900 - h * 1.35} 880 900`} stroke="#00000040" strokeWidth={28} fill="none" />
-      </g>
-      <path d={lid} fill="none" stroke="#2a1a12" strokeWidth={10} />
-      {Array.from({ length: 14 }, (_, i) => {
-        const t = (i + 1) / 15;
-        const x = 200 + t * 680;
-        const y = 900 - (h * 1.35) * 4 * t * (1 - t) * 0.5 * 2 * 0.5 * 2;
-        return <line key={i} x1={x} y1={y} x2={x + (t - 0.5) * 60} y2={y - 34} stroke="#1a0f0a" strokeWidth={5} strokeLinecap="round" />;
-      })}
+      {/* brows, the bridge of the nose, the hair at the top of the forehead */}
+      <path d="M90 720 Q250 640 430 700" stroke="#3a2418" strokeWidth={28} fill="none" strokeLinecap="round" opacity={0.85} />
+      <path d="M650 700 Q830 640 990 720" stroke="#3a2418" strokeWidth={28} fill="none" strokeLinecap="round" opacity={0.85} />
+      <path d="M520 800 Q500 960 470 1080 M560 800 Q580 960 610 1080" stroke="#a67a58" strokeWidth={10} fill="none" opacity={0.45} />
+      <ellipse cx={540} cy={1110} rx={90} ry={34} fill="#8a6048" opacity={0.25} />
+      <path d="M-20 420 Q540 300 1100 420 L1100 520 Q540 430 -20 520 Z" fill={k.hair} />
+      <Eye cx={300} id="eo-clip-l" flip={1} />
+      <Eye cx={780} id="eo-clip-r" flip={1} />
     </svg>
   );
 };
@@ -135,11 +144,11 @@ export const FaceYou: React.FC<{ g: number; still: number; zoom?: number }> = ({
 export const PatternCard: React.FC<{ t: number; watching?: boolean }> = ({ t, watching = false }) => (
   <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
     <defs>
-      <radialGradient id="pc-vig" cx="0.5" cy="0.45" r="0.75"><stop offset="0.5" stopColor="#000" stopOpacity={0} /><stop offset="1" stopColor="#000" stopOpacity={0.65} /></radialGradient>
+      <radialGradient id="pc-vig" cx="0.5" cy="0.45" r="0.75"><stop offset="0.35" stopColor="#000" stopOpacity={0} /><stop offset="1" stopColor="#000" stopOpacity={0.8} /></radialGradient>
     </defs>
-    <rect width={W} height={H} fill="#b49340" />
-    {Array.from({ length: 48 }, (_, i) => <line key={`h${i}`} x1={0} y1={i * 42} x2={W} y2={i * 42} stroke="#9a7c30" strokeWidth={2} opacity={0.55} />)}
-    {Array.from({ length: 28 }, (_, i) => <line key={`v${i}`} x1={i * 42} y1={0} x2={i * 42} y2={H} stroke="#a9893a" strokeWidth={2} opacity={0.45} />)}
+    <rect width={W} height={H} fill="#7d6a32" />
+    {Array.from({ length: 48 }, (_, i) => <line key={`h${i}`} x1={0} y1={i * 42} x2={W} y2={i * 42} stroke="#6a5a2a" strokeWidth={2} opacity={0.55} />)}
+    {Array.from({ length: 28 }, (_, i) => <line key={`v${i}`} x1={i * 42} y1={0} x2={i * 42} y2={H} stroke="#756330" strokeWidth={2} opacity={0.45} />)}
     <g transform={`translate(540,820) scale(${1 + 0.08 * t})`}>
       <SnakeTile size={780} watching={watching} />
     </g>

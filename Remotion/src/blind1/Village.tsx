@@ -109,22 +109,22 @@ export const Village: React.FC<{ dusk?: number; bell?: number; x0?: number; x1?:
   <g>
     <defs>
       <linearGradient id="vl-sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#b9c9a0" />
-        <stop offset="1" stopColor="#efe6c0" />
+        <stop offset="0" stopColor="#7d867a" />
+        <stop offset="1" stopColor="#b4b39a" />
       </linearGradient>
       <linearGradient id="vl-ground" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#8f7a52" />
-        <stop offset="1" stopColor="#5f5036" />
+        <stop offset="0" stopColor="#6d634a" />
+        <stop offset="1" stopColor="#3f382a" />
       </linearGradient>
       <linearGradient id="vl-fog" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#e9efd2" stopOpacity={0} />
-        <stop offset="1" stopColor="#e9efd2" stopOpacity={0.55} />
+        <stop offset="0" stopColor="#aab0a0" stopOpacity={0} />
+        <stop offset="1" stopColor="#aab0a0" stopOpacity={0.6} />
       </linearGradient>
     </defs>
     <rect x={x0} y={-1500} width={x1 - x0} height={2800} fill="url(#vl-sky)" />
-    <TreeBand x0={x0} x1={x1} y={1000} h={520} fill="#6f8a63" seed={3} step={140} />
+    <TreeBand x0={x0} x1={x1} y={1000} h={520} fill="#5b6a55" seed={3} step={140} />
     <rect x={x0} y={620} width={x1 - x0} height={400} fill="url(#vl-fog)" />
-    <TreeBand x0={x0} x1={x1} y={1130} h={560} fill="#4f6b45" seed={11} step={110} />
+    <TreeBand x0={x0} x1={x1} y={1130} h={560} fill="#3f523a" seed={11} step={110} />
     <rect x={x0} y={GROUND_Y - 30} width={x1 - x0} height={1900} fill="url(#vl-ground)" />
     <rect x={x0} y={GROUND_Y - 30} width={x1 - x0} height={36} fill="#6f8a52" opacity={0.7} />
     {Array.from({ length: 40 }, (_, i) => <ellipse key={i} cx={x0 + rnd(i) * (x1 - x0)} cy={GROUND_Y + 40 + rnd(i + 99) * 360} rx={20 + rnd(i + 7) * 40} ry={5 + rnd(i + 3) * 8} fill="#4a3d29" opacity={0.28} />)}
@@ -135,8 +135,8 @@ export const Village: React.FC<{ dusk?: number; bell?: number; x0?: number; x1?:
     <Table x={2950} w={620} />
     <Hut x={3850} w={420} h={270} seed={13} />
     <BellPost x={4500} angle={bell} />
-    <TreeBand x0={4700} x1={x1} y={1360} h={900} fill="#2f4630" seed={21} step={90} />
-    <TreeBand x0={x0} x1={400} y={1360} h={900} fill="#2f4630" seed={31} step={90} />
+    <TreeBand x0={4700} x1={x1} y={1360} h={900} fill="#1f2f20" seed={21} step={90} />
+    <TreeBand x0={x0} x1={400} y={1360} h={900} fill="#1f2f20" seed={31} step={90} />
     <rect x={x0} y={GROUND_Y - 140} width={x1 - x0} height={260} fill="url(#vl-fog)" opacity={0.7} />
     {/* dusk: a warm cast, then the dark of evening */}
     <rect x={x0} y={-1500} width={x1 - x0} height={5200} fill="#ff9a4a" opacity={0.2 * dusk} />
@@ -149,12 +149,12 @@ export const HutInterior: React.FC = () => (
   <g>
     <defs>
       <linearGradient id="hi-door" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#f4f0cc" />
-        <stop offset="1" stopColor="#c9d4a0" />
+        <stop offset="0" stopColor="#c9ccb4" />
+        <stop offset="1" stopColor="#8f9680" />
       </linearGradient>
       <linearGradient id="hi-shaft" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stopColor="#fff6c8" stopOpacity={0.55} />
-        <stop offset="1" stopColor="#fff6c8" stopOpacity={0} />
+        <stop offset="0" stopColor="#d8dcc4" stopOpacity={0.32} />
+        <stop offset="1" stopColor="#d8dcc4" stopOpacity={0} />
       </linearGradient>
     </defs>
     <rect x={-700} y={-1200} width={3200} height={2500} fill="#6a4d2e" />

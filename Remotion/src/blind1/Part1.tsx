@@ -208,6 +208,7 @@ const World: React.FC = () => {
   const lastPattern = g >= c.questionAt + 55 && g < outroStart - 6;
   return (
     <AbsoluteFill style={{ backgroundColor: "#000", opacity: fade }}>
+      <AbsoluteFill style={{ filter: "saturate(0.5) brightness(0.82) contrast(1.12)" }}>
       <SceneBox g={g} from={0} to={EYE_END} first><EyeOpen g={g} open={eyeOpen} /></SceneBox>
       <SceneBox g={g} from={HUT_FROM} to={HUT_END}>
         <Stage cam={camHut(g)}>
@@ -221,6 +222,8 @@ const World: React.FC = () => {
           <Cast g={g} list={stageVillage(g)} />
         </Stage>
       </SceneBox>
+
+      </AbsoluteFill>
 
       {youFaceOn && (
         <AbsoluteFill style={{ opacity: ramp(g, c.answerAt, c.answerAt + 8) * clamp01((le(5) + 14 - g) / 8) }}>
