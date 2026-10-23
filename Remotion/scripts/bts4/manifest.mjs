@@ -42,7 +42,7 @@ const ls = (i) => starts[i] + shots[i].leadFrames;
 const le = (i) => ls(i) + shots[i].audioFrames;
 const cues = {
   hookCut: HOOK_FRAMES,
-  clockZero: ls(1) + 40,        // the clock "น้องเต้ย" reaches 0:00
+  clockZero: le(1) - 15,        // the clock "น้องเต้ย" reaches 0:00
   riseAt: ls(2),                // he rises
   faceEnd: ls(2) + 55,
   letGoAt: ls(2) + 70,          // ป้าสมจิตร lets go

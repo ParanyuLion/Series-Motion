@@ -84,26 +84,26 @@ const stage4 = (g: number): Pp[] => {
   // ป้าสมจิตร holds him until the last seconds, lets go, runs
   const auntT0 = c.letGoAt + 8;
   const auntRun = g >= auntT0;
-  out.push(P(g, { key: "aunt", id: "aunt", x: auntRun ? RunLeft(g, 1650, auntT0, RUN_END - 20) : 1650, y: lane(auntT0, 115, 140), facing: -1, walk: auntRun ? 1 : 0, run: auntRun, fear: auntRun ? 0.6 : 0.7, headTilt: auntRun ? 0 : wob(2, 0.3) * 4 + 8 * limp }));
+  out.push(P(g, { key: "aunt", id: "aunt", x: auntRun ? RunLeft(g, 1650, auntT0, RUN_END - 20) : 1650, y: lane(auntT0, 115, 160), facing: -1, walk: auntRun ? 1 : 0, run: auntRun, fear: auntRun ? 0.6 : 0.7, headTilt: auntRun ? 0 : wob(2, 0.3) * 4 + 8 * limp }));
 
   // the other three: watch, then run past the boy in the lanes in front of him
   const nunT0 = c.runAt - 30;
   const nunRun = g >= nunT0;
-  out.push(P(g, { key: "nun", id: "nun", x: nunRun ? RunLeft(g, 1440, nunT0, RUN_END - 40) : 1440, y: lane(nunT0, 55, 165), facing: -1, walk: nunRun ? 1 : 0, run: nunRun, fear: Math.max(0.4, 0.6 * scared) }));
+  out.push(P(g, { key: "nun", id: "nun", x: nunRun ? RunLeft(g, 1440, nunT0, RUN_END - 40) : 1440, y: lane(nunT0, 55, 190), facing: -1, walk: nunRun ? 1 : 0, run: nunRun, fear: Math.max(0.4, 0.6 * scared) }));
   const mikeT0 = c.runAt - 10;
   const mikeRun = g >= mikeT0;
-  out.push(P(g, { key: "mike", id: "mike", x: mikeRun ? RunLeft(g, 1800, mikeT0, RUN_END + 20) : 1800, y: lane(mikeT0, 30, 190), facing: -1, walk: mikeRun ? 1 : 0, run: mikeRun, fear: Math.max(0.3, 0.5 * scared) }));
+  out.push(P(g, { key: "mike", id: "mike", x: mikeRun ? RunLeft(g, 1800, mikeT0, RUN_END + 20) : 1800, y: lane(mikeT0, 30, 220), facing: -1, walk: mikeRun ? 1 : 0, run: mikeRun, fear: Math.max(0.3, 0.5 * scared) }));
   const youT0 = c.runAt;
   const youRun = g >= youT0;
-  out.push(P(g, { key: "you", id: "you", x: youRun ? RunLeft(g, 1950, youT0, RUN_END) : 1950, y: lane(youT0, 40, 215), facing: -1, walk: youRun ? 1 : 0, run: youRun, fear: Math.max(0.4, 0.6 * scared) }));
+  out.push(P(g, { key: "you", id: "you", x: youRun ? RunLeft(g, 1950, youT0, RUN_END) : 1950, y: lane(youT0, 40, 250), facing: -1, walk: youRun ? 1 : 0, run: youRun, fear: Math.max(0.4, 0.6 * scared) }));
 
   // the three zombies from Part 3 keep coming; they turn after the survivors
   const hold = Math.min(g, c.runAt + 60);
   const zx = (base: number) => base + 0.25 * hold - 0.3 * Math.max(0, g - (c.runAt + 60));
   const zf: 1 | -1 = g < c.runAt + 60 ? 1 : -1;
-  out.push(zb(g, "man1", "man1", zx(1000), FLOOR_Y + 40, zf));
-  out.push(zb(g, "woman1", "woman1", zx(890), FLOOR_Y + 55, zf));
-  out.push(zb(g, "uncle", "uncle", zx(780), FLOOR_Y + 45, zf));
+  out.push(zb(g, "man1", "man1", zx(1000), FLOOR_Y + 5, zf));
+  out.push(zb(g, "woman1", "woman1", zx(890), FLOOR_Y + 25, zf));
+  out.push(zb(g, "uncle", "uncle", zx(780), FLOOR_Y + 12, zf));
   return out;
 };
 
@@ -127,11 +127,11 @@ const RearEnd: React.FC = () => (
 );
 
 const cam4 = makeCamera("car4", [
-  [0, 1620, 1020, 1.9],
-  [c.hookCut - 30, 1580, 1030, 1.6],
+  [0, 1620, 1150, 1.5],
+  [c.hookCut - 30, 1580, 1110, 1.4],
   [c.hookCut, 1330, 1040, 1.0],
-  [c.clockZero - 20, 1600, 1030, 1.5],
-  [c.riseAt - 4, 1580, 1020, 1.8],
+  [c.clockZero - 20, 1600, 1100, 1.5],
+  [c.riseAt - 4, 1580, 1100, 1.6],
   [c.faceEnd + 10, 1520, 1040, 1.25],
   [c.runAt, 1400, 1050, 1.1],
   [c.runAt + 90, 1050, 1050, 1.0],
@@ -224,15 +224,15 @@ const SceneCar3: React.FC<{ g: number }> = ({ g }) => {
 // ====================================================================================================================
 const S2_END = c.doorAt + FADE;
 const M0 = 1500;
-const FIGHT_DIST = 900;
+const FIGHT_DIST = 700;
 const M = (g: number) => (g < c.fightAt ? lerp(1950, M0, smooth(ramp(g, c.car2At, c.car2At + 95))) : M0 - FIGHT_DIST * ramp(g, c.fightAt, c.doorAt - 15));
-const OFF_N = 150;
-const OFF_Y = 280;
-const OFF_A = 430;
+const OFF_N = 140;
+const OFF_Y = 190;
+const OFF_A = 340;
 const LANE_M = 30;
 const LANE_N = 90;
 const LANE_Y = 150;
-const REACH = 340;
+const REACH = 380;
 const DRIFT = 0.3;
 
 type Beat = { lane: number; off: number; h: number; kind: "jab" | "cloud" | "swing"; id: PassengerId };
@@ -342,22 +342,22 @@ const stage1 = (g: number): Pp[] => {
   const aunt = g < c.endAt + 2;
   const noticed = ramp(g, c.holdAt - 20, c.holdAt);
   // the horde presses at the door; the boy leads
-  const boyX = g < c.endAt + 8 ? Math.max(2050, 2110 - 0.5 * t) : 2050 - 5 * ramp(g, c.endAt + 8, c.endAt + 40) - 0.45 * Math.max(0, g - (c.endAt + 40)) * 1;
+  const boyX = g < c.endAt + 8 ? Math.max(1935, 2000 - 0.5 * t) : 1935 - 0.5 * (g - c.endAt - 8);
   const boySlipped = g >= c.endAt + 8;
-  out.push(P(g, aunt && g < c.endAt ? { key: "aunt", id: "aunt", x: lerp(2000, 1760, smooth(ramp(g, S1_FROM, S1_FROM + 40))), y: FLOOR_Y + 40, facing: 1, walk: ramp(g, S1_FROM, S1_FROM + 40) < 1 ? 1 : 0, swing: g >= c.holdAt - 6 ? 0.08 : undefined, swingAmp: 4, fear: 0.75, headTilt: -6 * noticed } : { key: "aunt", id: "aunt", x: -999, y: FLOOR_Y, infection: 0 }));
+  out.push(P(g, aunt && g < c.endAt ? { key: "aunt", id: "aunt", x: lerp(2000, 1760, smooth(ramp(g, S1_FROM, S1_FROM + 40))), y: FLOOR_Y + 40, facing: ramp(g, S1_FROM, S1_FROM + 40) < 1 ? -1 : 1, walk: ramp(g, S1_FROM, S1_FROM + 40) < 1 ? 1 : 0, swing: g >= c.holdAt - 6 ? 0.08 : undefined, swingAmp: 4, fear: 0.75, headTilt: -6 * noticed } : { key: "aunt", id: "aunt", x: -999, y: FLOOR_Y, infection: 0 }));
   out.push(P(g, { key: "nun", id: "nun", x: lerp(1950, 1250, ramp(g, S1_FROM, S1_FROM + 85)), y: FLOOR_Y + 85, facing: -1, walk: ramp(g, S1_FROM, S1_FROM + 85) < 1 ? 1 : 0, run: true, item: "extinguisher", swing: 0.08, swingAmp: 4, fear: 0.5 }));
   out.push(P(g, { key: "mike", id: "mike", x: lerp(2000, 1370, ramp(g, S1_FROM, S1_FROM + 85)), y: FLOOR_Y + 35, facing: g < c.endAt + 20 ? -1 : -1, walk: ramp(g, S1_FROM, S1_FROM + 85) < 1 ? 1 : 0, run: true, item: "umbrella", swing: 0.08, swingAmp: 10, fear: 0.4 }));
   // "you": stop next to the door to watch, then turn away and run when the door gives
-  const youStop = lerp(2040, 1690, smooth(ramp(g, S1_FROM, S1_FROM + 45)));
+  const youStop = lerp(2040, 1740, smooth(ramp(g, S1_FROM, S1_FROM + 45)));
   const away = ramp(g, c.endAt + 22, c.biteAt - 6);
-  const youX = youStop - 90 * away;
+  const youX = youStop - 40 - 160 * away;
   const youFace: 1 | -1 = g < c.endAt + 22 && g > S1_FROM + 45 ? 1 : -1;
-  out.push(P(g, { key: "you", id: "you", x: youX, y: FLOOR_Y + 130, facing: g < S1_FROM + 45 ? -1 : youFace, walk: ramp(g, S1_FROM, S1_FROM + 45) < 1 ? 1 : away > 0 && away < 1 ? 1 : 0, run: true, fear: 0.7, item: "bag", swing: -1.5, swingAmp: 60 }));
+  out.push(P(g, { key: "you", id: "you", x: youX, y: FLOOR_Y + 130, facing: g < S1_FROM + 45 ? -1 : youFace, walk: ramp(g, S1_FROM, S1_FROM + 45) < 1 ? 1 : away > 0 && away < 1 ? 0.7 : 0, run: ramp(g, S1_FROM, S1_FROM + 45) < 1, fear: 0.7, item: "bag", swing: -1.5, swingAmp: 60 }));
   // the horde
-  out.push(zb(g, "z-boy", "nueng", boySlipped ? Math.min(boyX, 2050) - 190 * ramp(g, c.endAt + 8, c.endAt + 40) * 0.8 : boyX, FLOOR_Y + 55, boySlipped ? -1 : -1, { infection: 1, mark: 1, walk: 1 }));
-  out.push(zb(g, "z-man", "man1", 2170 - 0.3 * t, FLOOR_Y + 30, -1));
-  out.push(zb(g, "z-woman", "woman1", 2240 - 0.3 * t, FLOOR_Y + 85, -1));
-  out.push(zb(g, "z-uncle", "uncle", 2320 - 0.3 * t, FLOOR_Y + 50, -1));
+  out.push(zb(g, "z-boy", "nueng", boyX, FLOOR_Y + 55, -1, { infection: 1, mark: 1, walk: 1 }));
+  out.push(zb(g, "z-man", "man1", Math.max(1990, 2060 - 0.3 * t), FLOOR_Y + 30, -1));
+  out.push(zb(g, "z-woman", "woman1", Math.max(2010, 2130 - 0.3 * t), FLOOR_Y + 85, -1));
+  out.push(zb(g, "z-uncle", "uncle", Math.max(2030, 2200 - 0.3 * t), FLOOR_Y + 50, -1));
   return out;
 };
 
@@ -383,7 +383,7 @@ const cam1 = makeCamera("car1door", [
 const SceneCar1Door: React.FC<{ g: number }> = ({ g }) => {
   const cam = cam1(g);
   const people = stage1(g);
-  const behind = people.filter((p) => p.key.startsWith("z-") && p.x >= VEST_X - 30 + 10);
+  const behind = people.filter((p) => p.key.startsWith("z-") && p.x >= DOOR_X + 30);
   const front = people.filter((p) => !behind.includes(p));
   const shake = g >= c.holdAt && g < c.endAt ? Math.sin(g * 2.3) * 3 : 0;
   return (
@@ -435,8 +435,8 @@ const CabDoor: React.FC<{ g: number }> = ({ g }) => {
 const cam5 = makeCamera("cab", [
   [S5_FROM, 60, 1040, 1.05],
   [c.cabAt, -150, 1040, 1.1],
-  [c.cabAt + 60, -420, 1040, 1.3],
-  [outroStart, -430, 1050, 1.5],
+  [c.cabAt + 60, -360, 1040, 1.25],
+  [outroStart, -340, 1050, 1.35],
 ]);
 
 const SceneCab: React.FC<{ g: number }> = ({ g }) => {
@@ -635,7 +635,7 @@ const Outro: React.FC<{ g: number }> = ({ g }) => {
 
 const World: React.FC = () => {
   const g = useCurrentFrame();
-  const fade = ramp(g, 0, 10);
+  const fade = 0.35 + 0.65 * ramp(g, 0, 10);
   const clockOn = g < c.riseAt + 14;
   const seconds = Math.max(0, (c.clockZero - g) / 30);
   const heart = Math.max(0, Math.sin(g * (g < c.clockZero ? 0.5 : 0.25)));
