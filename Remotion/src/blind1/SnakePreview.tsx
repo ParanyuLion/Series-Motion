@@ -231,3 +231,103 @@ export const SnakePreview2: React.FC = () => (
     ))}
   </svg>
 );
+
+// ---------------- sheet 3: the smiling mask with no mouth, and body designs ----------------
+const MaskHead: React.FC<{ kind: 1 | 2 | 3 }> = ({ kind }) => (
+  <Head skin="#d9cfbb">
+    {kind !== 2 && [-34, 36].map((x) => (
+      <g key={x}>
+        <ellipse cx={x} cy={-24} rx={21} ry={31} fill="#050403" />
+        <circle cx={x + 5} cy={-34} r={3} fill="#e8e4d6" />
+      </g>
+    ))}
+    {kind === 2 && [-34, 36].map((x) => <path key={x} d={`M${x - 24} -18 Q${x} -52 ${x + 24} -18`} stroke="#0a0806" strokeWidth={9} fill="none" strokeLinecap="round" />)}
+    {/* the cheeks lift: a smile with no mouth */}
+    {kind !== 3 && (
+      <g>
+        <ellipse cx={-46} cy={26} rx={24} ry={14} fill="#eadfca" opacity={0.85} />
+        <ellipse cx={52} cy={26} rx={24} ry={14} fill="#eadfca" opacity={0.85} />
+        <path d="M-10 6 Q-60 18 -66 52" stroke="#a9987f" strokeWidth={3} fill="none" opacity={0.75} />
+        <path d="M14 6 Q66 18 74 52" stroke="#a9987f" strokeWidth={3} fill="none" opacity={0.75} />
+      </g>
+    )}
+    <path d="M-2 -4 Q-8 20 -2 30" stroke="#b6a68c" strokeWidth={3} fill="none" opacity={kind === 2 ? 0 : 0.6} />
+    {kind === 3 && <path d="M-80 36 Q4 112 86 34" stroke="#3a2a1c" strokeWidth={2.5} fill="none" opacity={0.85} />}
+  </Head>
+);
+
+const PATH_S = "M-70 330 C-190 220 -150 110 -30 70 C60 40 80 -30 10 -80";
+const PATH_COIL = "M70 340 C-70 310 -70 230 40 210 C150 190 140 110 20 96 C-90 84 -80 -10 10 -80";
+
+const bodyDefs = (
+  <defs>
+    <pattern id="bd-diamond" width={34} height={34} patternUnits="userSpaceOnUse">
+      <rect width={34} height={34} fill="#2c2a1f" />
+      <polygon points="17,2 32,17 17,32 2,17" fill="#4a452d" stroke="#171510" strokeWidth={2} />
+      <polygon points="17,10 24,17 17,24 10,17" fill="#6b6240" />
+    </pattern>
+    <pattern id="bd-pale" width={26} height={26} patternUnits="userSpaceOnUse">
+      <rect width={26} height={26} fill="#c9c0aa" />
+      <path d="M0 13 Q13 4 26 13" stroke="#a49a82" strokeWidth={2} fill="none" />
+      <path d="M0 26 Q13 17 26 26" stroke="#a49a82" strokeWidth={2} fill="none" />
+    </pattern>
+    <pattern id="bd-faces" width={30} height={30} patternUnits="userSpaceOnUse">
+      <rect width={30} height={30} fill="#2f2c20" />
+      <circle cx={15} cy={15} r={10} fill="#cfc4ac" />
+      <path d="M9 13 q3 -3 5 0 M16 13 q3 -3 5 0" stroke="#0a0806" strokeWidth={1.6} fill="none" />
+    </pattern>
+    <pattern id="bd-shirt" width={44} height={44} patternUnits="userSpaceOnUse">
+      <rect width={44} height={44} fill="#8a7436" />
+      <path d="M22 38 C10 32 12 22 22 20 C32 18 32 10 24 8" stroke="#3a2e14" strokeWidth={5} fill="none" strokeLinecap="round" />
+      <circle cx={24} cy={6} r={4.5} fill="#d9b38c" stroke="#3a2e14" strokeWidth={1} />
+    </pattern>
+  </defs>
+);
+
+const Trunk: React.FC = () => (
+  <g>
+    <rect x={-40} y={-60} width={110} height={420} fill="#2a2418" />
+    {Array.from({ length: 7 }, (_, i) => <line key={i} x1={-30 + i * 16} y1={-60} x2={-26 + i * 16} y2={360} stroke="#1a160e" strokeWidth={3} />)}
+  </g>
+);
+
+const BodyKind: React.FC<{ kind: number }> = ({ kind }) => {
+  const d = kind === 6 ? PATH_COIL : PATH_S;
+  const fill = ["", "url(#bd-diamond)", "url(#bd-pale)", "#3a3626", "url(#bd-faces)", "url(#bd-shirt)", "#2c2a1f"][kind];
+  const w = kind === 1 ? 54 : kind === 2 ? 118 : kind === 5 ? 86 : 86;
+  return (
+    <g>
+      {kind === 6 && <Trunk />}
+      <path d={d} fill="none" stroke="#121009" strokeWidth={w + 12} strokeLinecap="round" />
+      <path d={d} fill="none" stroke={fill} strokeWidth={w} strokeLinecap="round" />
+      {kind === 3 && <path d={d} fill="none" stroke="#14120c" strokeWidth={w} strokeLinecap="butt" strokeDasharray="3 15" />}
+      {kind === 2 && <path d={d} fill="none" stroke="#e4dcc6" strokeWidth={30} strokeLinecap="round" opacity={0.55} transform="translate(26,-4)" />}
+      {kind === 6 && <path d={d} fill="none" stroke="#4a452d" strokeWidth={w - 52} strokeLinecap="round" strokeDasharray="1 18" />}
+      <g transform={`translate(${kind === 6 ? 0 : 0},${kind === 2 ? -10 : 0}) scale(${kind === 2 ? 1.1 : 1})`}>
+        <MaskHead kind={1} />
+      </g>
+    </g>
+  );
+};
+
+export const SnakePreview3: React.FC = () => (
+  <svg width={1500} height={2250} viewBox="0 0 1500 2250" style={{ display: "block" }}>
+    {bodyDefs}
+    <defs>
+      <radialGradient id="sp-bg3" cx="0.5" cy="0.4" r="0.8"><stop offset="0" stopColor="#3b3f33" /><stop offset="1" stopColor="#0c0e09" /></radialGradient>
+    </defs>
+    <rect width={1500} height={2250} fill="url(#sp-bg3)" />
+    {[1, 2, 3].map((k, i) => (
+      <g key={k} transform={`translate(${250 + i * 500},560) scale(1.45)`}>
+        <MaskHead kind={k as 1 | 2 | 3} />
+        <text x={0} y={190} textAnchor="middle" fontFamily="sans-serif" fontSize={26} fill="#d8d4c0">{["หน้า 1 แก้มยกเป็นยิ้ม ตาโหล", "หน้า 2 ตาหยีเป็นยิ้ม", "หน้า 3 รอยแยกยิ้มกว้างปิดสนิท"][i]}</text>
+      </g>
+    ))}
+    {[1, 2, 3, 4, 5, 6].map((k, i) => (
+      <g key={k} transform={`translate(${250 + (i % 3) * 500},${(i < 3 ? 1280 : 1930)}) scale(0.78)`}>
+        <BodyKind kind={k} />
+        <text x={0} y={390} textAnchor="middle" fontFamily="sans-serif" fontSize={36} fill="#d8d4c0">{["ลำตัว 1 เรียวยาว ลายข้าวหลามตัด", "ลำตัว 2 อ้วนซีด มีรอยย่น", "ลำตัว 3 เป็นปล้องเหมือนหนอน", "ลำตัว 4 เกล็ดเป็นหน้าคนจิ๋ว", "ลำตัว 5 ลายเสื้อของหมู่บ้าน", "ลำตัว 6 พันต้นไม้ห้อยหัวลงมา"][i]}</text>
+      </g>
+    ))}
+  </svg>
+);
