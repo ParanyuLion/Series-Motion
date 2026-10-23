@@ -12,8 +12,8 @@ const Body: React.FC = () => (
   </g>
 );
 
-const Head: React.FC<{ tilt?: number; children: React.ReactNode; skin?: string }> = ({ tilt = 0, children, skin = "#cbb8a0" }) => (
-  <g transform={`translate(12,-190) rotate(${tilt})`}>
+const Head: React.FC<{ tilt?: number; children: React.ReactNode; skin?: string; x?: number; y?: number; s?: number }> = ({ tilt = 0, children, skin = "#cbb8a0", x = 12, y = -190, s = 1 }) => (
+  <g transform={`translate(${x},${y}) rotate(${tilt}) scale(${s})`}>
     <defs>
       <radialGradient id="sp-skin" cx="0.5" cy="0.4" r="0.7"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#8f7e68" /></radialGradient>
     </defs>
@@ -233,8 +233,8 @@ export const SnakePreview2: React.FC = () => (
 );
 
 // ---------------- sheet 3: the smiling mask with no mouth, and body designs ----------------
-const MaskHead: React.FC<{ kind: 1 | 2 | 3 }> = ({ kind }) => (
-  <Head skin="#d9cfbb">
+const MaskHead: React.FC<{ kind: 1 | 2 | 3; x?: number; y?: number; tilt?: number; s?: number }> = ({ kind, x, y, tilt, s }) => (
+  <Head skin="#d9cfbb" x={x} y={y} tilt={tilt} s={s}>
     {kind !== 2 && [-34, 36].map((x) => (
       <g key={x}>
         <ellipse cx={x} cy={-24} rx={21} ry={31} fill="#050403" />
@@ -327,6 +327,91 @@ export const SnakePreview3: React.FC = () => (
       <g key={k} transform={`translate(${250 + (i % 3) * 500},${(i < 3 ? 1280 : 1930)}) scale(0.78)`}>
         <BodyKind kind={k} />
         <text x={0} y={390} textAnchor="middle" fontFamily="sans-serif" fontSize={36} fill="#d8d4c0">{["ลำตัว 1 เรียวยาว ลายข้าวหลามตัด", "ลำตัว 2 อ้วนซีด มีรอยย่น", "ลำตัว 3 เป็นปล้องเหมือนหนอน", "ลำตัว 4 เกล็ดเป็นหน้าคนจิ๋ว", "ลำตัว 5 ลายเสื้อของหมู่บ้าน", "ลำตัว 6 พันต้นไม้ห้อยหัวลงมา"][i]}</text>
+      </g>
+    ))}
+  </svg>
+);
+
+// ---------------- sheet 4: the mask with the seam smile (face 3) in other poses ----------------
+const Flesh: React.FC<{ d: string; w: number; cap?: "round" | "butt" }> = ({ d, w, cap = "round" }) => (
+  <g>
+    <path d={d} fill="none" stroke="#121009" strokeWidth={w + 12} strokeLinecap={cap} strokeLinejoin="round" />
+    <path d={d} fill="none" stroke="#2f2c20" strokeWidth={w} strokeLinecap={cap} strokeLinejoin="round" />
+    <path d={d} fill="none" stroke="#5a5539" strokeWidth={Math.max(6, w * 0.17)} strokeLinecap="round" strokeDasharray="0 20" />
+    <path d={d} fill="none" stroke="#7b7456" strokeWidth={4} strokeLinecap="round" opacity={0.45} transform={`translate(${w * 0.34},-4)`} />
+  </g>
+);
+
+const Branch: React.FC<{ y: number }> = ({ y }) => (
+  <g>
+    <rect x={-330} y={y - 18} width={660} height={36} rx={16} fill="#2a2418" />
+    {Array.from({ length: 12 }, (_, i) => <line key={i} x1={-320 + i * 54} y1={y - 14} x2={-300 + i * 54} y2={y + 12} stroke="#1a160e" strokeWidth={3} />)}
+  </g>
+);
+
+const Pose: React.FC<{ n: number }> = ({ n }) => {
+  switch (n) {
+    case 1: // a coiled heap with the neck raised
+      return (
+        <g>
+          <Flesh d="M-150 330 C-170 270 150 270 150 310 C150 360 -110 360 -110 310 C-110 280 100 276 100 300 C100 326 -50 326 -50 296 C-50 220 -10 120 4 -80" w={74} />
+          <MaskHead kind={3} x={6} y={-190} />
+        </g>
+      );
+    case 2: // hanging from a branch, head down: the face is upside down
+      return (
+        <g>
+          <Branch y={-330} />
+          <Flesh d="M-80 -330 C-160 -250 -140 -150 -40 -110 C60 -70 70 20 10 90 C-30 140 -10 210 12 250" w={66} />
+          <MaskHead kind={3} x={12} y={330} tilt={186} />
+        </g>
+      );
+    case 3: // slithering low along the ground, head lifted a little
+      return (
+        <g transform="translate(-110,0)">
+          <Flesh d="M-340 300 C-270 230 -190 350 -110 290 C-30 230 50 350 130 290 C200 240 250 230 280 150" w={66} />
+          <MaskHead kind={3} x={290} y={50} tilt={14} />
+        </g>
+      );
+    case 4: // rearing up tall
+      return (
+        <g>
+          <Flesh d="M-40 350 C-170 310 -150 190 -20 150 C110 110 110 10 -10 -40 C-70 -66 -60 -130 4 -200" w={72} />
+          <MaskHead kind={3} x={10} y={-290} />
+        </g>
+      );
+    case 5: // around a trunk
+      return (
+        <g>
+          <rect x={-46} y={-130} width={120} height={500} fill="#2a2418" />
+          {Array.from({ length: 7 }, (_, i) => <line key={i} x1={-36 + i * 17} y1={-130} x2={-32 + i * 17} y2={370} stroke="#1a160e" strokeWidth={3} />)}
+          <Flesh d="M-70 350 C100 310 100 250 -70 210 C100 170 100 120 -70 80 C100 40 100 -10 -70 -50 C-20 -80 0 -110 12 -150" w={50} />
+          <MaskHead kind={3} x={14} y={-230} s={0.85} />
+        </g>
+      );
+    default: // coming toward you: foreshortened, a large head at the bottom, the body winding away behind
+      return (
+        <g>
+          <Flesh d="M20 -230 C-80 -200 -60 -140 10 -110" w={24} />
+          <Flesh d="M10 -110 C100 -60 80 20 -10 60" w={36} />
+          <Flesh d="M-10 60 C-110 100 -90 170 0 200" w={54} />
+          <Flesh d="M0 200 C60 230 40 270 10 290" w={78} />
+          <MaskHead kind={3} x={4} y={300} s={1.5} />
+        </g>
+      );
+  }
+};
+
+export const SnakePreview4: React.FC = () => (
+  <svg width={1500} height={1700} viewBox="0 0 1500 1700" style={{ display: "block" }}>
+    <defs>
+      <radialGradient id="sp-bg4" cx="0.5" cy="0.4" r="0.8"><stop offset="0" stopColor="#3b3f33" /><stop offset="1" stopColor="#0c0e09" /></radialGradient>
+    </defs>
+    <rect width={1500} height={1700} fill="url(#sp-bg4)" />
+    {[1, 2, 3, 4, 5, 6].map((n, i) => (
+      <g key={n} transform={`translate(${250 + (i % 3) * 500},${i < 3 ? 440 : 1260}) scale(0.78)`}>
+        <Pose n={n} />
+        <text x={0} y={n === 2 ? 500 : 440} textAnchor="middle" fontFamily="sans-serif" fontSize={38} fill="#d8d4c0">{["ท่า 1 ขดเป็นกองคอตั้ง", "ท่า 2 ห้อยหัวจากกิ่งไม้", "ท่า 3 เลื้อยต่ำชูหัวนิดเดียว", "ท่า 4 ชูตัวสูง", "ท่า 5 พันต้นไม้", "ท่า 6 คืบเข้าหากล้อง"][i]}</text>
       </g>
     ))}
   </svg>
