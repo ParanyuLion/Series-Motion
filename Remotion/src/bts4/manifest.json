@@ -1,134 +1,134 @@
 {
  "fps": 30,
- "total": 1791,
- "storyEnd": 1644,
- "outroStart": 1656,
+ "total": 1763,
+ "storyEnd": 1616,
+ "outroStart": 1628,
  "shots": [
   {
    "text": "จะเกิดอะไรขึ้น ถ้าคุณต้องฝ่าซอมบี้ไปหยุดรถไฟ",
    "audio": "bts4/n0.mp3",
-   "audioFrames": 104,
+   "audioFrames": 118,
    "leadFrames": 21,
-   "frames": 180
+   "frames": 189
   },
   {
    "text": "คุณไม่ยอมผลักน้องเต้ย แต่เวลาของเขาก็หมดลง",
    "audio": "bts4/n1.mp3",
-   "audioFrames": 120,
+   "audioFrames": 133,
    "leadFrames": 6,
-   "frames": 134
+   "frames": 147
   },
   {
    "text": "เขาลุกขึ้นมา ป้าสมจิตรต้องปล่อยมือ แล้วทุกคนก็วิ่งหนี",
    "audio": "bts4/n2.mp3",
-   "audioFrames": 158,
+   "audioFrames": 156,
    "leadFrames": 6,
-   "frames": 172
+   "frames": 170
   },
   {
    "text": "ทางเดียวคือเดินผ่านทีละตู้ ไปให้ถึงห้องคนขับ",
    "audio": "bts4/n3.mp3",
-   "audioFrames": 118,
+   "audioFrames": 132,
    "leadFrames": 6,
-   "frames": 132
+   "frames": 146
   },
   {
    "text": "คุณคว้าร่ม ถังดับเพลิง และกระเป๋าทุกใบที่หาได้",
    "audio": "bts4/n4.mp3",
-   "audioFrames": 127,
+   "audioFrames": 137,
    "leadFrames": 6,
-   "frames": 141
+   "frames": 151
   },
   {
    "text": "ตู้ที่สองเต็มไปด้วยซอมบี้ และไม่มีทางอื่นนอกจากสู้",
    "audio": "bts4/n5.mp3",
-   "audioFrames": 172,
+   "audioFrames": 159,
    "leadFrames": 6,
-   "frames": 186
+   "frames": 173
   },
   {
    "text": "ไมค์ใช้ร่มดัน พี่นุ่นฉีดถังดับเพลิง คุณเหวี่ยงกระเป๋าฟาด",
    "audio": "bts4/n6.mp3",
-   "audioFrames": 184,
+   "audioFrames": 151,
    "leadFrames": 6,
-   "frames": 198
+   "frames": 165
   },
   {
-   "text": "ที่ประตูตู้หนึ่ง ซอมบี้ตามมาทัน ป้าสมจิตรจึงจับบานประตูไว้",
+   "text": "ที่ทางเชื่อมตู้หนึ่ง ซอมบี้ตามมาทัน ป้าสมจิตรจึงยืนขวางไว้",
    "audio": "bts4/n7.mp3",
-   "audioFrames": 179,
+   "audioFrames": 157,
    "leadFrames": 6,
-   "frames": 193
+   "frames": 171
   },
   {
    "text": "ฟันของเด็กคนนั้นเกี่ยวสายกระเป๋าคุณ ห่างผิวหนังนิดเดียว",
    "audio": "bts4/n8.mp3",
-   "audioFrames": 146,
+   "audioFrames": 150,
    "leadFrames": 6,
-   "frames": 160
+   "frames": 164
   },
   {
    "text": "ตรงหน้าคือห้องคนขับ ถ้าเป็นคุณ จะเปิดมันไหม",
    "audio": "bts4/n9.mp3",
-   "audioFrames": 142,
+   "audioFrames": 134,
    "leadFrames": 6,
-   "frames": 160
+   "frames": 152
   }
  ],
  "starts": [
   0,
-  180,
-  314,
-  486,
-  618,
-  759,
-  945,
-  1143,
-  1336,
-  1496
+  189,
+  336,
+  506,
+  652,
+  803,
+  976,
+  1141,
+  1312,
+  1476
  ],
  "cues": {
-  "hookCut": 180,
-  "clockZero": 291,
-  "riseAt": 320,
-  "faceEnd": 375,
-  "letGoAt": 390,
-  "runAt": 420,
-  "mapIn": 492,
-  "mapOut": 610,
-  "itemsAt": 624,
-  "car2At": 765,
-  "fightAt": 951,
-  "jabAt": 961,
-  "sprayAt": 1006,
-  "swingAt": 1056,
-  "sprayEnd": 1125,
-  "doorAt": 1149,
-  "holdAt": 1174,
-  "endAt": 1234,
-  "biteAt": 1362,
-  "skinAt": 1402,
-  "cabAt": 1502,
-  "questionAt": 1522,
+  "hookCut": 189,
+  "clockZero": 313,
+  "riseAt": 342,
+  "faceEnd": 397,
+  "letGoAt": 412,
+  "runAt": 442,
+  "mapIn": 512,
+  "mapOut": 644,
+  "itemsAt": 658,
+  "car2At": 809,
+  "fightAt": 982,
+  "jabAt": 992,
+  "sprayAt": 1037,
+  "swingAt": 1087,
+  "sprayEnd": 1123,
+  "doorAt": 1147,
+  "holdAt": 1172,
+  "endAt": 1232,
+  "biteAt": 1338,
+  "skinAt": 1378,
+  "cabAt": 1482,
+  "questionAt": 1502,
   "lineStart0": 21,
-  "lineEnd0": 125,
-  "lineStart1": 186,
-  "lineEnd1": 306,
-  "lineStart2": 320,
-  "lineEnd2": 478,
-  "lineStart3": 492,
-  "lineEnd3": 610,
-  "lineStart4": 624,
-  "lineEnd4": 751,
-  "lineStart5": 765,
-  "lineEnd5": 937,
-  "lineStart6": 951,
-  "lineEnd6": 1135,
-  "lineStart7": 1149,
-  "lineEnd7": 1328,
-  "lineStart8": 1342,
-  "lineEnd8": 1488,
-  "lineStart9": 1502,
-  "lineEnd9": 1644
+  "lineEnd0": 139,
+  "lineStart1": 195,
+  "lineEnd1": 328,
+  "lineStart2": 342,
+  "lineEnd2": 498,
+  "lineStart3": 512,
+  "lineEnd3": 644,
+  "lineStart4": 658,
+  "lineEnd4": 795,
+  "lineStart5": 809,
+  "lineEnd5": 968,
+  "lineStart6": 982,
+  "lineEnd6": 1133,
+  "lineStart7": 1147,
+  "lineEnd7": 1304,
+  "lineStart8": 1318,
+  "lineEnd8": 1468,
+  "lineStart9": 1482,
+  "lineEnd9": 1616
  }
 }

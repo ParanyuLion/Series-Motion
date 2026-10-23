@@ -8,7 +8,7 @@ import { FLOOR_Y, TrainInterior } from "../bts/TrainInterior";
 import { MapMarker, TrainMap } from "../bts/TrainMap";
 import { Countdown } from "../bts/Countdown";
 import { ZombieFace } from "../bts/ZombieFace";
-import { Cloud, Impact, SlidingDoor } from "../bts/Fx";
+import { Cloud, Impact } from "../bts/Fx";
 import { ANCHOR, Cam, makeCamera } from "./camera";
 
 const { cues, shots, starts, total, outroStart } = manifest;
@@ -298,7 +298,7 @@ const camKeys2 = () => {
     [c.jabAt + 8, mj - 240, 1060, 1.5],
     [c.sprayAt, ms - 250, 1060, 1.5],
     [c.swingAt, mw - 250, 1060, 1.5],
-    [c.swingAt + 45, M(c.swingAt + 45) - 150, 1050, 1.15],
+    [c.sprayEnd - 12, M(c.sprayEnd - 12) - 150, 1050, 1.15],
     [c.sprayEnd, M(c.sprayEnd) - 100, 1050, 1.05],
     [S2_END, 500, 1040, 1.0],
   ] as [number, number, number, number][];
@@ -328,23 +328,15 @@ const S1_FROM = c.doorAt;
 const S1_END = c.skinAt + 50;
 const DOOR_X = 1880;
 const VEST_X = 2000;
-const doorOpen = (g: number) => {
-  const pushed = 0.18 + 0.05 * Math.sin(g * 1.7);
-  if (g < c.holdAt) return lerp(1, 1, 0);
-  if (g < c.holdAt + 30) return lerp(1, pushed, smooth(ramp(g, c.holdAt, c.holdAt + 30)));
-  if (g < c.endAt) return pushed;
-  return lerp(pushed, 0.3, ramp(g, c.endAt, c.endAt + 16));
-};
-
 const stage1 = (g: number): Pp[] => {
   const out: Pp[] = [];
   const t = g - S1_FROM;
   const aunt = g < c.endAt + 2;
   const noticed = ramp(g, c.holdAt - 20, c.holdAt);
   // the horde presses at the door; the boy leads
-  const boyX = g < c.endAt + 8 ? Math.max(1935, 2000 - 0.5 * t) : 1935 - 0.5 * (g - c.endAt - 8);
+  const boyX = g < c.endAt + 8 ? Math.max(2000, 2070 - 0.5 * t) : 2000 - 0.5 * (g - c.endAt - 8);
   const boySlipped = g >= c.endAt + 8;
-  out.push(P(g, aunt && g < c.endAt ? { key: "aunt", id: "aunt", x: lerp(2000, 1760, smooth(ramp(g, S1_FROM, S1_FROM + 40))), y: FLOOR_Y + 40, facing: ramp(g, S1_FROM, S1_FROM + 40) < 1 ? -1 : 1, walk: ramp(g, S1_FROM, S1_FROM + 40) < 1 ? 1 : 0, swing: g >= c.holdAt - 6 ? 0.08 : undefined, swingAmp: 4, fear: 0.75, headTilt: -6 * noticed } : { key: "aunt", id: "aunt", x: -999, y: FLOOR_Y, infection: 0 }));
+  out.push(P(g, aunt && g < c.endAt ? { key: "aunt", id: "aunt", x: lerp(2010, 1850, smooth(ramp(g, S1_FROM, S1_FROM + 40))) - (g >= c.holdAt ? 10 + 8 * Math.sin(g * 1.7) : 0), y: FLOOR_Y + 40, facing: ramp(g, S1_FROM, S1_FROM + 40) < 1 ? -1 : 1, walk: ramp(g, S1_FROM, S1_FROM + 40) < 1 ? 1 : 0, swing: g >= c.holdAt - 6 ? 0.08 : undefined, swingAmp: 4, fear: 0.75, headTilt: -6 * noticed } : { key: "aunt", id: "aunt", x: -999, y: FLOOR_Y, infection: 0 }));
   out.push(P(g, { key: "nun", id: "nun", x: lerp(1950, 1250, ramp(g, S1_FROM, S1_FROM + 85)), y: FLOOR_Y + 85, facing: -1, walk: ramp(g, S1_FROM, S1_FROM + 85) < 1 ? 1 : 0, run: true, item: "extinguisher", swing: 0.08, swingAmp: 4, fear: 0.5 }));
   out.push(P(g, { key: "mike", id: "mike", x: lerp(2000, 1370, ramp(g, S1_FROM, S1_FROM + 85)), y: FLOOR_Y + 35, facing: g < c.endAt + 20 ? -1 : -1, walk: ramp(g, S1_FROM, S1_FROM + 85) < 1 ? 1 : 0, run: true, item: "umbrella", swing: 0.08, swingAmp: 10, fear: 0.4 }));
   // "you": stop next to the door to watch, then turn away and run when the door gives
@@ -355,9 +347,9 @@ const stage1 = (g: number): Pp[] => {
   out.push(P(g, { key: "you", id: "you", x: youX, y: FLOOR_Y + 130, facing: g < S1_FROM + 45 ? -1 : youFace, walk: ramp(g, S1_FROM, S1_FROM + 45) < 1 ? 1 : away > 0 && away < 1 ? 0.7 : 0, run: ramp(g, S1_FROM, S1_FROM + 45) < 1, fear: 0.7, item: "bag", swing: -1.5, swingAmp: 60 }));
   // the horde
   out.push(zb(g, "z-boy", "nueng", boyX, FLOOR_Y + 55, -1, { infection: 1, mark: 1, walk: 1 }));
-  out.push(zb(g, "z-man", "man1", Math.max(1990, 2060 - 0.3 * t), FLOOR_Y + 30, -1));
-  out.push(zb(g, "z-woman", "woman1", Math.max(2010, 2130 - 0.3 * t), FLOOR_Y + 85, -1));
-  out.push(zb(g, "z-uncle", "uncle", Math.max(2030, 2200 - 0.3 * t), FLOOR_Y + 50, -1));
+  out.push(zb(g, "z-man", "man1", Math.max(2080, 2150 - 0.3 * t), FLOOR_Y + 30, -1));
+  out.push(zb(g, "z-woman", "woman1", Math.max(2120, 2210 - 0.3 * t), FLOOR_Y + 85, -1));
+  out.push(zb(g, "z-uncle", "uncle", Math.max(2160, 2270 - 0.3 * t), FLOOR_Y + 50, -1));
   return out;
 };
 
@@ -383,16 +375,11 @@ const cam1 = makeCamera("car1door", [
 const SceneCar1Door: React.FC<{ g: number }> = ({ g }) => {
   const cam = cam1(g);
   const people = stage1(g);
-  const behind = people.filter((p) => p.key.startsWith("z-") && p.x >= DOOR_X + 30);
-  const front = people.filter((p) => !behind.includes(p));
-  const shake = g >= c.holdAt && g < c.endAt ? Math.sin(g * 2.3) * 3 : 0;
   return (
     <Stage cam={cam}>
       <TrainInterior frame={g} scroll={scrollAt(g)} doors={0} lights={0.85 + 0.1 * Math.sin(g * 0.9)} station="ราชดำริ" carNumber={1} />
       <Vestibule />
-      <Cast g={g} list={behind} />
-      <g transform={`translate(${shake},0)`}><SlidingDoor x={DOOR_X} open={doorOpen(g)} /></g>
-      <Cast g={g} list={front} />
+      <Cast g={g} list={people} />
     </Stage>
   );
 };
@@ -533,9 +520,6 @@ const DoorSilhouette: React.FC<{ g: number }> = ({ g }) => {
       <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 44%, #f4f1e6 0%, #bdb7a4 38%, #0b0c0e 82%)" }} />
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0 }}>
         <g fill="#070707">
-          <rect x={232} y={420} width={34} height={1000} />
-          <rect x={800} y={420} width={34} height={1000} />
-          <rect x={246} y={470} width={576} height={22} />
           {/* ป้าสมจิตร: pulled toward the door, one hand still on the pane */}
           <g transform={`translate(${sx},0)`}>
             <circle cx={400} cy={780} r={66} />
