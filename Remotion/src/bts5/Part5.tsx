@@ -11,7 +11,6 @@ import { ANCHOR, Cam, makeCamera } from "../bts4/camera";
 
 const { cues, shots, starts, total, outroStart } = manifest;
 const c = cues as Record<string, number>;
-const ls = (i: number) => c[`lineStart${i}`];
 const le = (i: number) => c[`lineEnd${i}`];
 const W = 1080;
 const H = 1920;
@@ -158,35 +157,34 @@ const stageB = (g: number): Pp[] => {
   const out: Pp[] = [];
   const drv = driverState(g);
   out.push(drv);
-  const hitDone = g >= c.hitAt + 6;
   // พี่นุ่น: comes to the doorway and swings the empty extinguisher
   const swinging = g >= c.swingAt && g < c.hitAt + 6;
   const nunWalk = ramp(g, c.turnAt + 10, c.turnAt + 60);
-  const nunX = g < c.lockAt - 30 ? lerp(1250, 1070, smooth(nunWalk)) : lerp(1070, 880, smooth(ramp(g, c.lockAt - 30, c.lockAt + 20)));
-  out.push(P(g, { key: "nun", id: "nun", x: nunX, y: FLOOR_Y + 90, facing: -1, walk: nunWalk > 0 && nunWalk < 1 ? 1 : 0, item: "extinguisher", swing: swinging ? (g - c.swingAt) * 0.5 : 0.08, swingAmp: swinging ? 65 : 4, fear: 0.4 }));
+  const nunAway = smooth(ramp(g, c.hitAt + 12, c.dragAt + 20));
+  const nunX = lerp(lerp(1250, 1070, smooth(nunWalk)), 520, nunAway);
+  out.push(P(g, { key: "nun", id: "nun", x: nunX, y: FLOOR_Y + lerp(90, 175, nunAway), facing: -1, walk: (nunWalk > 0 && nunWalk < 1) || (nunAway > 0 && nunAway < 1) ? 1 : 0, item: "extinguisher", swing: swinging ? (g - c.swingAt) * 0.5 : 0.08, swingAmp: swinging ? 65 : 4, fear: 0.4 }));
 
   // ไมค์ and "you": come in, drag the driver out through the door, run back
   const approach = smooth(ramp(g, c.hitAt + 6, c.dragAt + 25));
   const dragging = g >= c.dragAt + 25 && g < c.pushAt + 40;
   const back = smooth(ramp(g, c.pushAt + 40, c.lockAt - 14));
   const feetX = drv.x;
-  const mikeX = g < c.dragAt + 25 ? lerp(1180, 818, approach) : dragging ? feetX + 90 : lerp(FEET_END + 90, 1050, back);
-  out.push(P(g, { key: "mike", id: "mike", x: mikeX, y: FLOOR_Y + 30, facing: g < c.dragAt + 25 ? -1 : dragging ? 1 : -1, walk: g < c.dragAt + 25 ? (approach > 0 && approach < 1 ? 1 : 0) : dragging ? 0.8 : back < 1 ? 1 : 0, run: !dragging && back > 0 && back < 1, item: "umbrella", swing: 0.08, swingAmp: 10, fear: 0.5 }));
+  const mikeX = g < c.dragAt + 25 ? lerp(1180, 818, approach) : dragging ? feetX + 55 : lerp(FEET_END + 55, 1050, back);
+  out.push(P(g, { key: "mike", id: "mike", x: mikeX, y: FLOOR_Y + (dragging ? 30 : lerp(160, 105, back)), facing: g < c.dragAt + 25 ? -1 : dragging ? 1 : -1, walk: g < c.dragAt + 25 ? (approach > 0 && approach < 1 ? 1 : 0) : dragging ? 0.8 : back < 1 ? 1 : 0, run: !dragging && back > 0 && back < 1, item: dragging ? null : "umbrella", swing: dragging ? -1.57 : 0.08, swingAmp: dragging ? 125 : 10, fear: 0.5 }));
   const brake = ramp(g, c.brakeAt, c.brakeAt + 28);
   const youBack = smooth(ramp(g, c.pushAt + 40, c.lockAt + 10));
-  const youX = g < c.dragAt + 25 ? lerp(1260, 866, approach) : dragging ? feetX + 150 : lerp(FEET_END + 150, 790, youBack);
-  out.push(P(g, { key: "you", id: "you", x: youX, y: FLOOR_Y + 130, facing: g < c.dragAt + 25 ? -1 : dragging ? 1 : -1, walk: g < c.dragAt + 25 ? (approach > 0 && approach < 1 ? 1 : 0) : dragging ? 0.8 : youBack < 1 ? 1 : 0, run: !dragging && youBack > 0 && youBack < 1, item: g >= c.brakeAt - 5 ? null : "bag", swing: g >= c.brakeAt - 5 ? lerp(0.08, -1.2, brake) : -1.5, swingAmp: 60, fear: 0.6 }));
+  const youX = g < c.dragAt + 25 ? lerp(1260, 866, approach) : dragging ? feetX + 105 : lerp(FEET_END + 105, 790, youBack);
+  out.push(P(g, { key: "you", id: "you", x: youX, y: FLOOR_Y + (dragging ? 130 : lerp(185, 140, youBack)), facing: g < c.dragAt + 25 ? -1 : dragging ? 1 : -1, walk: g < c.dragAt + 25 ? (approach > 0 && approach < 1 ? 1 : 0) : dragging ? 0.8 : youBack < 1 ? 1 : 0, run: !dragging && youBack > 0 && youBack < 1, item: g >= c.brakeAt + 8 ? null : dragging ? null : "bag", swing: dragging ? -1.57 : g >= c.brakeAt - 5 ? lerp(0.08, -1.2, brake) : -1.5, swingAmp: dragging ? 125 : 60, fear: 0.6 }));
 
   // the horde walks along car 1 toward the cab
   if (g >= c.pushAt - 20) {
     const ids: PassengerId[] = ["man1", "nueng", "woman1", "uncle", "man1", "woman1", "uncle", "nueng"];
     const lanes = [40, 95, 20, 120, 70, 140, 50, 105];
     ids.forEach((id, i) => {
-      const x = 1650 + 100 * i - 0.45 * Math.max(0, g - (c.pushAt - 20));
+      const x = 1950 + 100 * i - 0.45 * Math.max(0, g - (c.pushAt - 20));
       out.push(zb(g, `h${i}`, id, x, FLOOR_Y + lanes[i], -1, id === "nueng" ? { mark: 1 } as Partial<Pp> : {}));
     });
   }
-  void hitDone;
   return out;
 };
 
@@ -209,7 +207,7 @@ const CityStrip: React.FC<{ scroll: number; x: number; w: number }> = ({ scroll,
 
 const CabRoom: React.FC<{ g: number }> = ({ g }) => {
   const lamp = 0.5 + 0.5 * Math.sin(g * 0.35);
-  const throttleA = g < c.hitAt ? 28 : lerp(28, -8, ramp(g, c.pushAt - 10, c.pushAt + 10));
+  const throttleA = lerp(28, -8, smooth(ramp(g, c.turnAt + 8, c.turnAt + 30)));
   const brakeP = ramp(g, c.brakeAt, c.brakeAt + 28);
   const brakeA = lerp(-18, 38, smooth(brakeP));
   const door = smooth(ramp(g, c.lockAt - 16, c.lockAt)) ;
@@ -293,11 +291,11 @@ const stageD = (g: number): Pp[] => {
   const lookLeft = ramp(g, c.shadowsAt, c.shadowsAt + 25);
   const relief = ramp(g, c.outAt + 30, c.outAt + 60) * (1 - lookLeft);
   const pos = (inside: number, outside: number, lane: number) => ({ x: lerp(doorX + inside, doorX + outside, stepOut), y: lerp(FLOOR_Y + 20, FLOOR_Y + lane, stepOut) });
-  const mp = pos(30, 70, 110);
+  const mp = pos(0, 110, 105);
   out.push(P(g, { key: "mike", id: "mike", ...mp, facing: lookLeft > 0.5 ? -1 : 1, walk: stepOut > 0 && stepOut < 1 ? 0.8 : 0, item: "umbrella", swing: 0.08, swingAmp: 10, fear: 0.6 * lookLeft, headTilt: -14 * relief }));
-  const np = pos(-40, 140, 150);
+  const np = pos(-30, 250, 150);
   out.push(P(g, { key: "nun", id: "nun", ...np, facing: lookLeft > 0.5 ? -1 : 1, walk: stepOut > 0 && stepOut < 1 ? 0.8 : 0, item: "extinguisher", swing: 0.08, swingAmp: 4, fear: 0.6 * lookLeft, headTilt: -14 * relief }));
-  const yp = pos(-110, -20, 190);
+  const yp = pos(-60, -10, 195);
   out.push(P(g, { key: "you", id: "you", ...yp, facing: lookLeft > 0.5 ? -1 : 1, walk: stepOut > 0 && stepOut < 1 ? 0.8 : 0, item: "bag", swing: -1.5, swingAmp: 60, fear: 0.7 * lookLeft, headTilt: -16 * relief }));
   return out;
 };
@@ -321,7 +319,7 @@ const Platform: React.FC<{ g: number }> = ({ g }) => {
       {/* the station roof, columns and the sign */}
       <rect x={-3000} y={330} width={7000} height={120} fill="#7d838a" />
       {Array.from({ length: 12 }, (_, i) => <rect key={i} x={-1800 + i * 560} y={450} width={36} height={FLOOR_Y - 450} fill="#9aa1a8" />)}
-      <g transform="translate(120,0)">
+      <g transform="translate(400,0)">
         <rect x={-6} y={450} width={12} height={90} fill="#59626b" />
         <rect x={-210} y={520} width={420} height={96} rx={14} fill="#0d3d2a" stroke="#cfd8de" strokeWidth={5} />
         <text x={0} y={586} textAnchor="middle" fontFamily={fontFamily} fontSize={46} fill="#ffffff">สถานีสุดท้าย</text>
@@ -368,8 +366,8 @@ const camD = makeCamera("platform", [
   [c.stopAt, 520, 1050, 1.0],
   [c.sideDoorAt + 10, 480, 1050, 1.25],
   [c.outAt + 20, 520, 1050, 1.3],
-  [c.shadowsAt, 360, 1050, 1.15],
-  [c.shadowsAt + 90, 200, 1050, 0.95],
+  [c.shadowsAt, 300, 1050, 1.05],
+  [c.shadowsAt + 90, 80, 1050, 0.9],
   [outroStart, 330, 1050, 1.0],
 ]);
 
@@ -377,16 +375,16 @@ const SceneD: React.FC<{ g: number }> = ({ g }) => {
   const people = stageD(g);
   const walk = Math.max(0, g - c.shadowsAt) * 0.4;
   const shades = g >= c.shadowsAt - 30 ? [
-    zb(g, "s0", "man1", -260 + walk, FLOOR_Y + 70, 1),
-    zb(g, "s1", "woman1", -400 + walk, FLOOR_Y + 120, 1),
-    zb(g, "s2", "uncle", -550 + walk, FLOOR_Y + 85, 1),
+    zb(g, "s0", "man1", -380 + walk, FLOOR_Y + 70, 1),
+    zb(g, "s1", "woman1", -520 + walk, FLOOR_Y + 120, 1),
+    zb(g, "s2", "uncle", -660 + walk, FLOOR_Y + 85, 1),
   ] : [];
   const fog = ramp(g, c.shadowsAt - 30, c.shadowsAt + 30);
   return (
     <Stage cam={camD(g)}>
       <Platform g={g} />
       <g opacity={0.9 * fog}><Cast g={g} list={shades} dim={0.28} /></g>
-      <g opacity={ramp(g, c.sideDoorAt + 8, c.sideDoorAt + 30)}><Cast g={g} list={people} /></g>
+      <g opacity={ramp(g, c.outAt - 8, c.outAt + 4)}><Cast g={g} list={people} /></g>
     </Stage>
   );
 };
@@ -452,7 +450,6 @@ const BrakeClose: React.FC<{ g: number }> = ({ g }) => {
   const t = ramp(g, c.brakeAt, c.slowAt + 40);
   const pull = smooth(ramp(g, c.brakeAt, c.brakeAt + 28));
   const speed = 1 - smooth(ramp(g, c.brakeAt + 10, c.stopAt));
-  const needle = lerp(-120, 100, 1 - speed);
   const shake = Math.sin(g * 1.9) * 5 * (1 - speed * 0.2);
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
@@ -467,7 +464,7 @@ const BrakeClose: React.FC<{ g: number }> = ({ g }) => {
           const a = (-120 + i * 22) * (Math.PI / 180);
           return <line key={i} x1={Math.sin(a) * 170} y1={-Math.cos(a) * 170} x2={Math.sin(a) * 205} y2={-Math.cos(a) * 205} stroke={i > 8 ? "#d9534f" : "#cfd8de"} strokeWidth={8} strokeLinecap="round" />;
         })}
-        <g transform={`rotate(${lerp(100, -120, speed)})`}><path d="M-9 20 L0 -190 L9 20 Z" fill="#ffd86b" /></g>
+        <g transform={`rotate(${lerp(-120, 100, speed)})`}><path d="M-9 20 L0 -190 L9 20 Z" fill="#ffd86b" /></g>
         <circle r={20} fill="#59626b" />
         <text y={110} textAnchor="middle" fontFamily={fontFamily} fontSize={36} fill="#d9dde0">ความเร็ว</text>
       </g>
@@ -583,7 +580,7 @@ const World: React.FC = () => {
         </AbsoluteFill>
       )}
 
-      <Card g={g} from={Math.max(le(0), c.hookCut - 80)} to={c.hookCut} style={{ top: 170, left: 150, right: 160, fontSize: 56, lineHeight: 1.5, background: "rgba(11,13,16,0.66)", borderRadius: 32, padding: "22px 16px" }}>
+      <Card g={g} from={Math.max(le(0), c.hookCut - 80)} to={c.hookCut} style={{ top: 330, left: 150, right: 160, fontSize: 56, lineHeight: 1.5, background: "rgba(11,13,16,0.66)", borderRadius: 32, padding: "22px 16px" }}>
         เปิดห้องคนขับ...<br />ตอนจบ
       </Card>
 
@@ -613,4 +610,3 @@ export const Part5: React.FC = () => (
 );
 
 export const PART5_TOTAL = total;
-void ls;

@@ -37,6 +37,13 @@ export const ZombieFace: React.FC<{ id?: PassengerId; frame: number; t: number }
         {(c.accessories as string[]).includes("bun") && <circle cx={0} cy={-132} r={34} fill={c.hair} />}
         <ellipse cx={0} cy={0} rx={92} ry={108} fill={ZOMBIE_SKIN} />
         {bald ? <path d="M-94 -14 Q-96 -40 -84 -58 L-84 -8 Z M94 -14 Q96 -40 84 -58 L84 -8 Z" fill={c.hair} /> : <path d="M-94 -14 Q-100 -118 0 -120 Q100 -118 94 -14 Q74 -86 0 -88 Q-74 -86 -94 -14 Z" fill={c.hair} />}
+        {(c.accessories as string[]).includes("cap") && c.accent && (
+          <g>
+            <path d="M-100 -30 Q-100 -150 0 -154 Q100 -150 100 -30 Q50 -60 0 -62 Q-50 -60 -100 -30 Z" fill={mix(c.accent, "#000000", 0.0)} />
+            <path d="M-110 -34 Q0 -70 110 -34 L120 -18 Q0 -50 -120 -18 Z" fill={mix(c.accent, "#000000", 0.3)} />
+            <rect x={-26} y={-120} width={52} height={22} rx={6} fill="#c9a24a" />
+          </g>
+        )}
         <path d="M-56 -40 q10 12 4 30 M40 -50 q-8 14 -2 30 M0 -72 q4 14 -2 24 M60 -4 q-10 10 -6 24" stroke="#4a6a4a" strokeWidth={4} fill="none" opacity={0.7} />
         {[-44, 44].map((ex, i) => (
           <g key={i} transform={`translate(${ex},-14)`}>
