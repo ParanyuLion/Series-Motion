@@ -134,14 +134,15 @@ put(sfx, lowpass(rng.standard_normal(n), 1800) * np.sin(np.pi * np.clip(tk / 1.2
 t = T["stickAt"] - 0.4
 while t < T["answerAt"] - 0.2:
     prog = np.clip((t - (T["stickAt"] - 0.4)) / (T["askAt"] - T["stickAt"]), 0, 1)
-    tap(t, 0.35 + 0.6 * prog, 0.9 - 0.4 * prog)
-    t += 0.56
+    tap(t, 0.3 + 0.5 * prog, 0.9 - 0.4 * prog)
+    t += 1.45
 # the walk: soft steps on dirt, the head's stick keeping the same rhythm
 t = T["walkAt"]
 while t < T["bellAt"] + 0.6:
     step(t, 0.22, 0.45)
     step(t + 0.27, 0.2, 0.55)
-    tap(t + 0.05, 0.3, 0.6)
+    if int(round((t - T["walkAt"]) / 0.54)) % 3 == 0:
+        tap(t + 0.05, 0.22, 0.6)
     t += 0.54
 
 # ---- a drone that grows toward the bell ----
