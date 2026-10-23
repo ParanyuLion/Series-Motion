@@ -16,7 +16,7 @@ A short, vertical (9:16), Thai-narrated cartoon series for Instagram Reels and T
 - The snakes made every villager blind in the beginning, to see how humans live blind in a village in the forest.
 - The snakes then **let people who can see arrive on purpose, at random**. The first seeing people vanished in the forest (the snakes took them).
 - The villagers, afraid of losing people, **began to make the "slipped through" seeing newcomers blind themselves**, out of care, to stop them vanishing. They tell "you" so openly ("we once made someone blind so that he would not disappear"), kindly, as the most natural thing. **The seeing newcomers were not a mistake: the snakes meant them (user, correction).**
-- The village head was the first one taken, and the first to be blinded; he has lived there longest.
+- **The village head is the first person who could see (user).** He vanished in the forest and the snakes turned him into one of them; he wears a human shape as the blind village head. He is a snake in disguise who knew from the first minute that "you" can see, and the ending is "you" and the head talking in snake form (user).
 - "You" amuse the snakes more than anyone before. At the end "you" escape the forest and go home, but the snakes, delighted, **turn "you" into one of them: a snake with a human head** (user). That is what comes home with "you". The recurring shirt pattern now reads as the picture of what "you" are becoming.
 
 ## Story rules (call, except where marked)
