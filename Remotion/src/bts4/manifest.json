@@ -1,0 +1,134 @@
+{
+ "fps": 30,
+ "total": 1791,
+ "storyEnd": 1644,
+ "outroStart": 1656,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณต้องฝ่าซอมบี้ไปหยุดรถไฟ",
+   "audio": "bts4/n0.mp3",
+   "audioFrames": 104,
+   "leadFrames": 21,
+   "frames": 180
+  },
+  {
+   "text": "คุณไม่ยอมผลักน้องเต้ย แต่เวลาของเขาก็หมดลง",
+   "audio": "bts4/n1.mp3",
+   "audioFrames": 120,
+   "leadFrames": 6,
+   "frames": 134
+  },
+  {
+   "text": "เขาลุกขึ้นมา ป้าสมจิตรต้องปล่อยมือ แล้วทุกคนก็วิ่งหนี",
+   "audio": "bts4/n2.mp3",
+   "audioFrames": 158,
+   "leadFrames": 6,
+   "frames": 172
+  },
+  {
+   "text": "ทางเดียวคือเดินผ่านทีละตู้ ไปให้ถึงห้องคนขับ",
+   "audio": "bts4/n3.mp3",
+   "audioFrames": 118,
+   "leadFrames": 6,
+   "frames": 132
+  },
+  {
+   "text": "คุณคว้าร่ม ถังดับเพลิง และกระเป๋าทุกใบที่หาได้",
+   "audio": "bts4/n4.mp3",
+   "audioFrames": 127,
+   "leadFrames": 6,
+   "frames": 141
+  },
+  {
+   "text": "ตู้ที่สองเต็มไปด้วยซอมบี้ และไม่มีทางอื่นนอกจากสู้",
+   "audio": "bts4/n5.mp3",
+   "audioFrames": 172,
+   "leadFrames": 6,
+   "frames": 186
+  },
+  {
+   "text": "ไมค์ใช้ร่มดัน พี่นุ่นฉีดถังดับเพลิง คุณเหวี่ยงกระเป๋าฟาด",
+   "audio": "bts4/n6.mp3",
+   "audioFrames": 184,
+   "leadFrames": 6,
+   "frames": 198
+  },
+  {
+   "text": "ที่ประตูตู้หนึ่ง ซอมบี้ตามมาทัน ป้าสมจิตรจึงจับบานประตูไว้",
+   "audio": "bts4/n7.mp3",
+   "audioFrames": 179,
+   "leadFrames": 6,
+   "frames": 193
+  },
+  {
+   "text": "ฟันของเด็กคนนั้นเกี่ยวสายกระเป๋าคุณ ห่างผิวหนังนิดเดียว",
+   "audio": "bts4/n8.mp3",
+   "audioFrames": 146,
+   "leadFrames": 6,
+   "frames": 160
+  },
+  {
+   "text": "ตรงหน้าคือห้องคนขับ ถ้าเป็นคุณ จะเปิดมันไหม",
+   "audio": "bts4/n9.mp3",
+   "audioFrames": 142,
+   "leadFrames": 6,
+   "frames": 160
+  }
+ ],
+ "starts": [
+  0,
+  180,
+  314,
+  486,
+  618,
+  759,
+  945,
+  1143,
+  1336,
+  1496
+ ],
+ "cues": {
+  "hookCut": 180,
+  "clockZero": 226,
+  "riseAt": 320,
+  "faceEnd": 375,
+  "letGoAt": 390,
+  "runAt": 420,
+  "mapIn": 492,
+  "mapOut": 610,
+  "itemsAt": 624,
+  "car2At": 765,
+  "fightAt": 951,
+  "jabAt": 961,
+  "sprayAt": 1006,
+  "swingAt": 1056,
+  "sprayEnd": 1125,
+  "doorAt": 1149,
+  "holdAt": 1174,
+  "endAt": 1234,
+  "biteAt": 1362,
+  "skinAt": 1402,
+  "cabAt": 1502,
+  "questionAt": 1522,
+  "lineStart0": 21,
+  "lineEnd0": 125,
+  "lineStart1": 186,
+  "lineEnd1": 306,
+  "lineStart2": 320,
+  "lineEnd2": 478,
+  "lineStart3": 492,
+  "lineEnd3": 610,
+  "lineStart4": 624,
+  "lineEnd4": 751,
+  "lineStart5": 765,
+  "lineEnd5": 937,
+  "lineStart6": 951,
+  "lineEnd6": 1135,
+  "lineStart7": 1149,
+  "lineEnd7": 1328,
+  "lineStart8": 1342,
+  "lineEnd8": 1488,
+  "lineStart9": 1502,
+  "lineEnd9": 1644
+ }
+}
