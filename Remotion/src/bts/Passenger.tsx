@@ -31,6 +31,10 @@ export type PassengerProps = {
   fear?: number;
   /** 0..1: opacity of a small red bite mark on the front fingertip (no blood) */
   mark?: number;
+  /** something held in the front hand */
+  item?: "umbrella" | "extinguisher" | "bag" | null;
+  /** phase in radians: the front arm swings from -150 to -20 degrees (jab, spray or swing); undefined = off */
+  swing?: number;
 };
 
 type Look = { skin: string; top: string; bottom: string; shoe: string };
@@ -51,7 +55,37 @@ const Leg: React.FC<{ thigh: number; knee: number; look: Look }> = ({ thigh, kne
   </g>
 );
 
-const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: number; mark?: number }> = ({ shoulder, elbow, look, sleeve, mark = 0 }) => (
+const Item: React.FC<{ kind: "umbrella" | "extinguisher" | "bag" }> = ({ kind }) => {
+  if (kind === "umbrella") {
+    return (
+      <g>
+        <rect x={-4} y={-30} width={8} height={190} rx={4} fill="#23262b" />
+        <path d="M-4 150 L0 196 L4 150 Z" fill="#8a8f94" />
+        <path d="M-16 -18 Q0 -70 16 -18 Z" fill="#d9534f" transform="translate(0,60)" />
+        <path d="M-4 -30 q0 -16 -14 -16" stroke="#23262b" strokeWidth={7} fill="none" strokeLinecap="round" />
+      </g>
+    );
+  }
+  if (kind === "extinguisher") {
+    return (
+      <g>
+        <rect x={-18} y={-14} width={36} height={92} rx={14} fill="#d9322b" />
+        <rect x={-18} y={20} width={36} height={14} fill="#f1f1f1" opacity={0.85} />
+        <rect x={-8} y={-30} width={16} height={20} rx={5} fill="#2a2e33" />
+        <path d="M8 -26 Q40 -40 52 -10 L58 14" stroke="#2a2e33" strokeWidth={7} fill="none" strokeLinecap="round" />
+      </g>
+    );
+  }
+  return (
+    <g>
+      <path d="M0 0 L-6 44" stroke="#3a2a1c" strokeWidth={5} fill="none" />
+      <rect x={-34} y={40} width={62} height={52} rx={14} fill="#b5651d" />
+      <rect x={-34} y={52} width={62} height={8} fill="#7a410f" />
+    </g>
+  );
+};
+
+const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: number; mark?: number; item?: "umbrella" | "extinguisher" | "bag" | null }> = ({ shoulder, elbow, look, sleeve, mark = 0, item = null }) => (
   <g transform={`rotate(${shoulder})`}>
     <rect x={-8} y={-4} width={16} height={46} rx={8} fill={look.skin} />
     {sleeve > 0 && <rect x={-8} y={-4} width={16} height={Math.min(46, sleeve) + 4} rx={8} fill={look.top} />}
@@ -60,6 +94,7 @@ const Arm: React.FC<{ shoulder: number; elbow: number; look: Look; sleeve: numbe
       {sleeve > 60 && <rect x={-7} y={-2} width={14} height={Math.min(34, sleeve - 46)} rx={7} fill={look.top} />}
       <circle cx={0} cy={40} r={9} fill={look.skin} />
       {mark > 0 && <circle cx={0} cy={47} r={5} fill="#a83a34" opacity={mark} />}
+      {item && <g transform="translate(0,40)"><Item kind={item} /></g>}
     </g>
   </g>
 );
@@ -108,7 +143,7 @@ const Head: React.FC<{ c: PassengerData; skin: string; tilt: number; inf: number
   );
 };
 
-export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, facing = 1, phase, walk, frame, infection = 0, pose = "stand", headTilt = 0, label = false, fear = 0, mark = 0 }) => {
+export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, facing = 1, phase, walk, frame, infection = 0, pose = "stand", headTilt = 0, label = false, fear = 0, mark = 0, item = null, swing }) => {
   const c = PASSENGERS[id];
   const has = (a: string) => c.accessories.includes(a as never);
   const k = scale * (c.height / 108);
@@ -138,6 +173,7 @@ export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, fac
     frontArm = -62 + 6 * Math.sin(frame * 0.07); backArm = -56 + 6 * Math.sin(frame * 0.07 + 1); frontElbow = -8;
     bob = Math.sin(frame * 0.07) * 3; lean = 9; tilt = 15 + Math.sin(frame * 0.05) * 4;
   }
+  if (swing !== undefined) { frontArm = -85 - 65 * Math.sin(swing); frontElbow = -10; lean = 10; }
   const bodyW = c.width;
   const torso = 92;
   const shoulderY = -(torso - 26);
@@ -181,7 +217,7 @@ export const Passenger: React.FC<PassengerProps> = ({ id, x, y, scale = 1.3, fac
               <Head c={c} skin={skin} tilt={tilt} inf={infection} fear={fear} frame={frame} />
             </g>
             <g transform={`translate(0,${shoulderY})`}>
-              <Arm shoulder={frontArm} elbow={frontElbow} look={look} sleeve={c.sleeve} mark={mark} />
+              <Arm shoulder={frontArm} elbow={frontElbow} look={look} sleeve={c.sleeve} mark={mark} item={item} />
             </g>
           </g>
         </g>
