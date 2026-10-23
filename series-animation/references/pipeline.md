@@ -47,3 +47,4 @@ Run from `Remotion/`: `GEMINI_TTS_MODEL=gemini-3.1-flash-tts-preview python scri
 
 **Changing one narration line without paying for the others:** `tts_gemini.py ... --reuse-from out/tts_cache/<old hash> --redo <line numbers>` copies the finished lines from the old cache folder into the new run and synthesises only the lines in `--redo` (one request per line). Without it, any text change creates a new cache folder and re-requests every line.
 
+- 2026-10-23: lesson: never import scripts/tts_gemini.py as a module (it calls main() at import and overwrites public/audio); call it as a subprocess with --script/--out-dir instead.
