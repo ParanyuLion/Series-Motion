@@ -149,7 +149,7 @@ export const PatternCard: React.FC<{ t: number; watching?: boolean }> = ({ t, wa
     {Array.from({ length: 48 }, (_, i) => <line key={`h${i}`} x1={0} y1={i * 42} x2={W} y2={i * 42} stroke="#6a5a2a" strokeWidth={2} opacity={0.55} />)}
     {Array.from({ length: 28 }, (_, i) => <line key={`v${i}`} x1={i * 42} y1={0} x2={i * 42} y2={H} stroke="#756330" strokeWidth={2} opacity={0.45} />)}
     <g transform={`translate(540,820) scale(${1 + 0.08 * t})`}>
-      <SnakeTile size={780} watching={watching} pose="coil" />
+      <SnakeTile size={780} watching={watching} />
     </g>
     <rect width={W} height={H} fill="url(#pc-vig)" />
   </svg>
