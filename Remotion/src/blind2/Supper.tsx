@@ -5,7 +5,7 @@ import { GROUND_Y } from "../blind1/Village";
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /** where the seats are: two rows of three facing each other across the table, and the head at the far end */
-export const SEAT = { side: 215, lanes: [10, 65, 120], headY: -70 };
+export const SEAT = { xs: [175, 235, 295], lanes: [10, 65, 120], headY: -70 };
 export const TABLE_FAR = GROUND_Y - 165;
 export const TABLE_NEAR = GROUND_Y + 110;
 
@@ -37,17 +37,20 @@ export const SupperTable: React.FC<{ cx: number; g: number; lantern?: number }> 
         <rect x={cx + 233} y={yf - 285} width={44} height={56} rx={10} fill="#d9a24a" stroke="#4a3818" strokeWidth={4} />
         <rect x={cx + 243} y={yf - 275} width={24} height={36} rx={6} fill="#ffe9a8" opacity={0.9 * flick} />
       </g>
-      {/* a plank bench under each row of seats */}
+      {/* a plank bench under each row of seats, slanted with the table */}
       {[-1, 1].map((side) => {
-        const xc = cx + side * SEAT.side;
         const y0 = GROUND_Y + SEAT.lanes[0] - 100;
         const y1 = GROUND_Y + SEAT.lanes[2] - 100;
+        const a0 = cx + side * (SEAT.xs[0] - 62);
+        const b0 = cx + side * (SEAT.xs[0] + 62);
+        const a1 = cx + side * (SEAT.xs[2] - 62);
+        const b1 = cx + side * (SEAT.xs[2] + 62);
         return (
           <g key={side}>
-            <path d={`M${xc - 62} ${y0} L${xc + 62} ${y0} L${xc + 68} ${y1} L${xc - 68} ${y1} Z`} fill="#6a4d2e" stroke="#4d3822" strokeWidth={3} />
-            <path d={`M${xc - 68} ${y1} L${xc + 68} ${y1} L${xc + 68} ${y1 + 16} L${xc - 68} ${y1 + 16} Z`} fill="#3f2d1b" />
-            <rect x={xc - 58} y={y1 + 16} width={12} height={88} fill="#3f2d1b" />
-            <rect x={xc + 46} y={y1 + 16} width={12} height={88} fill="#3f2d1b" />
+            <path d={`M${a0} ${y0} L${b0} ${y0} L${b1} ${y1} L${a1} ${y1} Z`} fill="#6a4d2e" stroke="#4d3822" strokeWidth={3} />
+            <path d={`M${a1} ${y1} L${b1} ${y1} L${b1} ${y1 + 16} L${a1} ${y1 + 16} Z`} fill="#3f2d1b" />
+            <rect x={Math.min(a1, b1) + 6} y={y1 + 16} width={12} height={88} fill="#3f2d1b" />
+            <rect x={Math.max(a1, b1) - 18} y={y1 + 16} width={12} height={88} fill="#3f2d1b" />
           </g>
         );
       })}
@@ -81,6 +84,18 @@ export const SupperTable: React.FC<{ cx: number; g: number; lantern?: number }> 
           </g>
         );
       })}
+    </g>
+  );
+};
+
+/** the head's stool at the far end of the table; drawn before him */
+export const HeadSeat: React.FC<{ cx: number }> = ({ cx }) => {
+  const y = GROUND_Y - 150 - 96;
+  return (
+    <g>
+      <path d={`M${cx - 70} ${y} L${cx + 70} ${y} L${cx + 76} ${y + 30} L${cx - 76} ${y + 30} Z`} fill="#6a4d2e" stroke="#4d3822" strokeWidth={3} />
+      <rect x={cx - 62} y={y + 30} width={12} height={96} fill="#3f2d1b" />
+      <rect x={cx + 50} y={y + 30} width={12} height={96} fill="#3f2d1b" />
     </g>
   );
 };

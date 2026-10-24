@@ -23,7 +23,7 @@ const Sil: React.FC<SilProps> = ({ x, y, s, facing, step, tiltHead = 0, arms = 0
       <g transform={`rotate(${-a} 0 -70)`}><path d="M0 -70 L0 0" strokeWidth={14} fill="none" /></g>
       <path d="M-14 -72 Q-16 -150 0 -158 Q16 -150 14 -72 Z" strokeWidth={4} />
       <g transform={`rotate(${arms - a * 0.8} 0 -146)`}><path d="M0 -146 L4 -88" strokeWidth={10} fill="none" /></g>
-      <g transform={`rotate(${tiltHead} 0 -158)`}><circle cx={2} cy={-182} r={22} /></g>
+      <g transform={`rotate(${tiltHead} 0 -158)`}><circle cx={2} cy={-182} r={22} /><path d="M20 -188 L38 -178 L20 -172 Z" /></g>
     </g>
   );
 };
@@ -54,13 +54,13 @@ export const Puppet: React.FC<{ t: number; tripT: number; runT: number; endT: nu
   const walkT = ramp(t, 0, stopAt);
   // the man walks right with long clear steps, then stops under the big tree
   const manWalk = t < stopAt;
-  const manX = t < runT + 30 ? lerp(190, 600, smooth(walkT)) : lerp(600, -80, ramp(t, runT + 30, runT + 70));
+  const manX = t < runT + 30 ? lerp(190, 500, smooth(walkT)) : lerp(500, -80, ramp(t, runT + 30, runT + 70));
   const running = t >= runT + 30;
   const look = smooth(ramp(t, runT - 10, runT + 8)) * (running ? 0 : 1);
   const blobIn = smooth(ramp(t, runT - 4, runT + 14)) * (1 - ramp(t, runT + 50, runT + 70) * 0.0);
   // the three blind villagers follow with short even steps
-  const vBase = [350, 285, 220];
-  const vx = (i: number) => (t < stopAt ? lerp(vBase[i] - 90, vBase[i] + 150, smooth(walkT)) : vBase[i] + 150);
+  const fin = [380, 315, 250];
+  const vx = (i: number) => (t < stopAt ? lerp(fin[i] - 240, fin[i], smooth(walkT)) : fin[i]);
   const turned = t >= runT + 52;
   const vWalk = t < stopAt + 4;
   const dim = clamp01((endT + 12 - t) / 12);
@@ -85,15 +85,16 @@ export const Puppet: React.FC<{ t: number; tripT: number; runT: number; endT: nu
           <rect x={0} y={GY + 6} width={CW} height={160} fill="#0b0805" opacity={0.92} />
           <path d={`M30 ${GY + 6} L30 ${GY - 120} L110 ${GY - 190} L190 ${GY - 120} L190 ${GY + 6} Z`} fill="#0b0805" opacity={0.9} />
           {/* the forest on the right; the big tree has the branches */}
-          <Tree x={470} h={430} />
-          <Tree x={520} h={330} />
-          <Tree x={700} h={480} />
-          <Tree x={760} h={360} />
-          <Tree x={620} h={560} branches />
+          <Tree x={700} h={430} />
+          <Tree x={760} h={330} />
+          <Tree x={560} h={300} />
+          <Tree x={840} h={480} />
+          <Tree x={650} h={560} branches />
           {/* the dark mass in the branches */}
-          <g opacity={blobIn} transform={`translate(560,${GY - 560 * 0.72 - 22})`}>
-            <path d="M-34 4 Q-40 -34 -4 -40 Q38 -44 44 -6 Q36 26 -4 26 Q-28 26 -34 4 Z" fill="#0b0805" />
-            <path d="M-26 -34 Q-60 -62 -38 -90" stroke="#0b0805" strokeWidth={10} fill="none" strokeLinecap="round" />
+          <g opacity={blobIn} transform={`translate(588,${GY - 560 * 0.71 - 16})`}>
+            <ellipse cx={0} cy={0} rx={36} ry={24} fill="#0b0805" />
+            <ellipse cx={-22} cy={-14} rx={20} ry={16} fill="#0b0805" />
+            <ellipse cx={20} cy={-8} rx={22} ry={18} fill="#0b0805" />
           </g>
           {/* the rope between the man and the three */}
           {join > 0 && !running && t < runT && (

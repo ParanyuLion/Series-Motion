@@ -40,7 +40,7 @@ export const HandGuide: React.FC<{ g: number; from: number; to: number }> = ({ g
   const arrive = smooth(ramp(g, from + 6, from + 30));
   const bowl = { x: 560, y: 1130 };
   const mine = { x: lerp(240, bowl.x - 95, p), y: lerp(1230, bowl.y - 12, p) };
-  const hers = { x: lerp(1040, mine.x + 150, arrive), y: lerp(1010, mine.y - 40, arrive) };
+  const hers = { x: lerp(1040, mine.x + 60, arrive), y: lerp(1010, mine.y - 82, arrive) };
   const sway = Math.sin(g * 0.09) * 0.8;
   const blink = Math.max(0, 1 - Math.abs(((g % 84) - 30) / 3));
   return (
@@ -78,14 +78,21 @@ export const HandGuide: React.FC<{ g: number; from: number; to: number }> = ({ g
         <ellipse cx={0} cy={-10} rx={130} ry={26} fill="#d8d2bd" />
         <path d="M-90 -12 Q0 -70 90 -12 Z" fill="#ebe7d5" />
       </g>
-      <g transform="translate(920,1090)">
+      <g transform="translate(130,1110)">
         <path d="M-40 -110 L40 -110 L32 0 L-32 0 Z" fill="#b49340" stroke="#7a643a" strokeWidth={3} />
         <g transform="translate(0,-55)"><SnakeTile size={62} /></g>
+      </g>
+      {/* the woman at the edge of the picture: a sliver of her face with a clouded eye */}
+      <g transform="translate(1030,700) scale(1.5)">
+        <ellipse cx={0} cy={0} rx={92} ry={108} fill={w.skin} />
+        <path d="M-94 -14 Q-100 -118 0 -120 Q100 -118 94 -14 Q74 -86 0 -88 Q-74 -86 -94 -14 Z" fill={w.hair} />
+        <ellipse cx={-44} cy={-14} rx={26} ry={23} fill="#e9ebe6" stroke="#b7bdb8" strokeWidth={3} />
+        <ellipse cx={-50} cy={-20} rx={12} ry={8} fill="#f7f8f4" opacity={0.9} />
       </g>
       {/* her arm, with the sleeve in the pattern's colour, and her hand over yours */}
       <path d={`M1200 ${hers.y - 200} L${hers.x + 60} ${hers.y - 8}`} stroke="#b49340" strokeWidth={110} strokeLinecap="round" />
       <g transform={`translate(${mine.x},${mine.y}) rotate(-8) scale(1.5)`}><Hand skin={k.skin} curl={0.3} /></g>
-      <g transform={`translate(${hers.x},${hers.y}) rotate(188) scale(1.5)`}><Hand skin={w.skin} /></g>
+      <g transform={`translate(${hers.x},${hers.y}) rotate(188) scale(1.5)`} style={{ filter: "brightness(0.78) saturate(1.2)" }}><Hand skin={w.skin} /></g>
       <rect y={1340} width={W} height={580} fill="url(#hg-shade)" />
     </svg>
   );
@@ -115,8 +122,8 @@ export const Stare: React.FC<{ g: number; from: number; to: number }> = ({ g, fr
         const shift = lerp(-36, 0, face);
         return (
           <g key={id} transform={`translate(${x},${y}) scale(${s})`}>
-            <path d="M-80 300 Q-70 150 -30 120 L30 120 Q70 150 80 300 Z" fill="#b49340" />
-            <rect x={-14} y={70} width={28} height={60} rx={10} fill={k.skin} />
+            <path d="M-70 130 Q-30 118 30 118 Q70 118 74 140 L100 1200 L-100 1200 Z" fill="#b49340" />
+            <rect x={-14} y={36} width={28} height={110} rx={10} fill={k.skin} />
             <g transform={`scale(${sx},1)`}>
               <ellipse cx={0} cy={0} rx={44} ry={56} fill={k.skin} />
               <path d="M-46 -8 Q-50 -62 0 -64 Q50 -62 46 -8 Q36 -44 0 -46 Q-36 -44 -46 -8 Z" fill={k.hair} />
@@ -134,6 +141,41 @@ export const Stare: React.FC<{ g: number; from: number; to: number }> = ({ g, fr
         );
       })}
       <rect y={1300} width={W} height={620} fill="url(#st-shade)" />
+    </svg>
+  );
+};
+
+/** the fist on the table gripping a spoon: pale knuckles, a tremor */
+export const GripSpoon: React.FC<{ g: number; from: number }> = ({ g, from }) => {
+  const k = PASSENGERS.bvYou;
+  const grip = smooth(ramp(g, from, from + 18));
+  const tremor = Math.sin(g * 1.9) * 2.2 * grip;
+  const pale = lerp(0, 0.75, grip);
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
+      <defs>
+        <linearGradient id="gs-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#6a604a" /><stop offset="1" stopColor="#241e15" /></linearGradient>
+        <Shade id="gs-shade" />
+      </defs>
+      <rect width={W} height={H} fill="url(#gs-bg)" />
+      <rect x={0} y={900} width={W} height={1020} fill="#5b4328" />
+      <rect x={0} y={900} width={W} height={14} fill="#7a5a3a" />
+      <g transform={`translate(${540 + tremor},${900 + tremor})`}>
+        <path d="M60 80 L300 -330" stroke="#bfc2b8" strokeWidth={26} strokeLinecap="round" />
+        <ellipse cx={330} cy={-390} rx={70} ry={44} transform="rotate(-58 330 -390)" fill="#cfd2c8" stroke="#8d9087" strokeWidth={4} />
+        <g transform="translate(0,120)">
+          <rect x={-150} y={-70} width={300} height={190} rx={70} fill={k.skin} stroke="#00000030" strokeWidth={4} />
+          {[-105, -35, 35, 105].map((x, i) => (
+            <g key={i}>
+              <ellipse cx={x} cy={-72} rx={36} ry={30} fill={k.skin} stroke="#00000030" strokeWidth={3} />
+              <ellipse cx={x} cy={-78} rx={26} ry={18} fill="#efe6dc" opacity={pale} />
+            </g>
+          ))}
+          <path d="M-150 30 q-50 10 -40 70" stroke={k.skin} strokeWidth={46} fill="none" strokeLinecap="round" />
+        </g>
+      </g>
+      <path d="M70 700 q8 18 0 30" stroke="#cfe6f2" strokeWidth={6} fill="none" strokeLinecap="round" opacity={0.85 * grip} />
+      <rect y={1340} width={W} height={580} fill="url(#gs-shade)" />
     </svg>
   );
 };

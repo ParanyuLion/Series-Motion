@@ -49,7 +49,7 @@ const cues = {
   nodAt: ls(9),
   gentleAt: ls(10),
   gripAt: ls(11),
-  stareAt: ls(11) + 30,
+  stareAt: ls(11) + 80,
   bellAt: ls(12),
   smileAt: ls(13),
   questionAt: ls(14),
