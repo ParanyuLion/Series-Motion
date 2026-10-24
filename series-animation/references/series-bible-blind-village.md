@@ -2,7 +2,7 @@
 
 Design docs: `docs/superpowers/specs/2026-10-23-blind-village-series-design.md` (premise, truth, rules, format) and `...-story-plan.md` (the five parts and the eight threads that link them). Part 1 script: `blind-village-part1-script-draft.md`; plan `docs/superpowers/plans/2026-10-23-blind-village-part1.md`.
 
-Format and decisions (from the user): unsettling horror from the abnormal, no ghosts; 5 parts of about 1:30; one narrator, Gemini **Charon**, cold calm style (`GEMINI_TTS_STYLE`), speed 1.1 x post-speed 1.245 (about 1.37, chosen by the user); every part opens with the hook "จะเกิดอะไรขึ้น ถ้าคุณ...".
+Format and decisions (from the user): unsettling horror from the abnormal, no ghosts; 4 parts (the old Parts 3 and 4 were merged on 2026-10-24) of about 1:30, Part 3 up to about 2:00; one narrator, Gemini **Charon**, cold calm style (`GEMINI_TTS_STYLE`), speed 1.1 x post-speed 1.245 (about 1.37, chosen by the user); every part opens with the hook "จะเกิดอะไรขึ้น ถ้าคุณ...".
 
 Truth (told only at the end): the snakes with human heads keep humans for entertainment, blinded everybody, and let seeing people arrive on purpose; the village head is the first seeing man, turned into a snake, wearing a human shape; he knew from the first minute; "you" are turned into a snake too; the last scene is the head going to welcome a new arrival while "you", as a snake, watch from the trees.
 

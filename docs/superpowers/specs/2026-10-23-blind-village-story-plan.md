@@ -1,4 +1,6 @@
-# "หมู่บ้านที่ทุกคนตาบอด": story plan for all five parts (for the user's approval)
+# "หมู่บ้านที่ทุกคนตาบอด": story plan for all parts (for the user's approval)
+
+**Update 2026-10-24 (user):** the series is now **4 parts**. The planned Parts 3 ("คืนแรก") and 4 ("ป่า") are merged into one Part 3, "อย่ากะพริบตา" (up to about 120 s, script `blind-village-part3-script-draft.md`); the old Part 5 ("ทางกลับบ้าน") is now **Part 4**. Where the text below says Part 4 for the forest, read Part 3; where it says Part 5, read Part 4.
 
 Companion to `2026-10-23-blind-village-series-design.md` (premise, truth, rules, format). Written 2026-10-23. The user wants all parts planned together because every part links to the others. Marked **(user)** = decided by the user; **(call)** = the assistant's proposal, to be accepted or changed. The title "หมู่บ้านที่ทุกคนตาบอด" and part 3 are accepted by the user.
 
@@ -33,21 +35,21 @@ Each thread is planted early, grows, and pays off in part 5.
 - **Plants:** threads 3, 4, 5, 7.
 - **Cliffhanger:** the head asks everyone to be glad that "you" cannot see; you realise what would happen if they found out. Hook for part 3: the first night.
 
-## Part 3: "คืนแรก"
+## Part 3 (merged with the old Part 4, see the update above): "คืนแรก" then "ป่า"
 
 - **Hook:** จะเกิดอะไรขึ้น ถ้าคุณต้องแกล้งตาบอดต่อหน้าคนที่ไม่เคยหลับตา
 - **Beats:** the hut at night; an old woman feeds you the same food as everyone and watches your hand; **the test:** a villager "accidentally" leaves a stool in your path, the head's stick moves it a second before you reach it (thread 4: he keeps you in the game); next day, tasks (carrying water, weaving, with the pattern); you are given a pattern shirt; hidden in the roof you find a patternless shirt and scratches on a post counting days (the head's, thread 3); a flash of being carried (thread 8); at the evening bell you see what moves in the line of trees (thread 5); you decide to leave.
 - **Plants:** threads 1 to 8 all touched.
 - **Cliffhanger:** the trees move again, in the shape of the pattern. Hook for part 4: you walk into the forest.
 
-## Part 4: "ป่า"
+## (old Part 4, now inside Part 3): "ป่า"
 
 - **Hook:** จะเกิดอะไรขึ้น ถ้าป่าที่คุณกำลังหนีเข้าไป มีอะไรมองคุณอยู่ทุกต้น
 - **Beats:** dawn, you slip away; the forest is too quiet; foraging marks; you find a patternless shoe; the first snake with a human head above you, still; then a crowd on every branch, all turned toward you; none of them shows a face you know, and the viewer feels something familiar in how calmly they watch (thread 4); you recall the head's story and keep your eyes dead and your steps hesitant like a blind person; you walk under them (the long, silent crossing); one lowers its head to your face and looks straight into your eyes; you do not blink.
 - **Plants:** threads 2, 4, 7.
 - **Cliffhanger:** it lets you pass, and the whole crowd leans to follow you, delighted. Hook for part 5: the road.
 
-## Part 5: "ทางกลับบ้าน"
+## Part 4 (was Part 5): "ทางกลับบ้าน"
 
 - **Hook:** จะเกิดอะไรขึ้น ถ้าคุณหนีออกมาได้ แต่ไม่มีใครไล่ตาม
 - **Beats:** the forest edge; the head waits there, turns his clouded eyes exactly at you and says the last kind sentence (thread 4); you hurry on without answering; the road at night; headlights; home at dawn, relief; the memory returns (thread 8); the mirror (thread 6); the pattern on your shirt wears your face (thread 1); your pupils narrow (thread 2); your name is called and you turn late; at dusk the bell rings in a house with no bell and your head turns toward the window (thread 5). The change completes: you slip out of your human shape; you go back to the forest because that is where you are called. At the village edge **"you" and the head talk, both in snake form (user)**: he says he knew from the first minute and that you were the most fun of all of them; then a new person wakes up on a mat in the village. **The last scene (user): "มีคนใหม่มาอีกแล้ว เดี๋ยวหัวหน้าไปต้อนรับก่อน"**: the head takes his human shape again (clouded eyes, the stick, the pattern shirt) and walks to welcome the newcomer with the part-1 line "มีคนมาที่นี่อีกแล้วหรอ", while "you", as a snake, watch from the trees among the other snakes, pleased. The cycle starts again. (the wording of the head's line and the details are call; the new arrival and the head going to welcome them are the user's)
