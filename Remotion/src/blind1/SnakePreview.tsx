@@ -12,7 +12,7 @@ const Body: React.FC = () => (
   </g>
 );
 
-const Head: React.FC<{ tilt?: number; children: React.ReactNode; skin?: string; x?: number; y?: number; s?: number }> = ({ tilt = 0, children, skin = "#cbb8a0", x = 12, y = -190, s = 1 }) => (
+export const Head: React.FC<{ tilt?: number; children: React.ReactNode; skin?: string; x?: number; y?: number; s?: number }> = ({ tilt = 0, children, skin = "#cbb8a0", x = 12, y = -190, s = 1 }) => (
   <g transform={`translate(${x},${y}) rotate(${tilt}) scale(${s})`}>
     <defs>
       <radialGradient id="sp-skin" cx="0.5" cy="0.4" r="0.7"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#8f7e68" /></radialGradient>
@@ -233,7 +233,7 @@ export const SnakePreview2: React.FC = () => (
 );
 
 // ---------------- sheet 3: the smiling mask with no mouth, and body designs ----------------
-const MaskHead: React.FC<{ kind: 1 | 2 | 3; x?: number; y?: number; tilt?: number; s?: number }> = ({ kind, x, y, tilt, s }) => (
+export const MaskHead: React.FC<{ kind: 1 | 2 | 3; x?: number; y?: number; tilt?: number; s?: number }> = ({ kind, x, y, tilt, s }) => (
   <Head skin="#d9cfbb" x={x} y={y} tilt={tilt} s={s}>
     {kind !== 2 && [-34, 36].map((x) => (
       <g key={x}>
@@ -333,7 +333,7 @@ export const SnakePreview3: React.FC = () => (
 );
 
 // ---------------- sheet 4: the mask with the seam smile (face 3) in other poses ----------------
-const Flesh: React.FC<{ d: string; w: number; cap?: "round" | "butt" }> = ({ d, w, cap = "round" }) => (
+export const Flesh: React.FC<{ d: string; w: number; cap?: "round" | "butt" }> = ({ d, w, cap = "round" }) => (
   <g>
     <path d={d} fill="none" stroke="#121009" strokeWidth={w + 12} strokeLinecap={cap} strokeLinejoin="round" />
     <path d={d} fill="none" stroke="#2f2c20" strokeWidth={w} strokeLinecap={cap} strokeLinejoin="round" />
@@ -342,14 +342,14 @@ const Flesh: React.FC<{ d: string; w: number; cap?: "round" | "butt" }> = ({ d, 
   </g>
 );
 
-const Branch: React.FC<{ y: number }> = ({ y }) => (
+export const Branch: React.FC<{ y: number }> = ({ y }) => (
   <g>
     <rect x={-330} y={y - 18} width={660} height={36} rx={16} fill="#2a2418" />
     {Array.from({ length: 12 }, (_, i) => <line key={i} x1={-320 + i * 54} y1={y - 14} x2={-300 + i * 54} y2={y + 12} stroke="#1a160e" strokeWidth={3} />)}
   </g>
 );
 
-const Pose: React.FC<{ n: number }> = ({ n }) => {
+export const Pose: React.FC<{ n: number }> = ({ n }) => {
   switch (n) {
     case 1: // a coiled heap with the neck raised
       return (

@@ -103,10 +103,10 @@ export const FaceHead: React.FC<{ g: number; smile: number; zoom?: number }> = (
 };
 
 /** "you", face on: the pupils are the only ones in the village; `still` keeps the eyes dead straight while you answer */
-export const FaceYou: React.FC<{ g: number; still: number; zoom?: number }> = ({ g, still, zoom = 1 }) => {
+export const FaceYou: React.FC<{ g: number; still: number; zoom?: number; noBlink?: boolean }> = ({ g, still, zoom = 1, noBlink = false }) => {
   const k = PASSENGERS.bvYou;
   const sway = Math.sin(g * 0.11) * 1.0;
-  const blink = Math.max(0, 1 - Math.abs(((g % 90) - 40) / 3));
+  const blink = noBlink ? 0 : Math.max(0, 1 - Math.abs(((g % 90) - 40) / 3));
   const look = Math.sin(g * 0.12) * 12 * (1 - still);
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
