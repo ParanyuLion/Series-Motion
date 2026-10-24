@@ -166,6 +166,28 @@ for k in range(9):
     step(t + k * 0.22, 0.5 * (1 - 0.07 * k), 0.5 - 0.04 * k)
 heart(T["runAt"] + 1.0, T["sighAt"], 0.7, 0.9, 0.4)
 
+# ---- the telling is dark: two close low notes that beat against each other, a slow creak, a thin breath of air ----
+tell0, tell1 = T["tellAt"], T["sighAt"]
+look_t = T["runAt"] + 1.0
+beat = (np.sin(2 * np.pi * 55.0 * tt) + np.sin(2 * np.pi * 58.3 * tt)) * 0.5
+grow = ramp(tell0, look_t) * (1 - ramp(look_t + 2.5, tell1))
+music += stereo(lowpass(beat, 200) * 0.2 * grow, 0.5)
+thin = highpass(lowpass(rng.standard_normal(N), 2600), 900) * (0.4 + 0.6 * np.sin(2 * np.pi * 0.13 * tt) ** 2) * 0.05 * ramp(tell0, tell0 + 2.0) * (1 - ramp(tell1 - 0.4, tell1))
+sfx += np.stack([thin, np.roll(thin, 900)])
+for k in range(5):
+    t0 = tell0 + 3.0 + k * 3.1
+    if t0 > tell1 - 1:
+        break
+    n = int(0.9 * SR)
+    tk = np.arange(n) / SR
+    f = 160 + 60 * np.sin(2 * np.pi * 0.7 * tk + k)
+    creak = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.sin(np.pi * np.clip(tk / 0.9, 0, 1)) ** 2 * 0.05
+    put(sfx, lowpass(creak + 0.3 * creak * rng.standard_normal(n), 900), t0, 0.2 + 0.15 * k)
+# he looks up: the forest holds its breath (a hollow sub swell that never resolves), then he runs
+n = int(3.5 * SR)
+tk = np.arange(n) / SR
+put(music, np.sin(2 * np.pi * np.cumsum(38 + 14 * (tk / 3.5) ** 2) / SR) * np.sin(np.pi * np.clip(tk / 3.5, 0, 1)) ** 1.3 * 0.3, look_t - 0.3, 0.5)
+
 # ---- the head sighs: a soft breath out ----
 n = int(1.1 * SR)
 tk = np.arange(n) / SR

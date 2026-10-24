@@ -169,10 +169,12 @@ const World: React.FC = () => {
         <Over g={g} from={c.handAt} to={le(3) + 10}><HandGuide g={g} from={c.handAt} to={le(3) + 10} /></Over>
         {g >= c.tellAt - 6 && g <= tellEnd + 6 && (
           <AbsoluteFill style={{ opacity: ramp(g, c.tellAt - 6, c.tellAt + 10) * clamp01((tellEnd + 6 - g) / 8) }}>
-            <AbsoluteFill style={{ background: "rgba(8,6,3,0.82)" }} />
-            <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0 }}>
-              <Puppet t={g - c.tellAt} tripT={c.tripAt - c.tellAt} runT={c.runAt - c.tellAt + 30} endT={tellEnd - c.tellAt - 22} />
-            </svg>
+            <div style={{ position: "absolute", inset: 0, transform: `scale(${1 + 0.07 * ramp(g, c.tellAt, tellEnd)})`, transformOrigin: "50% 62%" }}>
+              <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0 }}>
+                <Puppet t={g - c.tellAt} tripT={c.tripAt - c.tellAt} runT={c.runAt - c.tellAt + 48} endT={tellEnd - c.tellAt - 22} />
+              </svg>
+            </div>
+            <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 60%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.78) 100%)" }} />
           </AbsoluteFill>
         )}
         <Over g={g} from={c.wonderAt + 80} to={c.tellAt - 4}>
