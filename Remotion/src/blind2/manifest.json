@@ -1,0 +1,178 @@
+{
+ "fps": 30,
+ "total": 2566,
+ "storyEnd": 2419,
+ "outroStart": 2431,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณมองเห็น ในหมู่บ้านที่ทุกคนตาบอด",
+   "audio": "blind2/n0.mp3",
+   "audioFrames": 148,
+   "leadFrames": 21,
+   "frames": 175
+  },
+  {
+   "text": "และคุณต้องแกล้งทำเป็นตาบอด ไม่ให้ใครรู้เลยสักคน",
+   "audio": "blind2/n1.mp3",
+   "audioFrames": 127,
+   "leadFrames": 6,
+   "frames": 183
+  },
+  {
+   "text": "หัวหน้าพาคุณไปโต๊ะยาว ทุกคนตักข้าวได้แม่นไม่หกสักเม็ด",
+   "audio": "blind2/n2.mp3",
+   "audioFrames": 170,
+   "leadFrames": 6,
+   "frames": 184
+  },
+  {
+   "text": "ผู้หญิงข้างๆ จับมือคุณ แล้วพาไปแตะชามบนโต๊ะ",
+   "audio": "blind2/n3.mp3",
+   "audioFrames": 145,
+   "leadFrames": 6,
+   "frames": 159
+  },
+  {
+   "text": "หัวหน้าบอกว่า คุณคงสงสัย ว่าทำไมเราระวังคนแปลกหน้านัก",
+   "audio": "blind2/n4.mp3",
+   "audioFrames": 172,
+   "leadFrames": 6,
+   "frames": 186
+  },
+  {
+   "text": "แล้วเขาก็เล่าถึงคนที่เคยมองเห็นได้ เหมือนอย่างคุณ",
+   "audio": "blind2/n5.mp3",
+   "audioFrames": 119,
+   "leadFrames": 6,
+   "frames": 133
+  },
+  {
+   "text": "วันหนึ่งเขาออกไปหาอาหารในป่า พร้อมชาวบ้านตาบอดสามคน",
+   "audio": "blind2/n6.mp3",
+   "audioFrames": 158,
+   "leadFrames": 6,
+   "frames": 172
+  },
+  {
+   "text": "เขาเห็นบางอย่างบนต้นไม้ แล้ววิ่งหนีไป ไม่กลับมาอีกเลย",
+   "audio": "blind2/n7.mp3",
+   "audioFrames": 159,
+   "leadFrames": 6,
+   "frames": 173
+  },
+  {
+   "text": "หัวหน้าถอนหายใจ ถ้าคุณมองเห็น เราคงลำบากกันน่าดู",
+   "audio": "blind2/n8.mp3",
+   "audioFrames": 170,
+   "leadFrames": 6,
+   "frames": 184
+  },
+  {
+   "text": "ชาวบ้านพยักหน้า แล้วบอกว่าเคยทำให้คนที่หลุดมาตาบอด",
+   "audio": "blind2/n9.mp3",
+   "audioFrames": 145,
+   "leadFrames": 6,
+   "frames": 159
+  },
+  {
+   "text": "พวกเขาบอกด้วยน้ำเสียงอ่อนโยน เพื่อไม่ให้ใครหายไปอีก",
+   "audio": "blind2/n10.mp3",
+   "audioFrames": 114,
+   "leadFrames": 6,
+   "frames": 128
+  },
+  {
+   "text": "คุณกำช้อนแน่น และแกล้งทำเป็นไม่ได้ยินอะไรเลย",
+   "audio": "blind2/n11.mp3",
+   "audioFrames": 103,
+   "leadFrames": 6,
+   "frames": 117
+  },
+  {
+   "text": "ระฆังดังขึ้นหนึ่งครั้ง ทุกคนหันหน้าไปทางป่า",
+   "audio": "blind2/n12.mp3",
+   "audioFrames": 144,
+   "leadFrames": 6,
+   "frames": 158
+  },
+  {
+   "text": "หัวหน้ายิ้ม แล้วบอกทุกคนว่า ดีใจจังที่คุณมองไม่เห็น",
+   "audio": "blind2/n13.mp3",
+   "audioFrames": 179,
+   "leadFrames": 6,
+   "frames": 193
+  },
+  {
+   "text": "ถ้าพวกเขารู้ว่าคุณมองเห็น จะเกิดอะไรขึ้น",
+   "audio": "blind2/n14.mp3",
+   "audioFrames": 109,
+   "leadFrames": 6,
+   "frames": 127
+  }
+ ],
+ "starts": [
+  0,
+  175,
+  358,
+  542,
+  701,
+  887,
+  1020,
+  1192,
+  1365,
+  1549,
+  1708,
+  1836,
+  1953,
+  2111,
+  2304
+ ],
+ "cues": {
+  "hookCut": 358,
+  "titleAt": 312,
+  "tableAt": 364,
+  "handAt": 548,
+  "wonderAt": 707,
+  "tellAt": 893,
+  "tripAt": 1026,
+  "runAt": 1198,
+  "sighAt": 1371,
+  "nodAt": 1555,
+  "gentleAt": 1714,
+  "gripAt": 1842,
+  "stareAt": 1872,
+  "bellAt": 1959,
+  "smileAt": 2117,
+  "questionAt": 2310,
+  "lineStart0": 21,
+  "lineEnd0": 169,
+  "lineStart1": 181,
+  "lineEnd1": 308,
+  "lineStart2": 364,
+  "lineEnd2": 534,
+  "lineStart3": 548,
+  "lineEnd3": 693,
+  "lineStart4": 707,
+  "lineEnd4": 879,
+  "lineStart5": 893,
+  "lineEnd5": 1012,
+  "lineStart6": 1026,
+  "lineEnd6": 1184,
+  "lineStart7": 1198,
+  "lineEnd7": 1357,
+  "lineStart8": 1371,
+  "lineEnd8": 1541,
+  "lineStart9": 1555,
+  "lineEnd9": 1700,
+  "lineStart10": 1714,
+  "lineEnd10": 1828,
+  "lineStart11": 1842,
+  "lineEnd11": 1945,
+  "lineStart12": 1959,
+  "lineEnd12": 2103,
+  "lineStart13": 2117,
+  "lineEnd13": 2296,
+  "lineStart14": 2310,
+  "lineEnd14": 2419
+ }
+}
