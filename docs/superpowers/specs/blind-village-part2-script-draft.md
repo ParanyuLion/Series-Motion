@@ -5,9 +5,9 @@ Narrator: Charon, cold calm style, speed about 1.37 (the series settings). Rules
 
 Narration (15 lines, each at most 56 Thai characters without spaces; about 1:30 with the picture-only beats):
 
-1. จะเกิดอะไรขึ้น ถ้าคุณต้องกินข้าวกับคนที่ไม่เคยกะพริบตา
-2. หัวหน้าพาคุณไปนั่งที่โต๊ะยาวกลางหมู่บ้าน
-3. ทุกคนตักข้าวได้แม่นทุกช้อน และไม่มีใครทำหกเลยสักเม็ด
+1. จะเกิดอะไรขึ้น ถ้าคุณมองเห็น ในหมู่บ้านที่ทุกคนตาบอด
+2. และคุณต้องแกล้งทำเป็นตาบอด ไม่ให้ใครรู้เลยสักคน
+3. หัวหน้าพาคุณไปนั่งที่โต๊ะยาว ทุกคนตักข้าวได้แม่นไม่หกสักเม็ด
 4. ผู้หญิงข้างๆ จับมือคุณ แล้วพาไปแตะชามบนโต๊ะ
 5. หัวหน้าบอกว่า คุณคงสงสัย ว่าทำไมเราระวังคนแปลกหน้านัก
 6. แล้วเขาก็เล่าถึงคนที่เคยมองเห็นได้ เหมือนอย่างคุณ
@@ -20,6 +20,8 @@ Narration (15 lines, each at most 56 Thai characters without spaces; about 1:30 
 13. ระฆังดังขึ้นหนึ่งครั้ง ทุกคนหันหน้าไปทางป่า
 14. หัวหน้ายิ้ม แล้วบอกทุกคนว่า ดีใจจังที่คุณมองไม่เห็น
 15. ถ้าพวกเขารู้ว่าคุณมองเห็น จะเกิดอะไรขึ้น
+
+Hook (user chose option A): lines 1 and 2 state the whole premise for viewers who never saw part 1 (the places, "you", the rule of the game). The title card also shows "ตอนที่ 2" and a small "หมู่บ้านที่ทุกคนตาบอด". The old hook ("eat with people who never blink") became a picture-only detail at the table. Old lines 2 and 3 are merged into line 3 to keep the story end at about 96 s; line 3 is at most 56 characters without spaces (check with subtitle-check).
 
 Outro: "ตอนต่อไป: คืนแรก..." then "ติดตามตอนที่ 3".
 
