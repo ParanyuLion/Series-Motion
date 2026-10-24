@@ -287,7 +287,7 @@ const World: React.FC = () => {
 
         <SceneBox g={g} from={F[0]} to={F[1]}>
           <Stage cam={camF(g)}>
-            <Forest cx={camF(g).fx} dark={dark} />
+            <Forest cx={camF(g).fx} g={g} dark={dark} />
             {g >= c.roadAt - 150 && (
               <g opacity={ramp(g, c.roadAt - 150, c.roadAt + 20)}>
                 <defs>
@@ -297,7 +297,7 @@ const World: React.FC = () => {
                 <path d={`M${ROAD_X - 40} ${GROUND_Y + 12} L${ROAD_X + 900} ${GROUND_Y + 12} L${ROAD_X + 1100} ${GROUND_Y + 190} L${ROAD_X - 240} ${GROUND_Y + 190} Z`} fill="#d9d2b4" opacity={0.6} />
               </g>
             )}
-            <CrowdLayer g={g} from={c.faceAt + 8} from2={c.crowdAt} n={18} lean={lean} x0={1550} x1={3050} target={youX} first={{ x: FX(c.faceAt) + 330, y: 330 }} />
+            <CrowdLayer g={g} from={c.faceAt + 8} from2={c.crowdAt} n={26} lean={lean} x0={1500} x1={3350} target={youX} first={{ x: FX(c.faceAt) + 330, y: 330 }} />
             <Cast g={g} list={stageF(g)} />
             <Shoe x={SHOE_X} y={GROUND_Y + 95} />
           </Stage>
