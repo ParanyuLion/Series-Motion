@@ -105,7 +105,7 @@ const TreeBand: React.FC<{ x0: number; x1: number; y: number; h: number; fill: s
 );
 
 /** the whole village; `dusk` 0..1 warms then darkens the light; `bell` is the bell's swing in degrees */
-export const Village: React.FC<{ dusk?: number; bell?: number; x0?: number; x1?: number }> = ({ dusk = 0, bell = 0, x0 = -400, x1 = 5400 }) => (
+export const Village: React.FC<{ dusk?: number; bell?: number; x0?: number; x1?: number; showTable?: boolean }> = ({ dusk = 0, bell = 0, x0 = -400, x1 = 5400, showTable = true }) => (
   <g>
     <defs>
       <linearGradient id="vl-sky" x1="0" y1="0" x2="0" y2="1">
@@ -132,7 +132,7 @@ export const Village: React.FC<{ dusk?: number; bell?: number; x0?: number; x1?:
     <Hut x={1150} w={460} h={290} seed={5} />
     <Well x={1900} />
     <Hut x={2200} w={420} h={260} seed={9} banner />
-    <Table x={2950} w={620} />
+    {showTable && <Table x={2950} w={620} />}
     <Hut x={3850} w={420} h={270} seed={13} />
     <BellPost x={4500} angle={bell} />
     <TreeBand x0={4700} x1={x1} y={1360} h={900} fill="#1f2f20" seed={21} step={90} />
