@@ -1,8 +1,8 @@
 {
  "fps": 30,
- "total": 3751,
- "storyEnd": 3604,
- "outroStart": 3616,
+ "total": 3686,
+ "storyEnd": 3562,
+ "outroStart": 3574,
  "shots": [
   {
    "text": "จะเกิดอะไรขึ้น ถ้าคุณต้องแกล้งตาบอด ในหมู่บ้านคนตาบอด",
@@ -16,126 +16,126 @@
    "audio": "blind3/n1.mp3",
    "audioFrames": 154,
    "leadFrames": 6,
-   "frames": 210
+   "frames": 202
   },
   {
    "text": "คืนแรก ยายคนหนึ่งป้อนข้าวคุณ และจ้องมือคุณไม่ละสายตา",
    "audio": "blind3/n2.mp3",
    "audioFrames": 171,
    "leadFrames": 6,
-   "frames": 185
+   "frames": 183
   },
   {
    "text": "เช้าวันใหม่ มีเก้าอี้ตัวหนึ่งวางกลางทาง เหมือนลืมไว้เฉยๆ",
    "audio": "blind3/n3.mp3",
    "audioFrames": 156,
    "leadFrames": 6,
-   "frames": 170
+   "frames": 168
   },
   {
    "text": "คุณก้าวเข้าไปใกล้ ไม้เท้าหัวหน้าก็เขี่ยมันออก ก่อนคุณจะชน",
    "audio": "blind3/n4.mp3",
    "audioFrames": 165,
    "leadFrames": 6,
-   "frames": 179
+   "frames": 177
   },
   {
    "text": "เขายิ้ม แล้วพูดเบาๆ ว่า ระวังหน่อยนะ ที่นี่ของเกะกะเยอะ",
    "audio": "blind3/n5.mp3",
    "audioFrames": 232,
    "leadFrames": 6,
-   "frames": 246
+   "frames": 244
   },
   {
    "text": "ชาวบ้านให้เสื้อลายงูหัวคนมา ใส่แล้วเหมือนมีอะไรจ้องที่อก",
    "audio": "blind3/n6.mp3",
    "audioFrames": 165,
    "leadFrames": 6,
-   "frames": 179
+   "frames": 177
   },
   {
    "text": "บนหลังคากระท่อม คุณเจอเสื้อตัวหนึ่งที่ไม่มีลายอะไรเลย",
    "audio": "blind3/n7.mp3",
    "audioFrames": 129,
    "leadFrames": 6,
-   "frames": 143
+   "frames": 141
   },
   {
    "text": "เสาข้างที่นอนมีรอยขีดนับวัน มากกว่าที่ใครจะอยู่ที่นี่ได้",
    "audio": "blind3/n8.mp3",
    "audioFrames": 166,
    "leadFrames": 6,
-   "frames": 180
+   "frames": 178
   },
   {
    "text": "คุณนึกออกลางๆ ว่าเคยถูกอุ้มผ่านใบไม้ ตอนที่ยังจำอะไรไม่ได้",
    "audio": "blind3/n9.mp3",
    "audioFrames": 168,
    "leadFrames": 6,
-   "frames": 182
+   "frames": 180
   },
   {
    "text": "ระฆังดังหนึ่งครั้ง ทุกคนหันไปทางป่า และต้นไม้ตรงนั้นก็ขยับ",
    "audio": "blind3/n10.mp3",
    "audioFrames": 207,
    "leadFrames": 6,
-   "frames": 221
+   "frames": 219
   },
   {
    "text": "ก่อนสว่าง คุณย่องออกจากกระท่อม แล้วเดินเข้าไปในป่า",
    "audio": "blind3/n11.mp3",
    "audioFrames": 133,
    "leadFrames": 6,
-   "frames": 147
+   "frames": 145
   },
   {
    "text": "ป่าเงียบเกินไป ไม่มีเสียงแมลงสักตัว",
    "audio": "blind3/n12.mp3",
    "audioFrames": 121,
    "leadFrames": 6,
-   "frames": 135
+   "frames": 133
   },
   {
    "text": "ใต้ต้นไม้ มีรองเท้าข้างเดียว เหมือนมีคนทิ้งไว้ให้เห็น",
    "audio": "blind3/n13.mp3",
    "audioFrames": 132,
    "leadFrames": 6,
-   "frames": 146
+   "frames": 144
   },
   {
    "text": "แล้วคุณก็เห็นหน้าซีดๆ บนกิ่งไม้ นิ่ง และยิ้มอยู่เหนือหัว",
    "audio": "blind3/n14.mp3",
    "audioFrames": 149,
    "leadFrames": 6,
-   "frames": 163
+   "frames": 161
   },
   {
    "text": "ไม่ใช่ตัวเดียว ทุกกิ่ง ทุกต้น หันมาหาคุณ ยิ้มเหมือนกันหมด",
    "audio": "blind3/n15.mp3",
    "audioFrames": 222,
    "leadFrames": 6,
-   "frames": 236
+   "frames": 234
   },
   {
    "text": "คุณนึกถึงคนที่มองเห็น แล้วทำตานิ่ง เดินช้าๆ เหมือนคนตาบอด",
    "audio": "blind3/n16.mp3",
    "audioFrames": 185,
    "leadFrames": 6,
-   "frames": 199
+   "frames": 197
   },
   {
    "text": "ตัวหนึ่งหย่อนหน้าลงมา ใกล้จนเห็นตัวเองในตาของมัน",
    "audio": "blind3/n17.mp3",
    "audioFrames": 137,
    "leadFrames": 6,
-   "frames": 151
+   "frames": 149
   },
   {
    "text": "คุณไม่กะพริบ มันปล่อยคุณผ่าน ทั้งฝูงเอนตามมาอย่างพอใจ",
    "audio": "blind3/n18.mp3",
    "audioFrames": 187,
    "leadFrames": 6,
-   "frames": 201
+   "frames": 199
   },
   {
    "text": "ข้างหน้าคือถนน และข้างหลังคุณมีเสียงหัวเราะเบาๆ",
@@ -148,85 +148,85 @@
  "starts": [
   0,
   167,
-  377,
-  562,
-  732,
-  911,
-  1157,
-  1336,
-  1479,
-  1659,
-  1841,
-  2062,
-  2209,
-  2344,
-  2490,
-  2653,
-  2889,
-  3088,
-  3239,
-  3440
+  369,
+  552,
+  720,
+  897,
+  1141,
+  1318,
+  1459,
+  1637,
+  1817,
+  2036,
+  2181,
+  2314,
+  2458,
+  2619,
+  2853,
+  3050,
+  3199,
+  3398
  ],
  "cues": {
-  "hookCut": 377,
+  "hookCut": 369,
   "titleAt": 331,
-  "nightAt": 383,
-  "chairAt": 568,
-  "nudgeAt": 738,
-  "smileAt": 917,
-  "shirtAt": 1163,
-  "roofAt": 1342,
-  "postAt": 1485,
-  "carriedAt": 1665,
-  "bellAt": 1847,
-  "dawnAt": 2068,
-  "quietAt": 2215,
-  "shoeAt": 2350,
-  "faceAt": 2496,
-  "crowdAt": 2659,
-  "blindAt": 2895,
-  "lowerAt": 3094,
-  "leanAt": 3245,
-  "roadAt": 3446,
+  "nightAt": 375,
+  "chairAt": 558,
+  "nudgeAt": 726,
+  "smileAt": 903,
+  "shirtAt": 1147,
+  "roofAt": 1324,
+  "postAt": 1465,
+  "carriedAt": 1643,
+  "bellAt": 1823,
+  "dawnAt": 2042,
+  "quietAt": 2187,
+  "shoeAt": 2320,
+  "faceAt": 2464,
+  "crowdAt": 2625,
+  "blindAt": 2859,
+  "lowerAt": 3056,
+  "leanAt": 3205,
+  "roadAt": 3404,
   "lineStart0": 21,
   "lineEnd0": 161,
   "lineStart1": 173,
   "lineEnd1": 327,
-  "lineStart2": 383,
-  "lineEnd2": 554,
-  "lineStart3": 568,
-  "lineEnd3": 724,
-  "lineStart4": 738,
-  "lineEnd4": 903,
-  "lineStart5": 917,
-  "lineEnd5": 1149,
-  "lineStart6": 1163,
-  "lineEnd6": 1328,
-  "lineStart7": 1342,
-  "lineEnd7": 1471,
-  "lineStart8": 1485,
-  "lineEnd8": 1651,
-  "lineStart9": 1665,
-  "lineEnd9": 1833,
-  "lineStart10": 1847,
-  "lineEnd10": 2054,
-  "lineStart11": 2068,
-  "lineEnd11": 2201,
-  "lineStart12": 2215,
-  "lineEnd12": 2336,
-  "lineStart13": 2350,
-  "lineEnd13": 2482,
-  "lineStart14": 2496,
-  "lineEnd14": 2645,
-  "lineStart15": 2659,
-  "lineEnd15": 2881,
-  "lineStart16": 2895,
-  "lineEnd16": 3080,
-  "lineStart17": 3094,
-  "lineEnd17": 3231,
-  "lineStart18": 3245,
-  "lineEnd18": 3432,
-  "lineStart19": 3446,
-  "lineEnd19": 3604
+  "lineStart2": 375,
+  "lineEnd2": 546,
+  "lineStart3": 558,
+  "lineEnd3": 714,
+  "lineStart4": 726,
+  "lineEnd4": 891,
+  "lineStart5": 903,
+  "lineEnd5": 1135,
+  "lineStart6": 1147,
+  "lineEnd6": 1312,
+  "lineStart7": 1324,
+  "lineEnd7": 1453,
+  "lineStart8": 1465,
+  "lineEnd8": 1631,
+  "lineStart9": 1643,
+  "lineEnd9": 1811,
+  "lineStart10": 1823,
+  "lineEnd10": 2030,
+  "lineStart11": 2042,
+  "lineEnd11": 2175,
+  "lineStart12": 2187,
+  "lineEnd12": 2308,
+  "lineStart13": 2320,
+  "lineEnd13": 2452,
+  "lineStart14": 2464,
+  "lineEnd14": 2613,
+  "lineStart15": 2625,
+  "lineEnd15": 2847,
+  "lineStart16": 2859,
+  "lineEnd16": 3044,
+  "lineStart17": 3056,
+  "lineEnd17": 3193,
+  "lineStart18": 3205,
+  "lineEnd18": 3392,
+  "lineStart19": 3404,
+  "lineEnd19": 3562
  }
 }

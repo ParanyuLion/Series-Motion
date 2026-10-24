@@ -65,17 +65,18 @@ const crowd = (n: number, x0: number, x1: number): Crowd[] =>
  */
 export const CrowdLayer: React.FC<{ g: number; from: number; from2: number; n: number; lean: number; x0: number; x1: number; target: number; first: { x: number; y: number } }> = ({ g, from, from2, n, lean, x0, x1, target, first }) => (
   <g>
+    <defs><filter id="cw-soft"><feGaussianBlur stdDeviation="1.6" /></filter></defs>
     {crowd(n, x0, x1).map((c0, i) => {
       let c = c0;
       const t0 = i === 0 ? from : from2 + (i - 1) * 9;
       const o = ramp(g, t0, t0 + 14);
       if (i === 0) { c = { ...c, x: first.x, y: first.y, s: 0.5 }; }
       if (o <= 0) return null;
-      const toward = Math.sign(target - c.x) * 16 * lean;
+      const toward = Math.sign(target - c.x) * 26 * lean;
       return (
-        <g key={i} opacity={0.35 + 0.5 * o * (1 - 0.35 * (i % 3) / 2)} transform={`translate(${c.x},${c.y})`}>
+        <g key={i} opacity={(0.2 + 0.25 * o) * (1 - 0.3 * (i % 3) / 2)} transform={`translate(${c.x + Math.sign(target - c.x) * 14 * lean},${c.y})`}>
           <g transform={`scale(${c.s * 2})`}><Flesh d={`M${(rnd(i) - 0.5) * 80} -900 C${(rnd(i + 1) - 0.5) * 300} -600 ${(rnd(i + 2) - 0.5) * 200} -350 0 -110`} w={42} /></g>
-          <MaskHead kind={3} x={0} y={0} tilt={c.tilt * 0.5 + toward} s={c.s} />
+          <g filter="url(#cw-soft)"><MaskHead kind={3} x={0} y={0} tilt={c.tilt * 0.5 + toward} s={c.s} /></g>
         </g>
       );
     })}

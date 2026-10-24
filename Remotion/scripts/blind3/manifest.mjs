@@ -6,11 +6,11 @@ import { readFileSync, writeFileSync } from "node:fs";
 const FPS = 30;
 const HOOK_LEAD = 21;      // 0.7 s before the first word
 const LEAD = 6;            // 0.2 s before each later line
-const TAIL = 8;            // 0.27 s after each later line
+const TAIL = 6;            // 0.2 s after each later line
 const HOOK_GAP = 6;        // between hook lines 0 and 1
-const TITLE_HOLD = 50;     // frames after line 1 for the title card
+const TITLE_HOLD = 42;     // frames after line 1 for the title card
 const OUTRO_GAP = 12;
-const OUTRO_FRAMES = 135;  // 4.5 s "next part" card
+const OUTRO_FRAMES = 112;  // 4.5 s "next part" card
 
 const lines = JSON.parse(readFileSync("scripts/blind3/part3.narration.json", "utf8")).map((l) => (typeof l === "string" ? l : l.text));
 const lengths = lines.map((_, i) => {

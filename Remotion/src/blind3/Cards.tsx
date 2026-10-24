@@ -61,11 +61,12 @@ export const RoofCard: React.FC<{ g: number; from: number; to: number }> = ({ g,
         <rect x={-40} y={420} width={1160} height={70} fill="#2a1c0e" transform="rotate(-4 540 455)" />
         <rect x={-40} y={1010} width={1160} height={70} fill="#2a1c0e" transform="rotate(3 540 1045)" />
         {/* the folded shirt: plain, pale, without any print */}
-        <g transform="translate(540,760) rotate(-5)">
-          <path d="M-210 -120 L210 -120 L240 110 L-240 110 Z" fill="#b9b19b" stroke="#6f6857" strokeWidth={4} />
-          <path d="M-210 -120 Q0 -60 210 -120" stroke="#8e8772" strokeWidth={5} fill="none" />
-          <path d="M-120 -20 Q0 20 120 -20" stroke="#8e8772" strokeWidth={4} fill="none" opacity={0.8} />
-          <path d="M-230 40 L230 40" stroke="#8e8772" strokeWidth={3} opacity={0.6} />
+        <g transform="translate(540,780) rotate(-5)">
+          <path d="M-80 -170 Q0 -120 80 -170 L220 -120 L290 20 L190 60 L160 -10 L160 190 L-160 190 L-160 -10 L-190 60 L-290 20 L-220 -120 Z" fill="#b9b19b" stroke="#6f6857" strokeWidth={5} strokeLinejoin="round" />
+          <path d="M-80 -170 Q0 -90 80 -170" stroke="#7d7662" strokeWidth={6} fill="none" />
+          <path d="M-160 -10 L-190 60 M160 -10 L190 60" stroke="#8e8772" strokeWidth={4} />
+          <path d="M-150 120 Q0 150 150 120" stroke="#8e8772" strokeWidth={4} fill="none" opacity={0.7} />
+          <path d="M0 -118 L0 120" stroke="#8e8772" strokeWidth={3} opacity={0.5} />
         </g>
         {Array.from({ length: 16 }, (_, i) => <circle key={i} cx={(rnd(i + 20) * W + g * (0.2 + rnd(i) * 0.3)) % W} cy={200 + rnd(i + 40) * 1000 - ((g * 0.3 + i * 30) % 120)} r={2 + rnd(i) * 2} fill="#e0d2a8" opacity={0.35} />)}
       </g>

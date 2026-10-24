@@ -7,7 +7,7 @@ import { Passenger } from "../bts/Passenger";
 import { ANCHOR, Cam, makeCamera } from "../bts4/camera";
 import { GROUND_Y, HutInterior, Village } from "../blind1/Village";
 import { FaceHead, FaceYou, PatternCard } from "../blind1/Faces";
-import { Chair, Rustle } from "./Props";
+import { Chair, Rustle, Spoon, Stool } from "./Props";
 import { CrowdLayer, Forest, Shoe } from "./Forest";
 import { LeavesFlash, LowerFace, PostCard, RoofCard } from "./Cards";
 
@@ -75,7 +75,7 @@ const camV1 = makeCamera("v1", [
 // ---- H1: the hut at night, the cook feeds "you" ----
 const stageH1 = (g: number): Pp[] => [
   { key: "you", id: "bvYou", x: 690, y: GROUND_Y + 90, facing: 1, sit: true, fear: 0.1 },
-  { key: "cook", id: "bvCook", x: 1010, y: GROUND_Y + 90, facing: -1, sit: true, eat: g > c.nightAt + 40 ? 20 : 0 },
+  { key: "cook", id: "bvCook", x: 1010, y: GROUND_Y + 90, facing: -1, sit: true },
 ];
 const camH1 = makeCamera("h1", [
   [H1[0], 820, 1140, 1.4],
@@ -85,25 +85,26 @@ const camH1 = makeCamera("h1", [
 
 // ---- V2: the chair test, in the morning ----
 const CHAIR_X = 2640;
-const youXV2 = (g: number) => (g < c.nudgeAt + 10 ? lerp(2040, 2560, ramp(g, c.chairAt + 10, c.nudgeAt + 10)) : lerp(2560, 3060, ramp(g, c.nudgeAt + 10, c.shirtAt)));
+const NUDGE = c.nudgeAt + 70; // the stick swings on "เขี่ยมันออก" and the foot would land about 35 frames later
+const youXV2 = (g: number) => (g < NUDGE + 35 ? lerp(2040, 2560, ramp(g, c.chairAt + 10, NUDGE + 35)) : lerp(2560, 3060, ramp(g, NUDGE + 35, c.shirtAt)));
 const stickAngle = (g: number) => {
-  const swing = ramp(g, c.nudgeAt - 8, c.nudgeAt + 2) * (1 - ramp(g, c.nudgeAt + 6, c.nudgeAt + 22));
-  return lerp(-30 + 6 * Math.sin(g * 0.3), -88, swing);
+  const swing = ramp(g, NUDGE - 8, NUDGE + 2) * (1 - ramp(g, NUDGE + 8, NUDGE + 26));
+  return lerp(-12 + 3 * Math.sin(g * 0.3), -88, swing);
 };
 const stageV2 = (g: number): Pp[] => {
   const walking = g < c.shirtAt - 20;
   return [
-    { key: "head", id: "bvHead", x: 2540, y: GROUND_Y + 20, facing: 1, stick: stickAngle(g) },
+    { key: "head", id: "bvHead", x: 2480, y: GROUND_Y + 20, facing: 1, stick: stickAngle(g) },
     { key: "you", id: "bvYou", x: youXV2(g), y: GROUND_Y + 110, facing: 1, walk: walking ? 0.6 : 0, fear: 0.12 },
-    { key: "man", id: "bvMan", x: lerp(2250, 3300, ramp(g, c.chairAt, c.shirtAt)), y: GROUND_Y + 190, facing: 1, walk: 0.6 },
-    { key: "child", id: "bvChild", x: lerp(3300, 2300, ramp(g, c.chairAt + 20, c.shirtAt)), y: GROUND_Y + 175, facing: -1, walk: 0.6 },
+    { key: "man", id: "bvMan", x: lerp(2900, 3500, ramp(g, c.chairAt, c.shirtAt)), y: GROUND_Y + 190, facing: 1, walk: 0.6 },
+    { key: "child", id: "bvChild", x: lerp(3500, 3050, ramp(g, c.chairAt + 20, c.shirtAt)), y: GROUND_Y + 175, facing: -1, walk: 0.6 },
     { key: "cook", id: "bvCook", x: 2250, y: GROUND_Y + 10, facing: 1 },
   ];
 };
 const camV2 = makeCamera("v2", [
   [V2[0], 2420, 1170, 1.5],
-  [c.nudgeAt - 30, 2600, 1160, 1.75],
-  [c.nudgeAt + 30, 2720, 1150, 1.6],
+  [NUDGE - 40, 2580, 1160, 1.75],
+  [NUDGE + 40, 2700, 1150, 1.6],
   [c.smileAt, 2900, 1150, 1.45],
   [V2[1], 2950, 1150, 1.45],
 ]);
@@ -117,21 +118,20 @@ const stageV3 = (g: number): Pp[] => {
   const done = tp >= 1;
   const row = (key: string, id: PassengerId, x: number, y: number): Pp => ({ key, id, x, y: GROUND_Y + y, facing: done ? 1 : -1, flip: turning ? tp : 0 });
   return [
-    row("head", "bvHead", 4290, 60),
-    row("cook", "bvCook", 4210, 140),
-    row("man", "bvMan", 4120, 20),
-    row("child", "bvChild", 4040, 130),
-    row("woman", "bvWoman", 4350, 190),
-    row("elder", "bvElder", 3960, 70),
-    { key: "you", id: "bvYou", x: 3880, y: GROUND_Y + 160, facing: 1, fear: 0.2, headTilt: 5 * ramp(g, TURN_AT, TURN_AT + 20) },
+    row("head", "bvHead", 4370, 60),
+    row("cook", "bvCook", 4290, 150),
+    row("man", "bvMan", 4130, 30),
+    row("child", "bvChild", 4210, 140),
+    row("woman", "bvWoman", 4450, 195),
+    row("elder", "bvElder", 4040, 90),
+    { key: "you", id: "bvYou", x: 3940, y: GROUND_Y + 175, facing: 1, fear: 0.2, headTilt: 5 * ramp(g, TURN_AT, TURN_AT + 20) },
   ];
 };
 const camV3 = makeCamera("v3", [
-  [V3[0], 4400, 1110, 1.3],
-  [c.bellAt + 8, 4470, 1090, 1.2],
-  [c.bellAt + 55, 4180, 1110, 1.1],
-  [c.bellAt + 100, 4600, 1090, 1.2],
-  [V3[1], 4720, 1090, 1.35],
+  [V3[0], 4300, 1110, 1.1],
+  [c.bellAt + 8, 4400, 1090, 1.05],
+  [c.bellAt + 120, 4380, 1100, 1.0],
+  [V3[1], 4560, 1090, 1.12],
 ]);
 
 // ---- V4: grey dawn, "you" slip out toward the trees ----
@@ -157,12 +157,12 @@ const camF = makeCamera("forest", [
   [c.shoeAt + 60, SHOE_X + 80, 1170, 1.5],
   [c.faceAt - 10, 1400, 1100, 1.15],
   [c.faceAt + 50, 1650, 700, 1.0],
-  [c.crowdAt, 1800, 760, 0.95],
-  [c.blindAt, 2250, 800, 0.95],
+  [c.crowdAt, 1950, 760, 0.95],
+  [c.blindAt, 2300, 800, 0.95],
   [c.lowerAt, 2450, 820, 0.95],
   [c.leanAt + 60, 2650, 780, 0.95],
   [c.roadAt, 3000, 1000, 1.05],
-  [outroStart, 3300, 1120, 1.5],
+  [outroStart, 3200, 1120, 1.5],
 ]);
 
 // ---------------- screen-space pieces ----------------
@@ -224,7 +224,7 @@ const World: React.FC = () => {
   const g = useCurrentFrame();
   const fade = 0.35 + 0.65 * ramp(g, 0, 10);
   const youX = FX(g);
-  const dark = lerp(0.1, 0.5, ramp(g, c.faceAt, c.crowdAt + 60));
+  const dark = lerp(0.1, 0.85, ramp(g, c.faceAt, c.crowdAt + 60));
   const lean = smooth(ramp(g, c.leanAt + 20, c.leanAt + 110));
   const duskV3 = 0.45 + 0.4 * smooth(ramp(g, c.bellAt - 40, c.bellAt + 90));
   const cardsOn = g >= CARDS[0] - 4 && g <= CARDS[1] + 4;
@@ -244,7 +244,13 @@ const World: React.FC = () => {
         <SceneBox g={g} from={H1[0]} to={H1[1]}>
           <Stage cam={camH1(g)}>
             <HutInterior />
+            <Stool x={1010} y={GROUND_Y + 90} />
             <Cast g={g} list={stageH1(g)} />
+            <g>
+              <path d="M800 1318 Q800 1368 850 1372 Q900 1368 900 1318 Z" fill="#8e7f64" stroke="#5b503b" strokeWidth={3} />
+              <ellipse cx={850} cy={1318} rx={50} ry={11} fill="#d8d2bd" />
+              <Spoon g={g} reach={smooth(ramp(g, c.nightAt + 30, c.nightAt + 90))} from={[870, 1300]} tip={[796, 1135]} />
+            </g>
             <rect x={-700} y={-1200} width={3200} height={2500} fill="#070d1c" opacity={0.62} />
             <ellipse cx={850} cy={1150} rx={520} ry={420} fill="#ffb865" opacity={0.2} />
           </Stage>
@@ -253,7 +259,7 @@ const World: React.FC = () => {
         <SceneBox g={g} from={V2[0]} to={V2[1]}>
           <Stage cam={camV2(g)}>
             <Village dusk={0} bell={0} showTable={false} />
-            <Chair x={CHAIR_X} y={GROUND_Y + 110} slide={smooth(ramp(g, c.nudgeAt, c.nudgeAt + 12))} />
+            <Chair x={CHAIR_X} y={GROUND_Y + 110} slide={smooth(ramp(g, NUDGE, NUDGE + 16))} />
             <Cast g={g} list={stageV2(g)} />
           </Stage>
         </SceneBox>
@@ -282,7 +288,6 @@ const World: React.FC = () => {
         <SceneBox g={g} from={F[0]} to={F[1]}>
           <Stage cam={camF(g)}>
             <Forest cx={camF(g).fx} dark={dark} />
-            <Shoe x={SHOE_X} y={GROUND_Y + 90} />
             {g >= c.roadAt - 150 && (
               <g opacity={ramp(g, c.roadAt - 150, c.roadAt + 20)}>
                 <defs>
@@ -292,8 +297,9 @@ const World: React.FC = () => {
                 <path d={`M${ROAD_X - 40} ${GROUND_Y + 12} L${ROAD_X + 900} ${GROUND_Y + 12} L${ROAD_X + 1100} ${GROUND_Y + 190} L${ROAD_X - 240} ${GROUND_Y + 190} Z`} fill="#d9d2b4" opacity={0.6} />
               </g>
             )}
-            <CrowdLayer g={g} from={c.faceAt + 8} from2={c.crowdAt} n={16} lean={lean} x0={1000} x1={3500} target={youX} first={{ x: FX(c.faceAt) + 330, y: 330 }} />
+            <CrowdLayer g={g} from={c.faceAt + 8} from2={c.crowdAt} n={18} lean={lean} x0={1550} x1={3050} target={youX} first={{ x: FX(c.faceAt) + 330, y: 330 }} />
             <Cast g={g} list={stageF(g)} />
+            <Shoe x={SHOE_X} y={GROUND_Y + 95} />
           </Stage>
         </SceneBox>
 
