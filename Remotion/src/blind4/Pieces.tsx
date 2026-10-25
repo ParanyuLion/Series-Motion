@@ -1,6 +1,7 @@
 import React from "react";
 import { PASSENGERS } from "../bts/cast";
 import { MaskHead, Flesh } from "../blind1/SnakePreview";
+import { SnakeTile } from "../bts/SnakeTile";
 
 const W = 1080;
 const H = 1920;
@@ -88,7 +89,8 @@ export const Room: React.FC<{ g: number; sky: string; cloth: number; ring: numbe
           <ellipse cx={0} cy={880} rx={34} ry={42} fill="#cbb8a0" />
           <path d="M-34 868 Q0 790 34 868 Q0 846 -34 868 Z" fill="#251a12" />
           <path d="M-70 1152 Q-64 950 -30 930 L30 930 Q64 950 70 1152 Z" fill="#cbb8a0" />
-          <path d="M-52 1010 q14 -22 26 0 t26 0 t26 0 M-52 1050 q14 -22 26 0 t26 0 t26 0 M-52 1090 q14 -22 26 0 t26 0 t26 0" stroke="#2a3322" strokeWidth={7} fill="none" />
+          <g transform="translate(-18,1018)"><SnakeTile size={82} /></g>
+          <g transform="translate(26,1085)"><SnakeTile size={64} /></g>
         </g>
         <rect x={282 + 0} y={768 + 360 * pull} width={186} height={400 - 360 * pull} fill="#5d6552" opacity={1} />
         <path d={`M282 ${768 + 360 * pull} H468`} stroke="#3a4130" strokeWidth={6} />
@@ -152,21 +154,21 @@ export const MirrorCard: React.FC<R & { stage: 1 | 2 }> = ({ g, from, to, stage 
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
         <rect width={W} height={H} fill="#b99c80" />
         <g transform={`translate(540,820) scale(${zoom}) translate(-540,-820)`}>
-          {Array.from({ length: 16 }, (_, r) => (
-            <path key={r} d={`M-40 ${r * 130 + 10} ${Array.from({ length: 10 }, (_, c) => `q55 ${c % 2 ? 50 : -50} 110 0`).join(" ")}`} stroke={r % 2 ? "#3c4a2c" : "#2a3420"} strokeWidth={34} fill="none" opacity={0.9} />
-          ))}
-          <circle cx={540} cy={820} r={300} fill="#161c12" opacity={0.55} />
-          <g opacity={reveal} transform="translate(540,820)">
-            <ellipse cx={0} cy={0} rx={150} ry={175} fill="#6f7c55" />
-            <path d="M-152 -10 Q-160 -190 0 -192 Q160 -190 152 -10 Q120 -140 0 -144 Q-120 -140 -152 -10 Z" fill="#2b3320" />
-            {[-58, 58].map((ex) => (
+          {Array.from({ length: 9 }, (_, r) => Array.from({ length: 6 }, (_, q) => (
+            <g key={`${r}-${q}`} transform={`translate(${q * 200 + (r % 2) * 100 - 40},${r * 230 - 60})`} opacity={0.7}><SnakeTile size={130} /></g>
+          )))}
+          <rect width={W} height={H} fill="#b99c80" opacity={0.45} />
+          <g transform="translate(540,880)"><SnakeTile size={780} /></g>
+          <g opacity={reveal} transform="translate(597,539) scale(0.62)">
+            <ellipse cx={0} cy={0} rx={115} ry={135} fill={k.skin} />
+            <path d="M-118 -10 Q-126 -150 0 -152 Q126 -150 118 -10 Q92 -108 0 -112 Q-92 -108 -118 -10 Z" fill={k.hair} />
+            {[-46, 46].map((ex) => (
               <g key={ex}>
-                <ellipse cx={ex} cy={-10} rx={34} ry={26} fill="#c9d0b4" />
-                <circle cx={ex} cy={-8} r={13} fill="#10140c" />
+                <ellipse cx={ex} cy={-8} rx={27} ry={21} fill="#fff" />
+                <circle cx={ex} cy={-6} r={10} fill="#10140c" />
               </g>
             ))}
-            <path d="M-50 90 Q0 120 50 90" stroke="#2b3320" strokeWidth={7} fill="none" strokeLinecap="round" />
-            <ellipse cx={0} cy={0} rx={150} ry={175} fill="none" stroke={k.skin} strokeWidth={4} opacity={0.5} />
+            <path d="M-38 70 Q0 94 38 70" stroke="#8a3a30" strokeWidth={6} fill="none" strokeLinecap="round" />
           </g>
         </g>
       </svg>
@@ -218,7 +220,6 @@ export const ChangeCard: React.FC<R> = ({ g, from, to }) => {
       {/* the shirt: held upright in the beginning, then flat on the floor */}
       <g transform={`translate(330,${shirtY + 80 * collapse}) scale(${lerp(1, 1.5, collapse)},${lerp(1, 0.2, collapse)})`}>
         <path d="M-80 -330 Q0 -280 80 -330 L220 -270 L280 -130 L190 -90 L160 -150 L160 80 L-160 80 L-160 -150 L-190 -90 L-280 -130 L-220 -270 Z" fill="#7d8a8f" stroke="#454d50" strokeWidth={5} />
-        {Array.from({ length: 5 }, (_, i) => <path key={i} d={`M-150 ${-210 + i * 55} q22 -26 44 0 t44 0 t44 0 t44 0 t44 0`} stroke="#2a3322" strokeWidth={6} fill="none" opacity={0.8} />)}
       </g>
       {/* the dots */}
       {Array.from({ length: N }, (_, i) => {
