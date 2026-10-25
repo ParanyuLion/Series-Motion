@@ -1,0 +1,232 @@
+{
+ "fps": 30,
+ "total": 3259,
+ "storyEnd": 3117,
+ "outroStart": 3129,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณหนีออกจากหมู่บ้านคนตาบอดได้",
+   "audio": "blind4/n0.mp3",
+   "audioFrames": 117,
+   "leadFrames": 21,
+   "frames": 144
+  },
+  {
+   "text": "แต่ไม่มีใครไล่ตาม ทั้งที่มีแค่คุณที่มองเห็น",
+   "audio": "blind4/n1.mp3",
+   "audioFrames": 123,
+   "leadFrames": 6,
+   "frames": 171
+  },
+  {
+   "text": "ที่ขอบป่า หัวหน้ายืนรออยู่ เหมือนรู้ว่าคุณจะมา",
+   "audio": "blind4/n2.mp3",
+   "audioFrames": 145,
+   "leadFrames": 6,
+   "frames": 157
+  },
+  {
+   "text": "เขาหันตาขาวขุ่นมาตรงหน้าคุณพอดี แล้วยิ้มอย่างอ่อนโยน",
+   "audio": "blind4/n3.mp3",
+   "audioFrames": 176,
+   "leadFrames": 6,
+   "frames": 188
+  },
+  {
+   "text": "เขาพูดว่า ไปดีนะ เราจะรอคุณอยู่ที่นี่เสมอ",
+   "audio": "blind4/n4.mp3",
+   "audioFrames": 128,
+   "leadFrames": 6,
+   "frames": 140
+  },
+  {
+   "text": "คุณไม่ตอบ เดินไปจนถึงถนน แล้วมีรถคันหนึ่งหยุดรับคุณ",
+   "audio": "blind4/n5.mp3",
+   "audioFrames": 161,
+   "leadFrames": 6,
+   "frames": 173
+  },
+  {
+   "text": "พอฟ้าสว่าง คุณก็ถึงบ้าน ทุกอย่างเหมือนเดิมทุกอย่าง",
+   "audio": "blind4/n6.mp3",
+   "audioFrames": 154,
+   "leadFrames": 6,
+   "frames": 166
+  },
+  {
+   "text": "แล้วความทรงจำก็กลับมา คุณถูกอุ้มผ่านใบไม้ อย่างเบามือ",
+   "audio": "blind4/n7.mp3",
+   "audioFrames": 154,
+   "leadFrames": 6,
+   "frames": 166
+  },
+  {
+   "text": "มันไม่ได้ปล่อยคุณมาโดยบังเอิญ มันเลือกคุณ",
+   "audio": "blind4/n8.mp3",
+   "audioFrames": 111,
+   "leadFrames": 6,
+   "frames": 123
+  },
+  {
+   "text": "คุณส่องกระจกครั้งแรก และเห็นลายงูบนเสื้อของคุณ",
+   "audio": "blind4/n9.mp3",
+   "audioFrames": 114,
+   "leadFrames": 6,
+   "frames": 126
+  },
+  {
+   "text": "หน้าบนลายนั้น คือหน้าของคุณเอง",
+   "audio": "blind4/n10.mp3",
+   "audioFrames": 87,
+   "leadFrames": 6,
+   "frames": 99
+  },
+  {
+   "text": "ม่านตาของคุณค่อยๆ แคบลง เหมือนตาของพวกมัน",
+   "audio": "blind4/n11.mp3",
+   "audioFrames": 132,
+   "leadFrames": 6,
+   "frames": 144
+  },
+  {
+   "text": "มีคนเรียกชื่อคุณจากข้างหลัง แต่คุณหันช้าไปหนึ่งจังหวะ",
+   "audio": "blind4/n12.mp3",
+   "audioFrames": 142,
+   "leadFrames": 6,
+   "frames": 154
+  },
+  {
+   "text": "ตอนเย็น ระฆังดังในบ้านที่ไม่มีระฆัง หัวคุณหันไปทางป่าเอง",
+   "audio": "blind4/n13.mp3",
+   "audioFrames": 181,
+   "leadFrames": 6,
+   "frames": 193
+  },
+  {
+   "text": "คืนนั้น คุณไหลออกจากร่างเดิม และกลับไปตามเสียงเรียก",
+   "audio": "blind4/n14.mp3",
+   "audioFrames": 132,
+   "leadFrames": 6,
+   "frames": 144
+  },
+  {
+   "text": "ที่ขอบหมู่บ้าน หัวหน้าเงยหน้ามอง เขาไม่ใช่คนเหมือนกัน",
+   "audio": "blind4/n15.mp3",
+   "audioFrames": 144,
+   "leadFrames": 6,
+   "frames": 156
+  },
+  {
+   "text": "เขาพูดว่า เรารู้ตั้งแต่นาทีแรก คุณสนุกที่สุดในบรรดาทุกคน",
+   "audio": "blind4/n16.mp3",
+   "audioFrames": 201,
+   "leadFrames": 6,
+   "frames": 213
+  },
+  {
+   "text": "มีคนใหม่ตื่นบนเสื่อ หัวหน้ากลายเป็นคน และเดินไปต้อนรับ",
+   "audio": "blind4/n17.mp3",
+   "audioFrames": 166,
+   "leadFrames": 6,
+   "frames": 178
+  },
+  {
+   "text": "เขาพูดว่า มีคนมาที่นี่อีกแล้วหรอ",
+   "audio": "blind4/n18.mp3",
+   "audioFrames": 102,
+   "leadFrames": 6,
+   "frames": 114
+  },
+  {
+   "text": "และคุณมองดูจากบนต้นไม้ ยิ้มทั้งที่ไม่มีปาก",
+   "audio": "blind4/n19.mp3",
+   "audioFrames": 162,
+   "leadFrames": 6,
+   "frames": 180
+  }
+ ],
+ "starts": [
+  0,
+  144,
+  315,
+  472,
+  660,
+  800,
+  973,
+  1139,
+  1305,
+  1428,
+  1554,
+  1653,
+  1797,
+  1951,
+  2144,
+  2288,
+  2444,
+  2657,
+  2835,
+  2949
+ ],
+ "cues": {
+  "hookCut": 315,
+  "titleAt": 277,
+  "edgeAt": 321,
+  "smileAt": 478,
+  "speakAt": 666,
+  "roadAt": 806,
+  "homeAt": 979,
+  "memoryAt": 1145,
+  "chosenAt": 1311,
+  "mirrorAt": 1434,
+  "patternAt": 1560,
+  "pupilAt": 1659,
+  "nameAt": 1803,
+  "bellAt": 1957,
+  "changeAt": 2150,
+  "villageEdgeAt": 2294,
+  "confessAt": 2450,
+  "newAt": 2663,
+  "welcomeAt": 2841,
+  "lastAt": 2955,
+  "lineStart0": 21,
+  "lineEnd0": 138,
+  "lineStart1": 150,
+  "lineEnd1": 273,
+  "lineStart2": 321,
+  "lineEnd2": 466,
+  "lineStart3": 478,
+  "lineEnd3": 654,
+  "lineStart4": 666,
+  "lineEnd4": 794,
+  "lineStart5": 806,
+  "lineEnd5": 967,
+  "lineStart6": 979,
+  "lineEnd6": 1133,
+  "lineStart7": 1145,
+  "lineEnd7": 1299,
+  "lineStart8": 1311,
+  "lineEnd8": 1422,
+  "lineStart9": 1434,
+  "lineEnd9": 1548,
+  "lineStart10": 1560,
+  "lineEnd10": 1647,
+  "lineStart11": 1659,
+  "lineEnd11": 1791,
+  "lineStart12": 1803,
+  "lineEnd12": 1945,
+  "lineStart13": 1957,
+  "lineEnd13": 2138,
+  "lineStart14": 2150,
+  "lineEnd14": 2282,
+  "lineStart15": 2294,
+  "lineEnd15": 2438,
+  "lineStart16": 2450,
+  "lineEnd16": 2651,
+  "lineStart17": 2663,
+  "lineEnd17": 2829,
+  "lineStart18": 2841,
+  "lineEnd18": 2943,
+  "lineStart19": 2955,
+  "lineEnd19": 3117
+ }
+}
