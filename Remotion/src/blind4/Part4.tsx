@@ -53,12 +53,13 @@ const LAST = [c.lastAt, total];
 // ---- the forest edge (hook, the head, his two sentences) ----
 const youXE = (g: number) => (g < c.speakAt + 40 ? lerp(520, 1760, smooth(ramp(g, 0, c.edgeAt + 120))) : lerp(1760, 2700, smooth(ramp(g, c.speakAt + 40, c.roadAt + 6))));
 const stageE = (g: number): Pp[] => [
-  { key: "head", id: "bvHead", x: 2200, y: GROUND_Y + 20, facing: -1, stick: true, op: ramp(g, c.edgeAt - 10, c.edgeAt + 40) },
+  { key: "head", id: "bvHead", x: 2200, y: GROUND_Y + 20, facing: -1, stick: true, op: ramp(g, c.hookCut - 40, c.edgeAt + 6) },
   { key: "you", id: "bvYou", x: youXE(g), y: GROUND_Y + 120, facing: 1, walk: g < c.edgeAt + 120 || g > c.speakAt + 40 ? 0.55 : 0, fear: 0.2, still: true },
 ];
 const camE = makeCamera("edge", [
   [0, 650, 1130, 1.3],
-  [c.edgeAt - 20, 1100, 1130, 1.3],
+  [c.hookCut - 70, 1100, 1130, 1.3],
+  [c.edgeAt, 1750, 1140, 1.25],
   [c.edgeAt + 90, 1900, 1150, 1.2],
   [c.smileAt - 30, 1950, 1150, 1.3],
   [c.roadAt - 20, 2150, 1150, 1.4],
@@ -179,14 +180,19 @@ const World: React.FC = () => {
   const fade = 0.35 + 0.65 * ramp(g, 0, 10);
   const camEd = camE(g);
   const camLs = camLast(g);
-  const lastIn = ramp(g, c.lastAt + 10, c.lastAt + 80);
-  const cloth = 1 - smooth(ramp(g, c.mirrorAt + 30, c.mirrorAt + 62));
+  const lastIn = ramp(g, c.lastAt - 5, c.lastAt + 20);
+  const cloth = 1 - smooth(ramp(g, c.mirrorAt + 4, c.mirrorAt + 36));
   return (
     <AbsoluteFill style={{ backgroundColor: "#000", opacity: fade }}>
       <AbsoluteFill style={{ filter: "saturate(0.5) brightness(0.82) contrast(1.12)" }}>
         <SceneBox g={g} from={EDGE[0]} to={c.roadAt + FADE} first>
           <Stage cam={camEd}>
             <Forest cx={camEd.fx} g={g} dark={0.1} />
+            <defs>
+              <linearGradient id="vedge-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#000" /><stop offset="1" stopColor="#fff" /></linearGradient>
+              <mask id="vedge-m" maskUnits="userSpaceOnUse" x={2300} y={-1500} width={3000} height={3400}><rect x={2300} y={-1500} width={500} height={3400} fill="url(#vedge-g)" /><rect x={2800} y={-1500} width={2500} height={3400} fill="#fff" /></mask>
+            </defs>
+            <g mask="url(#vedge-m)" opacity={0.85}><g transform="translate(1250,0)"><Village dusk={0.35} bell={0} showTable={false} x0={1000} x1={3000} /></g><rect x={2300} y={-1500} width={3000} height={3400} fill="#aab4a4" opacity={0.18} /></g>
             <Cast g={g} list={stageE(g)} />
           </Stage>
         </SceneBox>
@@ -197,7 +203,7 @@ const World: React.FC = () => {
 
         <SceneBox g={g} from={HOME[0]} to={HOME[1]}>
           <Stage cam={camHome(g)}>
-            <Room g={g} sky={skyAt(g)} cloth={cloth} ring={g >= c.bellAt ? g - c.bellAt : -1} night={ramp(g, c.bellAt - 30, c.changeAt)} reflect={ramp(g, c.mirrorAt + 40, c.mirrorAt + 70)} />
+            <Room g={g} sky={skyAt(g)} cloth={cloth} ring={g >= c.bellAt ? g - c.bellAt : -1} night={ramp(g, c.bellAt - 30, c.changeAt)} reflect={ramp(g, c.mirrorAt + 20, c.mirrorAt + 50)} />
             <Cast g={g} list={stageHome(g)} />
           </Stage>
         </SceneBox>
@@ -229,17 +235,17 @@ const World: React.FC = () => {
         <SceneBox g={g} from={LAST[0]} to={LAST[1]}>
           <Stage cam={camLs}>
             <Forest cx={2000} g={g} dark={0.93} />
-            <CrowdLayer g={g} from={c.lastAt + 6} from2={c.lastAt + 20} n={22} lean={0.25} x0={1300} x1={2800} target={2000} first={{ x: 1700, y: 330 }} />
+            <CrowdLayer g={g} from={c.lastAt + 6} from2={c.lastAt + 20} n={22} lean={0.25} x0={1300} x1={2800} target={2000} first={{ x: 1250, y: 330 }} />
             <g opacity={lastIn}>
-              <Flesh d="M2060 1260 C2000 1150 1960 1040 2000 940" w={70} />
-              <Flesh d="M1800 1180 C1900 1220 2000 1230 2160 1190" w={46} />
-              <MaskHead kind={3} x={2000} y={850} tilt={-4} s={1.5} />
+              <Flesh d="M1650 700 C1850 640 2100 640 2380 700" w={40} />
+              <g opacity={0.5}><Flesh d="M2050 660 C2000 610 1960 560 2000 510" w={60} /></g>
+              <MaskHead kind={3} x={2000} y={430} tilt={-4} s={1.5} />
             </g>
           </Stage>
         </SceneBox>
 
         <Over g={g} from={c.smileAt} to={le(4) + 8}><FaceHead g={g} smile={ramp(g, c.smileAt + 8, c.smileAt + 34)} zoom={1 + 0.05 * ramp(g, c.smileAt, le(4))} /></Over>
-        <Over g={g} from={c.nameAt + 14} to={c.nameAt + 74}><FaceYou g={g} still={1} noBlink zoom={1.02 + 0.06 * ramp(g, c.nameAt + 14, c.nameAt + 72)} /></Over>
+        <Over g={g} from={c.nameAt + 14} to={c.nameAt + 74}><FaceYou g={g} still={1} noBlink slit={1} zoom={1.02 + 0.06 * ramp(g, c.nameAt + 14, c.nameAt + 72)} /></Over>
         <Over g={g} from={c.newAt + 2} to={c.newAt + 96}><FaceWake g={g} open={ramp(g, c.newAt + 14, c.newAt + 60)} /></Over>
         <Over g={g} from={c.welcomeAt + 4} to={le(18) + 6}><FaceHead g={g} smile={ramp(g, c.welcomeAt + 8, c.welcomeAt + 34)} zoom={1 + 0.05 * ramp(g, c.welcomeAt, le(18))} /></Over>
       </AbsoluteFill>
@@ -264,7 +270,7 @@ export const Part4: React.FC = () => (
     {shots.map((shot, i) => (
       <Sequence key={i} from={starts[i] + shot.leadFrames} durationInFrames={shot.audioFrames}>
         <Audio src={staticFile(shot.audio)} />
-        <Subtitle text={shot.text} />
+        <Subtitle text={shot.text.replace("มองเห็น", "มอง⁠เห็น")} />
       </Sequence>
     ))}
     <Audio src={staticFile("blind4/bed.wav")} volume={0.5} />

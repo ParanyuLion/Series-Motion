@@ -103,7 +103,7 @@ export const FaceHead: React.FC<{ g: number; smile: number; zoom?: number }> = (
 };
 
 /** "you", face on: the pupils are the only ones in the village; `still` keeps the eyes dead straight while you answer */
-export const FaceYou: React.FC<{ g: number; still: number; zoom?: number; noBlink?: boolean }> = ({ g, still, zoom = 1, noBlink = false }) => {
+export const FaceYou: React.FC<{ g: number; still: number; zoom?: number; noBlink?: boolean; slit?: number }> = ({ g, still, zoom = 1, noBlink = false, slit = 0 }) => {
   const k = PASSENGERS.bvYou;
   const sway = Math.sin(g * 0.11) * 1.0;
   const blink = noBlink ? 0 : Math.max(0, 1 - Math.abs(((g % 90) - 40) / 3));
@@ -126,7 +126,7 @@ export const FaceYou: React.FC<{ g: number; still: number; zoom?: number; noBlin
         {[-44, 44].map((ex, i) => (
           <g key={i} transform={`translate(${ex},-14)`}>
             <ellipse rx={25} ry={25 * (1 - blink * 0.9)} fill="#ffffff" stroke="#8a8a8a" strokeWidth={2} />
-            <circle cx={look} cy={1} r={10} fill="#1b1b1b" />
+            <ellipse cx={look} cy={1} rx={10 * (1 - 0.88 * slit)} ry={10 + 6 * slit} fill="#1b1b1b" />
             <circle cx={look + 3} cy={-3} r={3.2} fill="#fff" />
           </g>
         ))}

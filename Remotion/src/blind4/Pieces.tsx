@@ -76,10 +76,10 @@ export const Room: React.FC<{ g: number; sky: string; cloth: number; ring: numbe
       <rect x={780} y={820} width={190} height={290} fill={sky} stroke="#241b11" strokeWidth={10} />
       <path d="M875 820 V1110 M780 965 H970" stroke="#241b11" strokeWidth={6} />
       {/* the nail where no bell hangs, and the rings of the sound */}
-      <circle cx={600} cy={900} r={5} fill="#17120c" />
+      <circle cx={160} cy={760} r={5} fill="#17120c" />
       {ring >= 0 && [0, 1, 2].map((k) => {
         const t = clamp01((ring - k * 18) / 90);
-        return t > 0 && t < 1 ? <circle key={k} cx={600} cy={900} r={20 + t * 220} fill="none" stroke="#e8e0c4" strokeWidth={4} opacity={0.35 * (1 - t)} /> : null;
+        return t > 0 && t < 1 ? <circle key={k} cx={160} cy={760} r={20 + t * 220} fill="none" stroke="#e8e0c4" strokeWidth={4} opacity={0.35 * (1 - t)} /> : null;
       })}
       {/* mirror under its cloth */}
       <g>
@@ -149,7 +149,7 @@ export const MirrorCard: React.FC<R & { stage: 1 | 2 }> = ({ g, from, to, stage 
   const k = PASSENGERS.bvYou;
   const zoom = 1 + 0.07 * ramp(g, from, to);
   if (stage === 1) {
-    const reveal = smooth(ramp(g, from + 20, from + 90));
+    const reveal = smooth(ramp(g, from, from + 45));
     return (
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
         <rect width={W} height={H} fill="#1c2218" />
@@ -205,7 +205,7 @@ export const ChangeCard: React.FC<R> = ({ g, from, to }) => {
   const collapse = smooth(ramp(g, from + 40, from + 120));
   const trail = ramp(g, from + 110, to - 10);
   const N = 22;
-  const shirtY = 1290;
+  const shirtY = 1400;
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
       <defs>
@@ -227,7 +227,7 @@ export const ChangeCard: React.FC<R> = ({ g, from, to }) => {
         const f = i / (N - 1);
         const o = clamp01(trail * N * 1.2 - i) ;
         const x = lerp(380, 740, f) + Math.sin(f * 7 + g * 0.05) * 14;
-        const y = lerp(1330, 760, Math.pow(f, 0.8)) + Math.cos(f * 5) * 10;
+        const y = lerp(1440, 760, Math.pow(f, 0.8)) + Math.cos(f * 5) * 10;
         return <circle key={i} cx={x} cy={y} r={lerp(14, 6, f)} fill="#d4dcc6" opacity={0.85 * o} />;
       })}
       <rect width={W} height={H} fill="#000" opacity={0.25 * (1 - ramp(g, from, from + 8))} />
@@ -240,8 +240,10 @@ export const EdgeShapes: React.FC<{ g: number; headX: number; youX: number; spea
   const GY = 1330;
   const shape = (x: number, dir: number, tilt: number, kind: 2 | 3, key: string, rise: number) => (
     <g key={key} opacity={0.9}>
-      <Flesh d={`M${x + dir * 120} ${GY + 120} C${x + dir * 40} ${GY - 60} ${x - dir * 60} ${GY - 260} ${x} ${GY - 560 * rise}`} w={64} />
-      <Flesh d={`M${x + dir * 260} ${GY + 120} C${x + dir * 200} ${GY - 20} ${x + dir * 140} ${GY - 20} ${x + dir * 60} ${GY + 60}`} w={44} />
+      <g opacity={0.55}>
+        <Flesh d={`M${x + dir * 120} ${GY + 120} C${x + dir * 40} ${GY - 60} ${x - dir * 60} ${GY - 260} ${x} ${GY - 560 * rise}`} w={64} />
+        <Flesh d={`M${x + dir * 260} ${GY + 120} C${x + dir * 200} ${GY - 20} ${x + dir * 140} ${GY - 20} ${x + dir * 60} ${GY + 60}`} w={44} />
+      </g>
       <MaskHead kind={kind} x={x} y={GY - 560 * rise - 20} tilt={tilt} s={1.15} />
     </g>
   );
