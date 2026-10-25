@@ -86,11 +86,19 @@ export const Room: React.FC<{ g: number; sky: string; cloth: number; ring: numbe
         <rect x={298} y={768} width={154} height={384} rx={8} fill="#9aa39a" />
         <rect x={298} y={768} width={154} height={384} rx={8} fill="#0b0f10" opacity={0.35} />
         <g opacity={reflect} transform="translate(375,0)">
-          <ellipse cx={0} cy={880} rx={34} ry={42} fill="#cbb8a0" />
-          <path d="M-34 868 Q0 790 34 868 Q0 846 -34 868 Z" fill="#251a12" />
+          <rect x={-12} y={905} width={24} height={34} fill="#cbb8a0" />
+          <circle cx={0} cy={868} r={46} fill="#cbb8a0" />
+          <path d="M-47 862 Q-44 802 0 800 Q44 802 47 862 Q20 836 -47 862 Z" fill="#17120c" />
+          <circle cx={-14} cy={870} r={4.5} fill="#0b0b0b" />
+          <circle cx={16} cy={870} r={4.5} fill="#0b0b0b" />
+          <path d="M-12 895 H14" stroke="#6b4a3c" strokeWidth={3} strokeLinecap="round" />
+          <clipPath id="refl-torso"><path d="M-70 1152 Q-64 950 -30 930 L30 930 Q64 950 70 1152 Z" /></clipPath>
           <path d="M-70 1152 Q-64 950 -30 930 L30 930 Q64 950 70 1152 Z" fill="#cbb8a0" />
-          <g transform="translate(-18,1018)"><SnakeTile size={82} /></g>
-          <g transform="translate(26,1085)"><SnakeTile size={64} /></g>
+          <g clipPath="url(#refl-torso)">
+            {[0, 1, 2].map((r) => [0, 1, 2].map((q) => (
+              <g key={`${r}-${q}`} transform={`translate(${-70 + q * 50 + (r % 2) * 25},${925 + r * 80})`}><SnakeTile size={76} /></g>
+            )))}
+          </g>
         </g>
         <rect x={282 + 0} y={768 + 360 * pull} width={186} height={400 - 360 * pull} fill="#5d6552" opacity={1} />
         <path d={`M282 ${768 + 360 * pull} H468`} stroke="#3a4130" strokeWidth={6} />
