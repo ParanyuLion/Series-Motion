@@ -43,18 +43,16 @@ export const RoadCard: React.FC<R> = ({ g, from, to }) => {
         <path d="M530 860 L550 860 L610 1700 L470 1700 Z" fill="#8a8a76" opacity={0.35} />
         {/* the headlights' light on the road */}
         <path d={`M${540 - lx} ${ly} L${540 + lx} ${ly} L${540 + lx * 3.2} 1700 L${540 - lx * 3.2} 1700 Z`} fill="#fff1c0" opacity={0.18 * p} />
+        {[-1, 1].map((s) => <circle key={s} cx={540 + s * lx} cy={ly} r={glow} fill="url(#rd4-glow)" opacity={0.5 - 0.2 * stop} />)}
         {/* the car: a dark body behind the lights once it is near */}
-        <g opacity={ramp(p, 0.55, 0.9)}>
-          <path d={`M${540 - lx * 1.9} ${ly + 60} L${540 - lx * 1.5} ${ly - 150} Q540 ${ly - 230} ${540 + lx * 1.5} ${ly - 150} L${540 + lx * 1.9} ${ly + 60} Z`} fill="#06090a" />
-          <path d={`M${540 - lx * 1.15} ${ly - 20} L${540 - lx * 0.95} ${ly - 130} Q540 ${ly - 185} ${540 + lx * 0.95} ${ly - 130} L${540 + lx * 1.15} ${ly - 20} Z`} fill="#34404a" opacity={0.7} />
-          <rect x={540 - lx * 1.9} y={ly + 40} width={lx * 3.8} height={34} fill="#030505" />
+        <g opacity={ramp(p, 0.15, 0.5)}>
+          {[-1, 1].map((s) => <ellipse key={s} cx={540 + s * lx * 1.45} cy={ly + 66} rx={lx * 0.42} ry={lx * 0.3} fill="#07090a" />)}
+          <path d={`M${540 - lx * 1.9} ${ly + 60} L${540 - lx * 1.5} ${ly - 150} Q540 ${ly - 230} ${540 + lx * 1.5} ${ly - 150} L${540 + lx * 1.9} ${ly + 60} Z`} fill="#4a5860" stroke="#a9b6bb" strokeWidth={4} />
+          <path d={`M${540 - lx * 1.15} ${ly - 20} L${540 - lx * 0.95} ${ly - 130} Q540 ${ly - 185} ${540 + lx * 0.95} ${ly - 130} L${540 + lx * 1.15} ${ly - 20} Z`} fill="#8fa3ad" opacity={0.85} />
+          <rect x={540 - lx * 1.9} y={ly + 40} width={lx * 3.8} height={34} fill="#1a2024" />
+          <rect x={540 - lx * 0.45} y={ly + 4} width={lx * 0.9} height={26} fill="#222b30" stroke="#a9b6bb" strokeWidth={2} />
         </g>
-        {[-1, 1].map((s) => (
-          <g key={s}>
-            <circle cx={540 + s * lx} cy={ly} r={glow} fill="url(#rd4-glow)" opacity={0.7 - 0.25 * stop} />
-            <circle cx={540 + s * lx} cy={ly} r={lr} fill="#fffbe6" />
-          </g>
-        ))}
+        {[-1, 1].map((s) => <circle key={s} cx={540 + s * lx} cy={ly} r={lr} fill="#fffbe6" />)}
       </g>
     </svg>
   );
@@ -89,8 +87,8 @@ export const Room: React.FC<{ g: number; sky: string; cloth: number; ring: numbe
         <g opacity={reflect} transform="translate(375,0)">
           <ellipse cx={0} cy={880} rx={34} ry={42} fill="#cbb8a0" />
           <path d="M-34 868 Q0 790 34 868 Q0 846 -34 868 Z" fill="#251a12" />
-          <path d="M-70 1152 Q-64 950 -30 930 L30 930 Q64 950 70 1152 Z" fill="#7d8a8f" />
-          <path d="M-52 1010 q14 -22 26 0 t26 0 t26 0 M-52 1050 q14 -22 26 0 t26 0 t26 0 M-52 1090 q14 -22 26 0 t26 0 t26 0" stroke="#2a3322" strokeWidth={5} fill="none" />
+          <path d="M-70 1152 Q-64 950 -30 930 L30 930 Q64 950 70 1152 Z" fill="#cbb8a0" />
+          <path d="M-52 1010 q14 -22 26 0 t26 0 t26 0 M-52 1050 q14 -22 26 0 t26 0 t26 0 M-52 1090 q14 -22 26 0 t26 0 t26 0" stroke="#2a3322" strokeWidth={7} fill="none" />
         </g>
         <rect x={282 + 0} y={768 + 360 * pull} width={186} height={400 - 360 * pull} fill="#5d6552" opacity={1} />
         <path d={`M282 ${768 + 360 * pull} H468`} stroke="#3a4130" strokeWidth={6} />
@@ -135,7 +133,7 @@ export const MemoryFaces: React.FC<R> = ({ g, from, to }) => {
         const o = ramp(g, split + f.d, split + f.d + 30) * 0.8 * clamp01((to - g) / 14);
         return (
           <g key={i} opacity={o} filter="url(#mf-soft)" transform={`translate(${f.x},${f.y + Math.sin(t * 0.04 + i) * 6}) scale(${f.s})`}>
-            <MaskHead kind={2} x={0} y={0} tilt={f.tilt + Math.sin(t * 0.03 + i) * 2} s={1} />
+            <MaskHead kind={3} x={0} y={0} tilt={f.tilt + Math.sin(t * 0.03 + i) * 2} s={1} />
           </g>
         );
       })}
@@ -152,12 +150,12 @@ export const MirrorCard: React.FC<R & { stage: 1 | 2 }> = ({ g, from, to, stage 
     const reveal = smooth(ramp(g, from, from + 45));
     return (
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
-        <rect width={W} height={H} fill="#1c2218" />
+        <rect width={W} height={H} fill="#b99c80" />
         <g transform={`translate(540,820) scale(${zoom}) translate(-540,-820)`}>
           {Array.from({ length: 16 }, (_, r) => (
-            <path key={r} d={`M-40 ${r * 130 + 10} ${Array.from({ length: 10 }, (_, c) => `q55 ${c % 2 ? 50 : -50} 110 0`).join(" ")}`} stroke={r % 2 ? "#4c5a3a" : "#34402a"} strokeWidth={34} fill="none" opacity={0.95} />
+            <path key={r} d={`M-40 ${r * 130 + 10} ${Array.from({ length: 10 }, (_, c) => `q55 ${c % 2 ? 50 : -50} 110 0`).join(" ")}`} stroke={r % 2 ? "#3c4a2c" : "#2a3420"} strokeWidth={34} fill="none" opacity={0.9} />
           ))}
-          <circle cx={540} cy={820} r={300} fill="#161c12" opacity={0.75} />
+          <circle cx={540} cy={820} r={300} fill="#161c12" opacity={0.55} />
           <g opacity={reveal} transform="translate(540,820)">
             <ellipse cx={0} cy={0} rx={150} ry={175} fill="#6f7c55" />
             <path d="M-152 -10 Q-160 -190 0 -192 Q160 -190 152 -10 Q120 -140 0 -144 Q-120 -140 -152 -10 Z" fill="#2b3320" />
