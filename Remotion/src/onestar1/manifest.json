@@ -1,0 +1,199 @@
+{
+ "fps": 30,
+ "total": 2858,
+ "storyEnd": 2716,
+ "outroStart": 2728,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณให้คนขับรถในแอปแค่ 1 ดาว",
+   "audio": "onestar1/n0.mp3",
+   "audioFrames": 128,
+   "leadFrames": 21,
+   "frames": 155
+  },
+  {
+   "text": "แล้วเขาตามล่าคุณจนเจอ ไม่ว่าคุณจะหนีไปไหน",
+   "audio": "onestar1/n1.mp3",
+   "audioFrames": 119,
+   "leadFrames": 6,
+   "frames": 167
+  },
+  {
+   "text": "ห้าทุ่มคืนฝนตก คุณกดเรียกรถกลับบ้านจากที่ทำงาน",
+   "audio": "onestar1/n2.mp3",
+   "audioFrames": 131,
+   "leadFrames": 6,
+   "frames": 143
+  },
+  {
+   "text": "รถมาช้าไปสิบนาที คนขับเป็นชายสูงวัย หน้าซีดเหมือนศพ",
+   "audio": "onestar1/n3.mp3",
+   "audioFrames": 187,
+   "leadFrames": 6,
+   "frames": 199
+  },
+  {
+   "text": "ในรถมีกลิ่นอับ เบาะเปียกชื้น และเขาไม่พูดอะไรสักคำ",
+   "audio": "onestar1/n4.mp3",
+   "audioFrames": 175,
+   "leadFrames": 6,
+   "frames": 187
+  },
+  {
+   "text": "เขาขับวนอยู่ในซอยเดิม ทั้งที่แผนที่บอกให้เลี้ยวขวา",
+   "audio": "onestar1/n5.mp3",
+   "audioFrames": 140,
+   "leadFrames": 6,
+   "frames": 152
+  },
+  {
+   "text": "คุณถึงบ้านดึกกว่าที่ควร เขาบอกเบาๆ ว่า ให้ดาวด้วยนะครับ",
+   "audio": "onestar1/n6.mp3",
+   "audioFrames": 159,
+   "leadFrames": 6,
+   "frames": 171
+  },
+  {
+   "text": "คุณกด 1 ดาว พิมพ์ว่า ไม่ควรขับรถ แล้วปิดจอ",
+   "audio": "onestar1/n7.mp3",
+   "audioFrames": 158,
+   "leadFrames": 6,
+   "frames": 170
+  },
+  {
+   "text": "คุณขึ้นห้อง มือถือก็สั่น ข้อความจากคนขับคนนั้น",
+   "audio": "onestar1/n8.mp3",
+   "audioFrames": 144,
+   "leadFrames": 6,
+   "frames": 156
+  },
+  {
+   "text": "ขอบคุณสำหรับดาวนะครับ ใต้ข้อความมีตัวเลข ถึงใน 12 นาที",
+   "audio": "onestar1/n9.mp3",
+   "audioFrames": 216,
+   "leadFrames": 6,
+   "frames": 228
+  },
+  {
+   "text": "คุณหัวเราะ คิดว่าแอปรวน แล้วกดปิดข้อความทิ้ง",
+   "audio": "onestar1/n10.mp3",
+   "audioFrames": 127,
+   "leadFrames": 6,
+   "frames": 139
+  },
+  {
+   "text": "มันเด้งขึ้นมาอีก ถึงใน 5 นาที ทั้งที่คุณไม่ได้เรียกรถ",
+   "audio": "onestar1/n11.mp3",
+   "audioFrames": 146,
+   "leadFrames": 6,
+   "frames": 158
+  },
+  {
+   "text": "ไฟหน้ารถคันหนึ่งเลี้ยวเข้าซอยหน้าบ้านคุณ ช้าๆ",
+   "audio": "onestar1/n12.mp3",
+   "audioFrames": 152,
+   "leadFrames": 6,
+   "frames": 164
+  },
+  {
+   "text": "ตัวเลขเหลือ 1 นาที คุณคว้ากระเป๋า วิ่งออกประตูหลัง",
+   "audio": "onestar1/n13.mp3",
+   "audioFrames": 155,
+   "leadFrames": 6,
+   "frames": 167
+  },
+  {
+   "text": "ไฟหน้าส่องตามหลังมา ไม่เร่งสักนิด แต่ไม่เคยห่างเลย",
+   "audio": "onestar1/n14.mp3",
+   "audioFrames": 154,
+   "leadFrames": 6,
+   "frames": 166
+  },
+  {
+   "text": "คุณวิ่งเข้าซอยตัน รถจอดขวางทางพอดี",
+   "audio": "onestar1/n15.mp3",
+   "audioFrames": 102,
+   "leadFrames": 6,
+   "frames": 114
+  },
+  {
+   "text": "แล้วประตูหลังรถก็ปลดล็อกเอง",
+   "audio": "onestar1/n16.mp3",
+   "audioFrames": 74,
+   "leadFrames": 6,
+   "frames": 92
+  }
+ ],
+ "starts": [
+  0,
+  155,
+  322,
+  465,
+  664,
+  851,
+  1003,
+  1174,
+  1344,
+  1500,
+  1728,
+  1867,
+  2025,
+  2189,
+  2356,
+  2522,
+  2636
+ ],
+ "cues": {
+  "hookCut": 322,
+  "titleAt": 284,
+  "bookAt": 328,
+  "pickupAt": 471,
+  "smellAt": 670,
+  "circleAt": 857,
+  "arriveAt": 1009,
+  "rateAt": 1180,
+  "buzzAt": 1350,
+  "thanksAt": 1506,
+  "laughAt": 1734,
+  "againAt": 1873,
+  "lightsAt": 2031,
+  "runAt": 2195,
+  "followAt": 2362,
+  "deadEndAt": 2528,
+  "unlockAt": 2642,
+  "lineStart0": 21,
+  "lineEnd0": 149,
+  "lineStart1": 161,
+  "lineEnd1": 280,
+  "lineStart2": 328,
+  "lineEnd2": 459,
+  "lineStart3": 471,
+  "lineEnd3": 658,
+  "lineStart4": 670,
+  "lineEnd4": 845,
+  "lineStart5": 857,
+  "lineEnd5": 997,
+  "lineStart6": 1009,
+  "lineEnd6": 1168,
+  "lineStart7": 1180,
+  "lineEnd7": 1338,
+  "lineStart8": 1350,
+  "lineEnd8": 1494,
+  "lineStart9": 1506,
+  "lineEnd9": 1722,
+  "lineStart10": 1734,
+  "lineEnd10": 1861,
+  "lineStart11": 1873,
+  "lineEnd11": 2019,
+  "lineStart12": 2031,
+  "lineEnd12": 2183,
+  "lineStart13": 2195,
+  "lineEnd13": 2350,
+  "lineStart14": 2362,
+  "lineEnd14": 2516,
+  "lineStart15": 2528,
+  "lineEnd15": 2630,
+  "lineStart16": 2642,
+  "lineEnd16": 2716
+ }
+}
