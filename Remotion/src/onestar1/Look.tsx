@@ -30,6 +30,8 @@ export const LookDefs: React.FC = () => (
     <filter id="os-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14" /></filter>
     <filter id="os-soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6" /></filter>
     <linearGradient id="os-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={PAL.bg0} /><stop offset="1" stopColor={PAL.bg1} /></linearGradient>
+    <linearGradient id="os-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#12203c" stopOpacity="0.5" /><stop offset="1" stopColor="#02040a" stopOpacity="0.7" /></linearGradient>
+    <linearGradient id="os-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#0c1426" /><stop offset="1" stopColor="#03050b" /></linearGradient>
     <linearGradient id="os-beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={PAL.beam} stopOpacity="0.55" /><stop offset="1" stopColor={PAL.beam} stopOpacity="0" /></linearGradient>
   </defs>
 );
