@@ -17,17 +17,23 @@ const rnd = (i: number) => {
 };
 
 /** face-on close-up of "you": eyes follow `look`, `fear` widens them and lifts the brows, `smile` is a laugh, `sweep` (0..1) drags a headlight across the face, `phone` lights it from below */
-export const YouFace: React.FC<{ g: number; from: number; to: number; look?: [number, number]; fear?: number; smile?: number; sweep?: number; phone?: number; shake?: number }> = ({ g, from, to, look = [0, 0], fear = 0.3, smile = 0, sweep = -1, phone = 0, shake = 0 }) => {
-  const z = lerp(1.0, 1.1, ramp(g, from, to));
+export const YouFace: React.FC<{ g: number; from: number; to: number; solid?: boolean; look?: [number, number]; fear?: number; smile?: number; sweep?: number; phone?: number; shake?: number; rot?: number; z0?: number; bg?: "street" | "room" }> = ({ g, from, to, solid, look = [0, 0], fear = 0.3, smile = 0, sweep = -1, phone = 0, shake = 0, rot = 0, z0 = 1, bg = "street" }) => {
+  const z = z0 * lerp(1.0, 1.1, ramp(g, from, to));
   const dx = shake * Math.sin(g * 0.9) * 5;
   const blink = g % 120 > 114 ? 0.12 : 1;
   const ey = 38 * (1 + 0.35 * fear) * blink;
   const brow = 24 * fear;
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#050810" />
-      <g opacity={0.8}><NightBackdrop g={g} x0={0} x1={1080} /></g>
-      <g transform={`translate(${540 + dx},780) scale(${z}) translate(-540,-780)`}>
+      {bg === "street" ? <g opacity={0.8}><NightBackdrop g={g} x0={0} x1={1080} /></g> : (
+        <g>
+          <rect x={0} y={0} width={1080} height={1920} fill="#0b1630" />
+          {Array.from({ length: 12 }, (_, i) => <line key={i} x1={i * 92} y1={0} x2={i * 92} y2={1920} stroke="#16264a" strokeWidth={3} opacity={0.4} />)}
+          <ellipse cx={900} cy={600} rx={260} ry={380} fill="#16305a" opacity={0.35} filter="url(#os-blur)" />
+        </g>
+      )}
+      <g transform={`translate(${540 + dx},780) rotate(${rot}) scale(${z}) translate(-540,-780)`}>
         <g filter="url(#os-rim)">
           <rect x={450} y={960} width={180} height={160} fill="#e2b995" />
           <path d="M150 1700 Q170 1130 400 1070 L680 1070 Q910 1130 930 1700 Z" fill="#8fa6c4" />
@@ -63,13 +69,13 @@ export const YouFace: React.FC<{ g: number; from: number; to: number; look?: [nu
 };
 
 /** the rear-view mirror filling the screen: two big pale eyes in a dark frame that slide toward the back seat and blink */
-export const MirrorClose: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const MirrorClose: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
   const z = lerp(1.0, 1.16, ramp(g, from, to));
   const t = ramp(g, from + 20, from + 70);
   const blink = (g - from) % 96 > 90 ? 0.12 : 1;
   const px = lerp(-8, -26, t);
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#03050a" />
       <g transform={`translate(540,760) scale(${z}) translate(-540,-760)`}>
         <rect x={30} y={500} width={1020} height={520} rx={90} fill="#05080f" stroke={PAL.rim} strokeWidth={6} />
@@ -90,15 +96,26 @@ export const MirrorClose: React.FC<{ g: number; from: number; to: number }> = ({
 };
 
 /** ground level: a big wheel spinning, splashing through a puddle, the street's lights streaking past; low camera */
-export const WheelLow: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const WheelLow: React.FC<{ g: number; from: number; to: number; solid?: boolean; lap?: [number, number] }> = ({ g, from, to, solid, lap = [0, 0] }) => {
   const rot = (g - from) * 26;
+  const L = Math.max(3, lap[1] - lap[0]);
+  const pass = lap[1] === 0 ? -1 : Math.min(2, Math.max(0, Math.floor((g - lap[0]) / (L / 3))));
+  const signX = pass < 0 ? -9999 : 1300 - (g - (lap[0] + (pass * L) / 3)) * 26;
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#04060d" />
       {Array.from({ length: 7 }, (_, i) => {
         const x = ((i * 260 - (g - from) * 38) % 1500 + 1500) % 1500 - 200;
         return <g key={i}><rect x={x} y={760 + (i % 3) * 40} width={150} height={10} rx={5} fill={i % 2 ? PAL.accent : "#6fa8ff"} opacity={0.3} filter="url(#os-soft)" /></g>;
       })}
+      {pass >= 0 && (
+        <g transform={`translate(${signX},520)`}>
+          <rect x={-10} y={-10} width={300} height={110} rx={18} fill={PAL.accent} opacity={0.2} filter="url(#os-soft)" />
+          <rect width={280} height={80} rx={10} fill="#0a1020" stroke="#2a3a5c" strokeWidth={4} />
+          <text x={140} y={56} fontSize={44} fill={PAL.accent} textAnchor="middle" fontFamily={fontFamily}>ร้านป้าแดง</text>
+          <g transform="translate(140,112)">{[0, 1, 2].map((d) => <circle key={d} cx={(d - 1) * 34} cy={0} r={9} fill={d <= pass ? PAL.accent : "#1d2a44"} />)}</g>
+        </g>
+      )}
       <rect x={-100} y={1250} width={1300} height={900} fill="#07101f" />
       <line x1={-100} y1={1250} x2={1200} y2={1250} stroke={PAL.rim} strokeWidth={3} opacity={0.35} />
       <ellipse cx={540} cy={1345} rx={560} ry={70} fill="#0a1a38" />
@@ -125,7 +142,7 @@ export const WheelLow: React.FC<{ g: number; from: number; to: number }> = ({ g,
 };
 
 /** looking out of the window from inside the room: rain on the glass, a car's lights turning in and stopping at the gate */
-export const WindowPOV: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const WindowPOV: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
   const t = smooth(ramp(g, from + 10, to - 20));
   const lx = lerp(120, 620, t);
   const sz = lerp(14, 70, t);
@@ -135,7 +152,7 @@ export const WindowPOV: React.FC<{ g: number; from: number; to: number }> = ({ g
     return <g key={i}><circle cx={x} cy={y} r={6 + rnd(i) * 6} fill={PAL.beam} opacity={0.22} /><line x1={x} y1={y - 80} x2={x} y2={y} stroke={PAL.beam} strokeWidth={3} opacity={0.1} /></g>;
   });
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <NightBackdrop g={g} x0={0} x1={1080} />
       <rect x={0} y={1040} width={1080} height={400} fill="#06101f" />
       <rect x={90} y={1030} width={900} height={10} fill={PAL.rim} opacity={0.18} />
@@ -160,7 +177,7 @@ export const WindowPOV: React.FC<{ g: number; from: number; to: number }> = ({ g
 };
 
 /** top-down: the street as a night map, "you" a small light running, the car behind with two cones of light at a constant distance */
-export const Aerial: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const Aerial: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
   const t = ramp(g, from, to);
   const runner = { x: lerp(160, 900, smooth(t)), y: lerp(1180, 600, smooth(t)) };
   const dir = Math.atan2(600 - 1180, 900 - 160);
@@ -172,7 +189,7 @@ export const Aerial: React.FC<{ g: number; from: number; to: number }> = ({ g, f
     return <rect key={i} x={20 + col * 270 + (row % 2) * 40} y={140 + row * 300} width={210 + rnd(i) * 40} height={220 + rnd(i + 3) * 30} rx={10} fill="#0b1426" stroke="#1d2a44" strokeWidth={3} />;
   });
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#060a14" />
       <g transform={`rotate(${lerp(-4, 4, t)} 540 960) translate(540,960) scale(${lerp(1.0, 1.12, t)}) translate(-540,-960)`}>
         {blocks}
@@ -186,13 +203,12 @@ export const Aerial: React.FC<{ g: number; from: number; to: number }> = ({ g, f
         <circle cx={runner.x} cy={runner.y} r={14} fill="#e8eefc" />
       </g>
       <Hud lines={["ถึงใน 1 นาที", "คนขับกำลังมารับคุณ"]} />
-      <text x={540} y={1500} fontSize={1} fontFamily={fontFamily} fill="none">.</text>
     </g>
   );
 };
 
 /** shoes level: two shoes hitting wet road, splashes, the beams from behind stretching the shadows ahead */
-export const FeetClose: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const FeetClose: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
   const ph = (g - from) * 0.55;
   const a = Math.sin(ph);
   const b = Math.sin(ph + Math.PI);
@@ -204,7 +220,7 @@ export const FeetClose: React.FC<{ g: number; from: number; to: number }> = ({ g
     </g>
   );
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#05080f" />
       <rect x={-100} y={1060} width={1300} height={1000} fill="#08101f" />
       <line x1={-100} y1={1060} x2={1200} y2={1060} stroke={PAL.rim} strokeWidth={2} opacity={0.3} />
@@ -232,7 +248,7 @@ export const FeetClose: React.FC<{ g: number; from: number; to: number }> = ({ g
 };
 
 /** from the back seat looking forward: the driver's headrest as a dark shape, the wet windscreen with lights streaming out of the vanishing point, two wipers, the mirror with his two eyes */
-export const DashPOV: React.FC<{ g: number; from: number; to: number; look?: number }> = ({ g, from, to, look = 0 }) => {
+export const DashPOV: React.FC<{ g: number; from: number; to: number; solid?: boolean; look?: number }> = ({ g, from, to, solid, look = 0 }) => {
   const wipe = (k: number) => {
     const ph = (((g - from) + k * 18) % 44) / 44;
     return -72 + 78 * Math.sin(Math.PI * Math.min(1, ph * 1.6));
@@ -242,16 +258,16 @@ export const DashPOV: React.FC<{ g: number; from: number; to: number; look?: num
     const p = ((g - from) * (0.012 + rnd(i + 430) * 0.012) + rnd(i + 460)) % 1;
     const r = 20 + p * 620;
     const col = rnd(i + 490) > 0.5 ? PAL.accent : "#6fa8ff";
-    return <ellipse key={i} cx={540 + Math.cos(a) * r} cy={600 + Math.sin(a) * r * 0.55} rx={4 + p * 26} ry={3 + p * 14} fill={col} opacity={0.25 + 0.4 * p} filter="url(#os-soft)" />;
+    return <ellipse key={i} cx={540 + Math.cos(a) * r} cy={600 + Math.sin(a) * r * 0.55} rx={4 + p * 26} ry={3 + p * 14} fill={col} opacity={0.25 + 0.4 * p} />;
   });
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#03050a" />
       <clipPath id="os-wind"><path d="M110 250 Q540 190 970 250 L1030 1040 L50 1040 Z" /></clipPath>
       <g clipPath="url(#os-wind)">
         <rect x={0} y={200} width={1080} height={900} fill="#07101f" />
         <ellipse cx={540} cy={560} rx={420} ry={140} fill="#1b3a7a" opacity={0.35} filter="url(#os-blur)" />
-        {streaks}
+        <g filter="url(#os-soft)">{streaks}</g>
         {[0, 1].map((k) => <line key={k} x1={k ? 760 : 330} y1={1040} x2={(k ? 760 : 330) + Math.cos((wipe(k) * Math.PI) / 180) * 600} y2={1040 + Math.sin((wipe(k) * Math.PI) / 180) * 600} stroke="#02040a" strokeWidth={14} strokeLinecap="round" opacity={0.9} />)}
         {Array.from({ length: 30 }, (_, i) => <circle key={i} cx={80 + rnd(i + 8) * 920} cy={260 + ((rnd(i + 40) * 800 + (g - from) * (1 + rnd(i) * 2)) % 780)} r={3 + rnd(i + 5) * 5} fill={PAL.beam} opacity={0.22} />)}
       </g>
@@ -271,11 +287,11 @@ export const DashPOV: React.FC<{ g: number; from: number; to: number; look?: num
 };
 
 /** outside the driver's window: dark glass, rain, only two pale eyes and the brim of a cap; the glass slides down a crack */
-export const DriverWindow: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const DriverWindow: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
   const t = ramp(g, from + 14, to - 10);
   const crack = 40 * smooth(t);
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#03050a" />
       <rect x={40} y={260} width={1000} height={1180} rx={70} fill="#0a1020" stroke={PAL.rim} strokeWidth={6} opacity={0.95} />
       <rect x={90} y={320} width={900} height={1060} rx={46} fill="#060b16" />
@@ -300,11 +316,11 @@ export const DriverWindow: React.FC<{ g: number; from: number; to: number }> = (
 };
 
 /** top-down on the desk: the phone lights up and buzzes in short bursts, a mug at the corner */
-export const PhoneDesk: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const PhoneDesk: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
   const burst = ((g - from) % 40) < 16 ? Math.sin(g * 2.4) * 7 : 0;
   const glow = 0.5 + 0.5 * Math.sin((g - from) * 0.3);
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#0a1226" />
       {Array.from({ length: 14 }, (_, i) => <line key={i} x1={-100} y1={i * 140} x2={1200} y2={i * 140 + 20} stroke="#101c36" strokeWidth={4} opacity={0.7} />)}
       <ellipse cx={540 + burst} cy={900} rx={520} ry={640} fill="#6fa8ff" opacity={0.1 + 0.06 * glow} filter="url(#os-blur)" />
@@ -322,11 +338,11 @@ export const PhoneDesk: React.FC<{ g: number; from: number; to: number }> = ({ g
 };
 
 /** looking up the front of the apartment block from the street: one window lit warm, rain, a car's lights sweeping the wall from below */
-export const BuildingExt: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const BuildingExt: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
   const t = ramp(g, from, to);
   const sc = lerp(1.0, 1.12, t);
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#04070e" />
       <g transform={`translate(540,700) scale(${sc}) translate(-540,-700)`}>
         <BuildingWall x={100} y={-300} w={880} h={1900} seed={21} />
@@ -357,7 +373,7 @@ const Silhouette: React.FC<{ x: number; y: number; s: number; g: number }> = ({ 
 };
 
 /** through the driver's windscreen: the road in his beams, wipers, a running figure crossing in front of the bonnet, the mirror with his eyes */
-export const CarPOV: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
+export const CarPOV: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
   const t = ramp(g, from, to);
   const wipe = (k: number) => {
     const ph = (((g - from) + k * 14) % 36) / 36;
@@ -365,7 +381,7 @@ export const CarPOV: React.FC<{ g: number; from: number; to: number }> = ({ g, f
   };
   const runX = lerp(180, 880, t);
   return (
-    <g opacity={fade(g, from, to)}>
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
       <rect x={-100} y={-100} width={1300} height={2200} fill="#03050a" />
       <clipPath id="os-wind2"><path d="M70 230 Q540 160 1010 230 L1050 1100 L30 1100 Z" /></clipPath>
       <g clipPath="url(#os-wind2)">
@@ -383,6 +399,28 @@ export const CarPOV: React.FC<{ g: number; from: number; to: number }> = ({ g, f
       {[500, 580].map((cx) => <g key={cx}><ellipse cx={cx} cy={334} rx={20} ry={11} fill="#cfd6d9" /><circle cx={cx + 5} cy={334} r={6} fill="#04060b" /></g>)}
       <path d="M200 1500 Q200 1240 400 1200 L700 1200 Q900 1240 920 1500 Z" fill="#0b1224" stroke={PAL.rim} strokeWidth={3} opacity={0.9} />
       <rect x={0} y={1400} width={1080} height={520} fill="#04060b" />
+    </g>
+  );
+};
+
+/** a thumb pressing the first star on a glowing screen: the 1 star, close up */
+export const ThumbTap: React.FC<{ g: number; from: number; to: number; solid?: boolean }> = ({ g, from, to, solid }) => {
+  const press = smooth(ramp(g, from + 14, from + 40));
+  const pulse = 1 + 0.06 * Math.sin((g - from) * 0.4);
+  return (
+    <g opacity={fade(g, from, solid ? 1e9 : to)}>
+      <rect x={-100} y={-100} width={1300} height={2200} fill="#050a18" />
+      <ellipse cx={540} cy={760} rx={520} ry={420} fill="#6fa8ff" opacity={0.16} filter="url(#os-blur)" />
+      <rect x={60} y={560} width={960} height={360} rx={60} fill="#0e1830" stroke="#2a3a5c" strokeWidth={4} />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <path key={i} transform={`translate(${170 + i * 185},740) scale(${i === 0 ? 3.0 * pulse : 3.0})`} d="M0 -22 L6.5 -7 L22 -6 L10 5 L14 21 L0 12 L-14 21 L-10 5 L-22 -6 L-6.5 -7 Z" fill={i === 0 ? PAL.accent : "#16213a"} stroke={i === 0 ? PAL.accent : "#2a3a5c"} strokeWidth={2} />
+      ))}
+      <g transform={`translate(${170 + 40 * (1 - press)},${lerp(1250, 790, press)}) rotate(-18)`} filter="url(#os-rim)">
+        <path d="M-70 380 L-60 40 Q-60 -40 0 -44 Q70 -40 66 40 L74 380 Z" fill="#c99e80" />
+        <path d="M-30 -30 Q0 -52 34 -30 L30 6 Q0 20 -26 6 Z" fill="#d8b092" />
+      </g>
+      <circle cx={170} cy={740} r={lerp(20, 190, press)} fill="none" stroke={PAL.accent} strokeWidth={5} opacity={0.6 * (1 - press) * press * 4} />
+      <text x={540} y={1100} fontSize={64} fill={PAL.rim} textAnchor="middle" fontFamily={fontFamily} opacity={ramp(g, from + 36, from + 52)}>1 ดาว</text>
     </g>
   );
 };

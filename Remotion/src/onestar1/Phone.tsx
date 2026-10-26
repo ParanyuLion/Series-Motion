@@ -64,7 +64,7 @@ export const BookCard: React.FC<{ g: number; from: number; to: number }> = ({ g,
         <rect x={PX} y={PY + 740} width={PW} height={PH - 740} fill="#0e1830" />
         <T x={PX + 40} y={PY + 820} size={40} weight={500}>{t < 0.35 ? "กำลังหาคนขับ..." : "คนขับรับงานแล้ว"}</T>
         <T x={PX + 40} y={PY + 890} size={30} fill={PAL.rim} opacity={0.8}>จากที่ทำงาน ไปบ้านคุณ</T>
-        <T x={PX + PW - 40} y={PY + 990} size={64} fill={PAL.accent} anchor="end">{t < 0.35 ? "" : "ถึงใน 10 นาที"}</T>
+        <T x={PX + PW - 40} y={PY + 990} size={64} fill={PAL.accent} anchor="end">{t < 0.35 ? "" : "คนขับกำลังมา"}</T>
         <rect x={PX + 40} y={PY + 1010} width={PW - 80} height={6} rx={3} fill="#1d2a44" />
         <rect x={PX + 40} y={PY + 1010} width={(PW - 80) * t} height={6} rx={3} fill={PAL.accent} />
       </Frame>
