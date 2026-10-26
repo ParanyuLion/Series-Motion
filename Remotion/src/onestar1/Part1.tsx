@@ -102,7 +102,7 @@ const World: React.FC = () => {
         )}
         {g >= c.bookAt - 2 && g <= c.pickupAt + 12 && (
           <Svg>
-            <NightBackdrop g={g} x0={0} x1={1080} />
+            <g opacity={clamp01(Math.min((g - c.bookAt) / FADE, (c.pickupAt + 10 - g) / FADE))}><NightBackdrop g={g} x0={0} x1={1080} /></g>
             <BookCard g={g} from={c.bookAt} to={c.pickupAt + 10} />
           </Svg>
         )}
@@ -114,13 +114,13 @@ const World: React.FC = () => {
         )}
         {g >= c.rateAt - 2 && g <= c.buzzAt + 12 && (
           <Svg>
-            <NightBackdrop g={g} x0={0} x1={1080} />
+            <g opacity={clamp01(Math.min((g - c.rateAt) / FADE, (c.buzzAt + 10 - g) / FADE))}><NightBackdrop g={g} x0={0} x1={1080} /></g>
             <RateCard g={g} from={c.rateAt} to={c.buzzAt + 10} />
           </Svg>
         )}
         {g >= c.buzzAt - 2 && g <= c.runAt + 72 && (
           <Svg>
-            <HomeScene g={g} from={c.buzzAt} to={c.runAt + 70} buzzAt={c.buzzAt} lightsAt={c.lightsAt} runAt={c.runAt} dim={0.6 * Math.min(1, phoneOn)} />
+            <HomeScene g={g} from={c.buzzAt} to={c.runAt + 70} buzzAt={c.buzzAt} lightsAt={c.lightsAt} runAt={c.runAt} laughAt={c.laughAt} againAt={c.againAt} dim={0.6 * Math.min(1, phoneOn)} />
             <MessageCard g={g} from={c.thanksAt} to={c.laughAt + 6} minutes={12} />
             <MessageCard g={g} from={c.againAt} to={c.againAt + 80} minutes={5} shake={1} />
             <MapCard g={g} from={c.againAt + 70} to={c.lightsAt + 10} progress={mapP} minutes={5} />
@@ -144,7 +144,7 @@ export const Part1: React.FC = () => (
     {shots.map((shot, i) => (
       <Sequence key={i} from={starts[i] + shot.leadFrames} durationInFrames={shot.audioFrames}>
         <Audio src={staticFile(shot.audio)} />
-        <Subtitle text={shot.text} />
+        <Subtitle text={shot.text.replace(/คนขับ/g, "คน\u2060ขับ")} />
       </Sequence>
     ))}
     <Audio src={staticFile("onestar1/bed.wav")} volume={0.5} />

@@ -79,9 +79,9 @@ export const Beam: React.FC<{ x: number; y: number; angle: number; length: numbe
 };
 
 /** a person of the earlier series in the night grade (dark, blue, rim-lit) */
-export const Actor: React.FC<{ id: PassengerId; x: number; y: number; scale?: number; facing?: 1 | -1; pose?: "stand" | "sit"; walk?: number; g: number; fear?: number; op?: number }> = ({ id, x, y, scale = 1.7, facing = 1, pose = "stand", walk = 0, g, fear = 0, op = 1 }) => (
+export const Actor: React.FC<{ id: PassengerId; x: number; y: number; scale?: number; facing?: 1 | -1; pose?: "stand" | "sit"; walk?: number; g: number; fear?: number; op?: number; headTilt?: number }> = ({ id, x, y, scale = 1.7, facing = 1, pose = "stand", walk = 0, g, fear = 0, op = 1, headTilt = 0 }) => (
   <g filter="url(#os-rim)" opacity={op}>
-    <Passenger id={id} x={x} y={y} scale={scale} facing={facing} phase={g * 0.2} walk={walk} frame={g} infection={0} pose={pose} label={false} fear={fear} />
+    <Passenger id={id} x={x} y={y} scale={scale} facing={facing} phase={g * 0.2} walk={walk} frame={g} infection={0} pose={pose} headTilt={headTilt} label={false} fear={fear} />
   </g>
 );
 
