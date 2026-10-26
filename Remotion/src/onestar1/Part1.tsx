@@ -7,6 +7,7 @@ import { BuildingWall, Sky, WetGround } from "./Scenery";
 import { BookCard, MapCard, MessageCard, RateCard } from "./Phone";
 import { DoorStep, RideScene } from "./Ride";
 import { AlleyChase, HomeScene } from "./Chase";
+import { Aerial, FeetClose, MirrorClose, WheelLow, WindowPOV, YouFace } from "./Angles";
 
 const { cues, shots, starts, total, outroStart } = manifest;
 const c = cues as Record<string, number>;
@@ -131,6 +132,17 @@ const World: React.FC = () => {
             <AlleyChase g={g} from={c.runAt + 60} to={outroStart} followAt={c.followAt} deadEndAt={c.deadEndAt} unlockAt={c.unlockAt} />
           </Svg>
         )}
+        {/* extra camera angles over the base scenes (cross-fades of 10 frames) */}
+        <Svg>
+          {g >= c.pickupAt + 88 && g <= c.pickupAt + 172 && <MirrorClose g={g} from={c.pickupAt + 90} to={c.pickupAt + 170} />}
+          {g >= c.circleAt - 2 && g <= c.circleAt + 80 && <YouFace g={g} from={c.circleAt} to={c.circleAt + 78} look={[0.2 + 0.7 * ramp(g, c.circleAt, c.circleAt + 40), -0.5]} fear={0.2 + 0.3 * ramp(g, c.circleAt, c.circleAt + 70)} />}
+          {g >= c.circleAt + 66 && g <= c.circleAt + 132 && <WheelLow g={g} from={c.circleAt + 68} to={c.circleAt + 130} />}
+          {g >= c.laughAt - 2 && g <= c.laughAt + 102 && <YouFace g={g} from={c.laughAt} to={c.laughAt + 100} look={[0, 0.3]} fear={0.1} smile={ramp(g, c.laughAt, c.laughAt + 30) * (1 - 0.7 * ramp(g, c.laughAt + 60, c.laughAt + 96))} phone={1 - ramp(g, c.laughAt + 60, c.laughAt + 98)} shake={g < c.laughAt + 60 ? 1 : 0} />}
+          {g >= c.lightsAt - 2 && g <= c.lightsAt + 64 && <YouFace g={g} from={c.lightsAt} to={c.lightsAt + 62} look={[0.9, 0]} fear={0.9} sweep={ramp(g, c.lightsAt + 8, c.lightsAt + 54)} />}
+          {g >= c.lightsAt + 52 && g <= c.runAt + 12 && <WindowPOV g={g} from={c.lightsAt + 54} to={c.runAt + 10} />}
+          {g >= c.followAt - 2 && g <= c.followAt + 82 && <Aerial g={g} from={c.followAt} to={c.followAt + 80} />}
+          {g >= c.followAt + 72 && g <= c.followAt + 126 && <FeetClose g={g} from={c.followAt + 74} to={c.followAt + 124} />}
+        </Svg>
       </Grade>
       <TitleCard g={g} />
       {g >= outroStart - 14 && <Outro g={g} />}
