@@ -1,4 +1,4 @@
-export type PassengerId = "you" | "nueng" | "nun" | "mike" | "aunt" | "uncle" | "man1" | "woman1" | "driver" | "bvYou" | "bvHead" | "bvCook" | "bvChild" | "bvMan" | "bvWoman" | "bvElder";
+export type PassengerId = "you" | "nueng" | "nun" | "mike" | "aunt" | "uncle" | "man1" | "woman1" | "driver" | "bvYou" | "bvHead" | "bvCook" | "bvChild" | "bvMan" | "bvWoman" | "bvElder" | "osYou" | "osDriver";
 
 export type PassengerAccessory = "glasses" | "backpack" | "lanyard" | "tie" | "cap" | "bun" | "bald" | "belly" | "snakeShirt";
 
@@ -44,6 +44,9 @@ export const PASSENGERS: Record<PassengerId, PassengerData> = {
   man1: { name: "", skin: "#d8b08c", hair: "#2a2a2a", top: "#4a6fa5", bottom: "#2c2c38", shoe: "#222222", width: 54, height: 112, sleeve: 46, accessories: [] },
   woman1: { name: "", skin: "#e0b08c", hair: "#2b1d17", top: "#c75a7a", bottom: "#3a3f55", shoe: "#222222", width: 44, height: 106, sleeve: 30, accessories: ["bun"] },
   ...VILLAGE,
+  // series 4 "1 ดาว": the office worker ("you") and the pale old driver
+  osYou: { name: "คุณ", skin: "#e2b995", hair: "#1c1712", top: "#8fa6c4", bottom: "#2b3140", shoe: "#1a1a1a", width: 50, height: 108, sleeve: 46, accessories: ["lanyard"] },
+  osDriver: { name: "คนขับ", skin: "#cfd6d9", hair: "#9a9a9a", top: "#2a3038", bottom: "#1b2028", shoe: "#101010", width: 54, height: 104, sleeve: 90, accessories: ["cap"], accent: "#1b2028" },
   driver: { name: "คนขับ", skin: "#d8a47c", hair: "#1a1a1a", top: "#2d3d5a", bottom: "#1d2638", shoe: "#111111", width: 56, height: 108, sleeve: 90, accessories: ["cap"], accent: "#1d2638" },
 };
 

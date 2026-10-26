@@ -28,6 +28,7 @@ import blind2 from "./blind2/manifest.json";
 import { Part3 as BlindPart3 } from "./blind3/Part3";
 import blind3 from "./blind3/manifest.json";
 import { Part4 as BlindPart4 } from "./blind4/Part4";
+import { StyleStill as OneStarStyle } from "./onestar1/StyleStill";
 import blind4 from "./blind4/manifest.json";
 import { SnakePreview, SnakePreview2, SnakePreview3, SnakePreview4 } from "./blind1/SnakePreview";
 
@@ -53,6 +54,7 @@ export const Root: React.FC = () => (
     <Composition id="Blind2" component={BlindPart2} durationInFrames={blind2.total} fps={blind2.fps} width={W} height={H} />
     <Composition id="Blind3" component={BlindPart3} durationInFrames={blind3.total} fps={blind3.fps} width={W} height={H} />
     <Composition id="Blind4" component={BlindPart4} durationInFrames={blind4.total} fps={blind4.fps} width={W} height={H} />
+    <Composition id="OneStarStyle" component={OneStarStyle} durationInFrames={1} fps={30} width={W} height={H} />
     <Composition id="CastPreview" component={CastPreview} durationInFrames={60} fps={30} width={1080} height={600} defaultProps={{ dirt: 0, walk: 0 }} />
   </>
 );

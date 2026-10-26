@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans (the user's habit is native execution) to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax.
 
-**Goal:** Build, render and ship Part 1 of the new series: a Thai-narrated, code-drawn 9:16 chase thriller of about 1:30 in a new "night-blue silhouette with rim light" look.
+**Goal:** Build, render and ship Part 1 of the new series: a Thai-narrated, code-drawn 9:16 chase thriller of about 1:30 in a new "night-blue figure with rim light" look.
 
 **Architecture:** Same pipeline as Blind Village Part 4: narration JSON → Gemini TTS (Vertex, Charon) → `manifest.mjs` writes cue frames → one Remotion composition `OneStar1` whose stages are driven only by manifest cues, with `makeCamera` cameras, 10-frame cross-fades, subtitles, a synthesized sound bed (`bed.py`) and a verify script. New code lives in `src/onestar1/` and `scripts/onestar1/`; nothing in earlier series is modified.
 
@@ -17,7 +17,7 @@
 - Timing only from `src/onestar1/manifest.json` (written by `manifest.mjs`); no hard-coded frame numbers in the composition.
 - Gaps between lines at most about 0.5 s (LEAD 6, TAIL 6); the title card after line 1; finale card with the teaser "ตอนต่อไป: ห้ามขึ้นรถคันนี้".
 - Safe area: subtitles Prompt 500 size 52, left 60, right 160, bottom 340, at most 2 lines; figures above y 1414; cards inside x 140 to 890; no hard cuts (10-frame cross-fades); every object a line names is in frame at that line.
-- Look: near-black blue night (`#05070f` to `#0b1220`), characters as flat dark silhouettes with a thin pale rim-light outline (`#9fb4d6`), one strong light with a soft volumetric beam and dust specks, blurred bokeh street lights and rain, one accent colour (app yellow `#f2c230`), a small flat HUD in the top-left corner; vignette and grain. The app is a made-up app, no real brand. Never copy the reference reel's characters.
+- Look: near-black blue night (`#05070f` to `#0b1220`), characters are the same people as in the earlier series (the `Passenger` rig, user's call 2026-10-26) restyled by a night grade: colours pushed dark and blue, with a thin pale rim-light outline (`#9fb4d6`) and deep shadow on the side away from the light, one strong light with a soft volumetric beam and dust specks, blurred bokeh street lights and rain, one accent colour (app yellow `#f2c230`), a small flat HUD in the top-left corner; vignette and grain. The app is a made-up app, no real brand. Never copy the reference reel's characters.
 - The unseen stays unseen: no face is shown except the driver's two pale eyes in the rear-view mirror; no gore; the car and its lights are the threat.
 - Commit and push to `main` after each task; commit messages end with the attribution line the session gives.
 
@@ -26,7 +26,7 @@
 1. A viewer who never saw anything else understands who "you" are, what the 1 star did and what the countdown means (hook, title card, HUD).
 2. The countdown on screen matches the narrated numbers at lines 9, 11, 13 (12, 5, 1) and never goes backwards.
 3. The circling is visible as the same alley sign three times, not only told.
-4. The silhouettes still read at phone size on a bright screen (rim light not lost to grain or the vignette).
+4. The figures still read at phone size on a bright screen (rim light not lost to grain or the vignette).
 5. The last beat (the car fills the alley, the lock pops up) is in frame while line 16 is spoken and holds without a cut.
 
 ---
@@ -35,14 +35,14 @@
 
 **Files:**
 - Create: `Remotion/src/onestar1/Look.tsx`, `Remotion/src/onestar1/StyleStill.tsx`
-- Modify: `Remotion/src/Root.tsx` (register still `OneStarStyle`, 1080x1920, 1 frame)
+- Modify: `Remotion/src/bts/cast.ts` (add ids `osYou`: office worker, short dark hair, light blue shirt, dark trousers, lanyard; `osDriver`: older man, very pale skin `#cfd6d9`, grey hair, dark cap, dark jacket), `Remotion/src/Root.tsx` (register still `OneStarStyle`, 1080x1920, 1 frame)
 
 **Interfaces:**
-- Produces (all in `Look.tsx`): `NightBackdrop: React.FC<{ g: number; tint?: string }>` (gradient + far bokeh lights + rain streaks); `Beam: React.FC<{ x: number; y: number; angle: number; length: number; op?: number }>` (soft volumetric cone with dust specks); `Rim: React.FC<{ children: React.ReactNode; color?: string; width?: number }>` (wraps a dark silhouette group and adds a pale outline via stroke); `Figure: React.FC<{ x: number; y: number; scale: number; facing: 1 | -1; pose: "stand" | "run" | "sit"; g: number; op?: number }>` (a flat silhouette person, run cycle by `g`); `Hud: React.FC<{ lines: string[]; accent?: boolean }>` (top-left, Prompt font, small); `Grade: React.FC<{ children: React.ReactNode }>` (CSS grade, vignette, grain).
+- Produces (all in `Look.tsx`): `NightBackdrop: React.FC<{ g: number; tint?: string }>` (gradient + far bokeh lights + rain streaks); `Beam: React.FC<{ x: number; y: number; angle: number; length: number; op?: number }>` (soft volumetric cone with dust specks); `Rim: React.FC<{ children: React.ReactNode; color?: string; width?: number }>` (wraps a dark figure group and adds a pale outline via stroke); `Actor: React.FC<{ id: "osYou" | "osDriver"; x: number; y: number; scale?: number; facing?: 1 | -1; pose?: "stand" | "sit"; walk?: number; g: number; fear?: number; op?: number }>` (the existing `Passenger` rig from the earlier series, new cast ids `osYou` and `osDriver` added to `src/bts/cast.ts`, drawn inside an SVG filter `#os-rim` that darkens and blue-tints the colours and adds the pale rim outline, so the people look like the earlier series but match the night look); `Hud: React.FC<{ lines: string[]; accent?: boolean }>` (top-left, Prompt font, small); `Grade: React.FC<{ children: React.ReactNode }>` (CSS grade, vignette, grain).
 - Constants: `PAL = { bg0: "#05070f", bg1: "#0b1220", rim: "#9fb4d6", beam: "#cfe0ff", accent: "#f2c230" }`.
 
-- [ ] **Step 1: Write `Look.tsx`** with the exports above, silhouettes `#04060b` with a 3 px `PAL.rim` stroke at 0.7 opacity.
-- [ ] **Step 2: Write `StyleStill.tsx`**: a rainy alley at night, a silhouette "you" running left to right, a car's headlights behind as two beams with dust, blurred yellow and cyan bokeh, HUD "ถึงใน 5 นาที" with a small car icon at top-left, one subtitle line in the standard style.
+- [ ] **Step 1: Write `Look.tsx`** with the exports above, the `#os-rim` filter: `feColorMatrix` darkening (about 0.45 brightness, blue shift), then an outline made from `feMorphology` dilate of the alpha minus the alpha, flooded with `PAL.rim` at 0.7.
+- [ ] **Step 2: Write `StyleStill.tsx`**: a rainy alley at night, "you" (`osYou`, restyled) running left to right, a car's headlights behind as two beams with dust, blurred yellow and cyan bokeh, HUD "ถึงใน 5 นาที" with a small car icon at top-left, one subtitle line in the standard style.
 - [ ] **Step 3: Register `OneStarStyle`** in `Root.tsx`; run `npx tsc --noEmit`. Expected: no errors.
 - [ ] **Step 4: Render** `npx remotion still OneStarStyle out/onestar_style.png`; read the image and judge: rim readable, beam soft, bokeh not noisy, HUD legible. Fix and re-render until it reads.
 - [ ] **Step 5: Commit and push**, then STOP and show the still to the user. Do not start Task 2 until the user says the look is right (a user decision, not a stall).
@@ -82,7 +82,7 @@
 
 **Interfaces:**
 - Consumes: `Look.tsx`.
-- Produces: `RideScene: React.FC<{ g: number; from: number; circleAt: number; arriveAt: number; to: number }>`: night street seen side-on, the car cutaway with the silhouette driver (older, pale eyes only visible in the rear-view mirror, the eyes turn to "you" at `circleAt`) and "you" in the back seat, wet window with bokeh, a shop sign "ร้านป้าแดง" passing at three set times between `circleAt` and `arriveAt` (a visible counter dot 1, 2, 3 on the sign), a damp-shine on the seat, wipers; `DoorStep: React.FC<{ g: number; from: number; to: number }>` (you step out at your building in the rain).
+- Produces: `RideScene: React.FC<{ g: number; from: number; circleAt: number; arriveAt: number; to: number }>`: night street seen side-on, the car cutaway with the figure driver (older, pale eyes only visible in the rear-view mirror, the eyes turn to "you" at `circleAt`) and "you" in the back seat, wet window with bokeh, a shop sign "ร้านป้าแดง" passing at three set times between `circleAt` and `arriveAt` (a visible counter dot 1, 2, 3 on the sign), a damp-shine on the seat, wipers; `DoorStep: React.FC<{ g: number; from: number; to: number }>` (you step out at your building in the rain).
 
 - [ ] **Step 1: Write both pieces.** The sign passes at `circleAt + 0`, `+ (arriveAt - circleAt) / 3`, `+ 2 * (arriveAt - circleAt) / 3`.
 - [ ] **Step 2: Render stills** at `pickupAt`, the middle of `circleAt..arriveAt`, `arriveAt`; check the driver's face is NOT visible except two eyes in the mirror, and the sign reads each time.
@@ -95,10 +95,10 @@
 
 **Interfaces:**
 - Consumes: `Look.tsx` (`Beam`, `Figure`, `Rim`), manifest cues.
-- Produces: `HomeScene: React.FC<{ g: number; from: number; lightsAt: number; runAt: number; to: number }>` (the room, rim-lit window, headlights sliding across the wall at `lightsAt`, "you" at the window, then grabbing the bag), `AlleyChase: React.FC<{ g: number; from: number; followAt: number; deadEndAt: number; unlockAt: number; to: number }>` (back door and alley, "you" running as a silhouette, two headlight beams behind at constant speed and constant distance, the dead-end wall, the car fills the frame at `deadEndAt`, a yellow lock icon pops up at `unlockAt` with the click sound cue).
+- Produces: `HomeScene: React.FC<{ g: number; from: number; lightsAt: number; runAt: number; to: number }>` (the room, rim-lit window, headlights sliding across the wall at `lightsAt`, "you" at the window, then grabbing the bag), `AlleyChase: React.FC<{ g: number; from: number; followAt: number; deadEndAt: number; unlockAt: number; to: number }>` (back door and alley, "you" running as a figure, two headlight beams behind at constant speed and constant distance, the dead-end wall, the car fills the frame at `deadEndAt`, a yellow lock icon pops up at `unlockAt` with the click sound cue).
 
 - [ ] **Step 1: Write both scenes.** The car follows slowly and keeps the same gap while "you" run; only at `deadEndAt` does it close in.
-- [ ] **Step 2: Render stills** at `lightsAt`, `followAt`, `deadEndAt`, `unlockAt`; check the beam is soft, the silhouette reads and the car is in frame at `unlockAt`.
+- [ ] **Step 2: Render stills** at `lightsAt`, `followAt`, `deadEndAt`, `unlockAt`; check the beam is soft, the figure reads and the car is in frame at `unlockAt`.
 - [ ] **Step 3: Commit and push.**
 
 ### Task 6: Composition, subtitles, title and finale, Root
