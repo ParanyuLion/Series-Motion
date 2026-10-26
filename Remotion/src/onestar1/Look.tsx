@@ -117,8 +117,8 @@ export const Subtitle: React.FC<{ text: string }> = ({ text }) => (
 );
 
 /** a car seen from the side, facing right, with its front at x + 0 and the ground at y: lit roof and bonnet edge, two wheels, a headlight glow */
-export const Car: React.FC<{ x: number; y: number; scale?: number; lights?: number }> = ({ x, y, scale = 1, lights = 1 }) => (
-  <g transform={`translate(${x},${y}) scale(${scale})`}>
+export const Car: React.FC<{ x: number; y: number; scale?: number; lights?: number; flip?: boolean }> = ({ x, y, scale = 1, lights = 1, flip = false }) => (
+  <g transform={`translate(${x},${y}) scale(${flip ? -scale : scale},${scale})`}>
     <path d="M-560 -40 L-560 -170 Q-540 -200 -480 -205 L-300 -215 Q-230 -330 -100 -332 L60 -330 Q150 -325 200 -215 L250 -200 Q300 -190 300 -140 L300 -40 Z" fill="#1a2434" />
     <path d="M-290 -215 Q-230 -312 -100 -314 L-20 -313 L-20 -215 Z M10 -215 L10 -312 L70 -311 Q140 -300 175 -215 Z" fill="#0c1220" />
     <path d="M-560 -170 Q-540 -200 -480 -205 L-300 -215 Q-230 -330 -100 -332 L60 -330 Q150 -325 200 -215 L250 -200 Q300 -190 300 -140" fill="none" stroke={PAL.rim} strokeWidth={4} opacity={0.75} />
