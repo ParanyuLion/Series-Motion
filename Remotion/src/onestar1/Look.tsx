@@ -20,8 +20,11 @@ export const LookDefs: React.FC = () => (
       <feColorMatrix type="matrix" values="0.34 0 0 0 0.01  0 0.42 0 0 0.02  0 0 0.66 0 0.05  0 0 0 1 0" result="dark" />
       <feOffset in="SourceAlpha" dx="-5" dy="0" result="off" />
       <feComposite in="SourceAlpha" in2="off" operator="out" result="edge" />
-      <feFlood floodColor={PAL.rim} floodOpacity="0.8" />
-      <feComposite in2="edge" operator="in" result="rim" />
+      <feOffset in="SourceAlpha" dx="0" dy="-5" result="offTop" />
+      <feComposite in="SourceAlpha" in2="offTop" operator="out" result="edgeTop" />
+      <feMerge result="edges"><feMergeNode in="edge" /><feMergeNode in="edgeTop" /></feMerge>
+      <feFlood floodColor={PAL.rim} floodOpacity="0.9" />
+      <feComposite in2="edges" operator="in" result="rim" />
       <feMerge><feMergeNode in="dark" /><feMergeNode in="rim" /></feMerge>
     </filter>
     <filter id="os-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14" /></filter>
@@ -37,19 +40,20 @@ export const NightBackdrop: React.FC<{ g: number; tint?: string; x0?: number; x1
   const bokeh = Array.from({ length: 16 }, (_, i) => {
     const x = x0 + rnd(i) * w;
     const y = 700 + rnd(i + 40) * 560;
-    const r = 26 + rnd(i + 80) * 46;
+    const r = 34 + rnd(i + 80) * 60;
     const col = rnd(i + 120) > 0.55 ? tint : "#6fa8ff";
-    return <circle key={i} cx={x} cy={y} r={r} fill={col} opacity={0.34 + rnd(i + 7) * 0.26} />;
+    return <circle key={i} cx={x} cy={y} r={r} fill={col} opacity={0.5 + rnd(i + 7) * 0.3} />;
   });
   const rain = Array.from({ length: 70 }, (_, i) => {
     const x = x0 + rnd(i + 200) * w;
     const sp = 38 + rnd(i + 240) * 30;
     const y = y0 + ((rnd(i + 280) * 2000 + g * sp) % (y1 - y0));
-    return <line key={i} x1={x} y1={y} x2={x - 10} y2={y + 52} stroke={PAL.beam} strokeWidth={2} opacity={0.18 + rnd(i + 5) * 0.14} />;
+    return <line key={i} x1={x} y1={y} x2={x - 10} y2={y + 52} stroke={PAL.beam} strokeWidth={2} opacity={0.28 + rnd(i + 5) * 0.2} />;
   });
   return (
     <g>
       <rect x={x0} y={y0} width={w} height={y1 - y0} fill="url(#os-bg)" />
+      <ellipse cx={x0 + w / 2} cy={1000} rx={w * 0.7} ry={320} fill="#1b3a7a" opacity={0.35} filter="url(#os-blur)" />
       <g filter="url(#os-blur)">{bokeh}</g>
       {rain}
     </g>
@@ -108,4 +112,18 @@ export const Grade: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 /** the standard Thai subtitle block (Prompt 500, 52 px, safe area) */
 export const Subtitle: React.FC<{ text: string }> = ({ text }) => (
   <div style={{ position: "absolute", left: 60, right: 160, bottom: 340, color: "#fff", fontFamily, fontSize: 52, lineHeight: 1.3, textAlign: "center", textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}>{text}</div>
+);
+
+/** a car seen from the side, facing right, with its front at x + 0 and the ground at y: lit roof and bonnet edge, two wheels, a headlight glow */
+export const Car: React.FC<{ x: number; y: number; scale?: number; lights?: number }> = ({ x, y, scale = 1, lights = 1 }) => (
+  <g transform={`translate(${x},${y}) scale(${scale})`}>
+    <path d="M-560 -40 L-560 -170 Q-540 -200 -480 -205 L-300 -215 Q-230 -330 -100 -332 L60 -330 Q150 -325 200 -215 L250 -200 Q300 -190 300 -140 L300 -40 Z" fill="#1a2434" />
+    <path d="M-290 -215 Q-230 -312 -100 -314 L-20 -313 L-20 -215 Z M10 -215 L10 -312 L70 -311 Q140 -300 175 -215 Z" fill="#0c1220" />
+    <path d="M-560 -170 Q-540 -200 -480 -205 L-300 -215 Q-230 -330 -100 -332 L60 -330 Q150 -325 200 -215 L250 -200 Q300 -190 300 -140" fill="none" stroke={PAL.rim} strokeWidth={4} opacity={0.75} />
+    {[-380, 130].map((cx) => (
+      <g key={cx}><circle cx={cx} cy={-30} r={64} fill="#05070c" /><circle cx={cx} cy={-30} r={30} fill="#111a29" /><path d={`M${cx - 64} -30 A64 64 0 0 1 ${cx + 64} -30`} fill="none" stroke={PAL.rim} strokeWidth={3} opacity={0.5} /></g>
+    ))}
+    <ellipse cx={290} cy={-150} rx={46} ry={34} fill={PAL.beam} opacity={0.9 * lights} filter="url(#os-soft)" />
+    <ellipse cx={288} cy={-150} rx={16} ry={12} fill="#fff" opacity={lights} />
+  </g>
 );
