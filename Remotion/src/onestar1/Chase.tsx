@@ -11,6 +11,81 @@ const FADE = 10;
 const fade = (g: number, from: number, to: number) => clamp01(Math.min((g - from) / FADE, (to - g) / FADE));
 const ROAD_Y = 1420;
 
+/** the wall of the room: wallpaper stripes, skirting, a hanging lamp, a clock at 00:17, frames, a shelf with books and a plant, an air conditioner */
+const RoomBack: React.FC<{ g: number }> = ({ g }) => (
+  <g>
+    {Array.from({ length: 16 }, (_, i) => <line key={i} x1={-180 + i * 92} y1={0} x2={-180 + i * 92} y2={1380} stroke="#16264a" strokeWidth={3} opacity={0.35} />)}
+    <rect x={-200} y={1340} width={1500} height={40} fill="#101a30" />
+    <line x1={-200} y1={1340} x2={1300} y2={1340} stroke={PAL.rim} strokeWidth={2} opacity={0.2} />
+    {/* hanging lamp, off, with a faint glow of the street on its shade */}
+    <line x1={540} y1={0} x2={540} y2={330} stroke="#0a1020" strokeWidth={4} />
+    <path d="M470 400 L510 330 L570 330 L610 400 Z" fill="#101a30" stroke={PAL.rim} strokeWidth={2} opacity={0.9} />
+    <ellipse cx={540} cy={402} rx={70} ry={10} fill={PAL.beam} opacity={0.12} filter="url(#os-soft)" />
+    {/* the air conditioner with a green standby light */}
+    <rect x={250} y={130} width={380} height={110} rx={16} fill="#121d36" stroke={PAL.rim} strokeWidth={2} opacity={0.95} />
+    {Array.from({ length: 6 }, (_, i) => <line key={i} x1={280} y1={190 + i * 8} x2={600} y2={190 + i * 8} stroke="#0a1020" strokeWidth={3} />)}
+    <circle cx={580} cy={160} r={5} fill="#46d37a" opacity={0.7 + 0.3 * Math.sin(g * 0.1)} />
+    {/* clock at 00:17 */}
+    <g transform="translate(110,520)">
+      <circle r={62} fill="#0e1830" stroke={PAL.rim} strokeWidth={4} />
+      {Array.from({ length: 12 }, (_, i) => <line key={i} x1={0} y1={-52} x2={0} y2={-44} stroke={PAL.rim} strokeWidth={3} opacity={0.7} transform={`rotate(${i * 30})`} />)}
+      <line x1={0} y1={0} x2={0} y2={-30} stroke="#e8eefc" strokeWidth={6} strokeLinecap="round" transform="rotate(8)" />
+      <line x1={0} y1={0} x2={0} y2={-46} stroke="#e8eefc" strokeWidth={4} strokeLinecap="round" transform="rotate(102)" />
+      <circle r={5} fill={PAL.accent} />
+    </g>
+    {/* two frames */}
+    <rect x={250} y={450} width={150} height={190} fill="#0b1224" stroke="#2a3a5c" strokeWidth={6} />
+    <path d="M262 600 L310 540 L340 575 L365 545 L390 600 Z" fill="#16264a" />
+    <circle cx={350} cy={490} r={16} fill={PAL.accent} opacity={0.35} />
+    <rect x={430} y={500} width={110} height={140} fill="#0b1224" stroke="#2a3a5c" strokeWidth={6} />
+    <rect x={446} y={520} width={78} height={100} fill="#14223f" />
+    {/* the shelf: books leaning, a plant */}
+    <rect x={120} y={780} width={420} height={14} fill="#16264a" />
+    {[0, 1, 2, 3, 4, 5, 6].map((i) => <rect key={i} x={140 + i * 26} y={780 - 60 - (i % 3) * 8} width={20} height={60 + (i % 3) * 8} fill={["#1d2a44", "#24365a", "#16213a"][i % 3]} stroke="#0a1020" strokeWidth={1} />)}
+    <path d="M440 780 L430 725 L500 725 L490 780 Z" fill="#1a2744" />
+    <path d="M465 725 Q440 660 420 640 M465 725 Q470 650 480 620 M465 725 Q500 670 520 650" fill="none" stroke="#1d4a3a" strokeWidth={8} strokeLinecap="round" />
+  </g>
+);
+
+/** the furniture: a bed with a blanket and pillow, a bedside table with a mug, a desk with a laptop glowing, a rug, shoes by the door, a coat on a hook, curtains */
+const RoomFront: React.FC<{ g: number }> = ({ g }) => (
+  <g>
+    <ellipse cx={560} cy={1440} rx={460} ry={46} fill="#101a34" stroke="#1d2a44" strokeWidth={3} />
+    <ellipse cx={560} cy={1440} rx={320} ry={28} fill="none" stroke="#1d2a44" strokeWidth={3} />
+    {/* bed */}
+    <rect x={-160} y={1220} width={460} height={160} fill="#18284a" />
+    <rect x={-160} y={1160} width={90} height={220} fill="#0b1324" />
+    <rect x={-70} y={1190} width={370} height={46} rx={12} fill="#22365e" />
+    <path d="M-70 1236 Q60 1262 300 1236 L300 1300 L-70 1300 Z" fill="#1b2e52" />
+    <ellipse cx={-10} cy={1180} rx={64} ry={26} fill="#2a3f68" />
+    <line x1={20} y1={1236} x2={250} y2={1236} stroke={PAL.rim} strokeWidth={2} opacity={0.2} />
+    <rect x={-150} y={1380} width={16} height={30} fill="#0b1324" /><rect x={270} y={1380} width={16} height={30} fill="#0b1324" />
+    {/* bedside table with a mug */}
+    <rect x={320} y={1260} width={120} height={120} fill="#16233f" stroke={PAL.rim} strokeWidth={2} opacity={0.95} />
+    <rect x={330} y={1300} width={100} height={6} fill="#0a1020" />
+    <rect x={364} y={1226} width={34} height={34} rx={6} fill="#24365a" stroke={PAL.rim} strokeWidth={2} />
+    <path d="M398 1236 Q416 1244 398 1254" fill="none" stroke={PAL.rim} strokeWidth={3} />
+    {/* the desk and the laptop, its screen the only warm-cold light in the room */}
+    <rect x={470} y={1270} width={280} height={18} fill="#1d2a44" stroke={PAL.rim} strokeWidth={2} opacity={0.9} />
+    <rect x={490} y={1288} width={14} height={92} fill="#16213a" /><rect x={716} y={1288} width={14} height={92} fill="#16213a" />
+    <path d="M530 1270 L548 1160 L690 1160 L700 1270 Z" fill="#0a1020" stroke={PAL.rim} strokeWidth={2} opacity={0.95} />
+    <path d="M540 1262 L555 1170 L684 1170 L692 1262 Z" fill="#6fa8ff" opacity={0.16 + 0.05 * Math.sin(g * 0.1)} />
+    <ellipse cx={610} cy={1210} rx={150} ry={80} fill="#6fa8ff" opacity={0.1} filter="url(#os-blur)" />
+    {/* the back door: shoes and a coat */}
+    <path d="M70 1380 Q80 1352 120 1352 L150 1352 Q164 1380 154 1380 Z" fill="#0b1224" stroke={PAL.rim} strokeWidth={2} opacity={0.8} />
+    <path d="M170 1380 Q180 1356 214 1356 L240 1356 Q252 1380 244 1380 Z" fill="#0b1224" stroke={PAL.rim} strokeWidth={2} opacity={0.8} />
+    <circle cx={250} cy={930} r={7} fill={PAL.rim} opacity={0.5} />
+    <path d="M232 944 L268 944 L286 1100 L214 1100 Z" fill="#14223f" stroke={PAL.rim} strokeWidth={2} opacity={0.9} />
+    {/* curtains at the window */}
+    <path d="M690 600 L750 600 L742 1060 L690 1060 Z" fill="#101a30" stroke="#1d2a44" strokeWidth={3} />
+    <path d="M960 600 L1020 600 L1020 1060 L950 1060 Z" fill="#101a30" stroke="#1d2a44" strokeWidth={3} />
+    {[0, 1, 2].map((i) => <line key={i} x1={706 + i * 14} y1={606} x2={704 + i * 12} y2={1054} stroke="#0a1020" strokeWidth={3} opacity={0.8} />)}
+    <rect x={680} y={590} width={350} height={12} fill="#1d2a44" />
+    {/* wooden floor lines */}
+    {Array.from({ length: 12 }, (_, i) => <line key={i} x1={-200 + i * 130} y1={1380} x2={-260 + i * 140} y2={1700} stroke="#0b1324" strokeWidth={3} opacity={0.8} />)}
+  </g>
+);
+
 /** the room: a bed, a window onto the rain, the back door; headlights slide across the wall, "you" go to the window, grab the bag, leave */
 const Bag: React.FC<{ x: number; y: number; dir: 1 | -1 }> = ({ x, y, dir }) => (
   <g>
@@ -36,6 +111,7 @@ export const HomeScene: React.FC<{ g: number; from: number; to: number; buzzAt: 
       <rect x={-200} y={0} width={1500} height={1500} fill="url(#os-wall)" />
       <rect x={-200} y={1380} width={1500} height={540} fill="#05080f" />
       <line x1={-200} y1={1380} x2={1300} y2={1380} stroke={PAL.rim} strokeWidth={2} opacity={0.25} />
+      <RoomBack g={g} />
       {/* window onto the rain, with the city bokeh */}
       <g>
         <rect x={720} y={620} width={230} height={420} fill="#0d1a38" stroke="#1d2a44" strokeWidth={10} />
@@ -44,10 +120,7 @@ export const HomeScene: React.FC<{ g: number; from: number; to: number; buzzAt: 
         {Array.from({ length: 9 }, (_, i) => <line key={i} x1={735 + i * 24} y1={630 + ((i * 53 + g * 6) % 380)} x2={731 + i * 24} y2={680 + ((i * 53 + g * 6) % 380)} stroke={PAL.beam} strokeWidth={2} opacity={0.3} />)}
         <path d="M835 620 V1040 M720 830 H950" stroke="#1d2a44" strokeWidth={7} />
       </g>
-      {/* bed and a desk lamp */}
-      <rect x={-160} y={1220} width={460} height={160} fill="#18284a" /><rect x={-160} y={1180} width={90} height={200} fill="#0b1324" />
-      <rect x={-70} y={1190} width={370} height={40} fill="#1b2a48" />
-      <rect x={470} y={1250} width={140} height={130} fill="#16233f" stroke={PAL.rim} strokeWidth={2} opacity={0.9} /><rect x={520} y={1215} width={40} height={40} fill="#0b1324" />
+      <RoomFront g={g} />
       {/* the back door */}
       <rect x={60} y={900} width={170} height={480} fill="#060a14" stroke="#2a3a5c" strokeWidth={6} />
       <rect x={70} y={910} width={150} height={460} fill={PAL.accent} opacity={ramp(g, runAt + 40, runAt + 60) * 0.35} />

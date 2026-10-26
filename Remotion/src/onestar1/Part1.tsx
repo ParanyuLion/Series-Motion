@@ -7,7 +7,7 @@ import { BuildingWall, Sky, WetGround } from "./Scenery";
 import { BookCard, MapCard, MessageCard, RateCard } from "./Phone";
 import { DoorStep, RideScene } from "./Ride";
 import { AlleyChase, HomeScene } from "./Chase";
-import { Aerial, FeetClose, MirrorClose, WheelLow, WindowPOV, YouFace } from "./Angles";
+import { Aerial, BuildingExt, CarPOV, DashPOV, DriverWindow, FeetClose, MirrorClose, PhoneDesk, WheelLow, WindowPOV, YouFace } from "./Angles";
 
 const { cues, shots, starts, total, outroStart } = manifest;
 const c = cues as Record<string, number>;
@@ -132,16 +132,23 @@ const World: React.FC = () => {
             <AlleyChase g={g} from={c.runAt + 60} to={outroStart} followAt={c.followAt} deadEndAt={c.deadEndAt} unlockAt={c.unlockAt} />
           </Svg>
         )}
-        {/* extra camera angles over the base scenes (cross-fades of 10 frames) */}
+        {/* extra camera angles over the base scenes (cross-fades of 10 frames): a new angle every two to three seconds */}
         <Svg>
+          {g >= c.pickupAt + 6 && g <= c.pickupAt + 84 && <DashPOV g={g} from={c.pickupAt + 8} to={c.pickupAt + 82} />}
           {g >= c.pickupAt + 88 && g <= c.pickupAt + 172 && <MirrorClose g={g} from={c.pickupAt + 90} to={c.pickupAt + 170} />}
+          {g >= c.smellAt + 8 && g <= c.smellAt + 92 && <DashPOV g={g} from={c.smellAt + 10} to={c.smellAt + 90} look={1} />}
           {g >= c.circleAt - 2 && g <= c.circleAt + 80 && <YouFace g={g} from={c.circleAt} to={c.circleAt + 78} look={[0.2 + 0.7 * ramp(g, c.circleAt, c.circleAt + 40), -0.5]} fear={0.2 + 0.3 * ramp(g, c.circleAt, c.circleAt + 70)} />}
           {g >= c.circleAt + 66 && g <= c.circleAt + 132 && <WheelLow g={g} from={c.circleAt + 68} to={c.circleAt + 130} />}
+          {g >= c.arriveAt + 58 && g <= c.arriveAt + 132 && <DriverWindow g={g} from={c.arriveAt + 60} to={c.arriveAt + 130} />}
+          {g >= c.buzzAt + 8 && g <= c.buzzAt + 84 && <PhoneDesk g={g} from={c.buzzAt + 10} to={c.buzzAt + 82} />}
           {g >= c.laughAt - 2 && g <= c.laughAt + 102 && <YouFace g={g} from={c.laughAt} to={c.laughAt + 100} look={[0, 0.3]} fear={0.1} smile={ramp(g, c.laughAt, c.laughAt + 30) * (1 - 0.7 * ramp(g, c.laughAt + 60, c.laughAt + 96))} phone={1 - ramp(g, c.laughAt + 60, c.laughAt + 98)} shake={g < c.laughAt + 60 ? 1 : 0} />}
           {g >= c.lightsAt - 2 && g <= c.lightsAt + 64 && <YouFace g={g} from={c.lightsAt} to={c.lightsAt + 62} look={[0.9, 0]} fear={0.9} sweep={ramp(g, c.lightsAt + 8, c.lightsAt + 54)} />}
-          {g >= c.lightsAt + 52 && g <= c.runAt + 12 && <WindowPOV g={g} from={c.lightsAt + 54} to={c.runAt + 10} />}
+          {g >= c.lightsAt + 58 && g <= c.lightsAt + 114 && <BuildingExt g={g} from={c.lightsAt + 60} to={c.lightsAt + 112} />}
+          {g >= c.lightsAt + 102 && g <= c.runAt + 12 && <WindowPOV g={g} from={c.lightsAt + 104} to={c.runAt + 10} />}
           {g >= c.followAt - 2 && g <= c.followAt + 82 && <Aerial g={g} from={c.followAt} to={c.followAt + 80} />}
           {g >= c.followAt + 72 && g <= c.followAt + 126 && <FeetClose g={g} from={c.followAt + 74} to={c.followAt + 124} />}
+          {g >= c.followAt + 118 && g <= c.deadEndAt + 10 && <CarPOV g={g} from={c.followAt + 120} to={c.deadEndAt + 8} />}
+          {g >= c.deadEndAt + 12 && g <= c.deadEndAt + 68 && <YouFace g={g} from={c.deadEndAt + 14} to={c.deadEndAt + 66} look={[-0.8, 0.1]} fear={1} sweep={ramp(g, c.deadEndAt + 16, c.deadEndAt + 60)} />}
         </Svg>
       </Grade>
       <TitleCard g={g} />

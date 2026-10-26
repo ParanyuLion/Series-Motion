@@ -99,7 +99,7 @@ rain = band(rng.standard_normal(N), 1400, 7500)
 rain_amp = 0.09 + 0.05 * ramp(T["pickupAt"], T["pickupAt"] + 2) * (1 - ramp(T["arriveAt"] + 2, T["rateAt"]))
 rain_amp = rain_amp + 0.07 * ramp(T["runAt"] + 2, T["runAt"] + 4)
 rain_amp = rain_amp * (1 - 0.35 * ramp(T["buzzAt"], T["buzzAt"] + 1) * (1 - ramp(T["runAt"], T["runAt"] + 2)))
-music += stereo(rain * rain_amp, 0.5) * 0.9
+music += stereo(rain * rain_amp, 0.5) * 0.4
 music += stereo(lowpass(rng.standard_normal(N), 420) * 0.05 * ramp(0, 3), 0.5)
 
 # ---- the hook: a low sting on the title card, a tick for the star ----
