@@ -107,7 +107,6 @@ const Outro: React.FC<{ g: number }> = ({ g }) => {
         <div style={{ fontSize: 52, opacity: clamp01(t / 14), lineHeight: 1.6, color: PAL.rim }}>ตอนต่อไป</div>
         <div style={{ fontSize: 66, opacity: clamp01((t - 24) / 14), lineHeight: 1.5, marginTop: 10, color: PAL.accent }}>คนที่ช่วยคุณ</div>
         <div style={{ fontSize: 46, opacity: clamp01((t - 60) / 14), marginTop: 60, color: PAL.rim }}>ติดตามไว้ อย่าให้ดาวใครง่ายๆ</div>
-        <div style={{ fontSize: 34, opacity: clamp01((t - 80) / 14) * 0.85, marginTop: 70, color: PAL.rim }}>ของในตอนนี้: พาวเวอร์แบงก์ · ลิงก์ในคอมเมนต์ปักหมุด</div>
       </div>
     </AbsoluteFill>
   );
