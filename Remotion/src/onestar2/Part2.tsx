@@ -3,7 +3,7 @@ import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from "remo
 import manifest from "./manifest.json";
 import { fontFamily } from "../island/fonts";
 import { Grade, Hud, LookDefs, PAL } from "../onestar1/Look";
-import { FeetClose, MirrorClose, ThumbTap, YouFace } from "../onestar1/Angles";
+import { DashPOV, DriverWindow, FeetClose, MirrorClose, ThumbTap, YouFace } from "../onestar1/Angles";
 import { BackDoor, BoardClose, ClimbFence, CounterScreen, FlowerGrab, LanyardFall, Platform, RackGrab, StoreWide, ThroughFence, TunnelPOV } from "./Scenes";
 import { CablePlug, LanyardClose, PhoneBattery, PhoneMsg, PhoneOff, TrainDoor, TrainWindow } from "./Close";
 import { ProductClip } from "./Product";
@@ -17,7 +17,7 @@ const H = 1920;
 /** the app countdown shown on every screen from the shop on: a pure, never rising function of the frame */
 const minutesAt = (g: number): number | null => {
   if (g >= c.msgAt) return 0;
-  if (g >= c.tearAt + 110) return 1;
+  if (g >= c.tearAt + 85) return 1;
   if (g >= c.boardAt) return 2;
   if (g >= c.screenAt) return 3;
   if (g >= c.grabAt) return 4;
@@ -26,13 +26,15 @@ const minutesAt = (g: number): number | null => {
 };
 
 // the product inserts: A over the shelf lines, B inside the cable beat
-const A = { from: c.prodAt, to: c.screenAt + FADE };
-const B = { from: c.plugAt + 78, to: c.plugAt + 138 };
+const A = { from: c.prodAt, to: c.screenAt + 2 * FADE };
+const B = { from: c.plugAt + 100, to: c.plugAt + 145 };
 
 type Step = { at: number; node: (p: AngleProps) => React.ReactNode };
 const steps = (g: number): Step[] => [
   { at: 0, node: (p) => <ThumbTap {...p} /> },
+  { at: 95, node: (p) => <DashPOV {...p} /> },
   { at: c.lineStart1, node: (p) => <MirrorClose {...p} /> },
+  { at: c.lineStart1 + 100, node: (p) => <DriverWindow {...p} /> },
   { at: c.climbAt, node: (p) => <ClimbFence {...p} /> },
   { at: c.climbAt + 78, node: (p) => <YouFace {...p} look={[0.8, 0.2]} fear={0.7} bg="street" rot={-4} /> },
   { at: c.fenceAt, node: (p) => <ThroughFence {...p} /> },
@@ -42,22 +44,26 @@ const steps = (g: number): Step[] => [
   { at: c.grabAt, node: (p) => <RackGrab {...p} /> },
   { at: c.grabAt + 74, node: (p) => <PhoneOff {...p} /> },
   { at: c.screenAt, node: (p) => <CounterScreen {...p} minutes={3} chime={g > c.screenAt + 70} /> },
+  { at: c.screenAt + 120, node: (p) => <YouFace {...p} look={[0.2, 0.5]} fear={0.7} bg="street" z0={1.12} rot={-3} /> },
   { at: c.payAt, node: (p) => <BackDoor {...p} /> },
   { at: c.payAt + 74, node: (p) => <FeetClose {...p} /> },
   { at: c.boardAt, node: (p) => <Platform {...p} minutes={2} /> },
   { at: c.boardAt + 66, node: (p) => <BoardClose {...p} minutes={2} /> },
   { at: c.thinkAt, node: (p) => <YouFace {...p} look={[-0.3, 0.5]} fear={0.5} bg="street" z0={1.1} rot={3} /> },
-  { at: c.lanyardAt, node: (p) => <LanyardClose {...p} /> },
+  { at: c.thinkAt + 80, node: (p) => <Platform {...p} minutes={2} youX={420} /> },
+  { at: c.lanyardAt, node: (p) => <YouFace {...p} look={[0, 0.9]} fear={0.6} bg="street" z0={1.2} rot={2} /> },
+  { at: c.lanyardAt + 80, node: (p) => <LanyardClose {...p} /> },
   { at: c.tearAt, node: (p) => <LanyardFall {...p} /> },
-  { at: c.tearAt + 70, node: (p) => <BoardClose {...p} minutes={g >= c.tearAt + 110 ? 1 : 2} /> },
+  { at: c.tearAt + 58, node: (p) => <BoardClose {...p} minutes={g >= c.tearAt + 85 ? 1 : 2} /> },
   { at: c.flowerAt, node: (p) => <FlowerGrab {...p} /> },
   { at: c.flowerAt + 66, node: (p) => <Platform {...p} minutes={1} seller youX={380} /> },
   { at: c.tunnelAt, node: (p) => <TunnelPOV {...p} /> },
   { at: c.tunnelAt + 74, node: (p) => <YouFace {...p} look={[0.9, -0.2]} fear={1} sweep={ramp(g, c.tunnelAt + 84, c.tunnelAt + 140)} z0={1.15} rot={-4} bg="street" /> },
   { at: c.boardTrainAt, node: (p) => <TrainDoor {...p} /> },
   { at: c.waveAt, node: (p) => <TrainWindow {...p} /> },
+  { at: c.waveAt + 105, node: (p) => <YouFace {...p} look={[0.9, 0.3]} fear={0.6} bg="street" z0={1.1} rot={-3} /> },
   { at: c.plugAt, node: (p) => <CablePlug {...p} /> },
-  { at: c.plugAt + 112, node: (p) => <PhoneMsg {...p} /> },
+  { at: c.plugAt + 128, node: (p) => <PhoneMsg {...p} /> },
 ];
 
 const Svg: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -116,7 +122,7 @@ const World: React.FC = () => {
   list.forEach((s, i) => froms.push(Math.max(s.at, i ? froms[i - 1] + 30 : 0)));
   const m = minutesAt(g);
   const clipO = (w: { from: number; to: number }) => clamp01(Math.min((g - w.from) / FADE, (w.to - g) / FADE));
-  const hudO = 1 - Math.max(clipO(A), clipO(B));
+  const hudO = 1;
   return (
     <AbsoluteFill style={{ backgroundColor: "#000", opacity: fadeIn }}>
       <Grade>
@@ -134,7 +140,7 @@ const World: React.FC = () => {
           )}
         </Svg>
         <ProductClip from={A.from} to={A.to} src="onestar2/prodA.mp4" usable={240} />
-        <ProductClip from={B.from} to={B.to} src="onestar2/prodB.mp4" skip={90} usable={B.to - B.from} />
+        <ProductClip from={B.from} to={B.to} src="onestar2/prodB.mp4" skip={165} usable={B.to - B.from} crop={1500} />
       </Grade>
       <TitleCard g={g} />
       {g >= outroStart - 14 && <Outro g={g} />}
@@ -148,7 +154,7 @@ export const Part2: React.FC = () => (
     {shots.map((shot, i) => (
       <Sequence key={i} from={starts[i] + shot.leadFrames} durationInFrames={shot.audioFrames}>
         <Audio src={staticFile(shot.audio)} />
-        <Subtitle text={shot.text.replace(/คนขับ/g, "คน⁠ขับ")} />
+        <Subtitle text={shot.text.replace(/คนขับ/g, "คน⁠ขับ").replace(/ชาร์จไว/g, "ชาร์จ⁠ไว").replace(/ปิดเครื่อง/g, "ปิด⁠เครื่อง").replace(/นะครับ/g, "นะ⁠ครับ").replace(/(\d) นาที/g, "$1 นาที")} />
       </Sequence>
     ))}
     <Audio src={staticFile("onestar2/bed.wav")} volume={0.5} />

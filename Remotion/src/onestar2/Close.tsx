@@ -141,9 +141,9 @@ export const TrainWindow: React.FC<AngleProps> = (p) => {
 /** the cable goes into the power bank: a drawn plug slides into the port, then the small display and the indicator light up */
 export const CablePlug: React.FC<AngleProps> = (p) => {
   const { g, from, to } = p;
-  const t = smooth(ramp(g, from + 8, to - 24));
-  const lit = smooth(ramp(g, from + 8 + (to - from) * 0.5, to - 8));
-  const px = lerp(940, 852, t);
+  const t = smooth(ramp(g, from + 8, from + 60));
+  const lit = smooth(ramp(g, from + 62, from + 84));
+  const px = lerp(940, 800, t);
   return (
     <Layer {...p} bg="#04070e">
       <ellipse cx={540} cy={900} rx={560} ry={420} fill="#6fa8ff" opacity={0.08 + 0.1 * lit} filter="url(#os-blur)" />
@@ -158,7 +158,7 @@ export const CablePlug: React.FC<AngleProps> = (p) => {
         {[0, 1, 2, 3].map((i) => <circle key={i} cx={260 + i * 46} cy={105} r={11} fill={PAL.accent} opacity={lit * (i < 3 ? 1 : 0.4)} />)}
       </g>
       <circle cx={820} cy={745} r={90} fill={PAL.accent} opacity={0.35 * lit} filter="url(#os-soft)" />
-      <g transform={`translate(${px},895)`} filter="url(#os-rim)">
+      <g transform={`translate(${px},915)`} filter="url(#os-rim)">
         <rect x={0} y={-24} width={110} height={48} rx={8} fill="#8a96a6" />
         <rect x={110} y={-44} width={110} height={88} rx={14} fill="#10161f" />
         <path d="M220 0 Q460 40 700 0 L900 140" fill="none" stroke="#10161f" strokeWidth={22} strokeLinecap="round" />
@@ -171,8 +171,8 @@ export const CablePlug: React.FC<AngleProps> = (p) => {
 /** the dark phone on the seat waking up: the glow grows, the last message and the countdown at zero */
 export const PhoneMsg: React.FC<AngleProps> = (p) => {
   const { g, from, to } = p;
-  const t = smooth(ramp(g, from + 20, from + 40));
-  const o = ramp(g, from + 36, from + 52);
+  const t = smooth(ramp(g, from + 14, from + 30));
+  const o = ramp(g, from + 30, from + 44);
   return (
     <Layer {...p} bg="#03050a">
       <ellipse cx={540} cy={880} rx={560} ry={720} fill="#6fa8ff" opacity={0.22 * t} filter="url(#os-blur)" />

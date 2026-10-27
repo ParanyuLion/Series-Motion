@@ -9,3 +9,10 @@ Look (user reference: the reel keep.pip.alive, never copy its characters): near-
 Code: `src/onestar1/` (`Look.tsx` look kit: `NightBackdrop`, `Beam`, `Actor`, `Car`, `Hud`, `Grade`; `Scenery.tsx` `Sky`, `BuildingWall`, `WetGround`; `Phone.tsx` app screens; `Ride.tsx`; `Chase.tsx`; `Part1.tsx`), `scripts/onestar1/`, composition `OneStar1`, output `out/onestar_part1.mp4`, `finished/3-1ดาว/`.
 
 Part 1 built (2026-10-26, "คะแนนที่คุณให้"): hook (the 1-star rating screen, then headlights in an alley), title card, booking, the ride (the car in cutaway, the mirror eyes, the same shop sign three times with counter dots), the doorstep and "ให้ดาวด้วยนะครับ", the rating with the typed "ไม่ควรขับรถ", the room (phone buzz), the message "ขอบคุณสำหรับดาวนะครับ" with the countdown 12, 5, 1, headlights across the wall, the bag, the street chase, the dead end, the lock that pops open. Teaser "ตอนต่อไป: ห้ามขึ้นรถคันนี้". 95.3 s.
+
+
+## Part 2 "ห้ามขึ้นรถคันนี้" (built 2026-10-27)
+- Story: over the fence from the dead end, the shop (power bank insert, the countdown on the small screen, the register chime), the platform (the board says 2, the lanyard torn off, the flower seller who says "take the last train", headlights from the tunnel), the train (he stays on the platform and waves; the cable goes into the power bank; the dark phone lights up: "ผมไปรอที่บ้านคุณแล้วนะครับ", then "ถึงแล้ว").
+- Threads planted: the flower seller (helper; in Part 3 she turns out to have given him "your" location); the lanyard (a trace, but not the cause: it is the star); he waits at "your" house.
+- Countdown rule used: 5, 4, 3 (shop), 2 (station), 1 (tunnel), "ถึงแล้ว" (message); it never rises.
+- Affiliate: a power bank in two beats (shelf insert A, about 8 s; cable insert B, 1.5 s); claims only "LED display of the battery", "fast charge", "charges phone and earphones over USB"; no advertising wording on screen.
