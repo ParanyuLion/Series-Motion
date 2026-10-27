@@ -1,4 +1,4 @@
-export type PassengerId = "you" | "nueng" | "nun" | "mike" | "aunt" | "uncle" | "man1" | "woman1" | "driver" | "bvYou" | "bvHead" | "bvCook" | "bvChild" | "bvMan" | "bvWoman" | "bvElder" | "osYou" | "osDriver";
+export type PassengerId = "you" | "nueng" | "nun" | "mike" | "aunt" | "uncle" | "man1" | "woman1" | "driver" | "bvYou" | "bvHead" | "bvCook" | "bvChild" | "bvMan" | "bvWoman" | "bvElder" | "osYou" | "osDriver" | "osFlower";
 
 export type PassengerAccessory = "glasses" | "backpack" | "lanyard" | "tie" | "cap" | "bun" | "bald" | "belly" | "snakeShirt";
 
@@ -47,6 +47,7 @@ export const PASSENGERS: Record<PassengerId, PassengerData> = {
   // series 4 "1 ดาว": the office worker ("you") and the pale old driver
   osYou: { name: "คุณ", skin: "#e2b995", hair: "#1c1712", top: "#8fa6c4", bottom: "#2b3140", shoe: "#1a1a1a", width: 50, height: 108, sleeve: 46, accessories: ["lanyard"] },
   osDriver: { name: "คนขับ", skin: "#cfd6d9", hair: "#9a9a9a", top: "#2a3038", bottom: "#1b2028", shoe: "#101010", width: 54, height: 104, sleeve: 90, accessories: ["cap"], accent: "#1b2028" },
+  osFlower: { name: "", skin: "#c99a74", hair: "#8a8a8a", top: "#5a3a4a", bottom: "#2a2a30", shoe: "#1d1d22", width: 52, height: 92, sleeve: 60, accessories: ["bun"] },
   driver: { name: "คนขับ", skin: "#d8a47c", hair: "#1a1a1a", top: "#2d3d5a", bottom: "#1d2638", shoe: "#111111", width: 56, height: 108, sleeve: 90, accessories: ["cap"], accent: "#1d2638" },
 };
 

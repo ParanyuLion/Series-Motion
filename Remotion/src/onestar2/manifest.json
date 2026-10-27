@@ -1,0 +1,232 @@
+{
+ "fps": 30,
+ "total": 3313,
+ "storyEnd": 3171,
+ "outroStart": 3183,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคนขับที่คุณให้ 1 ดาว ไม่เคยหยุดตามคุณ",
+   "audio": "onestar2/n0.mp3",
+   "audioFrames": 154,
+   "leadFrames": 21,
+   "frames": 181
+  },
+  {
+   "text": "และถ้าคุณขึ้นรถเขาจนถึงที่หมาย คุณจะไม่ได้กลับมา",
+   "audio": "onestar2/n1.mp3",
+   "audioFrames": 140,
+   "leadFrames": 6,
+   "frames": 188
+  },
+  {
+   "text": "ประตูหลังรถปลดล็อกอยู่ แต่คุณปีนรั้วข้างซอยตันหนีออกมา",
+   "audio": "onestar2/n2.mp3",
+   "audioFrames": 153,
+   "leadFrames": 6,
+   "frames": 165
+  },
+  {
+   "text": "ข้างหลังไม่มีเสียงวิ่งตาม มีแต่ไฟหน้าส่องผ่านรั้วช้าๆ",
+   "audio": "onestar2/n3.mp3",
+   "audioFrames": 153,
+   "leadFrames": 6,
+   "frames": 165
+  },
+  {
+   "text": "คุณวิ่งเข้าร้านสะดวกซื้อ แบตมือถือเหลือแค่ 8 เปอร์เซ็นต์",
+   "audio": "onestar2/n4.mp3",
+   "audioFrames": 155,
+   "leadFrames": 6,
+   "frames": 167
+  },
+  {
+   "text": "คุณคว้าพาวเวอร์แบงก์จากชั้น แล้วปิดมือถือทันที",
+   "audio": "onestar2/n5.mp3",
+   "audioFrames": 113,
+   "leadFrames": 6,
+   "frames": 125
+  },
+  {
+   "text": "จอ LED บอกเปอร์เซ็นต์แบต และชาร์จไวได้",
+   "audio": "onestar2/n6.mp3",
+   "audioFrames": 104,
+   "leadFrames": 6,
+   "frames": 116
+  },
+  {
+   "text": "ชาร์จมือถือและหูฟังผ่านช่อง USB ได้",
+   "audio": "onestar2/n7.mp3",
+   "audioFrames": 118,
+   "leadFrames": 6,
+   "frames": 130
+  },
+  {
+   "text": "จอเล็กที่เคาน์เตอร์ขึ้นเลขเดิม ถึงใน 3 นาที พร้อมเสียงติ๊ง",
+   "audio": "onestar2/n8.mp3",
+   "audioFrames": 185,
+   "leadFrames": 6,
+   "frames": 197
+  },
+  {
+   "text": "คุณจ่ายเงินแล้ววิ่งออกประตูหลังร้าน ไปที่สถานีรถไฟฟ้า",
+   "audio": "onestar2/n9.mp3",
+   "audioFrames": 137,
+   "leadFrames": 6,
+   "frames": 149
+  },
+  {
+   "text": "ป้ายบนชานชาลาไม่ได้บอกเวลารถไฟ มันบอกว่า ถึงใน 2 นาที",
+   "audio": "onestar2/n10.mp3",
+   "audioFrames": 180,
+   "leadFrames": 6,
+   "frames": 192
+  },
+  {
+   "text": "คุณหยุดคิด ทำไมเขารู้ทุกที่ ทั้งที่ปิดเครื่องแล้ว",
+   "audio": "onestar2/n11.mp3",
+   "audioFrames": 142,
+   "leadFrames": 6,
+   "frames": 154
+  },
+  {
+   "text": "แล้วคุณก็เห็นสายคล้องบัตรบนคอ มีชื่อ ที่ทำงาน และรูปของคุณ",
+   "audio": "onestar2/n12.mp3",
+   "audioFrames": 202,
+   "leadFrames": 6,
+   "frames": 214
+  },
+  {
+   "text": "คุณกระชากมันทิ้ง แต่ตัวเลขยังลดลงเหมือนเดิม",
+   "audio": "onestar2/n13.mp3",
+   "audioFrames": 111,
+   "leadFrames": 6,
+   "frames": 123
+  },
+  {
+   "text": "ป้าขายดอกไม้บนชานชาลาจับแขนคุณ พูดว่า ขึ้นขบวนสุดท้ายเถอะ",
+   "audio": "onestar2/n14.mp3",
+   "audioFrames": 187,
+   "leadFrames": 6,
+   "frames": 199
+  },
+  {
+   "text": "ไฟหน้ารถส่องออกมาจากอุโมงค์ ทั้งที่ไม่มีทางให้รถยนต์วิ่ง",
+   "audio": "onestar2/n15.mp3",
+   "audioFrames": 146,
+   "leadFrames": 6,
+   "frames": 158
+  },
+  {
+   "text": "คุณกระโดดขึ้นรถไฟ ประตูปิดพอดี",
+   "audio": "onestar2/n16.mp3",
+   "audioFrames": 87,
+   "leadFrames": 6,
+   "frames": 99
+  },
+  {
+   "text": "คนขับยืนอยู่บนชานชาลา ไม่ได้ขึ้นมา แค่ยกมือโบกช้าๆ",
+   "audio": "onestar2/n17.mp3",
+   "audioFrames": 175,
+   "leadFrames": 6,
+   "frames": 187
+  },
+  {
+   "text": "คุณเสียบสายกับพาวเวอร์แบงก์ มือถือที่ปิดอยู่ก็ติดขึ้นมา",
+   "audio": "onestar2/n18.mp3",
+   "audioFrames": 146,
+   "leadFrames": 6,
+   "frames": 158
+  },
+  {
+   "text": "ข้อความล่าสุด ผมไปรอที่บ้านคุณแล้วนะครับ",
+   "audio": "onestar2/n19.mp3",
+   "audioFrames": 98,
+   "leadFrames": 6,
+   "frames": 116
+  }
+ ],
+ "starts": [
+  0,
+  181,
+  369,
+  534,
+  699,
+  866,
+  991,
+  1107,
+  1237,
+  1434,
+  1583,
+  1775,
+  1929,
+  2143,
+  2266,
+  2465,
+  2623,
+  2722,
+  2909,
+  3067
+ ],
+ "cues": {
+  "hookCut": 369,
+  "titleAt": 331,
+  "climbAt": 375,
+  "fenceAt": 540,
+  "storeAt": 705,
+  "grabAt": 872,
+  "prodAt": 997,
+  "prodEnd": 1231,
+  "screenAt": 1243,
+  "payAt": 1440,
+  "boardAt": 1589,
+  "thinkAt": 1781,
+  "lanyardAt": 1935,
+  "tearAt": 2149,
+  "flowerAt": 2272,
+  "tunnelAt": 2471,
+  "boardTrainAt": 2629,
+  "waveAt": 2728,
+  "plugAt": 2915,
+  "msgAt": 3073,
+  "lineStart0": 21,
+  "lineEnd0": 175,
+  "lineStart1": 187,
+  "lineEnd1": 327,
+  "lineStart2": 375,
+  "lineEnd2": 528,
+  "lineStart3": 540,
+  "lineEnd3": 693,
+  "lineStart4": 705,
+  "lineEnd4": 860,
+  "lineStart5": 872,
+  "lineEnd5": 985,
+  "lineStart6": 997,
+  "lineEnd6": 1101,
+  "lineStart7": 1113,
+  "lineEnd7": 1231,
+  "lineStart8": 1243,
+  "lineEnd8": 1428,
+  "lineStart9": 1440,
+  "lineEnd9": 1577,
+  "lineStart10": 1589,
+  "lineEnd10": 1769,
+  "lineStart11": 1781,
+  "lineEnd11": 1923,
+  "lineStart12": 1935,
+  "lineEnd12": 2137,
+  "lineStart13": 2149,
+  "lineEnd13": 2260,
+  "lineStart14": 2272,
+  "lineEnd14": 2459,
+  "lineStart15": 2471,
+  "lineEnd15": 2617,
+  "lineStart16": 2629,
+  "lineEnd16": 2716,
+  "lineStart17": 2728,
+  "lineEnd17": 2903,
+  "lineStart18": 2915,
+  "lineEnd18": 3061,
+  "lineStart19": 3073,
+  "lineEnd19": 3171
+ }
+}
