@@ -97,7 +97,7 @@ export const TrainDoor: React.FC<AngleProps> = (p) => {
       <rect x={0} y={0} width={130} height={1920} fill="#0b1224" /><rect x={950} y={0} width={130} height={1920} fill="#0b1224" />
       <rect x={0} y={0} width={1080} height={280} fill="#0b1224" /><rect x={0} y={1430} width={1080} height={490} fill="#0a101e" />
       <rect x={510} y={0} width={36} height={1920} fill="#1c2a44" /><rect x={510} y={0} width={6} height={1920} fill={PAL.rim} opacity={0.5} />
-      <Actor id="osYou" x={310} y={1560} scale={1.8} g={g} fear={0.7} facing={1} />
+      <Actor id="osYou" x={310} y={1400} scale={1.5} g={g} fear={0.7} facing={1} />
       <rect x={400} y={200} width={280} height={44} rx={22} fill={PAL.accent} opacity={0.3 + 0.7 * (Math.floor((g - from) / 8) % 2)} />
       <Rain g={g} from={from} n={14} op={0.14} />
     </Layer>
@@ -143,7 +143,7 @@ export const CablePlug: React.FC<AngleProps> = (p) => {
   const { g, from, to } = p;
   const t = smooth(ramp(g, from + 8, to - 24));
   const lit = smooth(ramp(g, from + 8 + (to - from) * 0.5, to - 8));
-  const px = lerp(1180, 836, t);
+  const px = lerp(940, 852, t);
   return (
     <Layer {...p} bg="#04070e">
       <ellipse cx={540} cy={900} rx={560} ry={420} fill="#6fa8ff" opacity={0.08 + 0.1 * lit} filter="url(#os-blur)" />
@@ -171,8 +171,8 @@ export const CablePlug: React.FC<AngleProps> = (p) => {
 /** the dark phone on the seat waking up: the glow grows, the last message and the countdown at zero */
 export const PhoneMsg: React.FC<AngleProps> = (p) => {
   const { g, from, to } = p;
-  const t = smooth(ramp(g, from + 10, from + 40));
-  const o = ramp(g, from + 40, from + 62);
+  const t = smooth(ramp(g, from + 20, from + 40));
+  const o = ramp(g, from + 36, from + 52);
   return (
     <Layer {...p} bg="#03050a">
       <ellipse cx={540} cy={880} rx={560} ry={720} fill="#6fa8ff" opacity={0.22 * t} filter="url(#os-blur)" />

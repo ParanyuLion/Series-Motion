@@ -188,18 +188,20 @@ export const Platform: React.FC<AngleProps & { minutes: number; seller?: boolean
         <text x={340} y={72} fontSize={42} fill={PAL.rim} textAnchor="middle" fontFamily={fontFamily} opacity={0.7}>ขบวนถัดไป · - - : - -</text>
         <text x={340} y={140} fontSize={60} fill={PAL.accent} textAnchor="middle" fontFamily={fontFamily}>ถึงใน {minutes} นาที</text>
       </g>
-      <rect x={0} y={1440} width={1080} height={480} fill="#050a14" />
+      <g transform="translate(0,-80)">
+      <rect x={0} y={1440} width={1080} height={560} fill="#050a14" />
       <rect x={0} y={1420} width={1080} height={44} fill="#16213a" />
       <rect x={0} y={1448} width={1080} height={14} fill={PAL.accent} opacity={0.75} />
       <ellipse cx={540} cy={1560} rx={620} ry={60} fill="#0a1a38" />
       <rect x={0} y={1640} width={1080} height={24} fill="#16213a" />
       <rect x={0} y={1740} width={1080} height={24} fill="#16213a" />
+      </g>
       <g opacity={0.5}>{Array.from({ length: 8 }, (_, i) => <circle key={i} cx={80 + i * 140} cy={640 + (i % 3) * 30} r={46 + (i % 2) * 20} fill={i % 2 ? PAL.accent : "#6fa8ff"} opacity={0.28} filter="url(#os-blur)" />)}</g>
-      <Actor id="osYou" x={lerp(youX - 60, youX, smooth(t))} y={1420} scale={1.5} g={g} fear={0.8} walk={t < 0.8 ? 1 : 0} />
+      <Actor id="osYou" x={lerp(youX - 60, youX, smooth(t))} y={1350} scale={1.5} g={g} fear={0.8} walk={t < 0.8 ? 1 : 0} />
       {seller && (
         <g>
-          <Actor id="osFlower" x={760} y={1420} scale={1.45} g={g} facing={-1} />
-          <g transform="translate(690,1300)" filter="url(#os-rim)">
+          <Actor id="osFlower" x={760} y={1350} scale={1.45} g={g} facing={-1} />
+          <g transform="translate(690,1230)" filter="url(#os-rim)">
             <rect x={-40} y={0} width={90} height={60} rx={10} fill="#3a2a22" />
             {Array.from({ length: 7 }, (_, i) => <circle key={i} cx={-30 + i * 14} cy={-8 - (i % 3) * 12} r={13} fill={i % 2 ? "#a86a8a" : "#c9a0b0"} />)}
           </g>
@@ -255,21 +257,18 @@ export const LanyardFall: React.FC<AngleProps> = (p) => {
 
 /** close on an arm: an old hand grips it, a basket of flowers at the bottom of the picture */
 export const FlowerGrab: React.FC<AngleProps> = (p) => {
-  const { g, from, to } = p;
-  const t = smooth(ramp(g, from + 4, from + 24));
+  const { g, from } = p;
+  const t = smooth(ramp(g, from + 4, from + 26));
   return (
     <Layer {...p} bg="#05080f">
       <ellipse cx={540} cy={820} rx={520} ry={520} fill="#6fa8ff" opacity={0.12} filter="url(#os-blur)" />
       <g filter="url(#os-rim)">
-        <path d="M380 0 L330 1320 L720 1320 L700 0 Z" fill="#8fa6c4" />
-        <path d="M380 0 L700 0 L690 120 L388 120 Z" fill="#7a92b0" />
-        <rect x={330} y={1200} width={400} height={200} fill="#e2b995" />
+        <path d="M400 0 L360 1180 L700 1180 L680 0 Z" fill="#8fa6c4" />
+        <path d="M400 0 L680 0 L676 110 L404 110 Z" fill="#7a92b0" />
+        <rect x={364} y={1120} width={334} height={160} rx={30} fill="#e2b995" />
       </g>
-      <g transform={`translate(${lerp(1100, 540, t)},760)`} filter="url(#os-rim)">
-        <path d="M-60 420 L-40 300 Q-200 240 -190 140 Q-185 100 -140 110 L-100 160 L-90 40 Q-90 0 -50 0 Q-20 0 -20 40 L-20 140 L10 20 Q10 -20 50 -10 Q80 0 70 40 L50 150 L90 50 Q110 20 140 40 Q160 60 140 100 L110 220 Q200 280 180 420 Z" fill="#b98a66" transform="translate(-540,0) translate(540,0)" />
-        <path d="M-30 430 L-30 640 L190 640 L190 430 Z" fill="#5a3a4a" />
-      </g>
-      <g transform="translate(0,1500)" filter="url(#os-rim)">
+      <Hand x={lerp(1250, 560, t)} y={700} rot={-90} s={1.35} skin="#b98a66" grip={ramp(t, 0.6, 1)} />
+      <g transform="translate(0,1640)" filter="url(#os-rim)">
         <rect x={60} y={120} width={960} height={300} rx={30} fill="#3a2a22" />
         {Array.from({ length: 16 }, (_, i) => <circle key={i} cx={100 + i * 56} cy={80 - (i % 4) * 26} r={36} fill={i % 3 === 0 ? "#a86a8a" : i % 3 === 1 ? "#c9a0b0" : "#7a9a6a"} />)}
       </g>

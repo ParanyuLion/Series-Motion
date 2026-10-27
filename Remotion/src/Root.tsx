@@ -30,6 +30,8 @@ import blind3 from "./blind3/manifest.json";
 import { Part4 as BlindPart4 } from "./blind4/Part4";
 import { StyleStill as OneStarStyle } from "./onestar1/StyleStill";
 import { Part1 as OneStarPart1 } from "./onestar1/Part1";
+import { Part2 as OneStarPart2 } from "./onestar2/Part2";
+import onestar2 from "./onestar2/manifest.json";
 import onestar1 from "./onestar1/manifest.json";
 import blind4 from "./blind4/manifest.json";
 import { SnakePreview, SnakePreview2, SnakePreview3, SnakePreview4 } from "./blind1/SnakePreview";
@@ -57,6 +59,7 @@ export const Root: React.FC = () => (
     <Composition id="Blind3" component={BlindPart3} durationInFrames={blind3.total} fps={blind3.fps} width={W} height={H} />
     <Composition id="Blind4" component={BlindPart4} durationInFrames={blind4.total} fps={blind4.fps} width={W} height={H} />
     <Composition id="OneStar1" component={OneStarPart1} durationInFrames={onestar1.total} fps={onestar1.fps} width={W} height={H} />
+    <Composition id="OneStar2" component={OneStarPart2} durationInFrames={onestar2.total} fps={onestar2.fps} width={W} height={H} />
     <Composition id="OneStarStyle" component={OneStarStyle} durationInFrames={1} fps={30} width={W} height={H} />
     <Composition id="CastPreview" component={CastPreview} durationInFrames={60} fps={30} width={1080} height={600} defaultProps={{ dirt: 0, walk: 0 }} />
   </>
