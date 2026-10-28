@@ -1,0 +1,231 @@
+{
+ "fps": 30,
+ "total": 3499,
+ "storyEnd": 3357,
+ "outroStart": 3369,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณหนีถึงสถานีสุดท้าย แล้วมีคนรออยู่ก่อน",
+   "audio": "onestar3/n0.mp3",
+   "audioFrames": 164,
+   "leadFrames": 21,
+   "frames": 191
+  },
+  {
+   "text": "คนขับที่คุณให้ 1 ดาว จะตามจนกว่าคุณจะไปถึงที่หมายกับเขา",
+   "audio": "onestar3/n1.mp3",
+   "audioFrames": 154,
+   "leadFrames": 6,
+   "frames": 202
+  },
+  {
+   "text": "รถไฟจอดที่สถานีสุดท้าย ทั้งขบวนไม่มีใครเลยนอกจากคุณ",
+   "audio": "onestar3/n2.mp3",
+   "audioFrames": 199,
+   "leadFrames": 6,
+   "frames": 211
+  },
+  {
+   "text": "มือถือที่เคยขึ้นว่า ถึงแล้ว กลับขึ้นเลขใหม่ ถึงใน 25 นาที",
+   "audio": "onestar3/n3.mp3",
+   "audioFrames": 182,
+   "leadFrames": 6,
+   "frames": 194
+  },
+  {
+   "text": "เลขเพิ่มขึ้นเป็นครั้งแรก เหมือนเขาเพิ่งรู้ว่าคุณอยู่ไหน",
+   "audio": "onestar3/n4.mp3",
+   "audioFrames": 108,
+   "leadFrames": 6,
+   "frames": 120
+  },
+  {
+   "text": "ป้าขายดอกไม้คนเดิมนั่งรออยู่ ทั้งที่ไม่ได้อยู่บนรถ",
+   "audio": "onestar3/n5.mp3",
+   "audioFrames": 143,
+   "leadFrames": 6,
+   "frames": 155
+  },
+  {
+   "text": "ป้าบอกว่า ชื่ออร ฉันเคยให้ 1 ดาวเขาเหมือนคุณ",
+   "audio": "onestar3/n6.mp3",
+   "audioFrames": 138,
+   "leadFrames": 6,
+   "frames": 150
+  },
+  {
+   "text": "ฉันรอดเพราะมีคนให้ดาวเขาหลังฉัน เขาตามคนที่ให้ดาวหลังสุด",
+   "audio": "onestar3/n7.mp3",
+   "audioFrames": 152,
+   "leadFrames": 6,
+   "frames": 164
+  },
+  {
+   "text": "ในบ้านเต็มไปด้วยดอกไม้เหี่ยว และกลิ่นอับเหมือนในรถเขา",
+   "audio": "onestar3/n8.mp3",
+   "audioFrames": 133,
+   "leadFrames": 6,
+   "frames": 145
+  },
+  {
+   "text": "เสียงติ๊งดังจากกระเป๋าป้าก่อน แล้วถึงดังจากมือถือคุณ",
+   "audio": "onestar3/n9.mp3",
+   "audioFrames": 151,
+   "leadFrames": 6,
+   "frames": 163
+  },
+  {
+   "text": "ป้าล้วงมือถือขึ้นมาดู บนจอมีหมุดแผนที่ตรงที่คุณนั่งอยู่",
+   "audio": "onestar3/n10.mp3",
+   "audioFrames": 200,
+   "leadFrames": 6,
+   "frames": 212
+  },
+  {
+   "text": "ดาวฉันยังอยู่ในแอป เขาตามฉันทุกคืน จนมีคนไปถึงที่หมาย",
+   "audio": "onestar3/n11.mp3",
+   "audioFrames": 168,
+   "leadFrames": 6,
+   "frames": 180
+  },
+  {
+   "text": "ฉันแค่อยากหลับให้สนิทสักคืน ขอโทษนะ ป้าพูดเบาๆ",
+   "audio": "onestar3/n12.mp3",
+   "audioFrames": 146,
+   "leadFrames": 6,
+   "frames": 158
+  },
+  {
+   "text": "คุณลุกขึ้น แต่ป้าล็อกประตูแล้วเอากุญแจใส่กระเป๋า",
+   "audio": "onestar3/n13.mp3",
+   "audioFrames": 144,
+   "leadFrames": 6,
+   "frames": 156
+  },
+  {
+   "text": "เหลือ 3 นาที ป้าหลับตารอ มือถือบนตักเปิดหน้าให้คะแนนค้างไว้",
+   "audio": "onestar3/n14.mp3",
+   "audioFrames": 185,
+   "leadFrames": 6,
+   "frames": 197
+  },
+  {
+   "text": "คำพูดเมื่อครู่ของป้า คือทางรอดเดียวของคุณ",
+   "audio": "onestar3/n15.mp3",
+   "audioFrames": 109,
+   "leadFrames": 6,
+   "frames": 121
+  },
+  {
+   "text": "คุณคว้ามือถือป้า แล้วกด 1 ดาวในชื่อของป้า",
+   "audio": "onestar3/n16.mp3",
+   "audioFrames": 129,
+   "leadFrames": 6,
+   "frames": 141
+  },
+  {
+   "text": "ตัวเลขหายไปจากจอคุณ ไปขึ้นบนจอป้าแทน ป้าไม่ร้อง ไม่วิ่ง",
+   "audio": "onestar3/n17.mp3",
+   "audioFrames": 192,
+   "leadFrames": 6,
+   "frames": 204
+  },
+  {
+   "text": "ประตูปลดล็อกเอง คุณเดินออกมา ไม่หันกลับไปมอง",
+   "audio": "onestar3/n18.mp3",
+   "audioFrames": 128,
+   "leadFrames": 6,
+   "frames": 140
+  },
+  {
+   "text": "คุณรอดแล้ว แต่ทุกครั้งที่เห็นดาวดวงเดียว คุณจะนึกถึงเธอ",
+   "audio": "onestar3/n19.mp3",
+   "audioFrames": 147,
+   "leadFrames": 6,
+   "frames": 165
+  }
+ ],
+ "starts": [
+  0,
+  191,
+  393,
+  604,
+  798,
+  918,
+  1073,
+  1223,
+  1387,
+  1532,
+  1695,
+  1907,
+  2087,
+  2245,
+  2401,
+  2598,
+  2719,
+  2860,
+  3064,
+  3204
+ ],
+ "cues": {
+  "hookCut": 393,
+  "titleAt": 355,
+  "trainAt": 399,
+  "riseAt": 610,
+  "benchAt": 924,
+  "nameAt": 1079,
+  "loopholeAt": 1229,
+  "houseAt": 1393,
+  "chimeAt": 1538,
+  "pinAt": 1701,
+  "starAt": 1913,
+  "sorryAt": 2093,
+  "lockAt": 2251,
+  "threeAt": 2407,
+  "keyAt": 2604,
+  "pressAt": 2725,
+  "moveAt": 2866,
+  "exitAt": 3070,
+  "guiltAt": 3210,
+  "lineStart0": 21,
+  "lineEnd0": 185,
+  "lineStart1": 197,
+  "lineEnd1": 351,
+  "lineStart2": 399,
+  "lineEnd2": 598,
+  "lineStart3": 610,
+  "lineEnd3": 792,
+  "lineStart4": 804,
+  "lineEnd4": 912,
+  "lineStart5": 924,
+  "lineEnd5": 1067,
+  "lineStart6": 1079,
+  "lineEnd6": 1217,
+  "lineStart7": 1229,
+  "lineEnd7": 1381,
+  "lineStart8": 1393,
+  "lineEnd8": 1526,
+  "lineStart9": 1538,
+  "lineEnd9": 1689,
+  "lineStart10": 1701,
+  "lineEnd10": 1901,
+  "lineStart11": 1913,
+  "lineEnd11": 2081,
+  "lineStart12": 2093,
+  "lineEnd12": 2239,
+  "lineStart13": 2251,
+  "lineEnd13": 2395,
+  "lineStart14": 2407,
+  "lineEnd14": 2592,
+  "lineStart15": 2604,
+  "lineEnd15": 2713,
+  "lineStart16": 2725,
+  "lineEnd16": 2854,
+  "lineStart17": 2866,
+  "lineEnd17": 3058,
+  "lineStart18": 3070,
+  "lineEnd18": 3198,
+  "lineStart19": 3210,
+  "lineEnd19": 3357
+ }
+}
