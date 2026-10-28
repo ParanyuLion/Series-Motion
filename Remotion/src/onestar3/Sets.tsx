@@ -101,11 +101,23 @@ export const Carriage: React.FC<{ g: number; ghost?: number }> = ({ g, ghost = 0
           </g>
         );
       })}
-      {/* bench seat along the wall */}
-      <rect x={-200} y={920} width={2600} height={36} fill="#0c1428" />
-      <rect x={-200} y={950} width={2600} height={230} rx={34} fill="url(#os3-seat)" />
-      {Array.from({ length: 12 }, (_, i) => <rect key={i} x={-100 + i * 215} y={968} width={196} height={190} rx={22} fill="#14264a" opacity={0.8} stroke="#2c4678" strokeWidth={3} />)}
-      <rect x={-200} y={950} width={2600} height={6} fill={PAL.rim} opacity={0.35} />
+      {/* transverse seats seen from the side (the rider sits in profile): a low sill under the windows, then a row of seat profiles facing right */}
+      <rect x={-200} y={920} width={2600} height={30} fill="#0c1428" />
+      <rect x={-200} y={946} width={2600} height={5} fill={PAL.rim} opacity={0.3} />
+      {Array.from({ length: 9 }, (_, i) => {
+        const x0 = 1010 - 1920 + i * 480;
+        return (
+          <g key={i}>
+            <rect x={x0 - 150} y={1200} width={170} height={110} fill="#0a1226" />
+            <rect x={x0 - 98} y={930} width={44} height={270} rx={18} fill="url(#os3-seat)" stroke="#2c4678" strokeWidth={3} />
+            <rect x={x0 - 98} y={930} width={44} height={270} rx={18} fill="#14264a" opacity={0.5} />
+            <rect x={x0 - 98} y={930} width={6} height={270} fill={PAL.rim} opacity={0.35} />
+            <rect x={x0 - 98} y={1158} width={250} height={52} rx={20} fill="url(#os3-seat)" stroke="#2c4678" strokeWidth={3} />
+            <rect x={x0 - 98} y={1158} width={250} height={6} fill={PAL.rim} opacity={0.35} />
+            <rect x={x0 - 60} y={1212} width={30} height={100} fill="#0c1428" /><rect x={x0 + 100} y={1212} width={30} height={100} fill="#0c1428" />
+          </g>
+        );
+      })}
       {/* floor, wet reflections of the light bars */}
       <rect x={-200} y={1180} width={2600} height={900} fill="#080c16" />
       <rect x={-200} y={1180} width={2600} height={14} fill="#16213a" />

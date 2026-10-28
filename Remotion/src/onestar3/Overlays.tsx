@@ -23,13 +23,17 @@ const Thumb: React.FC<{ x: number; y: number; rot: number; len?: number; skin: s
 const Grip: React.FC<{ skin: string; layer: "back" | "front"; right?: boolean }> = ({ skin, layer, right = true }) => {
   const id = `gr-${skin.slice(1)}`;
   if (layer === "back") {
+    // each hand is one connected shape: the forearm, the palm along the phone edge, and three finger tips wrapping the outer side
     return (
       <g>
-        <defs><linearGradient id={id} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#3a2c3c" /></linearGradient></defs>
-        <path d="M120 1920 L200 1290 Q214 1160 300 1160 L360 1400 L330 1920 Z" fill={`url(#${id})`} />
-        <path d="M960 1920 L880 1290 Q866 1160 780 1160 L720 1400 L750 1920 Z" fill={`url(#${id})`} transform="translate(0,0)" />
-        {[0, 1, 2].map((i) => <rect key={i} x={196 - i * 4} y={1130 - i * 70} width={86} height={50} rx={25} fill={skin} opacity={0.95} transform={`rotate(${-8 + i * 3} 240 1150)`} />)}
-        {[0, 1, 2].map((i) => <rect key={i} x={798 + i * 4} y={1130 - i * 70} width={86} height={50} rx={25} fill={skin} opacity={0.95} transform={`rotate(${8 - i * 3} 840 1150)`} />)}
+        <defs>
+          <linearGradient id={id} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#3a2c3c" /></linearGradient>
+          <linearGradient id={id + "r"} x1="1" y1="0" x2="0" y2="0"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#3a2c3c" /></linearGradient>
+        </defs>
+        <path d="M70 1920 L168 1420 Q186 1300 196 1180 Q198 1100 250 1070 L340 1090 L350 1440 L318 1920 Z" fill={`url(#${id})`} />
+        {[0, 1, 2].map((i) => <rect key={i} x={196 - i * 2} y={1050 - i * 62} width={110} height={52} rx={26} fill={skin} transform={`rotate(${-6 + i * 3} 250 1076)`} />)}
+        <path d="M1010 1920 L912 1420 Q894 1300 884 1180 Q882 1100 830 1070 L740 1090 L730 1440 L762 1920 Z" fill={`url(#${id}r)`} />
+        {[0, 1, 2].map((i) => <rect key={i} x={774 + i * 2} y={1050 - i * 62} width={110} height={52} rx={26} fill={skin} transform={`rotate(${6 - i * 3} 830 1076)`} />)}
       </g>
     );
   }
