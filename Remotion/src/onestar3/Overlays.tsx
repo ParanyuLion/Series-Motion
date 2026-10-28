@@ -45,6 +45,51 @@ const Grip: React.FC<{ skin: string; layer: "back" | "front"; right?: boolean }>
   );
 };
 
+/** one hand holding the phone from below: the forearm under it (back layer), the thumb on the front edge and four finger tips wrapping the other edge (front layer). side "L" = the left hand (thumb on the left edge). */
+const OneHand: React.FC<{ skin: string; side: "L" | "R"; layer: "back" | "front" }> = ({ skin, side, layer }) => {
+  const id = `oh-${skin.slice(1)}${side}`;
+  const m = side === "L" ? 1 : -1;
+  const X = (x: number) => (side === "L" ? x : 1080 - x);
+  if (layer === "back") {
+    return (
+      <g>
+        <defs><linearGradient id={id} x1={side === "L" ? "0" : "1"} y1="0" x2={side === "L" ? "1" : "0"} y2="0"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#3a2c3c" /></linearGradient></defs>
+        <path d={`M${X(330)} 1920 L${X(392)} 1400 Q${X(400)} 1300 ${X(470)} 1270 L${X(700)} 1290 L${X(720)} 1420 L${X(690)} 1920 Z`} fill={`url(#${id})`} />
+        <path d={`M${X(392)} 1400 Q${X(400)} 1300 ${X(470)} 1270`} stroke={PAL.rim} strokeWidth={3} fill="none" opacity={0.4} />
+      </g>
+    );
+  }
+  return (
+    <g>
+      <Thumb x={X(296)} y={1448} rot={m * 14} len={170} skin={skin} />
+      {[0, 1, 2, 3].map((i) => <rect key={i} x={side === "L" ? 770 : 250} y={1250 - i * 62} width={70} height={50} rx={25} fill={skin} transform={`rotate(${m * -4 + i * m * 1} ${side === "L" ? 800 : 280} ${1275 - i * 62})`} />)}
+    </g>
+  );
+};
+
+/** the other hand: a fist with the index finger out and the forearm behind it, coming from a lower corner to tap at (tx, ty). `rot` is the lean of the finger (+ from the lower left, - from the lower right), `d` how far the tip is from the target along the finger (0 = touching). */
+const Poker: React.FC<{ tx: number; ty: number; rot: number; d: number; skin: string }> = ({ tx, ty, rot, d, skin }) => {
+  const id = `pk-${skin.slice(1)}${rot > 0 ? "a" : "b"}`;
+  return (
+    <g transform={`translate(${tx},${ty}) rotate(${rot}) translate(0,${d})`}>
+      <defs><linearGradient id={id} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#3a2c3c" /></linearGradient></defs>
+      <rect x={-86} y={250} width={172} height={1400} fill={`url(#${id})`} />
+      <rect x={-86} y={250} width={8} height={1400} fill={PAL.rim} opacity={0.35} />
+      {/* the three curled fingers and the thumb */}
+      <rect x={-18} y={120} width={92} height={150} rx={40} fill={`url(#${id})`} />
+      {[0, 1, 2].map((i) => <rect key={i} x={-14 + i * 30} y={116 + i * 4} width={34} height={70} rx={17} fill={skin} opacity={0.95} stroke="#2a2030" strokeWidth={2} />)}
+      <rect x={-96} y={170} width={56} height={130} rx={28} fill={`url(#${id})`} transform="rotate(-12 -68 235)" />
+      {/* the index finger, tapered, with a nail */}
+      <path d="M-52 260 L-48 22 Q-47 -14 -26 -14 Q-4 -14 -3 22 L2 260 Z" fill={`url(#${id})`} />
+      <ellipse cx={-26} cy={14} rx={14} ry={19} fill="#f1d8c8" opacity={0.4} />
+      <path d="M-50 130 q24 8 46 0" stroke="#2a2030" strokeWidth={3} fill="none" opacity={0.35} />
+    </g>
+  );
+};
+
+/** distance of the poking fingertip from its target: it comes in, touches at `at`, and withdraws */
+const pokeD = (g: number, at: number) => 360 * (1 - smooth(ramp(g, at - 34, at))) + 360 * smooth(ramp(g, at + 12, at + 44));
+
 /** a phone seen from the front, big, with the screen content as children (screen is 520 x 960 at the phone's origin top-left) */
 const Phone: React.FC<{ x: number; y: number; rot?: number; glow?: string; g: number; children: React.ReactNode }> = ({ x, y, rot = 0, glow = "#6fa8ff", g, children }) => (
   <g transform={`translate(${x},${y}) rotate(${rot})`}>
@@ -77,7 +122,7 @@ export const PhoneRise: React.FC<OV & { changeAt: number }> = ({ g, from, to, ch
   const sc = 1 + 0.12 * ramp(g, from, to);
   return (
     <g transform={`translate(540,900) scale(${sc * t + (1 - t) * 0.92}) translate(-540,-900)`}>
-      <Grip skin="#c99e80" layer="back" />
+      <OneHand skin="#c99e80" side="L" layer="back" />
             <Phone x={280 + shake} y={430} g={g} rot={-1.5}>
         <AppBar title="รถของคุณ" />
         <g fontFamily={fontFamily} textAnchor="middle">
@@ -93,7 +138,8 @@ export const PhoneRise: React.FC<OV & { changeAt: number }> = ({ g, from, to, ch
           <text x={260} y={784} fontSize={34} fill={PAL.rim} opacity={0.85}>ติดต่อคนขับ</text>
         </g>
       </Phone>
-      <Grip skin="#c99e80" layer="front" />
+      <OneHand skin="#c99e80" side="L" layer="front" />
+      <Poker tx={540} ty={700} rot={-35} d={pokeD(g, changeAt - 14)} skin="#c99e80" />
     </g>
   );
 };
@@ -160,7 +206,7 @@ export const PinReveal: React.FC<OV> = ({ g, from, to }) => {
   const sc = 1 + 0.1 * ramp(g, from, to);
   return (
     <g transform={`translate(${Math.sin(g * 0.07) * 3},${Math.sin(g * 0.05) * 5}) translate(540,900) scale(${sc * (0.94 + 0.06 * t)}) translate(-540,-900)`}>
-      <Grip skin="#c99e80" layer="back" />
+      <OneHand skin="#aeb6c6" side="L" layer="back" />
             <Phone x={280} y={430} g={g} glow="#f2c230">
         <AppBar title="ส่งตำแหน่งให้คนขับ" />
         <g fontFamily={fontFamily} textAnchor="middle">
@@ -177,7 +223,8 @@ export const PinReveal: React.FC<OV> = ({ g, from, to }) => {
           <text x={260} y={894} fontSize={34} fill="#05070d">ส่งแล้ว</text>
         </g>
       </Phone>
-      <Grip skin="#c99e80" layer="front" />
+      <OneHand skin="#aeb6c6" side="L" layer="front" />
+      <Poker tx={540} ty={845} rot={-35} d={pokeD(g, from + 60)} skin="#aeb6c6" />
     </g>
   );
 };
@@ -200,11 +247,10 @@ const Star: React.FC<{ x: number; y: number; r: number; on: number }> = ({ x, y,
 export const RatingPhone: React.FC<OV & { pressAt?: number; owner: string; hand?: string; quiet?: boolean }> = ({ g, from, to, pressAt = -1, owner, hand = "#c99e80", quiet = false }) => {
   const t = smooth(ramp(g, from, from + 20));
   const on = pressAt >= 0 ? smooth(ramp(g, pressAt, pressAt + 8)) : 0;
-  const dist = pressAt >= 0 ? (1 - smooth(ramp(g, pressAt - 30, pressAt))) * 260 + ramp(g, pressAt + 14, pressAt + 44) * 120 : 400;
-  const sc = 1 + 0.08 * ramp(g, from, to);
+    const sc = 1 + 0.08 * ramp(g, from, to);
   return (
     <g transform={`translate(540,900) scale(${sc * (0.94 + 0.06 * t)}) translate(-540,-900)`}>
-      <Grip skin={hand} layer="back" />
+      <OneHand skin={hand} side="R" layer="back" />
             <Phone x={280} y={430} g={g} glow={on > 0.5 ? "#f2c230" : "#6fa8ff"}>
         <AppBar title="ให้คะแนนการเดินทาง" />
         <g fontFamily={fontFamily} textAnchor="middle">
@@ -218,10 +264,8 @@ export const RatingPhone: React.FC<OV & { pressAt?: number; owner: string; hand?
           <text x={260} y={894} fontSize={32} fill={on > 0.5 ? "#05070d" : PAL.rim}>ส่ง</text>
         </g>
       </Phone>
-      <Grip skin={hand} layer="front" right={false} />
-      {pressAt >= 0 && (
-        <Thumb x={645 + 0.57 * dist} y={1507 + 0.82 * dist} rot={-35} len={520} skin={hand} />
-      )}
+      <OneHand skin={hand} side="R" layer="front" />
+      {pressAt >= 0 && <Poker tx={340} ty={1070} rot={35} d={pokeD(g, pressAt)} skin={hand} />}
     </g>
   );
 };
@@ -232,7 +276,7 @@ export const FiveStars: React.FC<OV> = ({ g, from, to }) => {
   const glow = 0.25 + 0.25 * Math.sin((g - from) * 0.08);
   return (
     <g transform={`translate(0,${(1 - t) * 40})`} opacity={t}>
-      <Grip skin="#c99e80" layer="back" />
+      <OneHand skin="#c99e80" side="L" layer="back" />
             <Phone x={280} y={430} g={g}>
         <AppBar title="ประวัติการเดินทาง" />
         <g fontFamily={fontFamily} textAnchor="middle">
@@ -241,7 +285,8 @@ export const FiveStars: React.FC<OV> = ({ g, from, to }) => {
           <text x={260} y={560} fontSize={28} fill={PAL.rim} opacity={0.5}>ไม่มีรายการใหม่</text>
         </g>
       </Phone>
-      <Grip skin="#c99e80" layer="front" />
+      <OneHand skin="#c99e80" side="L" layer="front" />
+      
     </g>
   );
 };
