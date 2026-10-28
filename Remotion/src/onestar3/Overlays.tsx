@@ -46,43 +46,54 @@ const Grip: React.FC<{ skin: string; layer: "back" | "front"; right?: boolean }>
 };
 
 /** one hand holding the phone from below: the forearm under it (back layer), the thumb on the front edge and four finger tips wrapping the other edge (front layer). side "L" = the left hand (thumb on the left edge). */
-const OneHand: React.FC<{ skin: string; side: "L" | "R"; layer: "back" | "front" }> = ({ skin, side, layer }) => {
+export const OneHand: React.FC<{ skin: string; side: "L" | "R"; layer: "back" | "front" }> = ({ skin, side, layer }) => {
   const id = `oh-${skin.slice(1)}${side}`;
+  const sleeve = skin === "#aeb6c6" ? "#2b2f4a" : "#46587a";
   const m = side === "L" ? 1 : -1;
   const X = (x: number) => (side === "L" ? x : 1080 - x);
   if (layer === "back") {
     return (
       <g>
-        <defs><linearGradient id={id} x1={side === "L" ? "0" : "1"} y1="0" x2={side === "L" ? "1" : "0"} y2="0"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#3a2c3c" /></linearGradient></defs>
-        <path d={`M${X(330)} 1920 L${X(392)} 1400 Q${X(400)} 1300 ${X(470)} 1270 L${X(700)} 1290 L${X(720)} 1420 L${X(690)} 1920 Z`} fill={`url(#${id})`} />
-        <path d={`M${X(392)} 1400 Q${X(400)} 1300 ${X(470)} 1270`} stroke={PAL.rim} strokeWidth={3} fill="none" opacity={0.4} />
+        <defs>
+          <linearGradient id={id} x1={side === "L" ? "0" : "1"} y1="0" x2={side === "L" ? "1" : "0"} y2="0"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#3a2c3c" /></linearGradient>
+          <linearGradient id={id + "s"} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={sleeve} /><stop offset="1" stopColor="#10162a" /></linearGradient>
+        </defs>
+        <path d={`M${X(340)} 1920 L${X(398)} 1560 L${X(700)} 1560 L${X(740)} 1920 Z`} fill={`url(#${id}s)`} />
+        <rect x={X(390) - (side === "L" ? 0 : 320)} y={1544} width={320} height={30} rx={12} fill={sleeve} stroke={PAL.rim} strokeWidth={2} />
+        <path d={`M${X(404)} 1550 Q${X(404)} 1400 ${X(470)} 1330 L${X(690)} 1350 Q${X(704)} 1420 ${X(692)} 1550 Z`} fill={`url(#${id})`} />
       </g>
     );
   }
   return (
     <g>
-      <Thumb x={X(296)} y={1448} rot={m * 14} len={170} skin={skin} />
+      <Thumb x={X(436)} y={1540} rot={m * -24} len={260} skin={skin} />
       {[0, 1, 2, 3].map((i) => <rect key={i} x={side === "L" ? 770 : 250} y={1250 - i * 62} width={70} height={50} rx={25} fill={skin} transform={`rotate(${m * -4 + i * m * 1} ${side === "L" ? 800 : 280} ${1275 - i * 62})`} />)}
     </g>
   );
 };
 
 /** the other hand: a fist with the index finger out and the forearm behind it, coming from a lower corner to tap at (tx, ty). `rot` is the lean of the finger (+ from the lower left, - from the lower right), `d` how far the tip is from the target along the finger (0 = touching). */
-const Poker: React.FC<{ tx: number; ty: number; rot: number; d: number; skin: string }> = ({ tx, ty, rot, d, skin }) => {
+export const Poker: React.FC<{ tx: number; ty: number; rot: number; d: number; skin: string }> = ({ tx, ty, rot, d, skin }) => {
   const id = `pk-${skin.slice(1)}${rot > 0 ? "a" : "b"}`;
+  const sleeve = skin === "#aeb6c6" ? "#2b2f4a" : "#46587a";
   return (
     <g transform={`translate(${tx},${ty}) rotate(${rot}) translate(0,${d})`}>
-      <defs><linearGradient id={id} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={skin} /><stop offset="1" stopColor="#3a2c3c" /></linearGradient></defs>
-      <rect x={-86} y={250} width={172} height={1400} fill={`url(#${id})`} />
-      <rect x={-86} y={250} width={8} height={1400} fill={PAL.rim} opacity={0.35} />
-      {/* the three curled fingers and the thumb */}
-      <rect x={-18} y={120} width={92} height={150} rx={40} fill={`url(#${id})`} />
-      {[0, 1, 2].map((i) => <rect key={i} x={-14 + i * 30} y={116 + i * 4} width={34} height={70} rx={17} fill={skin} opacity={0.95} stroke="#2a2030" strokeWidth={2} />)}
-      <rect x={-96} y={170} width={56} height={130} rx={28} fill={`url(#${id})`} transform="rotate(-12 -68 235)" />
-      {/* the index finger, tapered, with a nail */}
-      <path d="M-52 260 L-48 22 Q-47 -14 -26 -14 Q-4 -14 -3 22 L2 260 Z" fill={`url(#${id})`} />
-      <ellipse cx={-26} cy={14} rx={14} ry={19} fill="#f1d8c8" opacity={0.4} />
-      <path d="M-50 130 q24 8 46 0" stroke="#2a2030" strokeWidth={3} fill="none" opacity={0.35} />
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={skin} /><stop offset="0.7" stopColor={skin} /><stop offset="1" stopColor="#4a3a4c" /></linearGradient>
+        <linearGradient id={id + "s"} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={sleeve} /><stop offset="1" stopColor="#10162a" /></linearGradient>
+      </defs>
+      {/* sleeve and cuff */}
+      <path d="M-64 330 L104 330 L150 1700 L-120 1700 Z" fill={`url(#${id}s)`} />
+      <path d="M-64 330 L-120 1700" stroke={PAL.rim} strokeWidth={4} opacity={0.4} />
+      <rect x={-72} y={312} width={184} height={34} rx={14} fill={sleeve} stroke={PAL.rim} strokeWidth={2} opacity={0.95} />
+      {/* wrist and the back of the hand: a fist with the index finger out */}
+      <path d="M-40 316 L-46 220 Q-70 150 -52 100 L-46 24 Q-46 -14 -22 -14 Q2 -14 2 24 L2 138 Q16 116 40 120 Q64 124 66 150 Q88 148 96 176 Q114 182 114 212 Q118 270 92 316 Z" fill={`url(#${id})`} />
+      {/* the thumb folded across the side of the fist */}
+      <path d="M-48 210 Q-92 196 -96 238 Q-96 276 -58 292 Q-40 276 -42 240 Z" fill={skin} stroke="#3a2c3c" strokeWidth={2} opacity={0.95} />
+      {/* knuckle lines, nail, highlight */}
+      <path d="M12 150 Q34 142 56 152 M50 178 Q76 170 96 182 M70 206 Q92 202 108 214" stroke="#2a2030" strokeWidth={3} fill="none" opacity={0.4} strokeLinecap="round" />
+      <ellipse cx={-22} cy={12} rx={13} ry={18} fill="#f1d8c8" opacity={0.45} />
+      <path d="M-34 40 L-34 120" stroke="#fff" strokeWidth={5} opacity={0.18} strokeLinecap="round" />
     </g>
   );
 };
