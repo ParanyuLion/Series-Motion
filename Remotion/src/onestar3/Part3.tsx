@@ -33,8 +33,8 @@ const SetView: React.FC<{ g: number; a: number; b: number; keys: Key[]; world: R
   if (g < a - 1 || g > b + 1) return null;
   const cam = camAt(g, keys);
   const open = dip(g, a, b, 9);
-  const amounts = ovs.map((o) => win(g, o.a, o.b, 10));
-  const ov = Math.max(0, ...amounts);
+  const amounts = ovs.map((o) => win(g, o.a, o.b, 5));
+  const ov = Math.max(0, ...ovs.map((o) => win(g, o.a - 8, o.b + 8, 8)));
   const scene = <WorldCam cam={cam}>{world}{actors ? actors(cam) : null}</WorldCam>;
   return (
     <g opacity={open}>
@@ -74,7 +74,7 @@ const TitleCard: React.FC<{ g: number }> = ({ g }) => {
   return (
     <div style={{ position: "absolute", left: 140, right: 190, top: 330, textAlign: "center", fontFamily, color: "#fff", opacity: o, background: "rgba(5,8,16,0.72)", borderRadius: 32, padding: "26px 16px", border: `2px solid ${PAL.rim}55`, textShadow: "0 2px 12px rgba(0,0,0,0.95)" }}>
       <div style={{ fontSize: 34, color: PAL.accent, letterSpacing: 2 }}>1 ดาว · ตอนที่ 3 · ตอนจบ</div>
-      <div style={{ fontSize: 66, lineHeight: 1.45, marginTop: 10 }}>ป้าอร</div>
+      <div style={{ fontSize: 66, lineHeight: 1.45, marginTop: 10 }}>คนที่ช่วยคุณ</div>
     </div>
   );
 };
@@ -107,12 +107,12 @@ const World: React.FC<{ g: number }> = ({ g }) => {
       g={g}
       a={-20}
       b={aEnd}
-      keys={[k(0, 1000, 930, 1.0), k(c.titleAt, 1030, 930, 1.06), k(c.riseAt, 1060, 940, 1.14), k(S(4), 1030, 930, 1.3), k(aEnd, 1000, 940, 1.38)]}
-      world={<Carriage g={g} />}
-      actors={() => <g><Shadow x={youSit.x} y={1330} w={130} /><Actor id="osYou" x={youSit.x} y={youSit.y} scale={1.7} g={g} fear={0.4} pose="sit" facing={1} /></g>}
+      keys={[k(0, 760, 930, 1.0), k(c.titleAt - 60, 1000, 940, 1.12), k(c.trainAt + 20, 1100, 900, 1.2), k(c.trainAt + 110, 1250, 640, 1.65), k(c.trainAt + 190, 1080, 930, 1.2), k(c.riseAt, 1060, 940, 1.14), k(S(4), 1030, 930, 1.3), k(aEnd, 1000, 940, 1.38)]}
+      world={<Carriage g={g} ghost={ramp(g, c.trainAt + 70, c.trainAt + 120) * (1 - ramp(g, c.trainAt + 150, c.trainAt + 190))} />}
+      actors={() => <g><Shadow x={youSit.x} y={1288} w={120} /><Actor id="osYou" x={youSit.x} y={youSit.y} scale={1.7} g={g} fear={0.4} pose="sit" facing={1} /></g>}
       ovs={[
         { a: c.riseAt - 8, b: S(4) + 6, node: (gg) => <PhoneRise g={gg} from={c.riseAt - 8} to={S(4) + 6} changeAt={changeAt} /> },
-        { a: S(4) + 6, b: aEnd - 4, node: (gg) => <FaceCut g={gg} from={S(4) + 6} to={aEnd - 4} kind="you" fear={0.85} look={[0.6, 0.3]} below={0.9} side={-1} key1="#9cc0ff" /> },
+        { a: S(4) + 6, b: aEnd - 16, node: (gg) => <FaceCut g={gg} from={S(4) + 6} to={aEnd - 16} kind="you" fear={0.85} look={[0.6, 0.3]} below={0.9} side={-1} key1="#9cc0ff" /> },
       ]}
     />
   );
@@ -139,12 +139,14 @@ const World: React.FC<{ g: number }> = ({ g }) => {
   const lampOn = g >= c.lockAt - 10 && g < c.threeAt ? 0.9 : 1;
   const unlock = ramp(g, c.exitAt + 6, c.exitAt + 50);
   const sitDoor = g >= c.lockAt + 100; // she sits by the door from "ป้าหลับตารอ"
-  const youStands = g >= c.keyAt; // swapped while a cut-in covers the room
+  const youStands = g >= c.sorryAt; // swapped while a cut-in covers the room
   const auntAtDoor = g >= c.sorryAt;
   const keyT = ramp(g, c.lockAt + 8, c.lockAt + 44);
   const turnT = ramp(g, c.lockAt + 46, c.lockAt + 70);
   const backT = ramp(g, c.lockAt + 84, c.lockAt + 112);
-  const handX = 1911 - 260 * (1 - keyT) - 200 * backT;
+  const handX = 1988 - 260 * (1 - keyT) - 200 * backT;
+  const youX = 1700 + 430 * ramp(g, c.exitAt + 24, c.exitAt + 76);
+  const youWalk = g >= c.exitAt + 24 && g < c.exitAt + 76 ? 1 : 0;
   const handY = 1133 + 120 * backT;
   const house = (
     <SetView
@@ -152,19 +154,19 @@ const World: React.FC<{ g: number }> = ({ g }) => {
       a={c.houseAt}
       b={cEnd}
       keys={[
-        k(c.houseAt, 1900, 880, 1.0),
-        k(c.chimeAt - 60, 1260, 900, 1.05),
+        k(c.houseAt, 1750, 880, 1.0),
+        k(c.chimeAt - 60, 1180, 900, 1.05),
         k(c.pinAt, 1240, 960, 1.18),
         k(c.starAt, 1240, 980, 1.25),
         k(c.sorryAt, 1300, 960, 1.3),
         k(c.lockAt - 10, 1900, 1040, 1.35),
-        k(c.lockAt + 60, 1960, 1080, 1.9),
+        k(c.lockAt + 60, 1900, 1100, 1.75),
         k(c.lockAt + 110, 1920, 1120, 1.7),
         k(c.threeAt + 60, 1900, 1150, 1.9),
         k(c.keyAt, 1820, 1100, 1.5),
-        k(c.moveAt, 1900, 1120, 1.6),
-        k(c.exitAt - 20, 2000, 1080, 1.7),
-        k(cEnd, 2090, 1060, 1.9),
+        k(c.moveAt, 1880, 1120, 1.55),
+        k(c.exitAt - 20, 1900, 1100, 1.5),
+        k(cEnd, 2050, 1100, 1.7),
       ]}
       world={<House g={g} lampOn={lampOn} door={unlock} />}
       actors={() => (
@@ -173,8 +175,8 @@ const World: React.FC<{ g: number }> = ({ g }) => {
           {!youStands && <Chair x={1000} dir={1} />}
           {!youStands && <Shadow x={1000} />}
           {!youStands && <Actor id="osYou" x={1000} y={1320} scale={1.8} g={g} pose="sit" fear={0.5} facing={1} />}
-          {youStands && <Shadow x={1630} />}
-          {youStands && <Actor id="osYou" x={1630} y={1385} scale={1.8} g={g} fear={0.6} facing={1} />}
+          {youStands && <Shadow x={youX} y={1392} />}
+          {youStands && <Actor id="osYou" x={youX} y={1385} scale={1.8} g={g} fear={0.6} facing={1} walk={youWalk} />}
           {/* her: at the table, then at the door */}
           {!auntAtDoor && <Chair x={1380} dir={-1} />}
           {!auntAtDoor && <Shadow x={1380} />}
@@ -184,15 +186,16 @@ const World: React.FC<{ g: number }> = ({ g }) => {
           {sitDoor && <Chair x={1900} dir={-1} />}
           {sitDoor && <Shadow x={1900} />}
           {sitDoor && <Actor id="osFlower" x={1900} y={1320} scale={1.8} g={g} pose="sit" facing={-1} />}
-          {sitDoor && <LapPhone g={g} x={1860} y={1200} threeAt={c.threeAt} moveAt={c.moveAt + 20} />}
+          {sitDoor && <LapPhone g={g} x={1862} y={1250} threeAt={c.threeAt} moveAt={c.moveAt + 20} twoAt={c.exitAt - 30} />}
           {/* the key in a pale hand */}
-          {g >= c.lockAt && g < c.lockAt + 120 && <KeyHand x={handX} y={handY} turn={turnT} g={g} click={c.lockAt + 70} dir={-1} sx={1850} sy={1070} />}
+          {g >= c.lockAt && g < c.lockAt + 120 && <KeyHand x={handX} y={handY} turn={turnT} g={g} click={c.lockAt + 70} dir={-1} sx={1850} sy={1075} />}
         </g>
       )}
       ovs={[
         { a: c.chimeAt - 6, b: c.pinAt - 6, node: (gg) => <PocketChime g={gg} from={c.chimeAt - 6} to={c.pinAt - 6} ringAt={c.chimeAt + 14} yourAt={c.chimeAt + 62} /> },
         { a: c.pinAt - 6, b: c.starAt - 6, node: (gg) => <PinReveal g={gg} from={c.pinAt - 6} to={c.starAt - 6} /> },
         { a: c.sorryAt - 8, b: c.lockAt - 4, node: (gg) => <FaceCut g={gg} from={c.sorryAt - 8} to={c.lockAt - 4} kind="aunt" fear={0.55} look={[-0.3, 0.5]} side={1} /> },
+        { a: c.threeAt + 80, b: c.keyAt - 12, node: (gg) => <FaceCut g={gg} from={c.threeAt + 80} to={c.keyAt - 12} kind="aunt" fear={0} closed={1} side={-1} key1="#ffd9a0" /> },
         { a: c.keyAt - 4, b: c.pressAt - 6, node: (gg) => <FaceCut g={gg} from={c.keyAt - 4} to={c.pressAt - 6} kind="you" fear={0.7} look={[0.7, 0.2]} side={-1} key1="#ffd9a0" /> },
         { a: c.pressAt - 6, b: c.moveAt - 4, node: (gg) => <RatingPhone g={gg} from={c.pressAt - 6} to={c.moveAt - 4} pressAt={c.pressAt + 70} owner="ป้าอร" hand="#c99e80" /> },
       ]}
@@ -238,9 +241,10 @@ export const Part3: React.FC<{ g?: number }> = ({ g: gOverride }) => {
       {shots.map((shot, i) => (
         <Sequence key={i} from={starts[i] + shot.leadFrames} durationInFrames={shot.audioFrames}>
           <Audio src={staticFile(shot.audio)} />
-          <SubtitleAt text={shot.text.replace(/คนขับ/g, "คน⁠ขับ").replace(/นะครับ/g, "นะ⁠ครับ").replace(/(\d) นาที/g, "$1 นาที")} from={starts[i] + shot.leadFrames} g={frame} />
+          <SubtitleAt text={shot.text.replace(/คนขับ/g, "คน⁠ขับ").replace(/นะครับ/g, "นะ⁠ครับ").replace(/สถานีสุดท้าย/g, "สถานี⁠สุดท้าย").replace(/อยู่บนรถ/g, "อยู่⁠บน⁠รถ").replace(/กลิ่นอับ/g, "กลิ่น⁠อับ").replace(/เลขใหม่/g, "เลข⁠ใหม่").replace(/ไม่หัน/g, "ไม่⁠หัน").replace(/ดวงเดียว/g, "ดวง⁠เดียว").replace(/ในชื่อของป้า/g, "ในชื่อ⁠ของป้า").replace(/รออยู่ก่อน/g, "รออยู่⁠ก่อน").replace(/(\d) นาที/g, "$1 นาที")} from={starts[i] + shot.leadFrames} g={frame} />
         </Sequence>
       ))}
+      <Audio src={staticFile("onestar3/bed.wav")} volume={0.5} />
     </AbsoluteFill>
   );
 };

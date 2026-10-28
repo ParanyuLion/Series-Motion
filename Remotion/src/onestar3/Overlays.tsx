@@ -97,9 +97,19 @@ export const PhoneRise: React.FC<OV & { changeAt: number }> = ({ g, from, to, ch
 /** a front close-up inside the set */
 export const FaceCut: React.FC<OV & { kind: "you" | "aunt"; look?: [number, number]; fear?: number; closed?: number; side?: 1 | -1; below?: number; key1?: string; y?: number; push?: number }> = ({ g, from, to, kind, look, fear, closed, side, below, key1, y = 860, push = 0.1 }) => {
   const z = 1.0 + push * ramp(g, from, to);
+  const sway = Math.sin((g - from) * 0.035) * 1.1;
+  const bob = Math.sin((g - from) * 0.05) * 6;
   return (
-    <g transform={`translate(540,${y}) scale(${z})`}>
+    <g>
+      <ellipse cx={540} cy={y - 40} rx={470} ry={560} fill={key1 ?? "#9cc0ff"} opacity={0.12} filter="url(#os3-d3)" />
+    <g transform={`translate(540,${y + bob}) rotate(${sway}) scale(${z})`}>
       <Face3 id={`fc-${kind}-${from}`} kind={kind} g={g} side={side} look={look} fear={fear} closed={closed} below={below} key1={key1} />
+    </g>
+      {Array.from({ length: 16 }, (_, i) => {
+        const sx = rnd(i + 300) * 1080;
+        const sy = ((rnd(i + 330) * 2400 + (g - from) * (2 + rnd(i + 360) * 3)) % 2200) - 150;
+        return <path key={i} d={`M${sx} ${sy} q6 60 0 130`} stroke="#bcd4ff" strokeWidth={3 + rnd(i + 390) * 4} fill="none" opacity={0.2} strokeLinecap="round" filter="url(#os3-d1)" />;
+      })}
     </g>
   );
 };
@@ -145,7 +155,7 @@ export const PinReveal: React.FC<OV> = ({ g, from, to }) => {
   const ring = ((g - from) * 0.02) % 1;
   const sc = 1 + 0.1 * ramp(g, from, to);
   return (
-    <g transform={`translate(540,900) scale(${sc * (0.94 + 0.06 * t)}) translate(-540,-900)`}>
+    <g transform={`translate(${Math.sin(g * 0.07) * 3},${Math.sin(g * 0.05) * 5}) translate(540,900) scale(${sc * (0.94 + 0.06 * t)}) translate(-540,-900)`}>
       <Grip skin="#c99e80" layer="back" />
             <Phone x={280} y={430} g={g} glow="#f2c230">
         <AppBar title="ส่งตำแหน่งให้คนขับ" />

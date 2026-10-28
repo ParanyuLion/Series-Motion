@@ -27,10 +27,10 @@ export const KeyHand: React.FC<{ x: number; y: number; turn: number; g: number; 
   const ring = ramp(g, click, click + 24);
   return (
     <g>
-      <line x1={sx} y1={sy} x2={x - dir * 40} y2={y} stroke="#8d96a8" strokeWidth={50} strokeLinecap="round" />
+      <line x1={sx} y1={sy} x2={x - dir * 40} y2={y} stroke="#2b2f4a" strokeWidth={34} strokeLinecap="round" />
       <line x1={sx} y1={sy - 18} x2={x - dir * 40} y2={y - 18} stroke={PAL.rim} strokeWidth={3} opacity={0.4} />
-      <g transform={`translate(${x},${y}) scale(${dir},1) translate(${-x},${-y})`}>
-        <ellipse cx={x + 40} cy={y} rx={46} ry={40} fill="#aeb6c6" />
+      <g transform={`translate(${x},${y}) scale(${dir * 0.7},0.7) translate(${-x},${-y})`}>
+        <ellipse cx={x + 40} cy={y} rx={40} ry={34} fill="#c3cad8" />
         {[-20, -6, 8, 22].map((o, i) => <rect key={i} x={x - 30} y={y + o - 7} width={64} height={14} rx={7} fill="#a0a9ba" />)}
         <g transform={`translate(${x - 30},${y - 4}) rotate(${rot})`}>
           <rect x={-120} y={-5} width={126} height={10} rx={5} fill="#c9b27a" />
@@ -39,13 +39,13 @@ export const KeyHand: React.FC<{ x: number; y: number; turn: number; g: number; 
           <circle cx={12} cy={0} r={20} fill="none" stroke="#c9b27a" strokeWidth={7} />
         </g>
       </g>
-      {ring > 0 && ring < 1 && <ellipse cx={x + dir * 182} cy={y} rx={20 + ring * 90} ry={20 + ring * 90} fill="none" stroke="#cfe0ff" strokeWidth={4} opacity={0.7 * (1 - ring)} />}
+      {ring > 0 && ring < 1 && <ellipse cx={x - dir * 105} cy={y} rx={20 + ring * 90} ry={20 + ring * 90} fill="none" stroke="#cfe0ff" strokeWidth={4} opacity={0.7 * (1 - ring)} />}
     </g>
   );
 };
 
 /** her phone on her lap: first the rating screen (a row of stars), after the star moves it shows the number 3 */
-export const LapPhone: React.FC<{ g: number; x: number; y: number; threeAt: number; moveAt: number }> = ({ g, x, y, threeAt, moveAt }) => {
+export const LapPhone: React.FC<{ g: number; x: number; y: number; threeAt: number; moveAt: number; twoAt?: number }> = ({ g, x, y, threeAt, moveAt, twoAt = 1e9 }) => {
   const on = ramp(g, threeAt - 20, threeAt + 8);
   const after = g >= moveAt;
   return (
@@ -54,7 +54,7 @@ export const LapPhone: React.FC<{ g: number; x: number; y: number; threeAt: numb
       <rect x={-52} y={-84} width={104} height={168} rx={14} fill="#05070d" stroke={PAL.rim} strokeWidth={3} />
       <rect x={-45} y={-76} width={90} height={152} rx={9} fill={after ? "#2a2208" : "#0f2250"} />
       {after ? (
-        <g fontFamily={fontFamily} textAnchor="middle"><text x={0} y={-6} fontSize={26} fill={PAL.accent}>ถึงใน</text><text x={0} y={36} fontSize={44} fill={PAL.accent}>3</text><text x={0} y={62} fontSize={16} fill={PAL.rim}>นาที</text></g>
+        <g fontFamily={fontFamily} textAnchor="middle"><text x={0} y={-6} fontSize={26} fill={PAL.accent}>ถึงใน</text><text x={0} y={36} fontSize={44} fill={PAL.accent}>{g >= twoAt ? 2 : 3}</text><text x={0} y={62} fontSize={16} fill={PAL.rim}>นาที</text></g>
       ) : (
         Array.from({ length: 5 }, (_, i) => <circle key={i} cx={-32 + i * 16} cy={0} r={5} fill={i === 0 ? "#4a5f8e" : "#223a68"} />)
       )}

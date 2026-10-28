@@ -52,7 +52,7 @@ const Bokeh: React.FC<{ x: number; y: number; w: number; h: number; n: number; s
 /* ------------------------------------------------------------------ the carriage ------------------------------------------------------------------ */
 
 /** the last train, empty: the far wall of the carriage with four rain-streaked windows, blue bench seats, handrails and straps, flickering light bars, a wet floor */
-export const Carriage: React.FC<{ g: number }> = ({ g }) => {
+export const Carriage: React.FC<{ g: number; ghost?: number }> = ({ g, ghost = 0 }) => {
   const flick = g % 97 > 92 ? 0.55 : 1;
   const windows = [150, 560, 970, 1380];
   return (
@@ -84,7 +84,7 @@ export const Carriage: React.FC<{ g: number }> = ({ g }) => {
         </g>
       ))}
       {/* a faint pale face in the glass of the third window: the thing that waited */}
-      <g opacity={0.1 + 0.05 * Math.sin(g * 0.03)} transform="translate(1152,520)">
+      <g opacity={0.1 + 0.05 * Math.sin(g * 0.03) + 0.3 * ghost} transform="translate(1152,520)">
         <ellipse cx={0} cy={0} rx={58} ry={74} fill="#dfe5f2" filter="url(#os3-d1)" />
         <ellipse cx={-20} cy={-8} rx={9} ry={6} fill="#05080f" /><ellipse cx={20} cy={-8} rx={9} ry={6} fill="#05080f" />
       </g>
@@ -186,7 +186,7 @@ export const Station: React.FC<{ g: number }> = ({ g }) => {
         <ellipse cx={2155} cy={1320} rx={330} ry={26} fill={WARM} opacity={0.18} filter="url(#os3-d2)" />
       </g>
       {/* the bench */}
-      <g transform="translate(1250,0)">
+      <g transform="translate(1250,70)">
         <rect x={0} y={1130} width={430} height={26} rx={8} fill="#2c2a2e" />
         <rect x={0} y={1010} width={430} height={26} rx={8} fill="#2c2a2e" />
         <rect x={10} y={1010} width={16} height={330} fill="#1a1c28" /><rect x={404} y={1010} width={16} height={330} fill="#1a1c28" />
@@ -201,7 +201,7 @@ export const Station: React.FC<{ g: number }> = ({ g }) => {
       {[330, 880, 1440, 2000, 2560].map((x, i) => <rect key={x} x={x} y={1350} width={200} height={300} fill="#bcd4ff" opacity={0.05 * f(i)} filter="url(#os3-d2)" />)}
       <ellipse cx={2155} cy={1400} rx={300} ry={30} fill={WARM} opacity={0.2} filter="url(#os3-d2)" />
       {/* posts and the rails below the platform edge */}
-      {[640, 1190, 1760].map((x) => <g key={x}><rect x={x} y={440} width={34} height={900} fill="#0c1426" stroke="#1a2a4a" strokeWidth={3} /><rect x={x} y={440} width={5} height={900} fill={PAL.rim} opacity={0.4} /></g>)}
+      {[640, 1470, 1760].map((x) => <g key={x}><rect x={x} y={440} width={34} height={900} fill="#0c1426" stroke="#1a2a4a" strokeWidth={3} /><rect x={x} y={440} width={5} height={900} fill={PAL.rim} opacity={0.4} /></g>)}
       <rect x={-300} y={1700} width={3200} height={26} fill="#101a2e" /><rect x={-300} y={1830} width={3200} height={26} fill="#101a2e" />
       <Streaks g={g} x={-300} y={460} w={3200} h={900} n={60} seed={5} />
     </g>
@@ -255,14 +255,17 @@ export const House: React.FC<{ g: number; lampOn?: number; door?: number }> = ({
         </g>
       ))}
       {/* the door with its lock and a chain; `door` opens it a crack onto the cold lane */}
-      <g transform={`translate(2230,1260) scale(0.5) translate(-2230,-1260) translate(2230,0) scale(${1 - 0.2 * door},1) translate(-2230,0) translate(1900,0)`}>
-        <rect x={0} y={150} width={330} height={1110} fill="#9fbfff" opacity={0.85 * door} />
+      <g transform="translate(2230,1260) scale(0.5) translate(-2230,-1260)">
+      <rect x={1900} y={150} width={330} height={1110} fill="#bcd4ff" opacity={0.9 * door} />
+      <polygon points="1900,1260 2230,1260 1500,1500 1300,1500" fill="#bcd4ff" opacity={0.18 * door} />
+      <g transform={`translate(2230,0) scale(${1 - 0.8 * door},1) translate(-2230,0) translate(1900,0)`}>
         <rect x={0} y={150} width={330} height={1110} fill="#1b1520" stroke="#35283a" strokeWidth={8} />
         <rect x={34} y={200} width={262} height={380} fill="#140f18" stroke="#35283a" strokeWidth={5} /><rect x={34} y={640} width={262} height={540} fill="#140f18" stroke="#35283a" strokeWidth={5} />
         <circle cx={48} cy={900} r={34} fill="#3a2f24" stroke="#9a8460" strokeWidth={4} /><rect x={34} y={960} width={44} height={110} rx={10} fill="#9a8460" opacity={0.85} />
         <circle cx={56} cy={1006} r={8} fill="#0b0810" />
         <path d="M60 640 q20 40 50 20 q30 -20 60 10" stroke="#9a8460" strokeWidth={5} fill="none" />
         <rect x={0} y={150} width={330} height={1110} fill="#0a0e1c" opacity={0.25} />
+      </g>
       </g>
       {/* the floor: planks, damp prints, the lamp's reflection */}
       <rect x={-300} y={1263} width={3000} height={900} fill="url(#os3-floorH)" />
@@ -337,8 +340,8 @@ export const Lane: React.FC<{ g: number; glow?: number }> = ({ g, glow = 0 }) =>
     {Array.from({ length: 8 }, (_, i) => <g key={i}><ellipse cx={100 + i * 280} cy={1470 + (i % 3) * 110} rx={110 + (i % 2) * 60} ry={17} fill="#0b1a3a" /><ellipse cx={100 + i * 280} cy={1470 + (i % 3) * 110} rx={70} ry={8} fill={i % 2 ? WARM : COLD} opacity={0.22} filter="url(#os3-d1)" /></g>)}
     {/* the far end: headlights as a glow on the wet ground and the wall */}
     <ellipse cx={1000} cy={1380} rx={420} ry={60} fill="#cfe0ff" opacity={0.5 * glow} filter="url(#os3-d3)" />
-    <rect x={900} y={1210} width={200} height={110} rx={30} fill="#05070c" opacity={glow} />
-    <circle cx={925} cy={1262} r={26} fill="#fff" opacity={0.95 * glow} filter="url(#os3-d1)" /><circle cx={1075} cy={1262} r={26} fill="#fff" opacity={0.95 * glow} filter="url(#os3-d1)" />
+    <rect x={930} y={1318} width={140} height={60} rx={20} fill="#05070c" opacity={glow} />
+    <circle cx={950} cy={1352} r={16} fill="#fff" opacity={0.95 * glow} filter="url(#os3-d1)" /><circle cx={1050} cy={1352} r={16} fill="#fff" opacity={0.95 * glow} filter="url(#os3-d1)" />
     <Streaks g={g} x={-300} y={100} w={2800} h={1300} n={60} seed={41} />
   </g>
 );
