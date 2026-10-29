@@ -98,7 +98,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
             <g><path d={`M-56 ${eyeY + 50} Q0 ${eyeY + 92} 56 ${eyeY + 50} Q0 ${eyeY + 62} -56 ${eyeY + 50} Z`} fill="#f7efe0" stroke={INK} strokeWidth={5} />{[-36, -18, 0, 18, 36].map((x) => <line key={x} x1={x} y1={eyeY + 58 + Math.abs(x) * 0.02} x2={x} y2={eyeY + 76 - Math.abs(x) * 0.25} stroke={INK} strokeWidth={2.5} />)}</g>
           )}
           {mood === "stare" && <ellipse cx={0} cy={eyeY + 58} rx={10} ry={6} fill="#7a3a30" stroke={INK} strokeWidth={4} />}
-          {mood === "worry" && <path d={`M70 ${headY - 30} q6 18 -2 26`} fill="none" stroke="#7fb4e6" strokeWidth={7} />}
+          {mood === "worry" && <path d={`M68 ${headY - 8} Q56 ${headY + 12} 68 ${headY + 20} Q80 ${headY + 12} 68 ${headY - 8} Z`} fill="#9cd0f2" stroke={INK} strokeWidth={3.5} />}
       </g>
     );
   };
