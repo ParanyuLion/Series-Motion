@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { fontFamily } from "../island/fonts";
 import { Figure, LOOKS, Mood } from "./Figure";
+import { Village } from "./Village";
 import { Traveller, TravellerMood } from "./Traveller";
 
 // Character sheet and mood sheet for the style test of series 5. `npx remotion still ShadowStyle out/x.png --props='{"which":"sheet"}'`
@@ -60,6 +61,7 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
   const poses = which === "poses";
   const turn = which.startsWith("turn8");
   const village = which === "village";
+  if (which === "village2") return <Village />;
   const cast: { id: string; x: number; th: string; en: string; mood: Mood }[] = [
     { id: "you", x: 220, th: "คุณ", en: "the traveller (has a shadow)", mood: "worry" },
     { id: "head", x: 520, th: "ผู้ใหญ่", en: "the head", mood: "smile" },
