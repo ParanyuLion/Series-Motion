@@ -21,11 +21,11 @@ def hit(at_frame):
     bed[c0:c0 + L] += 0.7 * env * (np.sin(2 * np.pi * 880 * tt) * 0.6 + np.sin(2 * np.pi * 1320 * tt) * 0.3 + rng.normal(0, 0.4, L))
 hit(m["cues"]["clapAt"])
 # swell while the shadow stretches (lines 14-15), then silence
-a = int(m["cues"]["stretchAt"] / fps * SR); b = int(m["cues"]["lineEnd15"] / fps * SR)
+a = int(m["cues"]["stretchAt"] / fps * SR); b = int(m["cues"]["lineEnd13"] / fps * SR)
 sw = np.zeros(n); L = b - a
 sw[a:b] = np.linspace(0, 1, L) ** 2
 bed += 0.12 * sw * (np.sin(2 * np.pi * 73 * t) + 0.6 * np.sin(2 * np.pi * 110 * t))
-tail = int((m["cues"]["lineEnd15"] + 20) / fps * SR)
+tail = int((m["cues"]["lineEnd13"] + 20) / fps * SR)
 fade = np.ones(n); fade[tail:] = np.linspace(1, 0, n - tail) ** 2
 bed *= fade
 bed *= 0.9 / max(1e-6, np.abs(bed).max())
