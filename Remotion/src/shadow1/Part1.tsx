@@ -93,6 +93,52 @@ const Boat: React.FC<{ x: number; y: number; rock: number }> = ({ x, y, rock }) 
   </g>
 );
 
+
+/** the ground in front of a photo backdrop, drawn in code in the same flat-colour + ink style: packed dirt with ruts and pebbles (lane) or stone paving (alley) */
+const Ground: React.FC<{ kind: "lane" | "alley"; edge: string }> = ({ kind, edge }) => {
+  const rnd = (i: number, k: number) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+  const top = 1236;
+  return (
+    <g strokeLinejoin="round">
+      <rect x={-200} y={top} width={1480} height={1500} fill={edge} />
+      <rect x={-200} y={top} width={1480} height={26} fill="#2a1d10" opacity={0.28} />
+      {kind === "lane" ? (
+        <g>
+          {/* two wheel ruts running toward the horizon */}
+          {[[300, 120], [760, 980]].map(([x0, x1], i) => (
+            <g key={i}><path d={`M${x0} ${top + 20} Q${(x0 + x1) / 2} ${top + 300} ${x1} 1900`} fill="none" stroke="#5a4326" strokeWidth={34} opacity={0.45} /><path d={`M${x0} ${top + 20} Q${(x0 + x1) / 2} ${top + 300} ${x1} 1900`} fill="none" stroke={INK} strokeWidth={4} opacity={0.5} /></g>
+          ))}
+          {Array.from({ length: 70 }, (_, i) => {
+            const y = top + 30 + Math.pow(rnd(i, 1), 1.6) * 640;
+            const k = 0.5 + (y - top) / 500;
+            return <ellipse key={i} cx={rnd(i, 2) * 1080} cy={y} rx={(5 + rnd(i, 3) * 12) * k} ry={(3 + rnd(i, 4) * 5) * k} fill={rnd(i, 5) > 0.5 ? "#6a5232" : "#c9b184"} stroke={INK} strokeWidth={2} opacity={0.75} />;
+          })}
+          {Array.from({ length: 9 }, (_, i) => <path key={"c" + i} d={`M${rnd(i, 6) * 1000} ${top + 60 + i * 70} l${40 + rnd(i, 7) * 60} ${10 + rnd(i, 8) * 16} l${30} ${-8}`} fill="none" stroke="#3a2a18" strokeWidth={3} opacity={0.55} />)}
+        </g>
+      ) : (
+        <g>
+          {Array.from({ length: 9 }, (_, r) => {
+            const y0 = top + Math.pow(r / 9, 1.5) * 700;
+            const y1 = top + Math.pow((r + 1) / 9, 1.5) * 700;
+            const n = 3 + r;
+            return (
+              <g key={r}>
+                {Array.from({ length: n + 1 }, (_, c) => {
+                  const x0 = -100 + (c * 1280) / n + (r % 2 ? 40 : 0) + (rnd(r * 9 + c, 1) - 0.5) * 20;
+                  const x1 = -100 + ((c + 1) * 1280) / n + (r % 2 ? 40 : 0) + (rnd(r * 9 + c, 2) - 0.5) * 20;
+                  const tone = ["#a38864", "#94795a", "#b09670", "#8a7050"][Math.floor(rnd(r * 9 + c, 3) * 4)];
+                  return <path key={c} d={`M${x0 + 3} ${y0 + 2} L${x1 - 3} ${y0 + 3} L${x1 - 8} ${y1 - 3} L${x0 + 8} ${y1 - 2} Z`} fill={tone} stroke={INK} strokeWidth={2.5 + r * 0.4} opacity={0.95} />;
+                })}
+              </g>
+            );
+          })}
+        </g>
+      )}
+      <rect x={-200} y={top + 500} width={1480} height={1000} fill="#1a120a" opacity={0.18} />
+    </g>
+  );
+};
+
 const dipOf = (g: number, a: number, b: number) => clamp01(Math.min((g - a) / 7, (b - g) / 7));
 
 type Place = "lane" | "pier" | "alley";
@@ -278,22 +324,14 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           <filter id="p1-bgdesat" colorInterpolationFilters="sRGB"><feColorMatrix type="saturate" values="0.72" /></filter>
           <linearGradient id="p1-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0.93" stopColor={bg.edge} stopOpacity="0" /><stop offset="1" stopColor={bg.edge} stopOpacity="1" /></linearGradient>
           <linearGradient id="p1-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={bg.edge} /><stop offset="1" stopColor="#3a2c1e" /></linearGradient>
-          <clipPath id="p1-mir"><rect x={0} y={1250} width={1080} height={640} /></clipPath>
-          <linearGradient id="p1-mirfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={bg.edge} stopOpacity="0" /><stop offset="1" stopColor="#3a2c1e" stopOpacity="1" /></linearGradient>
-          <radialGradient id="p1-vig" cx="0.5" cy="0.5" r="0.75"><stop offset="0.5" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#0a0604" stopOpacity="0.75" /></radialGradient>
+                    <radialGradient id="p1-vig" cx="0.5" cy="0.5" r="0.75"><stop offset="0.5" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#0a0604" stopOpacity="0.75" /></radialGradient>
           <filter id="p1-grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" /><feColorMatrix type="saturate" values="0" /></filter>
         </defs>
         <g transform={`translate(540,900) rotate(${cam.r}) scale(${cam.z}) translate(${-cam.x},${-cam.y})`}>
           <image href={staticFile(bg.src)} x={0} y={0} width={1080} height={1250} filter={place === "pier" ? undefined : "url(#p1-bgdesat)"} />
           <rect y={0} width={1080} height={1250} fill="url(#p1-fade)" />
           {place === "pier" && (g < ls(4)) && <Boat x={g < ls(2) ? 420 : boatX} y={920} rock={t * 0.07} />}
-          {place !== "pier" && (
-            <g>
-              <rect x={0} y={1249} width={1080} height={1500} fill="url(#p1-ground)" />
-              <g clipPath="url(#p1-mir)"><g transform="translate(0,2500) scale(1,-1)"><image href={staticFile(bg.src)} x={0} y={0} width={1080} height={1250} filter="url(#p1-bgdesat)" /></g></g>
-              <rect x={0} y={1250} width={1080} height={640} fill="url(#p1-mirfade)" />
-            </g>
-          )}
+          {place !== "pier" && <Ground kind={place} edge={bg.edge} />}
           <g filter="url(#pv-grade)">
             {place === "pier" ? (
               <g>
