@@ -21,6 +21,8 @@ export type Look = {
   mustache?: boolean;
   skin?: string;
   creepSkin?: string;
+  pants?: string;
+  pattern?: "sport" | "zigzag" | "stripes" | "trim";
 };
 
 const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
@@ -38,15 +40,15 @@ const Fluff: React.FC<{ c: [number, number, number][]; color: string; ink: strin
 export type Mood = "calm" | "smile" | "worry" | "stare" | "creepy";
 
 export const LOOKS: Record<string, Look> = {
-  you: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true },
-  youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true },
+  you: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "sport" },
+  youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "sport" },
   youB: { hair: "swoop", hairColor: "#1c1410", body: "#8e5ab5", bodyKind: "bean", detail: "strap" },
   youC: { hair: "tousle", hairColor: "#b5502a", body: "#3b7a57", bodyKind: "bean", detail: "strap" },
-  head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
-  mother: { hair: "bun", hairColor: "#2b211c", body: "#b8573f", bodyKind: "long", detail: "charm" },
-  child: { hair: "bowl", hairColor: "#2b211c", body: "#e8b84a", bodyKind: "bean", detail: "charm", scale: 0.62 },
+  head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", pants: "#c9bd9f", pattern: "trim", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
+  mother: { pattern: "zigzag", hair: "bun", hairColor: "#2b211c", body: "#b8573f", bodyKind: "long", detail: "charm" },
+  child: { pants: "#8a6a45", pattern: "stripes", hair: "bowl", hairColor: "#2b211c", body: "#e8b84a", bodyKind: "bean", detail: "charm", scale: 0.62 },
   cook: { hair: "scarf", hairColor: "#6d8f5a", body: "#cfc7a8", bodyKind: "round", detail: "apron" },
-  oldman: { hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
+  oldman: { pants: "#4b463f", hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
 };
 
 export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, facing = 1, t = 0, creep }) => {
@@ -64,6 +66,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const skin = creep !== undefined && look.creepSkin ? mix(look.skin ?? SKIN, look.creepSkin, creep) : look.skin ?? SKIN;
   const bodyId = `bg-${look.body.slice(1)}`;
   const headId = `hd-${skin.slice(1)}`;
+  const pantsId = `pn-${(look.pants ?? "#000000").slice(1)}`;
+  const bodyD = `M${-bw} ${hipY} Q${-bw - 8} ${topY + bh * 0.3} ${-bw * 0.7} ${topY + 24} Q0 ${topY - 16} ${bw * 0.7} ${topY + 24} Q${bw + 8} ${topY + bh * 0.3} ${bw} ${hipY} Q0 ${hipY + 26} ${-bw} ${hipY} Z`;
   const lw = Math.sin(t * 0.25) * 18 * walk;
   const aw = Math.sin(t * 0.25 + Math.PI) * 24 * walk;
   const lift = armsUp * 70;
@@ -100,16 +104,28 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
     <g transform={`scale(${facing * sc},${sc})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
       <defs><filter id="ss-rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" /></filter>
         <linearGradient id={bodyId} x1="0.15" y1="0" x2="0.85" y2="1"><stop offset="0" stopColor={mix(look.body, "#ffffff", 0.16)} /><stop offset="1" stopColor={mix(look.body, "#000000", 0.14)} /></linearGradient>
+        <linearGradient id={pantsId} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={mix(look.pants ?? "#000000", "#ffffff", 0.1)} /><stop offset="1" stopColor={mix(look.pants ?? "#000000", "#000000", 0.25)} /></linearGradient>
         <radialGradient id={headId} cx="0.38" cy="0.3" r="0.85"><stop offset="0" stopColor={mix(skin, "#ffffff", 0.14)} /><stop offset="0.6" stopColor={skin} /><stop offset="1" stopColor={mix(skin, "#3a1f18", 0.2)} /></radialGradient>
       </defs>
-      {/* legs and shoes */}
+      {/* legs (trousers when the look has them) and shoes */}
       {[-1, 1].map((s, i) => {
         const dx = s * 26;
         const sh = i === 0 ? lw : -lw;
+        const kx = dx + sh * 0.4;
+        const ky = hipY / 2;
+        const ax = dx + sh;
         return (
           <g key={s}>
-            <path d={`M${dx} ${hipY} L${dx + sh * 0.4} ${hipY / 2} L${dx + sh} -14`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
-            <ellipse cx={dx + sh + 8} cy={-8} rx={24} ry={11} fill={fill("#5a4638")} stroke={stroke} strokeWidth={sw - 2} />
+            {look.pants ? (
+              <g>
+                <path d={`M${dx - 20} ${hipY} L${kx - 18} ${ky} L${ax - 15} -20 L${ax + 15} -20 L${kx + 18} ${ky} L${dx + 20} ${hipY} Z`} fill={silhouette ? S! : `url(#${pantsId})`} stroke={stroke} strokeWidth={sw - 1} />
+                {!silhouette && <path d={`M${dx} ${hipY + 20} L${kx} ${ky + 6} L${ax} -26`} fill="none" stroke="#0f0b09" strokeWidth={3} opacity={0.18} />}
+                {!silhouette && <path d={`M${ax - 16} -30 L${ax + 16} -30`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />}
+              </g>
+            ) : (
+              <path d={`M${dx} ${hipY} L${kx} ${ky} L${ax} -14`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+            )}
+            <ellipse cx={ax + 8} cy={-8} rx={26} ry={12} fill={fill("#5a4638")} stroke={stroke} strokeWidth={sw - 2} />
           </g>
         );
       })}
@@ -128,8 +144,39 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         );
       })}
       {/* the body */}
-      <path d={`M${-bw} ${hipY} Q${-bw - 8} ${topY + bh * 0.3} ${-bw * 0.7} ${topY + 24} Q0 ${topY - 16} ${bw * 0.7} ${topY + 24} Q${bw + 8} ${topY + bh * 0.3} ${bw} ${hipY} Q0 ${hipY + 26} ${-bw} ${hipY} Z`} fill={silhouette ? S! : `url(#${bodyId})`} stroke={stroke} strokeWidth={sw} />
+      <path d={bodyD} fill={silhouette ? S! : `url(#${bodyId})`} stroke={stroke} strokeWidth={sw} />
       {!silhouette && <path d={`M${bw * 0.34} ${topY + 40} Q${bw * 0.9} ${topY + bh * 0.45} ${bw * 0.9} ${hipY - 4} Q${bw * 0.5} ${hipY + 12} ${bw * 0.3} ${hipY + 8} Q${bw * 0.6} ${topY + bh * 0.5} ${bw * 0.34} ${topY + 40} Z`} fill="#1a1428" opacity={0.28} />}
+      {!silhouette && look.pattern && (
+        <g>
+          <clipPath id={`bc-${bodyId}-${look.pattern}`}><path d={bodyD} /></clipPath>
+          <g clipPath={`url(#bc-${bodyId}-${look.pattern})`}>
+            {look.pattern === "sport" && (
+              <g>
+                <rect x={-bw - 10} y={topY + 70} width={bw * 2 + 20} height={7} fill="#c8512d" />
+                <rect x={-bw - 10} y={topY + 82} width={bw * 2 + 20} height={34} fill="#f1e6cf" />
+                <rect x={-bw - 10} y={topY + 121} width={bw * 2 + 20} height={7} fill="#c8512d" />
+                {[-48, -24, 0, 24, 48].map((x) => <path key={x} d={`M${x - 8} ${topY + 112} L${x} ${topY + 86} L${x + 8} ${topY + 112} Z`} fill="#2c3a56" opacity={0.85} />)}
+                <circle cx={-bw * 0.4} cy={topY + 168} r={16} fill="none" stroke="#f1e6cf" strokeWidth={5} />
+                <circle cx={-bw * 0.4} cy={topY + 168} r={6} fill="#c8512d" />
+              </g>
+            )}
+            {look.pattern === "zigzag" && (
+              <g>
+                <rect x={-bw - 10} y={hipY - 52} width={bw * 2 + 20} height={44} fill="#f1e6cf" opacity={0.92} />
+                <path d={`M${-bw - 10} ${hipY - 30} ${Array.from({ length: 9 }, (_, k) => `L${-bw - 10 + (k + 0.5) * 20} ${hipY - (k % 2 ? 46 : 14)}`).join(" ")}`} fill="none" stroke="#2b211c" strokeWidth={5} />
+              </g>
+            )}
+            {look.pattern === "stripes" && [0, 1, 2].map((k) => <rect key={k} x={-bw - 10} y={topY + 70 + k * 44} width={bw * 2 + 20} height={14} fill="#c8512d" opacity={0.85} />)}
+            {look.pattern === "trim" && (
+              <g>
+                <rect x={-bw - 10} y={hipY - 34} width={bw * 2 + 20} height={26} fill="#a8332a" />
+                {Array.from({ length: 8 }, (_, k) => <path key={k} d={`M${-bw - 4 + k * 20} ${hipY - 34} l10 13 l10 -13`} fill="#0f0b09" />)}
+                <path d={`M-20 ${topY + 36} L0 ${topY + 86} L20 ${topY + 36}`} fill="none" stroke="#a8332a" strokeWidth={9} />
+              </g>
+            )}
+          </g>
+        </g>
+      )}
       {!silhouette && Array.from({ length: 5 }, (_, i) => <path key={i} d={`M${bw * 0.55 + i * 5} ${topY + 70 + i * 36} l${-26} ${34}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />)}
       {!silhouette && look.detail === "strap" && <path d={`M${-bw * 0.5} ${topY + 24} L${bw * 0.55} ${hipY - 30}`} stroke="#3a2d26" strokeWidth={14} opacity={0.85} />}
       {!silhouette && look.detail === "charm" && (
