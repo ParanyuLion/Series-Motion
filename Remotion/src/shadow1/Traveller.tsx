@@ -213,7 +213,7 @@ export const Traveller: React.FC<{
   const blink = t % 160 > 154 ? 0.1 : 1;
   const eyeY = headY + 6;
   const scared = mood === "scared";
-  const skin = scared ? "#e2dcd4" : SKIN;
+  const skin = SKIN;
   const hairC = C.hair;
   const headGradId = id + "-head" + (scared ? "-pale" : "");
   const fringe: [number, number][] = [[-76, -14], [-68, -42], [-58, -20], [-46, -46], [-34, -26], [-18, -48], [-4, -16], [8, -46], [22, -24], [38, -46], [52, -26], [64, -44], [76, -16]];
