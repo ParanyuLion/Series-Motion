@@ -234,7 +234,8 @@ export const Traveller: React.FC<{
   });
   // the hair shell: an ellipse cut at the nape; the cut is low at the back and high at the front, so it slopes in profile
   const MC = headY - 6;
-  const xe = (y: number) => 86 * Math.sqrt(Math.max(0.02, 1 - ((y - MC) / 96) ** 2));
+  const RX = 94;
+  const xe = (y: number) => RX * Math.sqrt(Math.max(0.02, 1 - ((y - MC) / 96) ** 2));
   const botY = (aDeg: number) => headY + 28 + 34 * (1 - Math.cos((aDeg - yaw) * RAD)) / 2;
   const yL = botY(-90);
   const yR = botY(90);
@@ -245,12 +246,12 @@ export const Traveller: React.FC<{
     const y = botY(ad) + (i % 2 ? 5 + 13 * back : 0);
     return `L${xe(y) * Math.sin(ad * RAD)} ${y}`;
   }).join(" ");
-  const uL = Math.atan2((yL - MC) / 96, -xe(yL) / 86);
-  const uR = Math.atan2((yR - MC) / 96, xe(yR) / 86) + Math.PI * 2;
+  const uL = Math.atan2((yL - MC) / 96, -xe(yL) / RX);
+  const uR = Math.atan2((yR - MC) / 96, xe(yR) / RX) + Math.PI * 2;
   const topPts = Array.from({ length: 33 }, (_, i) => {
     const u = uL + ((uR - uL) * i) / 32;
     const top = Math.max(0, -Math.sin(u)) ** 2;
-    return `L${86 * Math.cos(u)} ${MC + 96 * Math.sin(u) * (1 + 0.12 * top)}`;
+    return `L${RX * Math.cos(u)} ${MC + 96 * Math.sin(u) * (1 + 0.07 * top)}`;
   }).join(" ");
   const hairMass = `M${-xe(yL)} ${yL} ${topPts} ${botPts} Z`;
   const seams = [150, 172, 194, 216, 20, -20].map((lon) => {
