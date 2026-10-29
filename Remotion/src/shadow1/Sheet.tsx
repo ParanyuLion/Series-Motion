@@ -72,14 +72,14 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
         {poses ? (
           <g>
             {([
-              { id: "you", x: 230, l: "เดิน", p: { walk: 1, t: 6 } },
+              { id: "you", x: 230, l: "เดิน", p: { walk: 1, t: 6, turn: 1 } },
               { id: "you", x: 620, l: "นั่ง", p: { sit: true } },
               { id: "you", x: 1010, l: "ชี้", p: { point: 1 } },
               { id: "head", x: 1400, l: "ผู้ใหญ่ชี้", p: { point: 1 } },
               { id: "mother", x: 1740, l: "ยกมือ", p: { armsUp: 1 } },
             ] as { id: string; x: number; l: string; p: Record<string, unknown> }[]).map((c, i) => (
               <g key={i}>
-                {!!c.p.sit && <rect x={c.x - 46} y={ground - 70} width={130} height={70} fill="#8a6a42" stroke="#0f0b09" strokeWidth={7} />}
+                {!!c.p.sit && <g stroke="#0f0b09" strokeWidth={7} strokeLinejoin="round"><line x1={c.x - 52} y1={ground - 70} x2={c.x - 58} y2={ground} /><line x1={c.x + 52} y1={ground - 70} x2={c.x + 58} y2={ground} /><rect x={c.x - 68} y={ground - 84} width={136} height={16} rx={4} fill="#8a6a42" /></g>}
                 <g transform={`translate(${c.x},${ground})`}><Figure look={LOOKS[c.id]} mood="calm" t={0} {...(c.p as object)} /></g>
                 <Label x={c.x} y={70} th={c.l} en="" />
               </g>

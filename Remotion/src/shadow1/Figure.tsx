@@ -53,7 +53,7 @@ export const LOOKS: Record<string, Look> = {
   oldman: { badge: true, sleeve: "long", pants: "#4b463f", hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
 };
 
-export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; point?: number; sit?: boolean; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, point = 0, sit = false, facing = 1, t = 0, creep }) => {
+export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; point?: number; sit?: boolean; turn?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, point = 0, sit = false, turn = 0, facing = 1, t = 0, creep }) => {
   const S = silhouette ? "#0a1022" : null;
   const fill = (c: string) => S ?? c;
   const stroke = S ?? INK;
@@ -105,7 +105,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
     );
   };
   return (
-    <g transform={`scale(${facing * sc},${sc}) translate(0,${sitD})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
+    <g transform={`scale(${facing * sc * (1 - 0.12 * turn)},${sc}) translate(0,${sitD})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
       <defs><filter id="ss-rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" /></filter>
         <linearGradient id={bodyId} x1="0.15" y1="0" x2="0.85" y2="1"><stop offset="0" stopColor={mix(look.body, "#ffffff", 0.16)} /><stop offset="1" stopColor={mix(look.body, "#000000", 0.14)} /></linearGradient>
         <linearGradient id={pantsId} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={mix(look.pants ?? "#000000", "#ffffff", 0.1)} /><stop offset="1" stopColor={mix(look.pants ?? "#000000", "#000000", 0.25)} /></linearGradient>
@@ -115,14 +115,14 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {[-1, 1].map((s, i) => {
         const dx = s * 26;
         const sh = i === 0 ? lw : -lw;
-        const kx = sit ? dx + 70 : dx + sh * 0.4;
-        const ky = sit ? hipY : hipY / 2;
-        const ax = sit ? dx + 70 : dx + sh;
+        const kx = sit ? dx + s * 10 : dx + sh * 0.4;
+        const ky = sit ? (hipY + ay) / 2 : hipY / 2;
+        const ax = sit ? dx : dx + sh;
         return (
           <g key={s}>
             {look.pants ? (
               <g>
-                <path d={sit ? `M${dx - 14} ${hipY - 8} L${kx + 16} ${hipY - 8} L${ax + 16} ${ay} L${ax - 16} ${ay} L${ax - 16} ${hipY + 30} L${dx - 14} ${hipY + 30} Z` : `M${dx - 20} ${hipY} L${kx - 18} ${ky} L${ax - 15} ${ay} L${ax + 15} ${ay} L${kx + 18} ${ky} L${dx + 20} ${hipY} Z`} fill={silhouette ? S! : `url(#${pantsId})`} stroke={stroke} strokeWidth={sw - 1} />
+                <path d={`M${dx - 20} ${hipY} L${kx - 18} ${ky} L${ax - 15} ${ay} L${ax + 15} ${ay} L${kx + 18} ${ky} L${dx + 20} ${hipY} Z`} fill={silhouette ? S! : `url(#${pantsId})`} stroke={stroke} strokeWidth={sw - 1} />
                 {!silhouette && <path d={`M${dx} ${hipY + 20} L${kx} ${ky + 6} L${ax} ${ay - 6}`} fill="none" stroke="#0f0b09" strokeWidth={3} opacity={0.18} />}
                 {!silhouette && <path d={`M${ax - 16} ${ay - 10} L${ax + 16} ${ay - 10}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />}
               </g>
@@ -245,7 +245,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {(look.hair === "wave" || look.hair === "swoop" || look.hair === "tousle" || look.hair === "bangs" || look.hair === "bowlcut") && <HairFront kind={look.hair} hy={headY} color={look.hairColor} ink={stroke} sw={sw} flat={silhouette} />}
       {look.hair === "curly" && <g>{Array.from({ length: 8 }, (_, i) => { const a = Math.PI * (1.05 + (i / 7) * 0.9); return <circle key={i} cx={Math.cos(a) * 74} cy={headY + Math.sin(a) * 78} r={30} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 2} />; })}</g>}
       {/* face */}
-      {!silhouette && (creep === undefined ? faceFor(mood, 1) : <g>{faceFor("smile", 1 - creep)}{faceFor("creepy", creep)}</g>)}
+      {!silhouette && <g transform={`translate(${16 * turn},0) scale(${1 - 0.08 * turn},1)`}>{creep === undefined ? faceFor(mood, 1) : <g>{faceFor("smile", 1 - creep)}{faceFor("creepy", creep)}</g>}</g>}
       {/* the straw hat (a portable shade) */}
       {look.hat === "straw" && (
         <g>
