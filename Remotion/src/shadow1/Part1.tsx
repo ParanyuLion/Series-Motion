@@ -25,13 +25,13 @@ const HAT_X = 760 - HAT_HOLD_END[0] * 0.7 * 1.08;
 
 const SUBTITLE_FIX = (t: string) => t.replace(/ใกล้เที่ยง/g, "ใกล้⁠เที่ยง").replace(/เงาสวยจังเลย/g, "เงา⁠สวย⁠จังเลย").replace(/พร้อมกัน/g, "พร้อม⁠กัน").replace(/ผู้ใหญ่บ้าน/g, "ผู้ใหญ่⁠บ้าน");
 
-const Subtitle: React.FC<{ text: string; from: number; g: number }> = ({ text, from, g }) => (
+export const Subtitle: React.FC<{ text: string; from: number; g: number }> = ({ text, from, g }) => (
   <div style={{ position: "absolute", left: 60, right: 160, bottom: 340, textAlign: "center", opacity: clamp01((g - from) / 6), fontFamily, fontSize: 52, lineHeight: 1.6, color: "#fff", textShadow: "0 0 12px rgba(0,0,0,0.95), 0 3px 6px rgba(0,0,0,0.95)" }}>
     <span style={{ background: "rgba(8,6,4,0.55)", borderRadius: 18, padding: "4px 16px", WebkitBoxDecorationBreak: "clone" } as React.CSSProperties}>{text}</span>
   </div>
 );
 
-const Card: React.FC<{ a: string; b: string; at: number; dur: number; g: number }> = ({ a, b, at, dur, g }) => {
+export const Card: React.FC<{ a: string; b: string; at: number; dur: number; g: number }> = ({ a, b, at, dur, g }) => {
   const o = clamp01(Math.min((g - at) / 8, (at + dur - g) / 10));
   if (o <= 0) return null;
   return (
@@ -43,8 +43,8 @@ const Card: React.FC<{ a: string; b: string; at: number; dur: number; g: number 
 };
 
 // ------------------------------------------------------------------ tracks: where a character is, by frame
-type Pt = [number, number, number, number]; // frame, x, y, scale
-const at = (g: number, pts: Pt[]) => {
+export type Pt = [number, number, number, number]; // frame, x, y, scale
+export const at = (g: number, pts: Pt[]) => {
   if (g <= pts[0][0]) return { x: pts[0][1], y: pts[0][2], s: pts[0][3] };
   for (let i = 1; i < pts.length; i++) {
     if (g <= pts[i][0]) {
@@ -58,7 +58,7 @@ const at = (g: number, pts: Pt[]) => {
   return { x: l[1], y: l[2], s: l[3] };
 };
 /** the position and how fast it is changing (px per frame): a figure walks only when this is above a small threshold */
-const track = (g: number, pts: Pt[]) => {
+export const track = (g: number, pts: Pt[]) => {
   const p = at(g, pts);
   const a = at(g - 2, pts);
   const b = at(g + 2, pts);
@@ -66,17 +66,17 @@ const track = (g: number, pts: Pt[]) => {
   return { ...p, v, dir: b.x >= a.x ? 1 : -1, walk: clamp01((v - 0.25) / 0.9) };
 };
 
-type Who = { id: string; x: number; y: number; s: number; mood: Mood; face?: 1 | -1; walk?: number; up?: number; nod?: number; seed?: number; talk?: number; hatHold?: number; turn?: number };
+export type Who = { id: string; x: number; y: number; s: number; mood: Mood; face?: 1 | -1; walk?: number; up?: number; nod?: number; seed?: number; talk?: number; hatHold?: number; turn?: number; point?: number };
 
 /** a living idle: slow breathing and a small sway so nobody is a statue; walking figures bob instead */
-const idle = (t: number, seed: number, still: boolean) => (still ? { rot: Math.sin(t * 0.05 + seed) * 0.9, sy: 1 + Math.sin(t * 0.11 + seed * 2) * 0.008, dy: Math.sin(t * 0.11 + seed * 2) * -1.5 } : { rot: 0, sy: 1, dy: Math.abs(Math.sin(t * 0.25 + seed)) * -3 });
+export const idle = (t: number, seed: number, still: boolean) => (still ? { rot: Math.sin(t * 0.05 + seed) * 0.9, sy: 1 + Math.sin(t * 0.11 + seed * 2) * 0.008, dy: Math.sin(t * 0.11 + seed * 2) * -1.5 } : { rot: 0, sy: 1, dy: Math.abs(Math.sin(t * 0.25 + seed)) * -3 });
 
 /** a villager: never casts a shadow */
-const Villager: React.FC<Who & { t: number }> = ({ id, x, y, s, mood, face = 1, walk = 0, up = 0, nod = 0, seed = 0, talk = 0, hatHold = 0, turn = 0, t }) => {
+export const Villager: React.FC<Who & { t: number }> = ({ id, x, y, s, mood, face = 1, walk = 0, up = 0, nod = 0, seed = 0, talk = 0, hatHold = 0, turn = 0, point = 0, t }) => {
   const i = idle(t, seed, walk < 0.05);
   return (
     <g transform={`translate(${x},${y + i.dy}) rotate(${i.rot}) scale(${s},${s * i.sy}) translate(0,${nod * 14})`}>
-      <Figure look={LOOKS[id]} mood={mood} facing={face} walk={walk} armsUp={up} talk={talk} hatHold={hatHold} turn={turn} t={t + seed * 40} />
+      <Figure look={LOOKS[id]} mood={mood} facing={face} walk={walk} armsUp={up} talk={talk} hatHold={hatHold} turn={turn} point={point} t={t + seed * 40} />
     </g>
   );
 };
@@ -100,7 +100,7 @@ const Boat: React.FC<{ x: number; y: number; rock: number }> = ({ x, y, rock }) 
 
 
 /** the ground in front of a photo backdrop, drawn in code in the same flat-colour + ink style: packed dirt with ruts and pebbles (lane) or stone paving (alley) */
-const Ground: React.FC<{ kind: "lane" | "alley"; edge: string }> = ({ kind, edge }) => {
+export const Ground: React.FC<{ kind: "lane" | "alley"; edge: string }> = ({ kind, edge }) => {
   const rnd = (i: number, k: number) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
   const top = 1236;
   return (
@@ -145,7 +145,7 @@ const Ground: React.FC<{ kind: "lane" | "alley"; edge: string }> = ({ kind, edge
   );
 };
 
-const dipOf = (g: number, a: number, b: number) => clamp01(Math.min((g - a) / 7, (b - g) / 7));
+export const dipOf = (g: number, a: number, b: number) => clamp01(Math.min((g - a) / 7, (b - g) / 7));
 
 type Place = "lane" | "pier" | "alley";
 const placeAt = (g: number): Place => (g < ls(2) ? "lane" : g < ls(4) ? "pier" : g < ls(7) ? "lane" : g < ls(9) ? "alley" : g < ls(10) ? "pier" : "lane");

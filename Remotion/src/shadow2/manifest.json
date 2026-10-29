@@ -1,0 +1,153 @@
+{
+ "fps": 30,
+ "total": 2030,
+ "storyEnd": 1853,
+ "outroStart": 1865,
+ "shots": [
+  {
+   "text": "คุณเป็นคนเดียวในหมู่บ้านนี้ที่มีเงา",
+   "audio": "shadow2v/n0.mp3",
+   "audioFrames": 92,
+   "leadFrames": 21,
+   "frames": 119
+  },
+  {
+   "text": "และที่นี่มีกฎอยู่ข้อเดียว ห้ามยืนในที่ร่ม",
+   "audio": "shadow2v/n1.mp3",
+   "audioFrames": 135,
+   "leadFrames": 6,
+   "frames": 183
+  },
+  {
+   "text": "มื้อเที่ยงวางบนโต๊ะยาวกลางแดด ทุกคนกินโดยไม่หรี่ตาเลย",
+   "audio": "shadow2v/n2.mp3",
+   "audioFrames": 178,
+   "leadFrames": 6,
+   "frames": 190
+  },
+  {
+   "text": "แม่ครัวยิ้ม แล้วตักข้าวให้คุณจนล้นจาน",
+   "audio": "shadow2v/n3.mp3",
+   "audioFrames": 98,
+   "leadFrames": 6,
+   "frames": 110
+  },
+  {
+   "text": "เงาของคุณทอดลงบนโต๊ะ มีมือหนึ่งค่อยๆ เอาจานมาวางทับมัน",
+   "audio": "shadow2v/n4.mp3",
+   "audioFrames": 186,
+   "leadFrames": 6,
+   "frames": 198
+  },
+  {
+   "text": "ไม่มีใครพูดถึงมัน ทุกคนยังยิ้มอยู่",
+   "audio": "shadow2v/n5.mp3",
+   "audioFrames": 112,
+   "leadFrames": 6,
+   "frames": 124
+  },
+  {
+   "text": "บ่ายนั้น คุณแอบหลบเข้าไปในโรงเก็บข้าว",
+   "audio": "shadow2v/n6.mp3",
+   "audioFrames": 95,
+   "leadFrames": 6,
+   "frames": 107
+  },
+  {
+   "text": "ข้างในเย็นเฉียบ และเงียบเกินไป",
+   "audio": "shadow2v/n7.mp3",
+   "audioFrames": 113,
+   "leadFrames": 6,
+   "frames": 125
+  },
+  {
+   "text": "ในมุมมืด มีบางอย่างขยับ เหมือนกำลังจ้องคุณอยู่",
+   "audio": "shadow2v/n8.mp3",
+   "audioFrames": 121,
+   "leadFrames": 6,
+   "frames": 133
+  },
+  {
+   "text": "คุณวิ่งออกมากลางแดด หัวใจเต้นแรง",
+   "audio": "shadow2v/n9.mp3",
+   "audioFrames": 90,
+   "leadFrames": 6,
+   "frames": 102
+  },
+  {
+   "text": "ผู้ใหญ่บ้านยืนรออยู่หน้าประตูพอดี",
+   "audio": "shadow2v/n10.mp3",
+   "audioFrames": 75,
+   "leadFrames": 6,
+   "frames": 87
+  },
+  {
+   "text": "ใต้ร่มไม่ปลอดภัยสำหรับคนที่ยังมีเงา เขาพูดเบาๆ",
+   "audio": "shadow2v/n11.mp3",
+   "audioFrames": 129,
+   "leadFrames": 6,
+   "frames": 141
+  },
+  {
+   "text": "แล้วชี้ไปที่ต้นไม้ใหญ่กลางหมู่บ้าน",
+   "audio": "shadow2v/n12.mp3",
+   "audioFrames": 88,
+   "leadFrames": 6,
+   "frames": 100
+  },
+  {
+   "text": "เงาของมันไม่ขยับตามดวงอาทิตย์เลย ตั้งแต่คุณมาถึง",
+   "audio": "shadow2v/n13.mp3",
+   "audioFrames": 128,
+   "leadFrames": 6,
+   "frames": 146
+  }
+ ],
+ "starts": [
+  0,
+  119,
+  302,
+  492,
+  602,
+  800,
+  924,
+  1031,
+  1156,
+  1289,
+  1391,
+  1478,
+  1619,
+  1719
+ ],
+ "cues": {
+  "titleAt": 264,
+  "lineStart0": 21,
+  "lineEnd0": 113,
+  "lineStart1": 125,
+  "lineEnd1": 260,
+  "lineStart2": 308,
+  "lineEnd2": 486,
+  "lineStart3": 498,
+  "lineEnd3": 596,
+  "lineStart4": 608,
+  "lineEnd4": 794,
+  "lineStart5": 806,
+  "lineEnd5": 918,
+  "lineStart6": 930,
+  "lineEnd6": 1025,
+  "lineStart7": 1037,
+  "lineEnd7": 1150,
+  "lineStart8": 1162,
+  "lineEnd8": 1283,
+  "lineStart9": 1295,
+  "lineEnd9": 1385,
+  "lineStart10": 1397,
+  "lineEnd10": 1472,
+  "lineStart11": 1484,
+  "lineEnd11": 1613,
+  "lineStart12": 1625,
+  "lineEnd12": 1713,
+  "lineStart13": 1725,
+  "lineEnd13": 1853
+ }
+}
