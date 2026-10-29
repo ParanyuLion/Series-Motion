@@ -48,7 +48,8 @@ const SHOTS = (): Shot[] => [
   // the granary
   [BARN_AT(), ls(7), { x: 520, y: 980, z: 1.2 }, { x: 540, y: 1000, z: 1.3 }],
   [ls(7), mid(8, 0.35), { x: 560, y: 760, z: 2.6 }, { x: 560, y: 755, z: 2.8 }],
-  [mid(8, 0.35), ls(9), { x: 860, y: 740, z: 2.2 }, { x: 870, y: 735, z: 2.6 }],
+  [mid(8, 0.35), mid(8, 0.78), { x: 860, y: 740, z: 2.2 }, { x: 870, y: 735, z: 2.6 }],
+  [mid(8, 0.78), ls(9), { x: 560, y: 840, z: 2.6 }, { x: 560, y: 835, z: 2.9 }], // your face: scared
   [ls(9), ALLEY_AT(), { x: 500, y: 1000, z: 1.2 }, { x: 470, y: 980, z: 1.25 }],
   // out into the glare; the head is waiting; he speaks; he points
   [ALLEY_AT(), ls(11), { x: 420, y: 1050, z: 1.6 }, { x: 680, y: 1040, z: 1.6 }],
@@ -227,11 +228,11 @@ export const Part2: React.FC<{ g?: number }> = ({ g: gOverride }) => {
     if (g < ls(9)) {
       const tr = track(g, [[BARN_AT() + 4, 370, 930, 0.45], [BARN_AT() + 70, 560, 1180, 0.85]]);
       const look = g >= ls(8) ? smooth(clamp01((g - ls(8)) / 20)) : 0;
-      you = { ...you, x: tr.x, y: tr.y, s: tr.s, walk: tr.walk, yaw: tr.walk > 0.05 ? 0 : 10 + 50 * look };
+      you = { ...you, x: tr.x, y: tr.y, s: tr.s, walk: tr.walk, yaw: tr.walk > 0.05 ? 0 : 10 + 50 * look - (g >= mid(8, 0.78) ? 30 : 0), mood: g >= mid(8, 0.7) ? "scared" : "worry" };
     } else {
       // you run back to the door
       const tr = track(g, [[ls(9), 560, 1180, 0.85], [ALLEY_AT(), 380, 940, 0.48]]);
-      you = { ...you, x: tr.x, y: tr.y, s: tr.s, walk: 1, phase: t * 0.5, yaw: 200 };
+      you = { ...you, x: tr.x, y: tr.y, s: tr.s, walk: 1, phase: t * 0.5, yaw: 200, mood: "scared" };
     }
   }
   const thing = clamp01((g - mid(8, 0.35)) / 20);
@@ -240,7 +241,7 @@ export const Part2: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   // the alley: you burst out into the glare; the head is waiting
   if (place === "alley") {
     const tr = track(g, [[ALLEY_AT(), 160, 1185, 0.85], [ALLEY_AT() + 30, 480, 1185, 0.85]]);
-    you = { ...you, x: tr.x, y: tr.y, walk: tr.walk, phase: t * 0.5, yaw: tr.walk > 0.05 ? 90 : 70 };
+    you = { ...you, x: tr.x, y: tr.y, walk: tr.walk, phase: t * 0.5, yaw: tr.walk > 0.05 ? 90 : 35, mood: g < ls(11) ? "scared" : "worry" };
     const pt = g >= ls(12) ? smooth(clamp01((g - ls(12)) / 16)) : 0;
     people.push({ id: "head", x: 770, y: 1170, s: 0.72, mood: g >= ls(11) ? "calm" : "smile", face: g >= ls(12) ? 1 : -1, talk: g >= ls(11) + 2 && g < le(11) ? 1 : 0, point: pt, seed: 1 });
   }
