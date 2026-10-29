@@ -59,6 +59,7 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
   const face = which === "face";
   const poses = which === "poses";
   const turn = which.startsWith("turn8");
+  const village = which === "village";
   const cast: { id: string; x: number; th: string; en: string; mood: Mood }[] = [
     { id: "you", x: 220, th: "คุณ", en: "the traveller (has a shadow)", mood: "worry" },
     { id: "head", x: 520, th: "ผู้ใหญ่", en: "the head", mood: "smile" },
@@ -71,7 +72,21 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
     <AbsoluteFill>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
         <Ground w={W} h={H} horizon={600} />
-        {turn ? (
+        {village ? (
+          <g>
+            {/* a house and a tree with hard shadows on the dust, then the villagers (no shadow) and the traveller (with one) */}
+            <polygon points="1500,860 1500,884 1900,930 1900,880" fill="#1c2748" opacity={0.78} />
+            <polygon points="150,860 330,860 140,905 -40,905" fill="#1c2748" opacity={0.78} />
+            <rect x={132} y={560} width={26} height={300} fill="#6a4c34" stroke="#0f0b09" strokeWidth={7} />
+            <ellipse cx={145} cy={500} rx={120} ry={100} fill="#6f8a4c" stroke="#0f0b09" strokeWidth={7} />
+            <g transform="translate(1560,0)"><rect x={0} y={640} width={300} height={220} fill="#e9dcc0" stroke="#0f0b09" strokeWidth={7} /><polygon points="-20,640 150,540 320,640" fill="#b8734a" stroke="#0f0b09" strokeWidth={7} /><rect x={120} y={720} width={60} height={140} fill="#5a4636" stroke="#2b211c" strokeWidth={4} /></g>
+            <g transform="translate(560,860) skewX(-28) scale(1,-0.3)" opacity={0.82}><Traveller yaw={20} silhouette /></g>
+            <g transform="translate(560,860)"><Traveller yaw={20} mood="worry" t={0} /></g>
+            {[{ id: "head", x: 900, mood: "smile" }, { id: "mother", x: 1100, mood: "smile" }, { id: "child", x: 1250, mood: "calm" }, { id: "oldman", x: 1420, mood: "calm" }].map((c) => (
+              <g key={c.id} transform={`translate(${c.x},860) scale(0.9)`}><Figure look={LOOKS[c.id]} mood={c.mood as Mood} t={0} /></g>
+            ))}
+          </g>
+        ) : turn ? (
           <g>
             {Array.from({ length: 8 }, (_, i) => i * 45).map((yaw, i) => {
               const x = 130 + i * 237;
