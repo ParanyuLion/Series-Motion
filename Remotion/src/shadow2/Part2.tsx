@@ -24,7 +24,7 @@ type Place = "lane" | "barn" | "alley" | "tree";
 const BARN_AT = () => ls(6);
 const ALLEY_AT = () => mid(9, 0.45);
 const TREE_AT = () => mid(12, 0.5);
-const placeAt = (g: number): Place => (g < BARN_AT() - 6 ? "lane" : g < ALLEY_AT() ? "barn" : g < TREE_AT() ? "alley" : "tree");
+const placeAt = (g: number): Place => (g < BARN_AT() - 6 ? "lane" : g < ALLEY_AT() ? "barn" : g < TREE_AT() - 6 ? "alley" : "tree");
 const BG: Record<Place, { src: string; edge: string; desat: boolean }> = {
   lane: { src: "shadow1/bg_lane.png", edge: "#95754d", desat: true },
   barn: { src: "shadow1/bg_barn.png", edge: "#1a1f29", desat: false },
@@ -187,7 +187,7 @@ export const Part2: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   const t = g;
   const place = placeAt(g + (g < BARN_AT() ? 0 : 0));
   // a dip to black at the time jump (hook -> meal) and at the move into the granary; hard cuts elsewhere (white flash into the glare)
-  const edges = [-999, ls(2) - 6, BARN_AT() - 6, 99999];
+  const edges = [-999, ls(2) - 6, BARN_AT() - 6, TREE_AT() - 6, 99999];
   const dark = 1 - Math.max(...edges.slice(0, -1).map((e, i) => dipOf(g, e, edges[i + 1])));
   const flash = g >= ALLEY_AT() && g < ALLEY_AT() + 10 ? 1 - (g - ALLEY_AT()) / 10 : 0;
   const insert = g >= ls(4) && g < ls(5);
@@ -254,7 +254,7 @@ export const Part2: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   // ---------------------------------------------------------------- camera
   const shots = SHOTS();
   let cam = { x: 540, y: 1000, z: 1.2 };
-  const cur = shots.find(([a, b]) => g >= (a === BARN_AT() || a === ls(2) ? a - 6 : a) && g < b);
+  const cur = shots.find(([a, b]) => g >= (a === BARN_AT() || a === ls(2) || a === TREE_AT() ? a - 6 : a) && g < b);
   if (cur) {
     const [a, b, c0, c1] = cur;
     const k = smooth(clamp01((g - a) / Math.max(1, b - a)));
