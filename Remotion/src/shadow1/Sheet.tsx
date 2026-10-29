@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { fontFamily } from "../island/fonts";
 import { Figure, LOOKS, Mood } from "./Figure";
+import { Traveller, TravellerMood } from "./Traveller";
 
 // Character sheet and mood sheet for the style test of series 5. `npx remotion still ShadowStyle out/x.png --props='{"which":"sheet"}'`
 
@@ -57,6 +58,7 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
   const options = which === "you";
   const face = which === "face";
   const poses = which === "poses";
+  const turn = which.startsWith("turn8");
   const cast: { id: string; x: number; th: string; en: string; mood: Mood }[] = [
     { id: "you", x: 220, th: "คุณ", en: "the traveller (has a shadow)", mood: "worry" },
     { id: "head", x: 520, th: "ผู้ใหญ่", en: "the head", mood: "smile" },
@@ -69,7 +71,22 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
     <AbsoluteFill>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
         <Ground w={W} h={H} horizon={600} />
-        {poses ? (
+        {turn ? (
+          <g>
+            {Array.from({ length: 8 }, (_, i) => i * 45).map((yaw, i) => {
+              const x = 130 + i * 237;
+              const extra = which === "turn8w" ? { walk: 1, phase: 1.35 } : which === "turn8s" ? { sit: true } : which === "turn8p" ? { point: 1 } : {};
+              const mood: TravellerMood = which === "turn8m" ? "worry" : "calm";
+              return (
+                <g key={yaw}>
+                  {which === "turn8s" && <g stroke="#0f0b09" strokeWidth={7} strokeLinejoin="round"><line x1={x - 52} y1={ground - 70} x2={x - 58} y2={ground} /><line x1={x + 52} y1={ground - 70} x2={x + 58} y2={ground} /><rect x={x - 68} y={ground - 84} width={136} height={16} rx={4} fill="#8a6a42" /></g>}
+                  <g transform={`translate(${x},${ground})`}><Traveller yaw={yaw} mood={mood} t={0} {...extra} /></g>
+                  <Label x={x} y={70} th={`${yaw}°`} en="" />
+                </g>
+              );
+            })}
+          </g>
+        ) : poses ? (
           <g>
             {([
               { id: "you", x: 230, l: "เดิน", p: { walk: 1, t: 6, turn: 1 } },
