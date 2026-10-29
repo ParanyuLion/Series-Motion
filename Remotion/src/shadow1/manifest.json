@@ -1,6 +1,6 @@
 {
  "fps": 30,
- "total": 2169,
+ "total": 2204,
  "storyEnd": 2027,
  "outroStart": 2039,
  "shots": [
@@ -129,7 +129,7 @@
   "praiseAt": 843,
   "walkAt": 1031,
   "washingAt": 1181,
-  "clapAt": 1349,
+  "clapAt": 1399,
   "lookDownAt": 1472,
   "hatAt": 1649,
   "stretchAt": 1768,

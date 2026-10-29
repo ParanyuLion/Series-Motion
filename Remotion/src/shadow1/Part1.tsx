@@ -66,17 +66,17 @@ const track = (g: number, pts: Pt[]) => {
   return { ...p, v, dir: b.x >= a.x ? 1 : -1, walk: clamp01((v - 0.25) / 0.9) };
 };
 
-type Who = { id: string; x: number; y: number; s: number; mood: Mood; face?: 1 | -1; walk?: number; up?: number; nod?: number; seed?: number; talk?: number; hatHold?: number };
+type Who = { id: string; x: number; y: number; s: number; mood: Mood; face?: 1 | -1; walk?: number; up?: number; nod?: number; seed?: number; talk?: number; hatHold?: number; turn?: number };
 
 /** a living idle: slow breathing and a small sway so nobody is a statue; walking figures bob instead */
 const idle = (t: number, seed: number, still: boolean) => (still ? { rot: Math.sin(t * 0.05 + seed) * 0.9, sy: 1 + Math.sin(t * 0.11 + seed * 2) * 0.008, dy: Math.sin(t * 0.11 + seed * 2) * -1.5 } : { rot: 0, sy: 1, dy: Math.abs(Math.sin(t * 0.25 + seed)) * -3 });
 
 /** a villager: never casts a shadow */
-const Villager: React.FC<Who & { t: number }> = ({ id, x, y, s, mood, face = 1, walk = 0, up = 0, nod = 0, seed = 0, talk = 0, hatHold = 0, t }) => {
+const Villager: React.FC<Who & { t: number }> = ({ id, x, y, s, mood, face = 1, walk = 0, up = 0, nod = 0, seed = 0, talk = 0, hatHold = 0, turn = 0, t }) => {
   const i = idle(t, seed, walk < 0.05);
   return (
     <g transform={`translate(${x},${y + i.dy}) rotate(${i.rot}) scale(${s},${s * i.sy}) translate(0,${nod * 14})`}>
-      <Figure look={LOOKS[id]} mood={mood} facing={face} walk={walk} armsUp={up} talk={talk} hatHold={hatHold} t={t + seed * 40} />
+      <Figure look={LOOKS[id]} mood={mood} facing={face} walk={walk} armsUp={up} talk={talk} hatHold={hatHold} turn={turn} t={t + seed * 40} />
     </g>
   );
 };
@@ -106,7 +106,6 @@ const Ground: React.FC<{ kind: "lane" | "alley"; edge: string }> = ({ kind, edge
   return (
     <g strokeLinejoin="round">
       <rect x={-200} y={top} width={1480} height={1500} fill={edge} />
-      <rect x={-200} y={top} width={1480} height={26} fill="#2a1d10" opacity={0.28} />
       {kind === "lane" ? (
         <g>
           {/* two wheel ruts running toward the horizon */}
@@ -140,6 +139,8 @@ const Ground: React.FC<{ kind: "lane" | "alley"; edge: string }> = ({ kind, edge
         </g>
       )}
       <rect x={-200} y={top + 500} width={1480} height={1000} fill="#1a120a" opacity={0.18} />
+      <rect x={-200} y={top - 2} width={1480} height={90} fill={`url(#gfade-${kind})`} />
+      <defs><linearGradient id={`gfade-${kind}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={edge} stopOpacity="1" /><stop offset="1" stopColor={edge} stopOpacity="0" /></linearGradient></defs>
     </g>
   );
 };
@@ -159,51 +160,49 @@ const BG: Record<Place, { src: string; edge: string }> = {
 type Cam4 = { x: number; y: number; z: number; r?: number; fx?: number };
 type Shot = [number, number, Cam4, Cam4];
 const SHOTS = (): Shot[] => [
-  // hook (the lane): feet, the group, the faces
-  [0, 60, { x: 560, y: 1250, z: 2.6 }, { x: 560, y: 1250, z: 2.35 }],
-  [60, ls(1), { x: 640, y: 1090, z: 1.3 }, { x: 650, y: 1090, z: 1.45 }],
-  [ls(1), ls(2), { x: 740, y: 1010, z: 1.9 }, { x: 740, y: 1005, z: 2.4, r: -1.5 }],
-  // landing (the pier): the boat, you stepping on, your feet
-  [ls(2), ls(2) + 70, { x: 520, y: 1060, z: 1.05 }, { x: 540, y: 1050, z: 1.15 }],
-  [ls(2) + 70, ls(2) + 150, { x: 620, y: 1150, z: 1.4, fx: -30 }, { x: 700, y: 1220, z: 1.6, fx: -20 }],
-  [ls(2) + 150, le(2) + 8, { x: 790, y: 1290, z: 2.4 }, { x: 790, y: 1290, z: 2.1 }],
-  // the objects and their shadows, then the child (the pier)
-  [ls(3), ls(3) + 55, { x: 220, y: 1700, z: 1.6, r: 2 }, { x: 250, y: 1690, z: 1.75, r: 2 }],
-  [ls(3) + 55, ls(3) + 105, { x: 820, y: 1640, z: 1.55, r: -3 }, { x: 800, y: 1630, z: 1.7, r: -3 }],
-  [ls(3) + 105, le(3) + 6, { x: 250, y: 1100, z: 2.6 }, { x: 250, y: 1095, z: 2.75 }],
-  // the greeting (the lane)
-  [ls(4) - 4, ls(4) + 50, { x: 700, y: 1090, z: 1.2 }, { x: 700, y: 1090, z: 1.35 }],
-  [ls(4) + 50, le(4) + 6, { x: 740, y: 1010, z: 1.9 }, { x: 740, y: 1000, z: 2.05 }],
-  [ls(5), ls(5) + 70, { x: 740, y: 1010, z: 2.2 }, { x: 740, y: 1000, z: 2.6 }],
-  [ls(5) + 70, le(5) + 6, { x: 480, y: 1200, z: 1.5, r: 2 }, { x: 440, y: 1210, z: 1.7, r: 2 }],
+  // cuts only on a story beat (a new line, someone acts, a point of view); inside a shot the camera drifts slowly; no tilts
+  // hook (the lane): from your feet, pull back to reveal the whole village standing there; then their faces
+  [0, ls(1), { x: 560, y: 1250, z: 2.6 }, { x: 660, y: 1090, z: 1.35 }],
+  [ls(1), ls(2), { x: 740, y: 1010, z: 1.9 }, { x: 740, y: 1005, z: 2.3 }],
+  // the landing (the pier): the boat leaves while you walk up the planks, then your feet and shadow
+  [ls(2), ls(2) + 150, { x: 540, y: 1060, z: 1.05 }, { x: 690, y: 1190, z: 1.4 }],
+  [ls(2) + 150, le(2) + 8, { x: 790, y: 1290, z: 2.4 }, { x: 790, y: 1290, z: 2.15 }],
+  // line 3: a pan across the objects and their shadows, then the child runs in with none
+  [ls(3), ls(3) + 80, { x: 260, y: 1690, z: 1.6 }, { x: 780, y: 1640, z: 1.6 }],
+  [ls(3) + 80, le(3) + 6, { x: 240, y: 1100, z: 2.4 }, { x: 260, y: 1095, z: 2.6 }],
+  // line 4 (the lane): everyone walks in and greets you together
+  [ls(4), le(4) + 6, { x: 700, y: 1100, z: 1.2 }, { x: 690, y: 1080, z: 1.35 }],
+  // line 5: the head's face, then what he looks at (your feet and shadow)
+  [ls(5), ls(5) + 50, { x: 740, y: 1010, z: 2.2 }, { x: 740, y: 1000, z: 2.5 }],
+  [ls(5) + 50, le(5) + 6, { x: 440, y: 1220, z: 1.9 }, { x: 420, y: 1225, z: 2.0 }],
+  // line 6: he speaks, then your face
   [ls(6), ls(6) + 55, { x: 740, y: 1000, z: 2.5 }, { x: 740, y: 995, z: 2.7 }],
-  [ls(6) + 55, ls(6) + 110, { x: 430, y: 1230, z: 1.9, r: -2 }, { x: 420, y: 1225, z: 1.9, r: -2 }],
-  [ls(6) + 110, le(6) + 6, { x: 430, y: 1060, z: 2.5 }, { x: 430, y: 1050, z: 2.7 }],
-  // the walk and the washing (the alley)
-  [ls(7), ls(7) + 60, { x: 640, y: 1150, z: 1.4, fx: 90 }, { x: 600, y: 1150, z: 1.4, fx: 90 }],
-  [ls(7) + 60, le(7) + 6, { x: 600, y: 1330, z: 2.3, fx: 0 }, { x: 520, y: 1330, z: 2.5, fx: 0 }],
+  [ls(6) + 55, le(6) + 6, { x: 430, y: 1060, z: 2.5 }, { x: 430, y: 1050, z: 2.65 }],
+  // line 7 (the alley): one tracking shot of the walk
+  [ls(7), le(7) + 6, { x: 640, y: 1150, z: 1.4, fx: 90 }, { x: 600, y: 1150, z: 1.45, fx: 90 }],
+  // line 8: the woman takes her washing out of the shadow and into the sun; then the same woman, sweating
   [ls(8), ls(8) + 62, { x: 340, y: 1120, z: 1.8 }, { x: 470, y: 1130, z: 1.7 }],
-  [ls(8) + 62, le(8) + 6, { x: 560, y: 1090, z: 2.0 }, { x: 560, y: 1070, z: 2.3 }],
-  // noon: the clapper (the pier)
-  [ls(9), ls(9) + 45, { x: 880, y: 1700, z: 1.5, r: 1 }, { x: 890, y: 1690, z: 1.6, r: 1 }],
-  [ls(9) + 45, le(9) + 6, { x: 930, y: 1590, z: 2.6 }, { x: 930, y: 1585, z: 2.5 }],
-  // everyone looks down and up, then the hat (the lane)
-  [ls(10), ls(10) + 65, { x: 700, y: 1100, z: 1.2 }, { x: 710, y: 1100, z: 1.35 }],
-  [ls(10) + 65, le(10) + 6, { x: 740, y: 980, z: 2.2 }, { x: 740, y: 975, z: 2.35 }],
-  [ls(11), ls(11) + 55, { x: 600, y: 1130, z: 1.55 }, { x: 640, y: 1140, z: 1.6, r: -1.5 }],
-  [ls(11) + 55, le(11) + 6, { x: 620, y: 1000, z: 2.0 }, { x: 620, y: 1010, z: 2.15 }],
-  // the light slants, then the stare (the lane)
-  [ls(12), ls(12) + 55, { x: 700, y: 1250, z: 1.25, r: -1 }, { x: 660, y: 1260, z: 1.3, r: -1 }],
-  [ls(12) + 55, le(12) + 6, { x: 560, y: 1300, z: 1.5, r: 2 }, { x: 400, y: 1300, z: 1.5, r: 2 }],
-  [ls(13), ls(13) + 75, { x: 700, y: 1060, z: 1.25 }, { x: 700, y: 1050, z: 1.6 }],
-  [ls(13) + 75, le(13) + 40, { x: 440, y: 1130, z: 1.8 }, { x: 440, y: 1110, z: 2.2 }],
+  [ls(8) + 62, le(8) + 6, { x: 700, y: 1060, z: 2.2 }, { x: 700, y: 1050, z: 2.45 }],
+  // line 9 (the pier): the oldman and the clapper, one slow push in
+  [ls(9), le(9) + 6, { x: 870, y: 1700, z: 1.5 }, { x: 900, y: 1660, z: 1.85 }],
+  // line 10 (the lane): everyone looks down; then the faces come up smiling
+  [ls(10), ls(10) + 50, { x: 700, y: 1110, z: 1.2 }, { x: 700, y: 1100, z: 1.3 }],
+  [ls(10) + 50, le(10) + 6, { x: 760, y: 990, z: 2.2 }, { x: 760, y: 985, z: 2.35 }],
+  // line 11: you walk to the head; he holds his hat over you
+  [ls(11), ls(11) + 55, { x: 600, y: 1130, z: 1.4 }, { x: 640, y: 1120, z: 1.5 }],
+  [ls(11) + 55, le(11) + 6, { x: 640, y: 1010, z: 2.0 }, { x: 630, y: 1020, z: 2.1 }],
+  // line 12: the shadow grows out from under the hat across the dirt
+  [ls(12), le(12) + 6, { x: 560, y: 1180, z: 1.5 }, { x: 470, y: 1220, z: 1.3 }],
+  // line 13: the whole village turns to look at it; slow push in on the faces
+  [ls(13), ls(13) + 60, { x: 700, y: 1110, z: 1.2 }, { x: 700, y: 1100, z: 1.3 }],
+  [ls(13) + 60, le(13) + 40, { x: 780, y: 1010, z: 1.8 }, { x: 780, y: 995, z: 2.2 }],
 ];
 
 export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   const frameNow = useCurrentFrame();
   const g = gOverride ?? frameNow;
   const t = g;
-  const place = placeAt(g);
+  const place = placeAt(g + 6);
   // dips to black between different places
   const edges = [-999, ...BREAKS().map((b) => b - 6), 99999];
   let black = 1;
@@ -220,7 +219,7 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   const people: Who[] = [];
   const stand = (L: Record<string, Pt>, m: (id: string) => Mood, extra: (id: string) => Partial<Who> = () => ({})) => IDS.forEach((id) => people.push({ id, x: L[id][1], y: L[id][2], s: L[id][3], mood: m(id), seed: id.length, ...extra(id) }));
 
-  if (g < ls(2)) {
+  if (g < ls(2) && place === "lane") {
     // a flash-forward: the whole village stands and stares at you; only your feet have a shadow
     stand(LANEL, () => (g >= ls(1) ? "stare" : "smile"));
   }
@@ -264,7 +263,8 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
     } else if (g < ls(8) + 62) {
       people.push({ id: "mother", x: carried ? motherA.x : 290, y: carried ? motherA.y : 1215, s: 0.66, mood: "calm", walk: carried ? motherA.walk : 0, up: lifted && !carried ? clamp01((g - ls(8) - 14) / 12) * 0.8 : 0, seed: 2 });
     } else {
-      people.push({ id: "cook", x: 560, y: 1260, s: 0.85, mood: "worry", seed: 3 });
+      // the same woman, now standing in the full sun with the cloth, sweating, refusing to step back into the shade
+      people.push({ id: "mother", x: 700, y: 1220, s: 0.66, mood: "worry", seed: 2 });
     }
   }
   if (place === "pier" && g >= ls(9) && g < ls(10)) {
@@ -290,7 +290,9 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
       sq: g >= ls(12) ? lerp(0.2, 0.45, grow) : lerp(0.34, 0.2, toHat),
     };
     const LATE: Record<string, Pt> = g >= ls(11) ? { ...LANEL, cook: [0, 1010, 1080, 0.55], child: [0, 860, 1228, 0.9] } : LANEL;
-    stand(LATE, () => m, (id) => (id === "head" ? { nod: down, face: g >= ls(11) ? -1 : 1, hatHold: hatHold(g) } : { nod: down }));
+    // in the final stare everyone turns toward your shadow (to the left) and lowers the eyes a little
+    const look = g >= ls(13) ? smooth(clamp01((g - ls(13) - 10) / 20)) : 0;
+    stand(LATE, () => m, (id) => (id === "head" ? { nod: down + look * 0.4, face: g >= ls(11) ? -1 : 1, hatHold: hatHold(g), turn: look } : { nod: down + look * 0.4, turn: -look }));
   }
   const still = you.walk < 0.05;
   const yi = idle(t, 0.7, still);
@@ -298,7 +300,8 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   // ---------------------------------------------------------------- camera: pick the shot, drift inside it, hard cut at its end
   const shots = SHOTS();
   let cam = { x: 540, y: 1100, z: 1.2, r: 0 };
-  const cur = shots.find(([a, b]) => g >= a && g < b);
+  const brk = BREAKS();
+  const cur = shots.find(([a, b]) => g >= (brk.includes(a) ? a - 6 : a) && g < b);
   const fxOf = (c: Cam4) => (c.fx !== undefined ? you.x + c.fx : c.x);
   if (cur) {
     const [a, b, c0, c1] = cur;
@@ -393,7 +396,7 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
                     {[[225, "#e9dcc0"], [290, "#e9dcc0"], [350, "#c8512d"]].map(([x, c], i) => (i === 1 && lifted) ? null : <rect key={i} x={x as number} y={1116} width={42} height={64} fill={c as string} stroke={INK} strokeWidth={4} />)}
                   </g>
                 )}
-                {place === "alley" && lifted && g < ls(8) + 62 && <rect x={(carried ? motherA.x : 290) + 18} y={(carried ? motherA.y : 1215) - 150} width={42} height={64} fill="#e9dcc0" stroke={INK} strokeWidth={4} />}
+                {place === "alley" && lifted && <rect x={(carried ? motherA.x : 290) + 18} y={(carried ? motherA.y : 1215) - 150} width={42} height={64} fill="#e9dcc0" stroke={INK} strokeWidth={4} />}
                 {place === "lane" && g >= ls(11) + 14 && (() => {
                   // the held hat's own shadow, thrown by the same sun as everything else (height above the ground where you stand)
                   const k = 0.7 * 1.08;
@@ -412,9 +415,9 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
             )}
             {place === "lane" && g >= ls(11) && people.filter((p) => p.id === "head").map((p, i) => <Villager key={p.id + i} {...p} t={g >= ls(13) + 30 ? 0 : t} />)}
             {sweatOn && (
-              <g transform="translate(540,0)">
-                {sweatT >= 0.8 && <g><ellipse cx={20} cy={1268} rx={24 + (sweatT - 0.8) * 160} ry={7 + (sweatT - 0.8) * 30} fill="none" stroke="#2a1d10" strokeWidth={4} opacity={0.7} /><ellipse cx={20} cy={1268} rx={14} ry={5} fill="#2a1d10" opacity={0.6} /></g>}
-                {sweatT < 0.8 && <path d={`M20 ${940 + (sweatT / 0.8) * 322} q-14 24 0 36 q14 -12 0 -36 Z`} fill="#9cd0f2" stroke={INK} strokeWidth={3} />}
+              <g transform="translate(700,0)">
+                {sweatT >= 0.8 && <g><ellipse cx={34} cy={1222} rx={24 + (sweatT - 0.8) * 160} ry={7 + (sweatT - 0.8) * 30} fill="none" stroke="#2a1d10" strokeWidth={4} opacity={0.7} /><ellipse cx={34} cy={1222} rx={14} ry={5} fill="#2a1d10" opacity={0.6} /></g>}
+                {sweatT < 0.8 && <path d={`M34 ${930 + (sweatT / 0.8) * 270} q-14 24 0 36 q14 -12 0 -36 Z`} fill="#9cd0f2" stroke={INK} strokeWidth={3} />}
               </g>
             )}
           </g>
@@ -433,8 +436,15 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
       ))}
       {g >= manifest.outroStart && (
         <div style={{ position: "absolute", inset: 0, background: "#0a0706", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily, color: "#f4ead2", opacity: clamp01((g - manifest.outroStart) / 12) }}>
-          <div style={{ fontSize: 46, color: "#c9b79a" }}>ตอนต่อไป</div>
-          <div style={{ fontSize: 74, marginTop: 20 }}>ห้ามยืนในที่ร่ม</div>
+          {/* a question for the comments first, then the teaser */}
+          <div style={{ position: "absolute", top: 560, left: 80, right: 160, textAlign: "center" }}>
+            <div style={{ fontSize: 62, lineHeight: 1.45 }}>คุณคิดว่าชาวบ้าน<br />อยากได้อะไรจากเงาของคุณ?</div>
+            <div style={{ fontSize: 40, marginTop: 28, color: "#c9b79a" }}>คอมเมนต์บอกหน่อย</div>
+          </div>
+          <div style={{ position: "absolute", top: 1040, left: 80, right: 160, textAlign: "center", opacity: clamp01((g - manifest.outroStart - 60) / 12) }}>
+            <div style={{ fontSize: 40, color: "#c9b79a" }}>ตอนต่อไป</div>
+            <div style={{ fontSize: 66, marginTop: 14 }}>ห้ามยืนในที่ร่ม</div>
+          </div>
         </div>
       )}
       <Audio src={staticFile("shadow1v/bed.wav")} volume={0.6} />

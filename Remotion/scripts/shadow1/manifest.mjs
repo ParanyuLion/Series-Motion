@@ -10,7 +10,7 @@ const TAIL = 6;            // 0.2 s after each later line
 const HOOK_GAP = 6;        // between hook lines 0 and 1
 const TITLE_HOLD = 42;     // frames after line 1 for the title card
 const OUTRO_GAP = 12;
-const OUTRO_FRAMES = 130;  // 4.5 s finale card
+const OUTRO_FRAMES = 165;  // 5.5 s: a question for the comments, then the teaser
 
 const lines = JSON.parse(readFileSync("scripts/shadow1/part1.narration.json", "utf8")).map((l) => (typeof l === "string" ? l : l.text));
 const lengths = lines.map((_, i) => {
@@ -45,7 +45,7 @@ const cues = {
   praiseAt: ls(6),
   walkAt: ls(7),
   washingAt: ls(8),
-  clapAt: ls(9),
+  clapAt: ls(9) + Math.round(0.45 * (le(9) - ls(9))),
   lookDownAt: ls(10),
   hatAt: ls(11),
   stretchAt: ls(12),
