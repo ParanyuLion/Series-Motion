@@ -69,7 +69,7 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
         <Ground w={W} h={H} horizon={600} />
         {options ? (
           <g>
-            {([["youA", "A: ผมแสกข้าง · เสื้อเขียวน้ำทะเล"], ["youB", "B: ผมหางม้า · เสื้อม่วง"], ["youC", "C: หมวกไหมพรมส้ม · เสื้อเขียวป่า"]] as [string, string][]).map(([id, label], i) => (
+            {([["youA", "A: ผมปัดข้าง · เสื้อเขียวน้ำทะเล"], ["youB", "B: ผมบ็อบหน้าม้า · เสื้อม่วง"], ["youC", "C: ผมตั้งชี้ สีสนิม · เสื้อเขียวป่า"]] as [string, string][]).map(([id, label], i) => (
               <g key={id}>
                 <Cast x={360 + i * 600} y={ground} id={id} />
                 <g transform={`translate(${360 + i * 600},${ground}) scale(1.15)`}><Figure look={LOOKS[id]} mood={i === 1 ? "worry" : "calm"} t={t} /></g>
