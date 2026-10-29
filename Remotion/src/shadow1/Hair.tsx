@@ -113,7 +113,7 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
           const py = c.t[1] + (c.b[1] - c.t[1]) * 0.5;
           const nx = -(c.b[1] - c.t[1]) / 100;
           const ny = (c.b[0] - c.t[0]) / 100;
-          return <path key={"s" + i} d={`M${c.t[0] + nx * 4} ${c.t[1] + ny * 4 - 2} Q${(c.t[0] + px) / 2 + nx * 9} ${(c.t[1] + py) / 2 + ny * 9} ${px + nx * 3} ${py + ny * 3}`} fill="none" stroke={mix(color, "#ffffff", 0.2)} strokeWidth={3} opacity={0.7} />;
+          return <path key={"s" + i} d={`M${c.t[0] + nx * 4} ${c.t[1] + ny * 4 - 2} Q${(c.t[0] + px) / 2 + nx * 9} ${(c.t[1] + py) / 2 + ny * 9} ${px + nx * 3} ${py + ny * 3}`} fill="none" stroke={mix(color, "#ffffff", 0.12)} strokeWidth={2.5} opacity={0.4} />;
         })}
       </g>
     );
