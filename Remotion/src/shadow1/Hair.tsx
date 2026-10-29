@@ -22,11 +22,11 @@ const leaf = (b: [number, number], t: [number, number], w: number, bend: number)
 
 type L = { b: [number, number]; t: [number, number]; w: number; bend: number };
 
-const Clumps: React.FC<{ list: L[]; color: string; ink: string; sw: number; flat: boolean; hi?: boolean }> = ({ list, color, ink, sw, flat, hi = true }) => (
+const Clumps: React.FC<{ list: L[]; color: string; ink: string; sw: number; flat: boolean; hi?: boolean; plain?: boolean }> = ({ list, color, ink, sw, flat, hi = true, plain = false }) => (
   <g strokeLinejoin="round" strokeLinecap="round">
     {list.map((c, i) => {
       const k = list.length > 1 ? i / (list.length - 1) : 1;
-      const fill = flat ? ink : mix(mix(color, "#000000", 0.16), mix(color, "#ffffff", 0.1), k);
+      const fill = flat ? ink : plain ? color : mix(mix(color, "#000000", 0.16), mix(color, "#ffffff", 0.1), k);
       return <path key={i} d={leaf(c.b, c.t, c.w, c.bend)} fill={fill} stroke={ink} strokeWidth={sw} />;
     })}
     {!flat && hi && (() => {
@@ -89,16 +89,18 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
     );
   }
   if (kind === "bowlcut") {
-    // a bowl cut like the reference: a dome wider than the head, sides falling to the jaw, one big diagonal lock sweeping across the forehead and a shorter lock in front
-    const fill = flat ? ink : mix(color, "#ffffff", 0.05);
+    // like the reference, in three layers of ONE colour told apart only by their outlines: an outer dome that reaches the jaw, the bowl shape of the fringe inside it,
+    // and two locks over the forehead (a long diagonal one and a short one)
+    const fill = flat ? ink : color;
     const fr: L[] = [
-      { b: [44, hy - 104], t: [-50, hy - 22], w: 66, bend: 12 },
-      { b: [14, hy - 104], t: [26, hy - 28], w: 38, bend: -4 },
+      { b: [44, hy - 100], t: [-50, hy - 22], w: 62, bend: 12 },
+      { b: [14, hy - 100], t: [26, hy - 28], w: 36, bend: -4 },
     ];
     return (
       <g strokeLinecap="round" strokeLinejoin="round">
-        <path d={`M-94 ${hy + 38} Q-114 ${hy - 50} -80 ${hy - 94} Q-40 ${hy - 134} 0 ${hy - 132} Q40 ${hy - 134} 80 ${hy - 94} Q114 ${hy - 50} 94 ${hy + 38} Q80 ${hy + 18} 72 ${hy - 16} Q62 ${hy - 62} 30 ${hy - 86} L-30 ${hy - 86} Q-62 ${hy - 62} -72 ${hy - 16} Q-80 ${hy + 18} -94 ${hy + 38} Z`} fill={fill} stroke={ink} strokeWidth={sw} />
-        <Clumps list={fr} color={color} ink={ink} sw={sw} flat={flat} hi={false} />
+        <path d={`M-88 ${hy + 34} Q-104 ${hy - 44} -74 ${hy - 86} Q-40 ${hy - 118} 0 ${hy - 116} Q40 ${hy - 118} 74 ${hy - 86} Q104 ${hy - 44} 88 ${hy + 34} Q76 ${hy + 14} 68 ${hy - 16} Q58 ${hy - 58} 28 ${hy - 80} L-28 ${hy - 80} Q-58 ${hy - 58} -68 ${hy - 16} Q-76 ${hy + 14} -88 ${hy + 34} Z`} fill={fill} stroke={ink} strokeWidth={sw} />
+        <path d={`M-84 ${hy + 2} Q-90 ${hy - 92} 0 ${hy - 92} Q90 ${hy - 92} 84 ${hy + 2} Q50 ${hy - 40} 0 ${hy - 42} Q-50 ${hy - 40} -84 ${hy + 2} Z`} fill={fill} stroke={ink} strokeWidth={sw} />
+        <Clumps list={fr} color={color} ink={ink} sw={sw} flat={flat} hi={false} plain />
       </g>
     );
   }
