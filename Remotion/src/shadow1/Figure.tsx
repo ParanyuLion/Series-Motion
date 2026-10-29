@@ -53,7 +53,11 @@ export const LOOKS: Record<string, Look> = {
   oldman: { badge: true, sleeve: "long", pants: "#4b463f", hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
 };
 
-export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; point?: number; sit?: boolean; talk?: number; turn?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, point = 0, sit = false, talk = 0, turn = 0, facing = 1, t = 0, creep }) => {
+/** where the straw hat ends up when it is held out (figure units, on the figure's right): over the head of someone standing next to it */
+export const HAT_HOLD_END: [number, number] = [232, -560];
+const smoothstep = (x: number) => { const k = Math.max(0, Math.min(1, x)); return k * k * (3 - 2 * k); };
+
+export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; point?: number; sit?: boolean; talk?: number; hatHold?: number; turn?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, point = 0, sit = false, talk = 0, hatHold = 0, turn = 0, facing = 1, t = 0, creep }) => {
   const S = silhouette ? "#0a1022" : null;
   const fill = (c: string) => S ?? c;
   const stroke = S ?? INK;
@@ -79,6 +83,9 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const eyeY = headY + 6;
   const brow = mood === "worry" ? -12 : mood === "stare" ? 4 : 0;
   const hatW = 150;
+  const hh = smoothstep(hatHold);
+  const hatC: [number, number] = [HAT_HOLD_END[0] * hh, (headY - 52) + (HAT_HOLD_END[1] - (headY - 52)) * hh];
+  const hatHand: [number, number] = [hatC[0] + 90 + (-220) * hh, hatC[1] + 4 * hh];
   const ta = talk > 0 ? talk * (0.5 + 0.5 * Math.sin(t * 0.9)) : 0; // mouth open amount while speaking
   const faceFor = (mood: Mood, op: number) => {
     const brow = mood === "worry" ? -12 : mood === "stare" ? 4 : 0;
@@ -140,14 +147,17 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         const y0 = topY + 40;
         const swing = (i === 0 ? aw : -aw);
         const pt = i === 1 ? point : 0;
-        const hx = s * (bw + 14) + swing * 0.4 + pt * 110;
-        const hy = y0 + 124 - lift * (i === 1 ? 1 : 0.4) - pt * 100;
+        const holding = i === 1 && hatHold > 0 && look.hat === "straw";
+        const hx = holding ? hatHand[0] : s * (bw + 14) + swing * 0.4 + pt * 110;
+        const hy = holding ? hatHand[1] : y0 + 124 - lift * (i === 1 ? 1 : 0.4) - pt * 100;
+        const cx1 = holding ? bw + 60 * (1 - hh) + 70 * hh : s * (bw + 22) + pt * 60;
+        const cy1 = holding ? y0 + 56 * (1 - hh) - 120 * hh : y0 + 56 - pt * 30;
         return (
           <g key={s}>
-            <path d={`M${x0} ${y0} Q${s * (bw + 22) + pt * 60} ${y0 + 56 - pt * 30} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+            <path d={`M${x0} ${y0} Q${cx1} ${cy1} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
             {(() => {
               const P0: [number, number] = [x0, y0];
-              const P1: [number, number] = [s * (bw + 22) + pt * 60, y0 + 56 - pt * 30];
+              const P1: [number, number] = [cx1, cy1];
               const P2: [number, number] = [hx, hy];
               const tt = look.sleeve === "long" ? 0.8 : 0.5;
               const c: [number, number] = [P0[0] + tt * (P1[0] - P0[0]), P0[1] + tt * (P1[1] - P0[1])];
@@ -249,13 +259,14 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {!silhouette && <g transform={`translate(${14 * turn},0)`}>{creep === undefined ? faceFor(mood, 1) : <g>{faceFor("smile", 1 - creep)}{faceFor("creepy", creep)}</g>}</g>}
       {/* the straw hat (a portable shade) */}
       {look.hat === "straw" && (
-        <g>
+        <g transform={`translate(${hatC[0]},${hatC[1] - (headY - 52)}) rotate(${-8 * hh},0,${headY - 52})`}>
           <ellipse cx={0} cy={headY - 52} rx={hatW} ry={30} fill={fill("#d9b865")} stroke={stroke} strokeWidth={sw} />
           <path d={`M-70 ${headY - 56} Q-70 ${headY - 120} 0 ${headY - 120} Q70 ${headY - 120} 70 ${headY - 56} Q0 ${headY - 40} -70 ${headY - 56} Z`} fill={fill("#e6c97a")} stroke={stroke} strokeWidth={sw} />
           {!silhouette && <path d={`M-66 ${headY - 70} Q0 ${headY - 52} 66 ${headY - 70}`} fill="none" stroke="#a8332a" strokeWidth={9} />}
           {!silhouette && Array.from({ length: 6 }, (_, i) => <path key={i} d={`M${-120 + i * 48} ${headY - 56} q8 14 0 28`} fill="none" stroke="#a88a3e" strokeWidth={3} opacity={0.7} />)}
         </g>
       )}
+      {look.hat === "straw" && hatHold > 0 && <circle cx={hatHand[0]} cy={hatHand[1] + 6} r={13} fill={fill(skin)} stroke={stroke} strokeWidth={sw - 2} />}
     </g>
   );
 };

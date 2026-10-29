@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
 import manifest from "./manifest.json";
 import { fontFamily } from "../island/fonts";
-import { Figure, LOOKS, Mood } from "./Figure";
+import { Figure, HAT_HOLD_END, LOOKS, Mood } from "./Figure";
 import { Traveller, TravellerMood } from "./Traveller";
 import { Bucket, Crates, INK, Mooring, Net, PIER_TOP, Rope, SHADOW, Shade } from "./VillageVert";
 import { clamp01, lerp, smooth } from "../onestar3/util";
@@ -17,6 +17,11 @@ import { clamp01, lerp, smooth } from "../onestar3/util";
 const C = manifest.cues as Record<string, number>;
 const ls = (i: number) => C[`lineStart${i}`];
 const le = (i: number) => C[`lineEnd${i}`];
+
+/** the head lifts his straw hat off and holds it out over you (line 11) and keeps holding it to the end */
+const hatHold = (g: number) => clamp01((g - ls(11) - 14) / 30);
+/** the world x where you stand under the held hat: the head stands at LANEL.head (760, scale 0.7 x look scale) */
+const HAT_X = 760 - HAT_HOLD_END[0] * 0.7 * 1.08;
 
 const SUBTITLE_FIX = (t: string) => t.replace(/ใกล้เที่ยง/g, "ใกล้⁠เที่ยง").replace(/เงาสวยจังเลย/g, "เงา⁠สวย⁠จังเลย").replace(/พร้อมกัน/g, "พร้อม⁠กัน").replace(/ผู้ใหญ่บ้าน/g, "ผู้ใหญ่⁠บ้าน");
 
@@ -61,17 +66,17 @@ const track = (g: number, pts: Pt[]) => {
   return { ...p, v, dir: b.x >= a.x ? 1 : -1, walk: clamp01((v - 0.25) / 0.9) };
 };
 
-type Who = { id: string; x: number; y: number; s: number; mood: Mood; face?: 1 | -1; walk?: number; up?: number; nod?: number; seed?: number; talk?: number };
+type Who = { id: string; x: number; y: number; s: number; mood: Mood; face?: 1 | -1; walk?: number; up?: number; nod?: number; seed?: number; talk?: number; hatHold?: number };
 
 /** a living idle: slow breathing and a small sway so nobody is a statue; walking figures bob instead */
 const idle = (t: number, seed: number, still: boolean) => (still ? { rot: Math.sin(t * 0.05 + seed) * 0.9, sy: 1 + Math.sin(t * 0.11 + seed * 2) * 0.008, dy: Math.sin(t * 0.11 + seed * 2) * -1.5 } : { rot: 0, sy: 1, dy: Math.abs(Math.sin(t * 0.25 + seed)) * -3 });
 
 /** a villager: never casts a shadow */
-const Villager: React.FC<Who & { t: number }> = ({ id, x, y, s, mood, face = 1, walk = 0, up = 0, nod = 0, seed = 0, talk = 0, t }) => {
+const Villager: React.FC<Who & { t: number }> = ({ id, x, y, s, mood, face = 1, walk = 0, up = 0, nod = 0, seed = 0, talk = 0, hatHold = 0, t }) => {
   const i = idle(t, seed, walk < 0.05);
   return (
     <g transform={`translate(${x},${y + i.dy}) rotate(${i.rot}) scale(${s},${s * i.sy}) translate(0,${nod * 14})`}>
-      <Figure look={LOOKS[id]} mood={mood} facing={face} walk={walk} armsUp={up} talk={talk} t={t + seed * 40} />
+      <Figure look={LOOKS[id]} mood={mood} facing={face} walk={walk} armsUp={up} talk={talk} hatHold={hatHold} t={t + seed * 40} />
     </g>
   );
 };
@@ -186,7 +191,7 @@ const SHOTS = (): Shot[] => [
   [ls(10), ls(10) + 65, { x: 700, y: 1100, z: 1.2 }, { x: 710, y: 1100, z: 1.35 }],
   [ls(10) + 65, le(10) + 6, { x: 740, y: 980, z: 2.2 }, { x: 740, y: 975, z: 2.35 }],
   [ls(11), ls(11) + 55, { x: 600, y: 1130, z: 1.55 }, { x: 640, y: 1140, z: 1.6, r: -1.5 }],
-  [ls(11) + 55, le(11) + 6, { x: 660, y: 1240, z: 2.8 }, { x: 660, y: 1245, z: 3.0 }],
+  [ls(11) + 55, le(11) + 6, { x: 620, y: 1000, z: 2.0 }, { x: 620, y: 1010, z: 2.15 }],
   // the light slants, then the stare (the lane)
   [ls(12), ls(12) + 55, { x: 700, y: 1250, z: 1.25, r: -1 }, { x: 660, y: 1260, z: 1.3, r: -1 }],
   [ls(12) + 55, le(12) + 6, { x: 560, y: 1300, z: 1.5, r: 2 }, { x: 400, y: 1300, z: 1.5, r: 2 }],
@@ -269,7 +274,7 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   if (place === "lane" && g >= ls(10)) {
     const down = g >= ls(10) && g < ls(10) + 40 ? clamp01((g - ls(10)) / 10) : g >= ls(10) + 40 && g < ls(11) ? clamp01(1 - (g - ls(10) - 40) / 12) : 0;
     const m: Mood = g >= ls(13) + 30 ? "stare" : g >= ls(10) + 46 ? "smile" : "calm";
-    const walkIn = track(g, [[ls(11), 420, 1230, 0.95], [ls(11) + 45, 690, 1215, 0.95]]);
+    const walkIn = track(g, [[ls(11), 420, 1230, 0.95], [ls(11) + 45, HAT_X, 1150, 0.76]]);
     const toHat = clamp01((g - ls(11)) / 45);
     // under the brim the shadow shrinks to a dot; as the light slants (line 12) it grows again and stretches toward the left
     const grow = g >= ls(12) ? smooth(clamp01((g - ls(12)) / (le(13) - ls(12)))) : 0;
@@ -277,13 +282,15 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
       ...you,
       x: g >= ls(11) ? walkIn.x : 420,
       y: g >= ls(11) ? walkIn.y : 1230,
+      s: g >= ls(11) ? walkIn.s : 0.95,
       yaw: g >= ls(11) && walkIn.walk > 0.05 ? 90 : g >= ls(11) ? 60 : 50,
       walk: g >= ls(11) ? walkIn.walk : 0,
-      shadowK: g >= ls(12) ? lerp(0.12, 2.3, grow) : lerp(1, 0.12, smooth(toHat)),
+      shadowK: g >= ls(12) ? lerp(0.3, 2.6, grow) : lerp(1, 0.3, smooth(toHat)),
       skew: g >= ls(12) ? lerp(-55, -76, grow) : -55,
       sq: g >= ls(12) ? lerp(0.2, 0.45, grow) : lerp(0.34, 0.2, toHat),
     };
-    stand(LANEL, () => m, (id) => ({ nod: down, talk: 0 }));
+    const LATE: Record<string, Pt> = g >= ls(11) ? { ...LANEL, cook: [0, 1010, 1080, 0.55], child: [0, 860, 1228, 0.9] } : LANEL;
+    stand(LATE, () => m, (id) => (id === "head" ? { nod: down, face: g >= ls(11) ? -1 : 1, hatHold: hatHold(g) } : { nod: down }));
   }
   const still = you.walk < 0.05;
   const yi = idle(t, 0.7, still);
@@ -376,8 +383,8 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
                 <g transform={`translate(150,${place === "lane" ? 1100 : 1180}) scale(0.55)`}><Crates /></g>
                 <Shade x={1010} y={place === "lane" ? 1130 : 1240} k={0.8} skew={you.skew} sq={you.sq}><Bucket shadow /></Shade>
                 <g transform={`translate(1010,${place === "lane" ? 1130 : 1240}) scale(0.8)`}><Bucket /></g>
-                <Shade x={place === "lane" ? 520 : 880} y={place === "lane" ? 1075 : 1090} k={0.7} skew={you.skew} sq={you.sq}><Mooring shadow /></Shade>
-                <g transform={`translate(${place === "lane" ? 520 : 880},${place === "lane" ? 1075 : 1090}) scale(0.7)`}><Mooring /></g>
+                <Shade x={place === "lane" ? 300 : 880} y={place === "lane" ? 1075 : 1090} k={0.7} skew={you.skew} sq={you.sq}><Mooring shadow /></Shade>
+                <g transform={`translate(${place === "lane" ? 300 : 880},${place === "lane" ? 1075 : 1090}) scale(0.7)`}><Mooring /></g>
                 {place === "alley" && (
                   <g>
                     <polygon points="140,1150 520,1150 580,1250 90,1250" fill={SHADOW} opacity={0.62} />
@@ -387,16 +394,23 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
                   </g>
                 )}
                 {place === "alley" && lifted && g < ls(8) + 62 && <rect x={(carried ? motherA.x : 290) + 18} y={(carried ? motherA.y : 1215) - 150} width={42} height={64} fill="#e9dcc0" stroke={INK} strokeWidth={4} />}
-                {place === "lane" && g >= ls(11) && g < ls(12) + 40 && <ellipse cx={you.x + 20} cy={you.y - 4} rx={110} ry={16} fill={SHADOW} opacity={clamp01((g - ls(11)) / 20) * 0.5 * (1 - clamp01((g - ls(12)) / 40))} />}
+                {place === "lane" && g >= ls(11) + 14 && (() => {
+                  // the held hat's own shadow, thrown by the same sun as everything else (height above the ground where you stand)
+                  const k = 0.7 * 1.08;
+                  const hx = 760 - (HAT_HOLD_END[0] * smooth(hatHold(g))) * k;
+                  const hy = 1140 + (HAT_HOLD_END[1] * smooth(hatHold(g)) + (-442 - 52) * (1 - smooth(hatHold(g)))) * k;
+                  return <Shade x={hx} y={1150} skew={you.skew} sq={you.sq}><ellipse cx={0} cy={-(1150 - hy)} rx={150 * k} ry={34 * k} fill={SHADOW} /></Shade>;
+                })()}
               </g>
             )}
-            {[...people].sort((a, b) => a.y - b.y).map((p, i) => <Villager key={p.id + i} {...p} t={g >= ls(13) + 30 ? 0 : t} />)}
+            {[...people].filter((p) => !(place === "lane" && g >= ls(11) && p.id === "head")).sort((a, b) => a.y - b.y).map((p, i) => <Villager key={p.id + i} {...p} t={g >= ls(13) + 30 ? 0 : t} />)}
             {youShown && (
               <g>
                 <Shade x={you.x} y={you.y} k={you.s * you.shadowK} skew={you.skew} sq={you.sq}><Traveller yaw={you.yaw} silhouette walk={you.walk} phase={t * 0.25} /></Shade>
                 <g transform={`translate(${you.x},${you.y + yi.dy}) rotate(${yi.rot}) scale(${you.s},${you.s * yi.sy})`}><Traveller yaw={you.yaw} mood={you.mood} walk={you.walk} phase={t * 0.25} t={t} /></g>
               </g>
             )}
+            {place === "lane" && g >= ls(11) && people.filter((p) => p.id === "head").map((p, i) => <Villager key={p.id + i} {...p} t={g >= ls(13) + 30 ? 0 : t} />)}
             {sweatOn && (
               <g transform="translate(540,0)">
                 {sweatT >= 0.8 && <g><ellipse cx={20} cy={1268} rx={24 + (sweatT - 0.8) * 160} ry={7 + (sweatT - 0.8) * 30} fill="none" stroke="#2a1d10" strokeWidth={4} opacity={0.7} /><ellipse cx={20} cy={1268} rx={14} ry={5} fill="#2a1d10" opacity={0.6} /></g>}
