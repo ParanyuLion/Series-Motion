@@ -4,7 +4,7 @@ import { mix } from "./Figure";
 // Hair built the way a cartoonist does it: a few big clumps (pointed leaf shapes) stacked back to front, each with one clean outline, so the
 // silhouette has flow and the clump seams are the only "texture". Head centre (0, hy), ellipse 80 x 88 (top at hy - 88, eyes at hy + 6, brows at hy - 20).
 
-type P = { kind: "wave" | "swoop" | "tousle"; hy: number; color: string; ink: string; sw: number; flat: boolean };
+type P = { kind: "wave" | "swoop" | "tousle" | "bangs"; hy: number; color: string; ink: string; sw: number; flat: boolean };
 
 /** a pointed clump from base b to tip t: w is its width, bend sweeps the middle to one side */
 const leaf = (b: [number, number], t: [number, number], w: number, bend: number) => {
@@ -85,6 +85,25 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
       <g>
         <Clumps list={left} color={color} ink={ink} sw={sw} flat={flat} hi={false} />
         <Clumps list={swoop} color={color} ink={ink} sw={sw} flat={flat} />
+      </g>
+    );
+  }
+  if (kind === "bangs") {
+    // a rounded top that stands a little off the skull, heavy side-swept bangs ending in points, short pointed side hair past the ears
+    const bang: L[] = [
+      { b: [-8, hy - 96], t: [-66, hy - 28], w: 44, bend: 8 },
+      { b: [4, hy - 100], t: [14, hy - 34], w: 46, bend: -4 },
+      { b: [14, hy - 96], t: [66, hy - 40], w: 44, bend: -10 },
+    ];
+    const side: L[] = [
+      { b: [-74, hy - 50], t: [-92, hy + 16], w: 28, bend: 6 },
+      { b: [74, hy - 50], t: [92, hy + 16], w: 28, bend: -6 },
+    ];
+    return (
+      <g strokeLinecap="round" strokeLinejoin="round">
+        <Clumps list={side} color={color} ink={ink} sw={sw} flat={flat} hi={false} />
+        <Cap hy={hy} color={color} ink={ink} sw={sw} flat={flat} hair={14} />
+        <Clumps list={bang} color={color} ink={ink} sw={sw} flat={flat} />
       </g>
     );
   }
