@@ -22,7 +22,7 @@ export type Look = {
   skin?: string;
   creepSkin?: string;
   pants?: string;
-  pattern?: "sport" | "zigzag" | "stripes" | "trim" | "breton";
+  pattern?: "sport" | "zigzag" | "stripes" | "trim" | "breton" | "jacket";
   sleeve?: "long" | "short";
 };
 
@@ -41,8 +41,8 @@ const Fluff: React.FC<{ c: [number, number, number][]; color: string; ink: strin
 export type Mood = "calm" | "smile" | "worry" | "stare" | "creepy";
 
 export const LOOKS: Record<string, Look> = {
-  you: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "breton", sleeve: "long" },
-  youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "breton", sleeve: "long" },
+  you: { hair: "bowlcut", hairColor: "#1d1816", body: "#24252b", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "jacket", sleeve: "long" },
+  youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#24252b", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "jacket", sleeve: "long" },
   youB: { hair: "swoop", hairColor: "#1c1410", body: "#8e5ab5", bodyKind: "bean", detail: "strap" },
   youC: { hair: "tousle", hairColor: "#b5502a", body: "#3b7a57", bodyKind: "bean", detail: "strap" },
   head: { sleeve: "long", hair: "none", hairColor: "#d8d4cc", hat: "straw", pants: "#c9bd9f", pattern: "trim", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
@@ -130,19 +130,19 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
           </g>
         );
       })}
-      {/* arms behind the body */}
+      {/* arms hang close at the sides, tucked behind the body so the shoulder is the body outline */}
       {[-1, 1].map((s, i) => {
-        const x0 = s * (bw - 6);
-        const y0 = topY + 50;
+        const x0 = s * (bw * 0.5);
+        const y0 = topY + 56;
         const swing = (i === 0 ? aw : -aw);
-        const hx = s * (bw + 36) + swing * 0.4;
-        const hy = y0 + 120 - lift * (i === 1 ? 1 : 0.4) ;
+        const hx = s * (bw + 14) + swing * 0.4;
+        const hy = y0 + 92 - lift * (i === 1 ? 1 : 0.4) ;
         return (
           <g key={s}>
-            <path d={`M${x0} ${y0} Q${s * (bw + 44)} ${y0 + 50} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+            <path d={`M${x0} ${y0} Q${s * (bw + 22)} ${y0 + 44} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
             {(() => {
               const P0: [number, number] = [x0, y0];
-              const P1: [number, number] = [s * (bw + 44), y0 + 50];
+              const P1: [number, number] = [s * (bw + 22), y0 + 44];
               const P2: [number, number] = [hx, hy];
               const tt = look.sleeve === "long" ? 0.8 : 0.5;
               const c: [number, number] = [P0[0] + tt * (P1[0] - P0[0]), P0[1] + tt * (P1[1] - P0[1])];
@@ -186,6 +186,18 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
               </g>
             )}
             {look.pattern === "breton" && Array.from({ length: 9 }, (_, k) => <rect key={k} x={-bw - 10} y={topY + 28 + k * 25} width={bw * 2 + 20} height={11} fill="#f1e6cf" opacity={0.92} />)}
+            {look.pattern === "jacket" && (
+              <g>
+                <path d={`M-26 ${topY + 10} L0 ${topY + 84} L26 ${topY + 10} Z`} fill="#2f9e9a" />
+                <path d={`M-30 ${topY + 8} L-4 ${topY + 70} L-34 ${topY + 66} Z`} fill={mix(look.body, "#ffffff", 0.14)} stroke="#0f0b09" strokeWidth={3} />
+                <path d={`M30 ${topY + 8} L4 ${topY + 70} L34 ${topY + 66} Z`} fill={mix(look.body, "#ffffff", 0.14)} stroke="#0f0b09" strokeWidth={3} />
+                <line x1={0} y1={topY + 78} x2={0} y2={hipY + 10} stroke="#0f0b09" strokeWidth={4} />
+                <line x1={4} y1={topY + 84} x2={4} y2={hipY + 10} stroke="#9ca0aa" strokeWidth={2} strokeDasharray="3 4" />
+                <rect x={-bw - 10} y={hipY - 24} width={bw * 2 + 20} height={30} fill={mix(look.body, "#ffffff", 0.1)} stroke="#0f0b09" strokeWidth={3} />
+                <path d={`M-52 ${hipY - 70} L-30 ${hipY - 30}`} stroke="#0f0b09" strokeWidth={3} opacity={0.6} />
+                <path d={`M52 ${hipY - 70} L30 ${hipY - 30}`} stroke="#0f0b09" strokeWidth={3} opacity={0.6} />
+              </g>
+            )}
             {look.pattern === "zigzag" && (
               <g>
                 <rect x={-bw - 10} y={hipY - 52} width={bw * 2 + 20} height={44} fill="#f1e6cf" opacity={0.92} />
