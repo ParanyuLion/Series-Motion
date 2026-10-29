@@ -4,8 +4,8 @@ import React from "react";
 // and thin bent limbs. A figure is drawn around its feet at (0,0), about 560 tall. `silhouette` draws the same figure as one dark flat shape
 // so it can be squashed and skewed into a cast shadow (only the traveller "you" has one; the villagers cast none).
 
-export const INK = "#2b211c";
-export const SKIN = "#f6ecdc";
+export const INK = "#0f0b09";
+export const SKIN = "#e7b890";
 
 export type Look = {
   hair: "messy" | "bowl" | "bun" | "bald" | "scarf" | "none";
@@ -17,13 +17,14 @@ export type Look = {
   glasses?: boolean;
   scale?: number;
   mustache?: boolean;
+  skin?: string;
 };
 
-export type Mood = "calm" | "smile" | "worry" | "stare";
+export type Mood = "calm" | "smile" | "worry" | "stare" | "creepy";
 
 export const LOOKS: Record<string, Look> = {
   you: { hair: "messy", hairColor: "#3a2d26", body: "#4f86c6", bodyKind: "bean", detail: "strap" },
-  head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
+  head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", skin: "#c8b296", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
   mother: { hair: "bun", hairColor: "#2b211c", body: "#b8573f", bodyKind: "long", detail: "charm" },
   child: { hair: "bowl", hairColor: "#2b211c", body: "#e8b84a", bodyKind: "bean", detail: "charm", scale: 0.62 },
   cook: { hair: "scarf", hairColor: "#6d8f5a", body: "#cfc7a8", bodyKind: "round", detail: "apron" },
@@ -41,7 +42,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const hipY = -legLen;
   const topY = hipY - bh;
   const headY = topY - 72;
-  const sw = 7;
+  const sw = 9;
+  const skin = look.skin ?? SKIN;
   const lw = Math.sin(t * 0.25) * 18 * walk;
   const aw = Math.sin(t * 0.25 + Math.PI) * 24 * walk;
   const lift = armsUp * 70;
@@ -50,7 +52,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const brow = mood === "worry" ? -12 : mood === "stare" ? 4 : 0;
   const hatW = 150;
   return (
-    <g transform={`scale(${facing * sc},${sc})`} strokeLinecap="round" strokeLinejoin="round">
+    <g transform={`scale(${facing * sc},${sc})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
+      <defs><filter id="ss-rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" /></filter></defs>
       {/* legs and shoes */}
       {[-1, 1].map((s, i) => {
         const dx = s * 26;
@@ -72,13 +75,14 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         return (
           <g key={s}>
             <path d={`M${x0} ${y0} Q${s * (bw + 44)} ${y0 + 50} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
-            <circle cx={hx} cy={hy + 6} r={13} fill={fill(SKIN)} stroke={stroke} strokeWidth={sw - 2} />
+            <circle cx={hx} cy={hy + 6} r={13} fill={fill(skin)} stroke={stroke} strokeWidth={sw - 2} />
           </g>
         );
       })}
       {/* the body */}
       <path d={`M${-bw} ${hipY} Q${-bw - 8} ${topY + bh * 0.3} ${-bw * 0.7} ${topY + 24} Q0 ${topY - 16} ${bw * 0.7} ${topY + 24} Q${bw + 8} ${topY + bh * 0.3} ${bw} ${hipY} Q0 ${hipY + 26} ${-bw} ${hipY} Z`} fill={fill(look.body)} stroke={stroke} strokeWidth={sw} />
-      {!silhouette && <path d={`M${bw * 0.34} ${topY + 40} Q${bw * 0.9} ${topY + bh * 0.45} ${bw * 0.9} ${hipY - 4} Q${bw * 0.5} ${hipY + 12} ${bw * 0.3} ${hipY + 8} Q${bw * 0.6} ${topY + bh * 0.5} ${bw * 0.34} ${topY + 40} Z`} fill="#1a1428" opacity={0.12} />}
+      {!silhouette && <path d={`M${bw * 0.34} ${topY + 40} Q${bw * 0.9} ${topY + bh * 0.45} ${bw * 0.9} ${hipY - 4} Q${bw * 0.5} ${hipY + 12} ${bw * 0.3} ${hipY + 8} Q${bw * 0.6} ${topY + bh * 0.5} ${bw * 0.34} ${topY + 40} Z`} fill="#1a1428" opacity={0.28} />}
+      {!silhouette && Array.from({ length: 5 }, (_, i) => <path key={i} d={`M${bw * 0.55 + i * 5} ${topY + 70 + i * 36} l${-26} ${34}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />)}
       {!silhouette && look.detail === "strap" && <path d={`M${-bw * 0.5} ${topY + 24} L${bw * 0.55} ${hipY - 30}`} stroke="#3a2d26" strokeWidth={14} opacity={0.85} />}
       {!silhouette && look.detail === "charm" && (
         <g><rect x={-bw * 0.35} y={topY + 70} width={20} height={34} rx={3} fill="#c8372d" stroke={INK} strokeWidth={3} /><line x1={-bw * 0.35 + 10} y1={topY + 72} x2={-bw * 0.35 + 10} y2={topY + 100} stroke="#f6e5b0" strokeWidth={2} /></g>
@@ -88,9 +92,9 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {/* the head */}
       {look.hair === "scarf" && <ellipse cx={0} cy={headY - 6} rx={90} ry={92} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
       {look.hair === "bun" && <circle cx={0} cy={headY - 96} r={34} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
-      <ellipse cx={0} cy={headY} rx={80} ry={88} fill={fill(SKIN)} stroke={stroke} strokeWidth={sw} />
-      {!silhouette && <path d={`M30 ${headY - 78} Q82 ${headY - 20} 50 ${headY + 70} Q86 ${headY + 10} 30 ${headY - 78} Z`} fill="#6a5a8a" opacity={0.14} />}
-      {[-1, 1].map((s) => <ellipse key={s} cx={s * 80} cy={headY + 8} rx={10} ry={16} fill={fill(SKIN)} stroke={stroke} strokeWidth={sw - 2} />)}
+      <ellipse cx={0} cy={headY} rx={80} ry={88} fill={fill(skin)} stroke={stroke} strokeWidth={sw} />
+      {!silhouette && <path d={`M30 ${headY - 78} Q82 ${headY - 20} 50 ${headY + 70} Q86 ${headY + 10} 30 ${headY - 78} Z`} fill="#3a2a4a" opacity={0.3} />}
+      {[-1, 1].map((s) => <ellipse key={s} cx={s * 80} cy={headY + 8} rx={10} ry={16} fill={fill(skin)} stroke={stroke} strokeWidth={sw - 2} />)}
       {/* hair */}
       {look.hair === "messy" && <path d={`M-84 ${headY - 8} Q-92 ${headY - 92} -20 ${headY - 92} Q10 ${headY - 120} 50 ${headY - 88} Q92 ${headY - 70} 84 ${headY - 6} Q70 ${headY - 52} 26 ${headY - 58} Q-20 ${headY - 40} -84 ${headY - 8} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "bowl" && <path d={`M-84 ${headY + 2} Q-90 ${headY - 92} 0 ${headY - 92} Q90 ${headY - 92} 84 ${headY + 2} Q50 ${headY - 40} 0 ${headY - 42} Q-50 ${headY - 40} -84 ${headY + 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
@@ -101,7 +105,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         <g>
           {[-1, 1].map((s) => (
             <g key={s}>
-              {mood === "smile" ? <path d={`M${s * 30 - 12} ${eyeY} Q${s * 30} ${eyeY - 12} ${s * 30 + 12} ${eyeY}`} fill="none" stroke={INK} strokeWidth={6} /> : <ellipse cx={s * 30} cy={eyeY} rx={7} ry={8 * blink} fill={INK} />}
+              {mood === "creepy" ? <g><ellipse cx={s * 32} cy={eyeY} rx={17} ry={15} fill="#fbf6ea" stroke={INK} strokeWidth={4} /><circle cx={s * 32} cy={eyeY} r={3.5} fill={INK} /><path d={`M${s * 32 - 22} ${eyeY + 20} Q${s * 32} ${eyeY + 34} ${s * 32 + 22} ${eyeY + 20}`} fill="none" stroke="#3a2a30" strokeWidth={7} opacity={0.7} /></g> : mood === "smile" ? <path d={`M${s * 30 - 12} ${eyeY} Q${s * 30} ${eyeY - 12} ${s * 30 + 12} ${eyeY}`} fill="none" stroke={INK} strokeWidth={6} /> : <ellipse cx={s * 30} cy={eyeY} rx={7} ry={8 * blink} fill={INK} />}
               <path d={`M${s * 30 - 16} ${eyeY - 26 + brow * (s === -1 ? 1 : 1) } Q${s * 30} ${eyeY - 34 + brow * 0.4} ${s * 30 + 16} ${eyeY - 26 - brow}`} fill="none" stroke={INK} strokeWidth={6} transform={s === -1 ? "" : `scale(1,1)`} />
             </g>
           ))}
@@ -112,6 +116,9 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
           {mood === "smile" && <path d={`M-30 ${eyeY + 52} Q0 ${eyeY + 82} 30 ${eyeY + 52}`} fill="#7a3a30" stroke={INK} strokeWidth={5} />}
           {mood === "calm" && <path d={`M-18 ${eyeY + 56} Q0 ${eyeY + 58} 18 ${eyeY + 56}`} fill="none" stroke={INK} strokeWidth={5} />}
           {mood === "worry" && <path d={`M-18 ${eyeY + 62} Q0 ${eyeY + 50} 18 ${eyeY + 62}`} fill="none" stroke={INK} strokeWidth={5} />}
+          {mood === "creepy" && (
+            <g><path d={`M-56 ${eyeY + 50} Q0 ${eyeY + 92} 56 ${eyeY + 50} Q0 ${eyeY + 62} -56 ${eyeY + 50} Z`} fill="#f7efe0" stroke={INK} strokeWidth={5} />{[-36, -18, 0, 18, 36].map((x) => <line key={x} x1={x} y1={eyeY + 58 + Math.abs(x) * 0.02} x2={x} y2={eyeY + 76 - Math.abs(x) * 0.25} stroke={INK} strokeWidth={2.5} />)}</g>
+          )}
           {mood === "stare" && <ellipse cx={0} cy={eyeY + 58} rx={10} ry={6} fill="#7a3a30" stroke={INK} strokeWidth={4} />}
           {mood === "worry" && <path d={`M70 ${headY - 30} q6 18 -2 26`} fill="none" stroke="#7fb4e6" strokeWidth={7} />}
         </g>
