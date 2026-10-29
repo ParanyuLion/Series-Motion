@@ -238,7 +238,7 @@ export const Traveller: React.FC<{
   const botY = (aDeg: number) => headY + 28 + 34 * (1 - Math.cos((aDeg - yaw) * RAD)) / 2;
   // on the side the face turns toward the hair must not stand out past the face, or it hides the eye at the edge
   const sh = Math.sin(norm(hyaw) * RAD);
-  const kx = (sg: number) => 1 - 0.1 * Math.max(0, sg * sh);
+  const kx = (sg: number) => 1 - 0.1 * Math.max(0, sg * sh) + 0.2 * Math.max(0, -sg * sh);
   const yL = botY(-90);
   const yR = botY(90);
   // the cut edge is a row of small pointed teeth, bigger at the back where the hair is longest
