@@ -22,7 +22,8 @@ export type Look = {
   skin?: string;
   creepSkin?: string;
   pants?: string;
-  pattern?: "sport" | "zigzag" | "stripes" | "trim";
+  pattern?: "sport" | "zigzag" | "stripes" | "trim" | "breton";
+  sleeve?: "long" | "short";
 };
 
 const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
@@ -40,15 +41,15 @@ const Fluff: React.FC<{ c: [number, number, number][]; color: string; ink: strin
 export type Mood = "calm" | "smile" | "worry" | "stare" | "creepy";
 
 export const LOOKS: Record<string, Look> = {
-  you: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "sport" },
-  youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "sport" },
+  you: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "breton", sleeve: "long" },
+  youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "breton", sleeve: "long" },
   youB: { hair: "swoop", hairColor: "#1c1410", body: "#8e5ab5", bodyKind: "bean", detail: "strap" },
   youC: { hair: "tousle", hairColor: "#b5502a", body: "#3b7a57", bodyKind: "bean", detail: "strap" },
-  head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", pants: "#c9bd9f", pattern: "trim", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
+  head: { sleeve: "long", hair: "none", hairColor: "#d8d4cc", hat: "straw", pants: "#c9bd9f", pattern: "trim", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
   mother: { pattern: "zigzag", hair: "bun", hairColor: "#2b211c", body: "#b8573f", bodyKind: "long", detail: "charm" },
   child: { pants: "#8a6a45", pattern: "stripes", hair: "bowl", hairColor: "#2b211c", body: "#e8b84a", bodyKind: "bean", detail: "charm", scale: 0.62 },
   cook: { hair: "scarf", hairColor: "#6d8f5a", body: "#cfc7a8", bodyKind: "round", detail: "apron" },
-  oldman: { pants: "#4b463f", hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
+  oldman: { sleeve: "long", pants: "#4b463f", hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
 };
 
 export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, facing = 1, t = 0, creep }) => {
@@ -139,6 +140,30 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         return (
           <g key={s}>
             <path d={`M${x0} ${y0} Q${s * (bw + 44)} ${y0 + 50} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+            {(() => {
+              const P0: [number, number] = [x0, y0];
+              const P1: [number, number] = [s * (bw + 44), y0 + 50];
+              const P2: [number, number] = [hx, hy];
+              const tt = look.sleeve === "long" ? 0.8 : 0.5;
+              const c: [number, number] = [P0[0] + tt * (P1[0] - P0[0]), P0[1] + tt * (P1[1] - P0[1])];
+              const E: [number, number] = [(1 - tt) * (1 - tt) * P0[0] + 2 * tt * (1 - tt) * P1[0] + tt * tt * P2[0], (1 - tt) * (1 - tt) * P0[1] + 2 * tt * (1 - tt) * P1[1] + tt * tt * P2[1]];
+              const d = `M${P0[0]} ${P0[1]} Q${c[0]} ${c[1]} ${E[0]} ${E[1]}`;
+              const dx = 2 * (1 - tt) * (P1[0] - P0[0]) + 2 * tt * (P2[0] - P1[0]);
+              const dy = 2 * (1 - tt) * (P1[1] - P0[1]) + 2 * tt * (P2[1] - P1[1]);
+              const ang = (Math.atan2(dy, dx) * 180) / Math.PI;
+              const W = 34;
+              return (
+                <g>
+                  <path d={d} fill="none" stroke={stroke} strokeWidth={W + sw * 1.4} strokeLinecap="butt" />
+                  <path d={d} fill="none" stroke={silhouette ? S! : look.body} strokeWidth={W} strokeLinecap="butt" />
+                  {!silhouette && look.pattern === "breton" && <path d={d} fill="none" stroke="#f1e6cf" strokeWidth={W - 1} strokeDasharray="9 22" strokeLinecap="butt" opacity={0.92} />}
+                  {!silhouette && <path d={d} fill="none" stroke="#000" strokeWidth={W} opacity={0.12} strokeDasharray="0 400" />}
+                  <g transform={`translate(${E[0]},${E[1]}) rotate(${ang})`}>
+                    <rect x={-4} y={-W / 2 - 3} width={8} height={W + 6} rx={3} fill={silhouette ? S! : mix(look.body, "#000000", 0.25)} stroke={stroke} strokeWidth={sw - 3} />
+                  </g>
+                </g>
+              );
+            })()}
             <circle cx={hx} cy={hy + 6} r={13} fill={fill(skin)} stroke={stroke} strokeWidth={sw - 2} />
           </g>
         );
@@ -160,6 +185,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
                 <circle cx={-bw * 0.4} cy={topY + 168} r={6} fill="#c8512d" />
               </g>
             )}
+            {look.pattern === "breton" && Array.from({ length: 9 }, (_, k) => <rect key={k} x={-bw - 10} y={topY + 28 + k * 25} width={bw * 2 + 20} height={11} fill="#f1e6cf" opacity={0.92} />)}
             {look.pattern === "zigzag" && (
               <g>
                 <rect x={-bw - 10} y={hipY - 52} width={bw * 2 + 20} height={44} fill="#f1e6cf" opacity={0.92} />
