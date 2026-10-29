@@ -62,6 +62,19 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
   const turn = which.startsWith("turn8");
   const village = which === "village";
   if (which === "village2") return <Village />;
+  if (which === "scared")
+    return (
+      <AbsoluteFill style={{ background: "#2a2622" }}>
+        <svg width={1920} height={1080} viewBox="0 0 1920 1080">
+          {([["calm", 0, "ปกติ"], ["scared", 0, "ตกใจกลัว"], ["scared", 35, "ตกใจกลัว (หันเฉียง)"]] as [TravellerMood, number, string][]).map(([m, yaw, l], i) => (
+            <g key={i}>
+              <g transform={`translate(${330 + i * 630},1900) scale(3.2)`}><Traveller yaw={yaw} mood={m} t={0} /></g>
+              <text x={330 + i * 630} y={70} textAnchor="middle" fontFamily={fontFamily} fontSize={42} fill="#f1e6cf">{l}</text>
+            </g>
+          ))}
+        </svg>
+      </AbsoluteFill>
+    );
   const cast: { id: string; x: number; th: string; en: string; mood: Mood }[] = [
     { id: "you", x: 220, th: "คุณ", en: "the traveller (has a shadow)", mood: "worry" },
     { id: "head", x: 520, th: "ผู้ใหญ่", en: "the head", mood: "smile" },

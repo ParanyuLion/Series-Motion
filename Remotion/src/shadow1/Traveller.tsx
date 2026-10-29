@@ -7,7 +7,7 @@ import { INK, SKIN, mix } from "./Figure";
 // The head is a sphere: features (eyes, glasses, brows, nose, mouth) sit at a longitude and are foreshortened and hidden by that longitude, the hair is a shell with a
 // face window cut out of it, so the bowl cut with its fringe is right from every side. Feet are at (0,0), about 440 tall to the top of the hair.
 
-export type TravellerMood = "calm" | "smile" | "worry" | "stare";
+export type TravellerMood = "calm" | "smile" | "worry" | "stare" | "scared";
 
 export const TRAVELLER_COLORS = { hair: "#1d1816", jacket: "#24252b", under: "#f4f1ea", pants: "#2c3a56", shoes: "#5a4638" };
 
@@ -212,9 +212,10 @@ export const Traveller: React.FC<{
   const hd = (phi: number) => Math.cos(norm(phi + hyaw) * RAD);
   const blink = t % 160 > 154 ? 0.1 : 1;
   const eyeY = headY + 6;
-  const skin = SKIN;
+  const scared = mood === "scared";
+  const skin = scared ? "#e2dcd4" : SKIN;
   const hairC = C.hair;
-  const headGradId = id + "-head";
+  const headGradId = id + "-head" + (scared ? "-pale" : "");
   const fringe: [number, number][] = [[-76, -14], [-68, -42], [-58, -20], [-46, -46], [-34, -26], [-18, -48], [-4, -16], [8, -46], [22, -24], [38, -46], [52, -26], [64, -44], [76, -16]];
   const WL = 80;
   const fringePts = fringe.map(([phi, dy]) => ({ q: hp(phi, headY + dy, 82), d: hd(phi) }));
@@ -276,8 +277,8 @@ export const Traveller: React.FC<{
 
   const eyeOpen = mood !== "smile";
   const eyeBig = mood === "stare" ? 1.18 : 1;
-  const browTilt = mood === "worry" ? -9 : 0;
-  const browRaise = mood === "stare" ? -9 : mood === "worry" ? -3 : 0;
+  const browTilt = mood === "worry" ? -9 : scared ? 11 : 0;
+  const browRaise = mood === "stare" ? -9 : mood === "worry" ? -3 : scared ? -7 : 0;
   const features = [-1, 1].map((side) => {
     const phiC = side * 25;
     const dC = hd(phiC);
@@ -294,8 +295,10 @@ export const Traveller: React.FC<{
             strokeLinejoin="round"
           />
         )}
-        {eyeVisible && eyeOpen && <polygon points={ellipsePoly(phiC, eyeY, 8.5 * eyeBig, 12 * blink * eyeBig)} fill={ink} />}
-        {eyeVisible && eyeOpen && blink > 0.5 && <circle cx={hp(phiC + 3, eyeY - 4)[0]} cy={eyeY - 4} r={3.2 * Math.max(0.5, dC)} fill="#fff" opacity={0.85} />}
+        {eyeVisible && scared && <polygon points={ellipsePoly(phiC, eyeY, 12.5, 16)} fill="#ffffff" stroke={ink} strokeWidth={4.5} strokeLinejoin="round" />}
+        {eyeVisible && scared && <polygon points={ellipsePoly(phiC, eyeY + 1, 3.6, 4.6)} fill={ink} />}
+        {eyeVisible && eyeOpen && !scared && <polygon points={ellipsePoly(phiC, eyeY, 8.5 * eyeBig, 12 * blink * eyeBig)} fill={ink} />}
+        {eyeVisible && eyeOpen && !scared && blink > 0.5 && <circle cx={hp(phiC + 3, eyeY - 4)[0]} cy={eyeY - 4} r={3.2 * Math.max(0.5, dC)} fill="#fff" opacity={0.85} />}
         {eyeVisible && !eyeOpen && <polyline points={sample(8, (u) => hp(phiC + 11 * u, eyeY - 14 * (1 - u * u)))} fill="none" stroke={ink} strokeWidth={6} strokeLinecap="round" />}
       </g>
     );
@@ -311,6 +314,8 @@ export const Traveller: React.FC<{
       mouth = <polygon points={`${hp(-22, eyeY + 52)[0]},${eyeY + 52} ${sample(10, (u) => hp(22 * u, eyeY + 52 + 15 * (1 - u * u) * 1.9 - 0))} ${hp(22, eyeY + 52)[0]},${eyeY + 52}`} fill="#7a3a30" stroke={ink} strokeWidth={5} strokeLinejoin="round" />;
     } else if (mood === "worry") {
       mouth = <polyline points={sample(10, (u) => hp(14 * u, eyeY + 62 - 12 * (1 - u * u)))} fill="none" stroke={ink} strokeWidth={5} strokeLinecap="round" />;
+    } else if (scared) {
+      mouth = <polygon points={ellipsePoly(0, eyeY + 62, 17, 7.5)} fill="#5a1414" stroke={ink} strokeWidth={4.5} strokeLinejoin="round" />;
     } else if (mood === "stare") {
       mouth = <polygon points={ellipsePoly(0, eyeY + 58, 8, 7)} fill="#7a3a30" stroke={ink} strokeWidth={4} />;
     } else {
@@ -322,7 +327,7 @@ export const Traveller: React.FC<{
     if (hd(phiC) < -0.05) return null;
     return (
       <g key={"g" + side}>
-        <polygon points={ellipsePoly(phiC, eyeY, 21, 27, 28)} fill="#cfd8de" fillOpacity={0.35} stroke={ink} strokeWidth={6} strokeLinejoin="round" />
+        <polygon points={ellipsePoly(phiC, eyeY, 21, 27, 28)} fill="#cfd8de" fillOpacity={scared ? 0.1 : 0.35} stroke={ink} strokeWidth={6} strokeLinejoin="round" />
       </g>
     );
   });
@@ -348,6 +353,7 @@ export const Traveller: React.FC<{
           <stop offset="0.55" stopColor={skin} />
           <stop offset="1" stopColor={mix(skin, "#3a1f18", 0.2)} />
         </radialGradient>
+        <linearGradient id="tv-fear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#5d6a86" stopOpacity="0.45" /><stop offset="1" stopColor="#5d6a86" stopOpacity="0" /></linearGradient>
         <clipPath id={id + "-hc"}><ellipse cx={0} cy={headY} rx={80} ry={88} /></clipPath>
         <clipPath id={id + "-win"}><polygon points={winPoly} /></clipPath>
       </defs>
@@ -363,6 +369,10 @@ export const Traveller: React.FC<{
             {features}
             {noseVisible && <path d={`M${noseTop[0]} ${noseTop[1]} L${noseTip[0]} ${noseTip[1]} L${noseBase[0]} ${noseBase[1]}`} fill="none" stroke={ink} strokeWidth={4} opacity={0.7} strokeLinejoin="round" />}
             {mouth}
+            {scared && <rect x={-90} y={headY - 100} width={180} height={70} fill="url(#tv-fear)" />}
+            {scared && ([[-52, eyeY + 26], [52, eyeY + 24], [-8, headY - 36], [30, eyeY + 70]] as [number, number][]).map(([lon, y], i) =>
+              hd(lon) > 0.25 ? <path key={"u" + i} d={`M${hp(lon, y)[0] - 5} ${y - 8} q0 12 5 12 q5 0 5 -12`} fill="none" stroke={ink} strokeWidth={2.6} opacity={0.75} /> : null,
+            )}
           </g>
         </g>
       )}
@@ -372,6 +382,11 @@ export const Traveller: React.FC<{
           {glasses}
           {bridge}
           {temples}
+          {scared && [-1, 1].map((side) => {
+            const phiC = side * 25;
+            if (hd(phiC) < 0.15) return null;
+            return <polyline key={"sb" + side} points={sample(8, (u) => hp(phiC + 15 * u, eyeY - 31 + 11 * (-side * u) - 2 * (1 - u * u)))} fill="none" stroke={ink} strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" />;
+          })}
         </g>
       )}
       {!silhouette && sweat}
