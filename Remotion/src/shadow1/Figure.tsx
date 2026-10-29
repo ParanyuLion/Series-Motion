@@ -142,7 +142,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {look.hair === "bun" && <circle cx={0} cy={headY - 96} r={34} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
       {look.hair === "swoop" && <HairBack kind={look.hair} hy={headY} color={look.hairColor} ink={stroke} sw={sw} flat={silhouette} />}
       <ellipse cx={0} cy={headY} rx={80} ry={88} fill={silhouette ? S! : `url(#${headId})`} stroke={stroke} strokeWidth={sw} />
-      {!silhouette && <path d={`M30 ${headY - 78} Q82 ${headY - 20} 50 ${headY + 70} Q86 ${headY + 10} 30 ${headY - 78} Z`} fill="#3a2a4a" opacity={0.3} />}
+      {!silhouette && <path d={`M0 ${headY - 88} A80 88 0 0 1 0 ${headY + 88} Q104 ${headY} 0 ${headY - 88} Z`} fill={mix(skin, "#3a1f18", 0.3)} opacity={0.42} />}
       {[-1, 1].map((s) => <ellipse key={s} cx={s * 80} cy={headY + 8} rx={10} ry={16} fill={fill(skin)} stroke={stroke} strokeWidth={sw - 2} />)}
       {/* hair */}
       {look.hair === "messy" && <path d={`M-84 ${headY - 8} Q-92 ${headY - 92} -20 ${headY - 92} Q10 ${headY - 120} 50 ${headY - 88} Q92 ${headY - 70} 84 ${headY - 6} Q70 ${headY - 52} 26 ${headY - 58} Q-20 ${headY - 40} -84 ${headY - 8} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
