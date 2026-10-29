@@ -6,18 +6,18 @@ import { Traveller } from "./Traveller";
 // Vertical (1080x1920) test: a painted-over photo of a stilt village (Wikimedia Commons, CC0, run through OpenCV) behind code-drawn characters on a pier.
 // Light from the upper right: shadows run to the lower left, the same skew + squash for everything.
 
-const INK = "#0f0b09";
-const SHADOW = "#141a36";
-const SKEW = -55;
-const SQUASH = 0.34;
-const PIER_TOP = 960;
+export const INK = "#0f0b09";
+export const SHADOW = "#141a36";
+export const SKEW = -55;
+export const SQUASH = 0.34;
+export const PIER_TOP = 960;
 
-const Shade: React.FC<{ x: number; y: number; k?: number; children: React.ReactNode }> = ({ x, y, k = 1, children }) => (
-  <g transform={`translate(${x},${y}) skewX(${SKEW}) scale(${k},${-SQUASH * k})`} opacity={0.78}>{children}</g>
+export const Shade: React.FC<{ x: number; y: number; k?: number; skew?: number; sq?: number; children: React.ReactNode }> = ({ x, y, k = 1, skew = SKEW, sq = SQUASH, children }) => (
+  <g transform={`translate(${x},${y}) skewX(${skew}) scale(${k},${-sq * k})`} opacity={0.78}>{children}</g>
 );
 
 
-const Bucket: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
+export const Bucket: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
   <g fill={SHADOW}><polygon points="-34,-62 34,-62 28,0 -28,0" /><path d="M-34 -62 Q0 -120 34 -62" fill="none" stroke={SHADOW} strokeWidth={6} /></g>
 ) : (
   <g strokeLinejoin="round">
@@ -28,7 +28,7 @@ const Bucket: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? 
     <rect x={-31} y={-40} width={62} height={7} fill="#3a2c1c" stroke={INK} strokeWidth={3} />
   </g>
 );
-const Crates: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
+export const Crates: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
   <g fill={SHADOW}><rect x={-70} y={-70} width={140} height={70} /><rect x={-40} y={-130} width={96} height={60} /></g>
 ) : (
   <g strokeLinejoin="round" stroke={INK} strokeWidth={6}>
@@ -39,7 +39,7 @@ const Crates: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? 
     <path d="M-40 -130 L56 -70 M56 -130 L-40 -70" strokeWidth={3} opacity={0.35} />
   </g>
 );
-const Rope: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
+export const Rope: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
   <ellipse cx={0} cy={-8} rx={64} ry={26} fill={SHADOW} />
 ) : (
   <g fill="none" stroke={INK} strokeWidth={5}>
@@ -48,7 +48,7 @@ const Rope: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
     <path d="M60 -8 Q110 -4 150 6" stroke={INK} strokeWidth={9} /><path d="M60 -8 Q110 -4 150 6" stroke="#9a8058" strokeWidth={5} />
   </g>
 );
-const Net: React.FC = () => (
+export const Net: React.FC = () => (
   <g strokeLinejoin="round">
     <path d="M-90 0 Q-100 -40 -60 -56 Q-10 -80 50 -56 Q100 -38 90 0 Z" fill="#6f6a4a" stroke={INK} strokeWidth={6} opacity={0.95} />
     {[-60, -30, 0, 30, 60].map((x, i) => <path key={i} d={`M${x} -6 Q${x + 8} -40 ${x + 14} -66`} fill="none" stroke={INK} strokeWidth={2.4} opacity={0.5} />)}
@@ -56,7 +56,7 @@ const Net: React.FC = () => (
     <circle cx={-50} cy={-12} r={9} fill="#b9a67a" stroke={INK} strokeWidth={3} /><circle cx={30} cy={-18} r={8} fill="#b9a67a" stroke={INK} strokeWidth={3} />
   </g>
 );
-const Mooring: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
+export const Mooring: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => shadow ? (
   <g fill={SHADOW}><rect x={-22} y={-230} width={44} height={230} /></g>
 ) : (
   <g strokeLinejoin="round">

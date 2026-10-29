@@ -31,6 +31,8 @@ import { Part3 as OneStarPart3 } from "./onestar3/Part3";
 import onestar3 from "./onestar3/manifest.json";
 import { Sheet as ShadowSheet } from "./shadow1/Sheet";
 import { VillageVert } from "./shadow1/VillageVert";
+import { Part1 as ShadowPart1 } from "./shadow1/Part1";
+import shadow1 from "./shadow1/manifest.json";
 import { Test3 as OneStar3Test } from "./onestar3/Test3";
 import onestar2 from "./onestar2/manifest.json";
 import onestar1 from "./onestar1/manifest.json";
@@ -60,6 +62,7 @@ export const Root: React.FC = () => (
     <Composition id="OneStar2" component={OneStarPart2} durationInFrames={onestar2.total} fps={onestar2.fps} width={W} height={H} />
     <Composition id="OneStar3" component={OneStarPart3} durationInFrames={onestar3.total} fps={onestar3.fps} width={W} height={H} />
     <Composition id="ShadowStyle" component={ShadowSheet} durationInFrames={1} fps={30} width={1920} height={1080} defaultProps={{ which: "sheet" }} />
+    <Composition id="ShadowVillage1" component={ShadowPart1} durationInFrames={shadow1.total} fps={shadow1.fps} width={1080} height={1920} />
     <Composition id="ShadowVert" component={VillageVert} durationInFrames={1} fps={30} width={1080} height={1920} />
     <Composition id="OneStar3Test" component={OneStar3Test} durationInFrames={1} fps={30} width={W} height={H} defaultProps={{ which: "face-you" }} />
     <Composition id="OneStarStyle"component={OneStarStyle} durationInFrames={1} fps={30} width={W} height={H} />
