@@ -97,13 +97,12 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
       { b: [40, hy - 94], t: [66, hy - 32], w: 32, bend: -6 },
       { b: [44, hy - 100], t: [-50, hy - 22], w: 62, bend: 12 },
       { b: [14, hy - 100], t: [26, hy - 28], w: 36, bend: -4 },
-      { b: [0, hy - 100], t: [-12, hy - 26], w: 26, bend: 2 },
     ];
     return (
       <g strokeLinecap="round" strokeLinejoin="round">
         <path d={`M-86 ${hy + 28} Q-98 ${hy - 40} -70 ${hy - 80} Q-38 ${hy - 106} 0 ${hy - 104} Q38 ${hy - 106} 70 ${hy - 80} Q98 ${hy - 40} 86 ${hy + 28} Q74 ${hy + 10} 68 ${hy - 16} Q58 ${hy - 56} 28 ${hy - 78} L-28 ${hy - 78} Q-58 ${hy - 56} -68 ${hy - 16} Q-74 ${hy + 10} -86 ${hy + 28} Z`} fill={fill} stroke={ink} strokeWidth={sw} />
         <path d={`M-84 ${hy + 2} Q-90 ${hy - 92} 0 ${hy - 92} Q90 ${hy - 92} 84 ${hy + 2} Q50 ${hy - 40} 0 ${hy - 42} Q-50 ${hy - 40} -84 ${hy + 2} Z`} fill={fill} stroke={ink} strokeWidth={sw} />
-        <Clumps list={fr} color={color} ink={ink} sw={sw} flat={flat} hi={false} plain />
+        <Clumps list={fr} color={color} ink={ink} sw={sw - 3} flat={flat} hi={false} plain />
       </g>
     );
   }
