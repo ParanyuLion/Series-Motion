@@ -238,16 +238,19 @@ export const Traveller: React.FC<{
   const botY = (aDeg: number) => headY + 28 + 34 * (1 - Math.cos((aDeg - yaw) * RAD)) / 2;
   const yL = botY(-90);
   const yR = botY(90);
-  const botPts = Array.from({ length: 13 }, (_, i) => {
-    const ad = 90 - i * 15;
-    const y = botY(ad);
+  // the cut edge is a row of small pointed teeth, bigger at the back where the hair is longest
+  const botPts = Array.from({ length: 25 }, (_, i) => {
+    const ad = 90 - i * 7.5;
+    const back = (1 - Math.cos((ad - yaw) * RAD)) / 2;
+    const y = botY(ad) + (i % 2 ? 5 + 13 * back : 0);
     return `L${xe(y) * Math.sin(ad * RAD)} ${y}`;
   }).join(" ");
   const uL = Math.atan2((yL - MC) / 96, -xe(yL) / 86);
   const uR = Math.atan2((yR - MC) / 96, xe(yR) / 86) + Math.PI * 2;
   const topPts = Array.from({ length: 33 }, (_, i) => {
     const u = uL + ((uR - uL) * i) / 32;
-    return `L${86 * Math.cos(u)} ${MC + 96 * Math.sin(u)}`;
+    const top = Math.max(0, -Math.sin(u)) ** 2;
+    return `L${86 * Math.cos(u)} ${MC + 96 * Math.sin(u) * (1 + 0.12 * top)}`;
   }).join(" ");
   const hairMass = `M${-xe(yL)} ${yL} ${topPts} ${botPts} Z`;
   const seams = [150, 172, 194, 216, 20, -20].map((lon) => {
@@ -347,7 +350,7 @@ export const Traveller: React.FC<{
       </defs>
       <ellipse cx={0} cy={headY} rx={80} ry={88} fill={silhouette ? S! : `url(#${headGradId})`} stroke={ink} strokeWidth={sw} />
       <path d={hairMass} fill={col(hairC)} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
-      {!silhouette && <path d={`M-60 ${headY - 70} Q-20 ${headY - 96} 30 ${headY - 92}`} fill="none" stroke={mix(hairC, "#ffffff", 0.14)} strokeWidth={5} opacity={0.5} strokeLinecap="round" />}
+      {!silhouette && <path d={`M-60 ${headY - 74} Q-20 ${headY - 108} 30 ${headY - 104}`} fill="none" stroke={mix(hairC, "#ffffff", 0.14)} strokeWidth={5} opacity={0.5} strokeLinecap="round" />}
       {!silhouette && seams}
       {!silhouette && winVisible && (
         <g clipPath={`url(#${id}-hc)`}>
