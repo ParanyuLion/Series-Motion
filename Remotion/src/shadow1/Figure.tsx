@@ -14,7 +14,7 @@ export type Look = {
   hairColor: string;
   hat?: "straw";
   body: string;
-  bodyKind: "bean" | "long" | "round" | "thin";
+  bodyKind: "bean" | "long" | "round" | "thin" | "lean";
   detail?: "charm" | "strap" | "apron" | "patch" | "none";
   glasses?: boolean;
   scale?: number;
@@ -41,8 +41,8 @@ const Fluff: React.FC<{ c: [number, number, number][]; color: string; ink: strin
 export type Mood = "calm" | "smile" | "worry" | "stare" | "creepy";
 
 export const LOOKS: Record<string, Look> = {
-  you: { hair: "bowlcut", hairColor: "#1d1816", body: "#24252b", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "jacket", sleeve: "long" },
-  youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#24252b", bodyKind: "bean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "jacket", sleeve: "long" },
+  you: { hair: "bowlcut", hairColor: "#1d1816", body: "#24252b", bodyKind: "lean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "jacket", sleeve: "long" },
+  youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#24252b", bodyKind: "lean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "jacket", sleeve: "long" },
   youB: { hair: "swoop", hairColor: "#1c1410", body: "#8e5ab5", bodyKind: "bean", detail: "strap" },
   youC: { hair: "tousle", hairColor: "#b5502a", body: "#3b7a57", bodyKind: "bean", detail: "strap" },
   head: { sleeve: "long", hair: "none", hairColor: "#d8d4cc", hat: "straw", pants: "#c9bd9f", pattern: "trim", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
@@ -57,8 +57,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const fill = (c: string) => S ?? c;
   const stroke = S ?? INK;
   const sc = look.scale ?? 1;
-  const bw = look.bodyKind === "round" ? 112 : look.bodyKind === "thin" ? 60 : look.bodyKind === "long" ? 76 : 72;
-  const bh = look.bodyKind === "long" ? 290 : look.bodyKind === "thin" ? 250 : look.bodyKind === "round" ? 210 : 220;
+  const bw = look.bodyKind === "round" ? 112 : look.bodyKind === "thin" ? 60 : look.bodyKind === "lean" ? 54 : look.bodyKind === "long" ? 76 : 72;
+  const bh = look.bodyKind === "long" ? 290 : look.bodyKind === "thin" ? 250 : look.bodyKind === "lean" ? 236 : look.bodyKind === "round" ? 210 : 220;
   const legLen = look.bodyKind === "long" ? 80 : 130;
   const hipY = -legLen;
   const topY = hipY - bh;
@@ -133,16 +133,16 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {/* arms hang close at the sides, tucked behind the body so the shoulder is the body outline */}
       {[-1, 1].map((s, i) => {
         const x0 = s * (bw * 0.5);
-        const y0 = topY + 56;
+        const y0 = topY + 40;
         const swing = (i === 0 ? aw : -aw);
         const hx = s * (bw + 14) + swing * 0.4;
-        const hy = y0 + 92 - lift * (i === 1 ? 1 : 0.4) ;
+        const hy = y0 + 124 - lift * (i === 1 ? 1 : 0.4) ;
         return (
           <g key={s}>
-            <path d={`M${x0} ${y0} Q${s * (bw + 22)} ${y0 + 44} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+            <path d={`M${x0} ${y0} Q${s * (bw + 22)} ${y0 + 56} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
             {(() => {
               const P0: [number, number] = [x0, y0];
-              const P1: [number, number] = [s * (bw + 22), y0 + 44];
+              const P1: [number, number] = [s * (bw + 22), y0 + 56];
               const P2: [number, number] = [hx, hy];
               const tt = look.sleeve === "long" ? 0.8 : 0.5;
               const c: [number, number] = [P0[0] + tt * (P1[0] - P0[0]), P0[1] + tt * (P1[1] - P0[1])];
@@ -188,7 +188,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
             {look.pattern === "breton" && Array.from({ length: 9 }, (_, k) => <rect key={k} x={-bw - 10} y={topY + 28 + k * 25} width={bw * 2 + 20} height={11} fill="#f1e6cf" opacity={0.92} />)}
             {look.pattern === "jacket" && (
               <g>
-                <path d={`M-26 ${topY + 10} L0 ${topY + 84} L26 ${topY + 10} Z`} fill="#2f9e9a" />
+                <path d={`M-26 ${topY + 10} L0 ${topY + 84} L26 ${topY + 10} Z`} fill="#f4f1ea" />
                 <path d={`M-30 ${topY + 8} L-4 ${topY + 70} L-34 ${topY + 66} Z`} fill={mix(look.body, "#ffffff", 0.14)} stroke="#0f0b09" strokeWidth={3} />
                 <path d={`M30 ${topY + 8} L4 ${topY + 70} L34 ${topY + 66} Z`} fill={mix(look.body, "#ffffff", 0.14)} stroke="#0f0b09" strokeWidth={3} />
                 <line x1={0} y1={topY + 78} x2={0} y2={hipY + 10} stroke="#0f0b09" strokeWidth={4} />
