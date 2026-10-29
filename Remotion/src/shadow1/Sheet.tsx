@@ -55,6 +55,7 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
   const ground = 860;
   const sheet = which === "sheet";
   const options = which === "you";
+  const face = which === "face";
   const cast: { id: string; x: number; th: string; en: string; mood: Mood }[] = [
     { id: "you", x: 220, th: "คุณ", en: "the traveller (has a shadow)", mood: "worry" },
     { id: "head", x: 520, th: "ผู้ใหญ่", en: "the head", mood: "smile" },
@@ -67,7 +68,9 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
     <AbsoluteFill>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
         <Ground w={W} h={H} horizon={600} />
-        {options ? (
+        {face ? (
+          <g transform={`translate(960,1620) scale(2.5)`}><Figure look={LOOKS.you} mood="calm" t={t} /></g>
+        ) : options ? (
           <g>
             {([["youA", "A: ผมตั้งม้วนขึ้น ข้างสั้น · เสื้อเขียวน้ำทะเล"], ["youB", "B: ผมปัดยาวสะบัดปลาย · เสื้อม่วง"], ["youC", "C: ผมมวยสูง สีสนิม · เสื้อเขียวป่า"]] as [string, string][]).map(([id, label], i) => (
               <g key={id}>

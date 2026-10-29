@@ -4,7 +4,7 @@ import { mix } from "./Figure";
 // Hair built the way a cartoonist does it: a few big clumps (pointed leaf shapes) stacked back to front, each with one clean outline, so the
 // silhouette has flow and the clump seams are the only "texture". Head centre (0, hy), ellipse 80 x 88 (top at hy - 88, eyes at hy + 6, brows at hy - 20).
 
-type P = { kind: "wave" | "swoop" | "tousle" | "bangs"; hy: number; color: string; ink: string; sw: number; flat: boolean };
+type P = { kind: "wave" | "swoop" | "tousle" | "bangs" | "bowl"; hy: number; color: string; ink: string; sw: number; flat: boolean };
 
 /** a pointed clump from base b to tip t: w is its width, bend sweeps the middle to one side */
 const leaf = (b: [number, number], t: [number, number], w: number, bend: number) => {
@@ -85,6 +85,20 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
       <g>
         <Clumps list={left} color={color} ink={ink} sw={sw} flat={flat} hi={false} />
         <Clumps list={swoop} color={color} ink={ink} sw={sw} flat={flat} />
+      </g>
+    );
+  }
+  if (kind === "bowl") {
+    // a bowl cut like the reference: a dome wider than the head, sides falling to the jaw, one big diagonal lock sweeping across the forehead and a shorter lock in front
+    const fill = flat ? ink : mix(color, "#ffffff", 0.05);
+    const fr: L[] = [
+      { b: [44, hy - 104], t: [-50, hy - 22], w: 66, bend: 12 },
+      { b: [14, hy - 104], t: [26, hy - 28], w: 38, bend: -4 },
+    ];
+    return (
+      <g strokeLinecap="round" strokeLinejoin="round">
+        <path d={`M-94 ${hy + 38} Q-114 ${hy - 50} -80 ${hy - 94} Q-40 ${hy - 134} 0 ${hy - 132} Q40 ${hy - 134} 80 ${hy - 94} Q114 ${hy - 50} 94 ${hy + 38} Q80 ${hy + 18} 72 ${hy - 16} Q62 ${hy - 62} 30 ${hy - 86} L-30 ${hy - 86} Q-62 ${hy - 62} -72 ${hy - 16} Q-80 ${hy + 18} -94 ${hy + 38} Z`} fill={fill} stroke={ink} strokeWidth={sw} />
+        <Clumps list={fr} color={color} ink={ink} sw={sw} flat={flat} hi={false} />
       </g>
     );
   }

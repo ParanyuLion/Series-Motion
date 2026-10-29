@@ -9,7 +9,7 @@ export const INK = "#0f0b09";
 export const SKIN = "#e7b890";
 
 export type Look = {
-  hair: "messy" | "bowl" | "bun" | "bald" | "scarf" | "none" | "sidepart" | "ponytail" | "curly" | "beanie" | "quiff" | "bob" | "spiky" | "wave" | "swoop" | "tousle" | "bangs";
+  hair: "messy" | "bowl" | "bun" | "bald" | "scarf" | "none" | "sidepart" | "ponytail" | "curly" | "beanie" | "quiff" | "bob" | "spiky" | "wave" | "swoop" | "tousle" | "bangs" | "bowl";
   beanieColor?: string;
   hairColor: string;
   hat?: "straw";
@@ -38,8 +38,8 @@ const Fluff: React.FC<{ c: [number, number, number][]; color: string; ink: strin
 export type Mood = "calm" | "smile" | "worry" | "stare" | "creepy";
 
 export const LOOKS: Record<string, Look> = {
-  you: { hair: "bangs", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none" },
-  youA: { hair: "bangs", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none" },
+  you: { hair: "bowl", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true },
+  youA: { hair: "bowl", hairColor: "#1d1816", body: "#2f9e9a", bodyKind: "bean", detail: "none", glasses: true },
   youB: { hair: "swoop", hairColor: "#1c1410", body: "#8e5ab5", bodyKind: "bean", detail: "strap" },
   youC: { hair: "tousle", hairColor: "#b5502a", body: "#3b7a57", bodyKind: "bean", detail: "strap" },
   head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
@@ -82,7 +82,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
             </g>
           ))}
           {mood === "worry" && <ellipse cx={0} cy={eyeY - 2} rx={66} ry={18} fill="#2a2030" opacity={0.28} filter="blur(2px)" />}
-          {look.glasses && <g fill="none" stroke={INK} strokeWidth={4}><rect x={-52} y={eyeY - 16} width={40} height={32} rx={8} /><rect x={12} y={eyeY - 16} width={40} height={32} rx={8} /><line x1={-12} y1={eyeY} x2={12} y2={eyeY} /></g>}
+          {look.glasses && <g><circle cx={-34} cy={eyeY} r={27} fill="#cfd8de" fillOpacity={0.35} stroke={INK} strokeWidth={6} /><circle cx={34} cy={eyeY} r={27} fill="#cfd8de" fillOpacity={0.35} stroke={INK} strokeWidth={6} /><line x1={-8} y1={eyeY - 2} x2={8} y2={eyeY - 2} stroke={INK} strokeWidth={5} /></g>}
           <path d={`M-3 ${eyeY + 12} Q-10 ${eyeY + 28} 2 ${eyeY + 30}`} fill="none" stroke={INK} strokeWidth={4} opacity={0.7} />
           {look.mustache && <path d={`M-30 ${eyeY + 40} Q-14 ${eyeY + 30} 0 ${eyeY + 38} Q14 ${eyeY + 30} 30 ${eyeY + 40}`} fill="none" stroke="#7a766e" strokeWidth={6} />}
           {mood === "smile" && <path d={`M-30 ${eyeY + 52} Q0 ${eyeY + 82} 30 ${eyeY + 52}`} fill="#7a3a30" stroke={INK} strokeWidth={5} />}
@@ -149,7 +149,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {look.hair === "bowl" && <path d={`M-84 ${headY + 2} Q-90 ${headY - 92} 0 ${headY - 92} Q90 ${headY - 92} 84 ${headY + 2} Q50 ${headY - 40} 0 ${headY - 42} Q-50 ${headY - 40} -84 ${headY + 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "bun" && <path d={`M-82 ${headY - 6} Q-84 ${headY - 88} 0 ${headY - 88} Q84 ${headY - 88} 82 ${headY - 6} Q50 ${headY - 50} 0 ${headY - 52} Q-50 ${headY - 50} -82 ${headY - 6} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "scarf" && <path d={`M-84 ${headY - 4} Q-70 ${headY - 70} 0 ${headY - 70} Q70 ${headY - 70} 84 ${headY - 4} Q40 ${headY - 40} 0 ${headY - 42} Q-40 ${headY - 40} -84 ${headY - 4} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
-      {(look.hair === "wave" || look.hair === "swoop" || look.hair === "tousle" || look.hair === "bangs") && <HairFront kind={look.hair} hy={headY} color={look.hairColor} ink={stroke} sw={sw} flat={silhouette} />}
+      {(look.hair === "wave" || look.hair === "swoop" || look.hair === "tousle" || look.hair === "bangs" || look.hair === "bowl") && <HairFront kind={look.hair} hy={headY} color={look.hairColor} ink={stroke} sw={sw} flat={silhouette} />}
       {look.hair === "curly" && <g>{Array.from({ length: 8 }, (_, i) => { const a = Math.PI * (1.05 + (i / 7) * 0.9); return <circle key={i} cx={Math.cos(a) * 74} cy={headY + Math.sin(a) * 78} r={30} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 2} />; })}</g>}
       {/* face */}
       {!silhouette && (creep === undefined ? faceFor(mood, 1) : <g>{faceFor("smile", 1 - creep)}{faceFor("creepy", creep)}</g>)}
