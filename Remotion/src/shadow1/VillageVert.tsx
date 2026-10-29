@@ -10,7 +10,7 @@ const INK = "#0f0b09";
 const SHADOW = "#141a36";
 const SKEW = -55;
 const SQUASH = 0.34;
-const PIER_TOP = 1240;
+const PIER_TOP = 960;
 
 const Shade: React.FC<{ x: number; y: number; k?: number; children: React.ReactNode }> = ({ x, y, k = 1, children }) => (
   <g transform={`translate(${x},${y}) skewX(${SKEW}) scale(${k},${-SQUASH * k})`} opacity={0.78}>{children}</g>
@@ -18,11 +18,11 @@ const Shade: React.FC<{ x: number; y: number; k?: number; children: React.ReactN
 
 export const VillageVert: React.FC = () => {
   const people: { id: string; x: number; y: number; s: number; mood: Mood }[] = [
-    { id: "oldman", x: 880, y: 1372, s: 0.5, mood: "calm" },
-    { id: "cook", x: 640, y: 1380, s: 0.52, mood: "smile" },
-    { id: "head", x: 770, y: 1470, s: 0.68, mood: "smile" },
-    { id: "mother", x: 960, y: 1480, s: 0.66, mood: "smile" },
-    { id: "child", x: 560, y: 1490, s: 0.9, mood: "calm" },
+    { id: "oldman", x: 480, y: 1090, s: 0.5, mood: "calm" },
+    { id: "cook", x: 250, y: 1100, s: 0.52, mood: "smile" },
+    { id: "head", x: 370, y: 1180, s: 0.68, mood: "smile" },
+    { id: "mother", x: 585, y: 1190, s: 0.66, mood: "smile" },
+    { id: "child", x: 140, y: 1200, s: 0.9, mood: "calm" },
   ];
   return (
     <AbsoluteFill style={{ background: "#1a120c" }}>
@@ -46,7 +46,7 @@ export const VillageVert: React.FC = () => {
         {/* the pier: planks running toward the water, with a lip and posts */}
         <polygon points={`0,${PIER_TOP} 1080,${PIER_TOP} 1080,1920 0,1920`} fill="url(#pv-pier)" />
         <rect y={PIER_TOP - 10} width={1080} height={14} fill="#2a2016" stroke={INK} strokeWidth={5} />
-        {Array.from({ length: 13 }, (_, i) => {
+        {Array.from({ length: 19 }, (_, i) => {
           const y0 = PIER_TOP + 4 + i * i * 3.1 + i * 12;
           const y1 = PIER_TOP + 4 + (i + 1) * (i + 1) * 3.1 + (i + 1) * 12;
           const tone = ["#6a5438", "#5e4a32", "#6f5a3e", "#58432c"][i % 4];
@@ -71,8 +71,8 @@ export const VillageVert: React.FC = () => {
           <g key={p.id} transform={`translate(${p.x},${p.y}) scale(${p.s})`}><Figure look={LOOKS[p.id]} mood={p.mood} t={0} /></g>
         ))}
         {/* the traveller, in front, with a long shadow */}
-        <Shade x={300} y={1810} k={1.25}><Traveller yaw={25} silhouette /></Shade>
-        <g transform="translate(300,1810) scale(1.25)"><Traveller yaw={25} mood="worry" t={0} /></g>
+        <Shade x={800} y={1300} k={0.95}><Traveller yaw={-25} silhouette /></Shade>
+        <g transform="translate(800,1300) scale(0.95)"><Traveller yaw={-25} mood="worry" t={0} /></g>
         </g>
         {/* one overlay over everything: a pale dusty haze lifting from the water, a cold tint in the sky */}
         <rect y={1000} width={1080} height={920} fill="url(#pv-haze)" />
