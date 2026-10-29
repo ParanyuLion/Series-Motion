@@ -89,20 +89,32 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
     );
   }
   if (kind === "bowlcut") {
-    // like the reference, in three layers of ONE colour told apart only by their outlines: an outer dome that reaches the jaw, the bowl shape of the fringe inside it,
-    // and two locks over the forehead (a long diagonal one and a short one)
+    // one merged hair shape: every piece is first stroked in ink (double width) and then all pieces are filled on top, so the outline only exists on the
+    // OUTER edge of the whole mass and the pieces that overlap melt together without seams. Bangs: five locks, the long diagonal one on top.
     const fill = flat ? ink : color;
     const fr: L[] = [
-      { b: [-20, hy - 98], t: [-70, hy - 36], w: 34, bend: 6 },
-      { b: [40, hy - 94], t: [66, hy - 32], w: 32, bend: -6 },
-      { b: [44, hy - 100], t: [-50, hy - 22], w: 62, bend: 12 },
-      { b: [14, hy - 100], t: [26, hy - 28], w: 36, bend: -4 },
+      { b: [-20, hy - 98], t: [-74, hy - 30], w: 34, bend: 6 },
+      { b: [40, hy - 94], t: [70, hy - 26], w: 32, bend: -6 },
+      { b: [0, hy - 100], t: [-10, hy - 20], w: 26, bend: 2 },
+      { b: [44, hy - 100], t: [-52, hy - 16], w: 62, bend: 12 },
+      { b: [14, hy - 100], t: [28, hy - 22], w: 36, bend: -4 },
+    ];
+    const shapes: string[] = [
+      `M-86 ${hy + 28} Q-98 ${hy - 40} -70 ${hy - 80} Q-38 ${hy - 106} 0 ${hy - 104} Q38 ${hy - 106} 70 ${hy - 80} Q98 ${hy - 40} 86 ${hy + 28} Q74 ${hy + 10} 68 ${hy - 16} Q58 ${hy - 56} 28 ${hy - 78} L-28 ${hy - 78} Q-58 ${hy - 56} -68 ${hy - 16} Q-74 ${hy + 10} -86 ${hy + 28} Z`,
+      `M-84 ${hy + 2} Q-90 ${hy - 92} 0 ${hy - 92} Q90 ${hy - 92} 84 ${hy + 2} Q50 ${hy - 40} 0 ${hy - 42} Q-50 ${hy - 40} -84 ${hy + 2} Z`,
+      ...fr.map((c) => leaf(c.b, c.t, c.w, c.bend)),
     ];
     return (
       <g strokeLinecap="round" strokeLinejoin="round">
-        <path d={`M-86 ${hy + 28} Q-98 ${hy - 40} -70 ${hy - 80} Q-38 ${hy - 106} 0 ${hy - 104} Q38 ${hy - 106} 70 ${hy - 80} Q98 ${hy - 40} 86 ${hy + 28} Q74 ${hy + 10} 68 ${hy - 16} Q58 ${hy - 56} 28 ${hy - 78} L-28 ${hy - 78} Q-58 ${hy - 56} -68 ${hy - 16} Q-74 ${hy + 10} -86 ${hy + 28} Z`} fill={fill} stroke={ink} strokeWidth={sw} />
-        <path d={`M-84 ${hy + 2} Q-90 ${hy - 92} 0 ${hy - 92} Q90 ${hy - 92} 84 ${hy + 2} Q50 ${hy - 40} 0 ${hy - 42} Q-50 ${hy - 40} -84 ${hy + 2} Z`} fill={fill} stroke={ink} strokeWidth={sw} />
-        <Clumps list={fr} color={color} ink={ink} sw={sw - 3} flat={flat} hi={false} plain />
+        {shapes.map((d, i) => <path key={"o" + i} d={d} fill={ink} stroke={ink} strokeWidth={sw * 2} />)}
+        {shapes.map((d, i) => <path key={"f" + i} d={d} fill={fill} />)}
+        {!flat && fr.map((c, i) => {
+          const px = c.t[0] + (c.b[0] - c.t[0]) * 0.5;
+          const py = c.t[1] + (c.b[1] - c.t[1]) * 0.5;
+          const nx = -(c.b[1] - c.t[1]) / 100;
+          const ny = (c.b[0] - c.t[0]) / 100;
+          return <path key={"s" + i} d={`M${c.t[0] + nx * 4} ${c.t[1] + ny * 4 - 2} Q${(c.t[0] + px) / 2 + nx * 9} ${(c.t[1] + py) / 2 + ny * 9} ${px + nx * 3} ${py + ny * 3}`} fill="none" stroke={mix(color, "#ffffff", 0.2)} strokeWidth={3} opacity={0.7} />;
+        })}
       </g>
     );
   }
