@@ -61,17 +61,17 @@ const track = (g: number, pts: Pt[]) => {
   return { ...p, v, dir: b.x >= a.x ? 1 : -1, walk: clamp01((v - 0.25) / 0.9) };
 };
 
-type Who = { id: string; x: number; y: number; s: number; mood: Mood; face?: 1 | -1; walk?: number; up?: number; nod?: number; seed?: number };
+type Who = { id: string; x: number; y: number; s: number; mood: Mood; face?: 1 | -1; walk?: number; up?: number; nod?: number; seed?: number; talk?: number };
 
 /** a living idle: slow breathing and a small sway so nobody is a statue; walking figures bob instead */
 const idle = (t: number, seed: number, still: boolean) => (still ? { rot: Math.sin(t * 0.05 + seed) * 0.9, sy: 1 + Math.sin(t * 0.11 + seed * 2) * 0.008, dy: Math.sin(t * 0.11 + seed * 2) * -1.5 } : { rot: 0, sy: 1, dy: Math.abs(Math.sin(t * 0.25 + seed)) * -3 });
 
 /** a villager: never casts a shadow */
-const Villager: React.FC<Who & { t: number }> = ({ id, x, y, s, mood, face = 1, walk = 0, up = 0, nod = 0, seed = 0, t }) => {
+const Villager: React.FC<Who & { t: number }> = ({ id, x, y, s, mood, face = 1, walk = 0, up = 0, nod = 0, seed = 0, talk = 0, t }) => {
   const i = idle(t, seed, walk < 0.05);
   return (
     <g transform={`translate(${x},${y + i.dy}) rotate(${i.rot}) scale(${s},${s * i.sy}) translate(0,${nod * 14})`}>
-      <Figure look={LOOKS[id]} mood={mood} facing={face} walk={walk} armsUp={up} t={t + seed * 40} />
+      <Figure look={LOOKS[id]} mood={mood} facing={face} walk={walk} armsUp={up} talk={talk} t={t + seed * 40} />
     </g>
   );
 };
@@ -96,8 +96,8 @@ const Boat: React.FC<{ x: number; y: number; rock: number }> = ({ x, y, rock }) 
 const dipOf = (g: number, a: number, b: number) => clamp01(Math.min((g - a) / 7, (b - g) / 7));
 
 type Place = "lane" | "pier" | "alley";
-const placeAt = (g: number): Place => (g < ls(2) ? "lane" : g < ls(4) ? "pier" : g < ls(7) ? "lane" : g < ls(9) ? "alley" : g < ls(10) ? "pier" : g < ls(12) ? "lane" : g < ls(13) ? "pier" : "lane");
-const BREAKS = () => [ls(2), ls(4), ls(7), ls(9), ls(10), ls(12), ls(13)];
+const placeAt = (g: number): Place => (g < ls(2) ? "lane" : g < ls(4) ? "pier" : g < ls(7) ? "lane" : g < ls(9) ? "alley" : g < ls(10) ? "pier" : "lane");
+const BREAKS = () => [ls(2), ls(4), ls(7), ls(9), ls(10)];
 const BG: Record<Place, { src: string; edge: string }> = {
   lane: { src: "shadow1/bg_lane.png", edge: "#95754d" },
   pier: { src: "shadow1/bg_asia.png", edge: "#987f60" },
@@ -131,8 +131,8 @@ const SHOTS = (): Shot[] => [
   // the walk and the washing (the alley)
   [ls(7), ls(7) + 60, { x: 640, y: 1150, z: 1.4, fx: 90 }, { x: 600, y: 1150, z: 1.4, fx: 90 }],
   [ls(7) + 60, le(7) + 6, { x: 600, y: 1330, z: 2.3, fx: 0 }, { x: 520, y: 1330, z: 2.5, fx: 0 }],
-  [ls(8), ls(8) + 55, { x: 640, y: 1200, z: 1.5, r: 1.5 }, { x: 680, y: 1200, z: 1.6, r: 1.5 }],
-  [ls(8) + 55, le(8) + 6, { x: 560, y: 1090, z: 2.0 }, { x: 560, y: 1070, z: 2.3 }],
+  [ls(8), ls(8) + 62, { x: 340, y: 1120, z: 1.8 }, { x: 470, y: 1130, z: 1.7 }],
+  [ls(8) + 62, le(8) + 6, { x: 560, y: 1090, z: 2.0 }, { x: 560, y: 1070, z: 2.3 }],
   // noon: the clapper (the pier)
   [ls(9), ls(9) + 45, { x: 880, y: 1700, z: 1.5, r: 1 }, { x: 890, y: 1690, z: 1.6, r: 1 }],
   [ls(9) + 45, le(9) + 6, { x: 930, y: 1590, z: 2.6 }, { x: 930, y: 1585, z: 2.5 }],
@@ -141,9 +141,9 @@ const SHOTS = (): Shot[] => [
   [ls(10) + 65, le(10) + 6, { x: 740, y: 980, z: 2.2 }, { x: 740, y: 975, z: 2.35 }],
   [ls(11), ls(11) + 55, { x: 600, y: 1130, z: 1.55 }, { x: 640, y: 1140, z: 1.6, r: -1.5 }],
   [ls(11) + 55, le(11) + 6, { x: 660, y: 1240, z: 2.8 }, { x: 660, y: 1245, z: 3.0 }],
-  // the light slants (the pier), then the stare (the lane)
-  [ls(12), ls(12) + 55, { x: 520, y: 1290, z: 1.1, r: -1 }, { x: 540, y: 1290, z: 1.2, r: -1 }],
-  [ls(12) + 55, le(12) + 6, { x: 640, y: 1380, z: 1.45, r: 2 }, { x: 460, y: 1380, z: 1.45, r: 2 }],
+  // the light slants, then the stare (the lane)
+  [ls(12), ls(12) + 55, { x: 700, y: 1250, z: 1.25, r: -1 }, { x: 660, y: 1260, z: 1.3, r: -1 }],
+  [ls(12) + 55, le(12) + 6, { x: 560, y: 1300, z: 1.5, r: 2 }, { x: 400, y: 1300, z: 1.5, r: 2 }],
   [ls(13), ls(13) + 75, { x: 700, y: 1060, z: 1.25 }, { x: 700, y: 1050, z: 1.6 }],
   [ls(13) + 75, le(13) + 40, { x: 440, y: 1130, z: 1.8 }, { x: 440, y: 1110, z: 2.2 }],
 ];
@@ -191,7 +191,8 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
     IDS.forEach((id, k) => {
       const from = ls(4) - 10 + k * 3;
       const tr = track(g, [[from, 1260 + k * 30, LANEL[id][2], LANEL[id][3]], [from + 55, LANEL[id][1], LANEL[id][2], LANEL[id][3]]]);
-      people.push({ id, x: tr.x, y: tr.y, s: tr.s, mood: "smile", walk: tr.walk, face: tr.walk > 0.05 ? -1 : 1, up: tr.walk > 0.05 ? 0 : wave, seed: id.length });
+      const talking = id === "head" && g >= ls(6) + 2 && g < ls(6) + 40;
+      people.push({ id, x: tr.x, y: tr.y, s: tr.s, mood: "smile", walk: tr.walk, face: tr.walk > 0.05 ? -1 : 1, up: tr.walk > 0.05 ? 0 : wave, seed: id.length, talk: talking ? 1 : 0 });
     });
     if (g >= ls(5) + 55) {
       // the head looks down at your feet, then back up with the same smile
@@ -201,37 +202,42 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   }
   const youA = track(g, [[ls(7), 800, 1180, 0.9], [le(7), 520, 1180, 0.9]]);
   const headA = track(g, [[ls(7), 680, 1170, 0.72], [le(7), 380, 1170, 0.72]]);
-  const clothT = track(g, [[ls(8) + 10, 300, 1230, 0.66], [le(8) - 10, 640, 1230, 0.66]]);
+  // line 8: a woman lifts the washing out of the house's shadow and carries it into the sun; then a cut to a villager sweating in the glare
+  const motherA = track(g, [[ls(8) + 28, 290, 1215, 0.66], [ls(8) + 78, 700, 1220, 0.66]]);
+  const lifted = g >= ls(8) + 14;
+  const carried = g >= ls(8) + 28;
   if (place === "alley") {
-    you = { ...you, x: youA.x, y: youA.y, s: youA.s, yaw: youA.walk > 0.05 ? 270 : -20, walk: youA.walk };
-    people.push(
-      { id: "head", x: headA.x, y: headA.y, s: 0.72, mood: "smile", face: headA.walk > 0.05 ? -1 : 1, walk: headA.walk, seed: 1 },
-      { id: "mother", x: g >= ls(8) ? clothT.x : 300, y: 1230, s: 0.66, mood: "calm", walk: g >= ls(8) ? clothT.walk : 0, face: 1, seed: 2 },
-      { id: "cook", x: g >= ls(8) + 40 ? 560 : 140, y: g >= ls(8) + 40 ? 1260 : 1130, s: g >= ls(8) + 40 ? 0.85 : 0.52, mood: g >= ls(8) + 40 ? "worry" : "calm", seed: 3 },
-      { id: "oldman", x: 700, y: 1110, s: 0.5, mood: "calm", seed: 4 },
-    );
+    if (g < ls(8)) {
+      you = { ...you, x: youA.x, y: youA.y, s: youA.s, yaw: youA.walk > 0.05 ? 270 : -20, walk: youA.walk };
+      people.push({ id: "head", x: headA.x, y: headA.y, s: 0.72, mood: "smile", face: headA.walk > 0.05 ? -1 : 1, walk: headA.walk, seed: 1 });
+    } else if (g < ls(8) + 62) {
+      people.push({ id: "mother", x: carried ? motherA.x : 290, y: carried ? motherA.y : 1215, s: 0.66, mood: "calm", walk: carried ? motherA.walk : 0, up: lifted && !carried ? clamp01((g - ls(8) - 14) / 12) * 0.8 : 0, seed: 2 });
+    } else {
+      people.push({ id: "cook", x: 560, y: 1260, s: 0.85, mood: "worry", seed: 3 });
+    }
   }
   if (place === "pier" && g >= ls(9) && g < ls(10)) {
     // the oldman by the post strikes the clapper
     people.push({ id: "oldman", x: 800, y: 1860, s: 0.95, mood: "calm", up: g < C.clapAt ? clamp01((g - ls(9)) / Math.max(1, C.clapAt - ls(9))) : clamp01(1 - (g - C.clapAt) / 6), seed: 4 });
   }
-  if (place === "lane" && g >= ls(10) && g < ls(12)) {
+  if (place === "lane" && g >= ls(10)) {
     const down = g >= ls(10) && g < ls(10) + 40 ? clamp01((g - ls(10)) / 10) : g >= ls(10) + 40 && g < ls(11) ? clamp01(1 - (g - ls(10) - 40) / 12) : 0;
-    const m: Mood = g >= ls(10) + 46 ? "smile" : "calm";
+    const m: Mood = g >= ls(13) + 30 ? "stare" : g >= ls(10) + 46 ? "smile" : "calm";
     const walkIn = track(g, [[ls(11), 420, 1230, 0.95], [ls(11) + 45, 690, 1215, 0.95]]);
     const toHat = clamp01((g - ls(11)) / 45);
-    you = { ...you, x: g >= ls(11) ? walkIn.x : 420, y: g >= ls(11) ? walkIn.y : 1230, yaw: walkIn.walk > 0.05 && g >= ls(11) ? 90 : 50, walk: g >= ls(11) ? walkIn.walk : 0, shadowK: lerp(1, 0.12, smooth(toHat)), sq: lerp(0.34, 0.2, toHat) };
-    stand(LANEL, () => m, () => ({ nod: down }));
-  }
-  if (place === "pier" && g >= ls(12) && g < ls(13)) {
-    const stretch = smooth(clamp01((g - ls(12)) / (le(12) - ls(12) + 40)));
-    you = { ...you, x: 800, y: 1300, yaw: -20, shadowK: lerp(0.5, 2.1, stretch), skew: lerp(-55, -72, stretch), sq: lerp(0.34, 0.42, stretch) };
-    stand(PIERL, () => "smile");
-  }
-  if (place === "lane" && g >= ls(13)) {
-    const stretch = smooth(clamp01((g - ls(13)) / (le(13) - ls(13) + 30)));
-    you = { ...you, x: 420, y: 1230, yaw: 50, shadowK: lerp(1.6, 2.4, stretch), skew: lerp(-68, -76, stretch), sq: lerp(0.4, 0.45, stretch) };
-    stand(LANEL, () => (g >= ls(13) + 30 ? "stare" : "smile"));
+    // under the brim the shadow shrinks to a dot; as the light slants (line 12) it grows again and stretches toward the left
+    const grow = g >= ls(12) ? smooth(clamp01((g - ls(12)) / (le(13) - ls(12)))) : 0;
+    you = {
+      ...you,
+      x: g >= ls(11) ? walkIn.x : 420,
+      y: g >= ls(11) ? walkIn.y : 1230,
+      yaw: g >= ls(11) && walkIn.walk > 0.05 ? 90 : g >= ls(11) ? 60 : 50,
+      walk: g >= ls(11) ? walkIn.walk : 0,
+      shadowK: g >= ls(12) ? lerp(0.12, 2.3, grow) : lerp(1, 0.12, smooth(toHat)),
+      skew: g >= ls(12) ? lerp(-55, -76, grow) : -55,
+      sq: g >= ls(12) ? lerp(0.2, 0.45, grow) : lerp(0.34, 0.2, toHat),
+    };
+    stand(LANEL, () => m, (id) => ({ nod: down, talk: 0 }));
   }
   const still = you.walk < 0.05;
   const yi = idle(t, 0.7, still);
@@ -254,10 +260,10 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   const boatX = lerp(420, 1300, smooth(clamp01((g - ls(2) - 70) / 160)));
   const clapHit = g >= C.clapAt && g < C.clapAt + 5 ? 1 : 0;
   const flash = g >= C.clapAt && g < C.clapAt + 6 ? 0.35 * (1 - (g - C.clapAt) / 6) : 0;
-  const sweatT = clamp01((g - ls(8) - 60) / 30);
-  const sweatOn = place === "alley" && g >= ls(8) + 50 && g <= le(8) + 6;
+  const sweatT = clamp01((g - ls(8) - 66) / 30);
+  const sweatOn = place === "alley" && g >= ls(8) + 62 && g <= le(8) + 6;
   const bg = BG[place];
-  const youShown = !(place === "pier" && g >= ls(9) && g < ls(10));
+  const youShown = !(place === "pier" && g >= ls(9) && g < ls(10)) && !(place === "alley" && g >= ls(8));
 
   return (
     <AbsoluteFill style={{ background: "#0a0706" }}>
@@ -272,6 +278,8 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           <filter id="p1-bgdesat" colorInterpolationFilters="sRGB"><feColorMatrix type="saturate" values="0.72" /></filter>
           <linearGradient id="p1-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0.93" stopColor={bg.edge} stopOpacity="0" /><stop offset="1" stopColor={bg.edge} stopOpacity="1" /></linearGradient>
           <linearGradient id="p1-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={bg.edge} /><stop offset="1" stopColor="#3a2c1e" /></linearGradient>
+          <clipPath id="p1-mir"><rect x={0} y={1250} width={1080} height={640} /></clipPath>
+          <linearGradient id="p1-mirfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={bg.edge} stopOpacity="0" /><stop offset="1" stopColor="#3a2c1e" stopOpacity="1" /></linearGradient>
           <radialGradient id="p1-vig" cx="0.5" cy="0.5" r="0.75"><stop offset="0.5" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#0a0604" stopOpacity="0.75" /></radialGradient>
           <filter id="p1-grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" /><feColorMatrix type="saturate" values="0" /></filter>
         </defs>
@@ -279,6 +287,13 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           <image href={staticFile(bg.src)} x={0} y={0} width={1080} height={1250} filter={place === "pier" ? undefined : "url(#p1-bgdesat)"} />
           <rect y={0} width={1080} height={1250} fill="url(#p1-fade)" />
           {place === "pier" && (g < ls(4)) && <Boat x={g < ls(2) ? 420 : boatX} y={920} rock={t * 0.07} />}
+          {place !== "pier" && (
+            <g>
+              <rect x={0} y={1249} width={1080} height={1500} fill="url(#p1-ground)" />
+              <g clipPath="url(#p1-mir)"><g transform="translate(0,2500) scale(1,-1)"><image href={staticFile(bg.src)} x={0} y={0} width={1080} height={1250} filter="url(#p1-bgdesat)" /></g></g>
+              <rect x={0} y={1250} width={1080} height={640} fill="url(#p1-mirfade)" />
+            </g>
+          )}
           <g filter="url(#pv-grade)">
             {place === "pier" ? (
               <g>
@@ -317,7 +332,7 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
               </g>
             ) : (
               <g>
-                <rect x={0} y={1249} width={1080} height={1400} fill="url(#p1-ground)" />
+                
                 {/* things with hard shadows on the ground */}
                 <Shade x={150} y={place === "lane" ? 1100 : 1180} k={0.55} skew={you.skew} sq={you.sq}><Crates shadow /></Shade>
                 <g transform={`translate(150,${place === "lane" ? 1100 : 1180}) scale(0.55)`}><Crates /></g>
@@ -325,9 +340,16 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
                 <g transform={`translate(1010,${place === "lane" ? 1130 : 1240}) scale(0.8)`}><Bucket /></g>
                 <Shade x={place === "lane" ? 520 : 880} y={place === "lane" ? 1075 : 1090} k={0.7} skew={you.skew} sq={you.sq}><Mooring shadow /></Shade>
                 <g transform={`translate(${place === "lane" ? 520 : 880},${place === "lane" ? 1075 : 1090}) scale(0.7)`}><Mooring /></g>
-                {place === "alley" && <Shade x={440} y={1500} k={1.5} skew={-55} sq={0.34}><rect x={-120} y={-110} width={240} height={110} fill={SHADOW} /><polygon points="-150,-110 0,-190 150,-110" fill={SHADOW} /></Shade>}
-                {place === "alley" && g >= ls(8) && g < le(8) && <rect x={clothT.x + 30} y={1150} width={46} height={60} fill="#e9dcc0" stroke={INK} strokeWidth={4} />}
-                {place === "lane" && g >= ls(11) && g < ls(12) && <ellipse cx={you.x + 20} cy={you.y - 4} rx={110} ry={16} fill={SHADOW} opacity={clamp01((g - ls(11)) / 20) * 0.5} />}
+                {place === "alley" && (
+                  <g>
+                    <polygon points="140,1150 520,1150 580,1250 90,1250" fill={SHADOW} opacity={0.62} />
+                    <g stroke={INK} strokeWidth={5}><rect x={190} y={1100} width={14} height={150} fill="#5a4630" /><rect x={400} y={1100} width={14} height={150} fill="#5a4630" /></g>
+                    <line x1={197} y1={1112} x2={407} y2={1112} stroke={INK} strokeWidth={4} />
+                    {[[225, "#e9dcc0"], [290, "#e9dcc0"], [350, "#c8512d"]].map(([x, c], i) => (i === 1 && lifted) ? null : <rect key={i} x={x as number} y={1116} width={42} height={64} fill={c as string} stroke={INK} strokeWidth={4} />)}
+                  </g>
+                )}
+                {place === "alley" && lifted && g < ls(8) + 62 && <rect x={(carried ? motherA.x : 290) + 18} y={(carried ? motherA.y : 1215) - 150} width={42} height={64} fill="#e9dcc0" stroke={INK} strokeWidth={4} />}
+                {place === "lane" && g >= ls(11) && g < ls(12) + 40 && <ellipse cx={you.x + 20} cy={you.y - 4} rx={110} ry={16} fill={SHADOW} opacity={clamp01((g - ls(11)) / 20) * 0.5 * (1 - clamp01((g - ls(12)) / 40))} />}
               </g>
             )}
             {[...people].sort((a, b) => a.y - b.y).map((p, i) => <Villager key={p.id + i} {...p} t={g >= ls(13) + 30 ? 0 : t} />)}
