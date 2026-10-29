@@ -253,7 +253,7 @@ export const Traveller: React.FC<{
   const topPts = Array.from({ length: 33 }, (_, i) => {
     const u = uL + ((uR - uL) * i) / 32;
     const top = Math.max(0, -Math.sin(u)) ** 2;
-    return `L${86 * Math.cos(u) * kx(Math.sign(Math.cos(u)))} ${MC + 96 * Math.sin(u) * (1 + 0.12 * top)}`;
+    return `L${86 * Math.cos(u) * kx(Math.sign(Math.cos(u)))} ${MC + 96 * Math.sin(u) * (1 + 0.06 * top)}`;
   }).join(" ");
   const hairMass = `M${-xe(yL) * kx(-1)} ${yL} ${topPts} ${botPts} Z`;
   const seams = [150, 172, 194, 216, 20, -20].map((lon) => {
