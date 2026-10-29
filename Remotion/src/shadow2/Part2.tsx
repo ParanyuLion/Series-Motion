@@ -59,6 +59,81 @@ const SHOTS = (): Shot[] => [
   [ls(13), le(13) + 40, { x: 660, y: 960, z: 1.2 }, { x: 740, y: 920, z: 1.4 }],
 ];
 
+// ------------------------------------------------------------------ food: enamel plates with a blue rim (so the white rice stands out), rice with grains, side dishes
+const rnd = (i: number, k: number) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+const RICE = "#fbf7ec";
+const GRAIN = "#c9bc9c";
+
+const Plate: React.FC<{ cx: number; cy: number; rx: number; ry: number; sw: number }> = ({ cx, cy, rx, ry, sw }) => (
+  <g>
+    <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="#f2f0ea" stroke={INK} strokeWidth={sw} />
+    <ellipse cx={cx} cy={cy} rx={rx * 0.9} ry={ry * 0.9} fill="none" stroke="#3f66a0" strokeWidth={Math.max(1.5, rx * 0.05)} />
+    <ellipse cx={cx} cy={cy} rx={rx * 0.66} ry={ry * 0.66} fill="#e6e3da" stroke={INK} strokeWidth={sw * 0.5} />
+  </g>
+);
+
+/** a heap of rice seen from the front: a mound with grain strokes and a shaded side */
+const RiceMound: React.FC<{ cx: number; cy: number; rx: number; h: number; sw: number; n?: number }> = ({ cx, cy, rx, h, sw, n = 26 }) => {
+  if (h < 1) return null;
+  const top = (u: number) => cy - h * (1 - u * u);
+  return (
+    <g>
+      <path d={`M${cx - rx} ${cy} Q${cx} ${cy - h * 2} ${cx + rx} ${cy} Z`} fill={RICE} stroke={INK} strokeWidth={sw} />
+      <path d={`M${cx + rx * 0.2} ${cy - h * 0.8} Q${cx + rx * 0.7} ${cy - h * 0.5} ${cx + rx} ${cy} L${cx + rx * 0.3} ${cy} Z`} fill="#e9e1cc" opacity={0.7} />
+      {Array.from({ length: n }, (_, i) => {
+        const u = rnd(i, 1) * 1.7 - 0.85;
+        const y = cy - (cy - top(u)) * rnd(i, 2) * 0.85 - 1;
+        const x = cx + u * rx * 0.95;
+        const a = rnd(i, 3) * 180;
+        const L = Math.max(1.5, rx * 0.09);
+        return <line key={i} x1={x - Math.cos(a) * L} y1={y - Math.sin(a) * L * 0.6} x2={x + Math.cos(a) * L} y2={y + Math.sin(a) * L * 0.6} stroke={GRAIN} strokeWidth={Math.max(1, rx * 0.035)} strokeLinecap="round" />;
+      })}
+    </g>
+  );
+};
+
+/** rice seen from above (the close-up): a soft lump packed with grains */
+const RiceTop: React.FC<{ cx: number; cy: number; r: number }> = ({ cx, cy, r }) => (
+  <g>
+    <path d={`M${cx - r} ${cy} Q${cx - r} ${cy - r * 0.8} ${cx - r * 0.2} ${cy - r * 0.78} Q${cx + r * 0.9} ${cy - r * 0.85} ${cx + r} ${cy - r * 0.05} Q${cx + r * 0.95} ${cy + r * 0.75} ${cx} ${cy + r * 0.74} Q${cx - r * 1.02} ${cy + r * 0.7} ${cx - r} ${cy} Z`} fill={RICE} stroke={INK} strokeWidth={6} />
+    <ellipse cx={cx + r * 0.35} cy={cy + r * 0.3} rx={r * 0.55} ry={r * 0.35} fill="#ece4cf" opacity={0.7} />
+    {Array.from({ length: 70 }, (_, i) => {
+      const a = rnd(i, 4) * Math.PI * 2;
+      const d = Math.sqrt(rnd(i, 5)) * 0.85;
+      const x = cx + Math.cos(a) * r * d;
+      const y = cy + Math.sin(a) * r * 0.72 * d;
+      const b = rnd(i, 6) * Math.PI;
+      return <line key={i} x1={x - Math.cos(b) * 7} y1={y - Math.sin(b) * 7} x2={x + Math.cos(b) * 7} y2={y + Math.sin(b) * 7} stroke={GRAIN} strokeWidth={3.2} strokeLinecap="round" />;
+    })}
+  </g>
+);
+
+/** side dishes: a red curry in a bowl, stir-fried greens, a fried fish */
+const Curry: React.FC<{ cx: number; cy: number; s: number }> = ({ cx, cy, s }) => (
+  <g transform={`translate(${cx},${cy}) scale(${s})`}>
+    <path d="M-40 0 Q-36 26 0 28 Q36 26 40 0 Z" fill="#d9d2c2" stroke={INK} strokeWidth={4} />
+    <ellipse cx={0} cy={0} rx={40} ry={11} fill="#c4552a" stroke={INK} strokeWidth={4} />
+    {[-18, 4, 20].map((x, i) => <ellipse key={i} cx={x} cy={(i % 2) * 3 - 1} rx={5} ry={2} fill="#f0a24a" opacity={0.9} />)}
+    <path d="M-10 -2 q6 -5 12 0" fill="none" stroke="#3f6a2a" strokeWidth={4} />
+  </g>
+);
+const Greens: React.FC<{ cx: number; cy: number; s: number }> = ({ cx, cy, s }) => (
+  <g transform={`translate(${cx},${cy}) scale(${s})`}>
+    <ellipse cx={0} cy={0} rx={44} ry={12} fill="#f2f0ea" stroke={INK} strokeWidth={4} />
+    <path d="M-30 -2 Q-10 -18 0 -6 Q14 -20 30 -3 Q10 6 -30 -2 Z" fill="#4f7d34" stroke={INK} strokeWidth={3} />
+    {[-20, -6, 10, 22].map((x, i) => <path key={i} d={`M${x} -4 q4 -8 9 -6`} fill="none" stroke="#83b25a" strokeWidth={3} />)}
+    <circle cx={6} cy={-9} r={3} fill="#c8372d" />
+  </g>
+);
+const Fish: React.FC<{ cx: number; cy: number; s: number }> = ({ cx, cy, s }) => (
+  <g transform={`translate(${cx},${cy}) scale(${s})`}>
+    <ellipse cx={0} cy={0} rx={46} ry={12} fill="#f2f0ea" stroke={INK} strokeWidth={4} />
+    <path d="M-28 -3 Q-6 -16 20 -4 L34 -12 L32 4 L20 0 Q-6 8 -28 -3 Z" fill="#c98a3c" stroke={INK} strokeWidth={3} />
+    <circle cx={-18} cy={-5} r={2.5} fill={INK} />
+    {[-6, 4, 12].map((x, i) => <path key={i} d={`M${x} -9 l-3 7`} stroke="#8a5a26" strokeWidth={2.5} />)}
+  </g>
+);
+
 const Table: React.FC = () => (
   // a long table seen from the front: a top in perspective, a cloth hanging to the ground with a red border
   <g strokeLinejoin="round">
@@ -67,8 +142,9 @@ const Table: React.FC = () => (
     <rect x={270} y={1150} width={740} height={14} fill="#a8332a" />
     {[360, 500, 640, 780, 920].map((x) => <path key={x} d={`M${x} 1082 q6 40 -2 84`} fill="none" stroke="#b9a782" strokeWidth={3} opacity={0.7} />)}
     {/* plates and bowls on the top */}
-    {[[380, 1056], [520, 1052], [660, 1056], [800, 1052]].map(([x, y], i) => (
-      <g key={i}><ellipse cx={x} cy={y} rx={44} ry={11} fill="#fbf6ea" stroke={INK} strokeWidth={4} /><ellipse cx={x} cy={y - 5} rx={24} ry={8} fill="#f4efe0" stroke={INK} strokeWidth={3} /></g>
+    {[460, 610, 750].map((x, i) => (i === 0 ? <Curry key={i} cx={x} cy={1046} s={0.62} /> : i === 1 ? <Greens key={i} cx={x} cy={1048} s={0.62} /> : <Fish key={i} cx={x} cy={1047} s={0.62} />))}
+    {[380, 535, 680, 820].map((x, i) => (
+      <g key={"p" + i}><Plate cx={x} cy={1062} rx={36} ry={10} sw={3.5} /><RiceMound cx={x} cy={1062} rx={22} h={9} sw={2.5} n={10} /></g>
     ))}
   </g>
 );
@@ -85,7 +161,7 @@ const TableInsert: React.FC<{ k: number; t: number }> = ({ k, t }) => {
       <rect x={0} y={1700} width={1080} height={220} fill="#5a4030" />
       {/* other plates */}
       {[[200, 420], [930, 1500]].map(([x, y], i) => (
-        <g key={i}><ellipse cx={x} cy={y} rx={190} ry={150} fill="#fbf6ea" stroke={INK} strokeWidth={8} /><ellipse cx={x} cy={y} rx={120} ry={92} fill="#f4efe0" stroke={INK} strokeWidth={4} /><ellipse cx={x - 20} cy={y - 10} rx={70} ry={50} fill="#fffdf4" opacity={0.8} /></g>
+        <g key={i}><Plate cx={x} cy={y} rx={190} ry={150} sw={8} /><RiceTop cx={x - 30} cy={y - 10} r={80} /><g transform={`translate(${x + 70},${y + 40}) scale(2.2)`}><path d="M-26 -6 Q0 -22 24 -4 Q6 10 -26 -6 Z" fill="#c4552a" stroke={INK} strokeWidth={2.5} /><ellipse cx={-6} cy={-6} rx={4} ry={2} fill="#f0a24a" /></g></g>
       ))}
       {/* your shadow across the cloth: head and shoulders */}
       <g transform="translate(470,-260) rotate(172) scale(2.4,-2.4)" opacity={0.8}><g transform="scale(1,-1)"><Traveller silhouette /></g></g>
@@ -93,9 +169,9 @@ const TableInsert: React.FC<{ k: number; t: number }> = ({ k, t }) => {
       <g transform={`translate(${px},820)`}>
         <path d="M120 40 Q420 70 900 20" fill="none" stroke={INK} strokeWidth={150} strokeLinecap="round" />
         <path d="M120 40 Q420 70 900 20" fill="none" stroke="#eee6d4" strokeWidth={134} strokeLinecap="round" />
-        <ellipse cx={0} cy={0} rx={230} ry={175} fill="#fbf6ea" stroke={INK} strokeWidth={9} />
-        <ellipse cx={0} cy={0} rx={150} ry={110} fill="#f4efe0" stroke={INK} strokeWidth={5} />
-        <ellipse cx={-26} cy={-14} rx={90} ry={60} fill="#fffdf4" opacity={0.8} />
+        <Plate cx={0} cy={0} rx={230} ry={175} sw={9} />
+        <RiceTop cx={-40} cy={-10} r={95} />
+        <g transform="translate(70,30) scale(2.6)"><path d="M-20 -2 Q-6 -16 2 -6 Q14 -18 24 -2 Q8 8 -20 -2 Z" fill="#4f7d34" stroke={INK} strokeWidth={2.5} />{[-12, 0, 12].map((x, i) => <path key={i} d={`M${x} -4 q3 -6 7 -5`} fill="none" stroke="#83b25a" strokeWidth={2} />)}</g>
         <ellipse cx={170} cy={70} rx={56} ry={44} fill="#e7b890" stroke={INK} strokeWidth={7} />
         {[0, 1, 2].map((i) => <path key={i} d={`M${150 + i * 18} ${36} q-8 -22 4 -40`} fill="none" stroke={INK} strokeWidth={5} />)}
       </g>
@@ -234,8 +310,8 @@ export const Part2: React.FC<{ g?: number }> = ({ g: gOverride }) => {
             {place === "lane" && g >= ls(2) && <Table />}
             {place === "lane" && g >= ls(3) && (
               <g>
-                <ellipse cx={915} cy={1060} rx={48} ry={12} fill="#fbf6ea" stroke={INK} strokeWidth={4} />
-                <path d={`M${915 - 34} 1058 Q915 ${1058 - 10 - 60 * riceK} ${915 + 34} 1058 Z`} fill="#fbf8ee" stroke={INK} strokeWidth={3} />
+                <Plate cx={915} cy={1064} rx={48} ry={12} sw={4} />
+                <RiceMound cx={915} cy={1064} rx={32} h={8 + 34 * riceK} sw={3} n={22} />
               </g>
             )}
             {/* the door's beam in the granary */}
