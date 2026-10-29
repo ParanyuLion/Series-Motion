@@ -4,7 +4,7 @@ import { mix } from "./Figure";
 // Hair built the way a cartoonist does it: a few big clumps (pointed leaf shapes) stacked back to front, each with one clean outline, so the
 // silhouette has flow and the clump seams are the only "texture". Head centre (0, hy), ellipse 80 x 88 (top at hy - 88, eyes at hy + 6, brows at hy - 20).
 
-type P = { kind: "wave" | "swoop" | "tousle" | "bangs" | "bowl"; hy: number; color: string; ink: string; sw: number; flat: boolean };
+type P = { kind: "wave" | "swoop" | "tousle" | "bangs" | "bowlcut"; hy: number; color: string; ink: string; sw: number; flat: boolean };
 
 /** a pointed clump from base b to tip t: w is its width, bend sweeps the middle to one side */
 const leaf = (b: [number, number], t: [number, number], w: number, bend: number) => {
@@ -88,7 +88,7 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
       </g>
     );
   }
-  if (kind === "bowl") {
+  if (kind === "bowlcut") {
     // a bowl cut like the reference: a dome wider than the head, sides falling to the jaw, one big diagonal lock sweeping across the forehead and a shorter lock in front
     const fill = flat ? ink : mix(color, "#ffffff", 0.05);
     const fr: L[] = [
