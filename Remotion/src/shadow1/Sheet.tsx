@@ -56,6 +56,7 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
   const sheet = which === "sheet";
   const options = which === "you";
   const face = which === "face";
+  const poses = which === "poses";
   const cast: { id: string; x: number; th: string; en: string; mood: Mood }[] = [
     { id: "you", x: 220, th: "คุณ", en: "the traveller (has a shadow)", mood: "worry" },
     { id: "head", x: 520, th: "ผู้ใหญ่", en: "the head", mood: "smile" },
@@ -68,7 +69,23 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
     <AbsoluteFill>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
         <Ground w={W} h={H} horizon={600} />
-        {face ? (
+        {poses ? (
+          <g>
+            {([
+              { id: "you", x: 230, l: "เดิน", p: { walk: 1, t: 6 } },
+              { id: "you", x: 620, l: "นั่ง", p: { sit: true } },
+              { id: "you", x: 1010, l: "ชี้", p: { point: 1 } },
+              { id: "head", x: 1400, l: "ผู้ใหญ่ชี้", p: { point: 1 } },
+              { id: "mother", x: 1740, l: "ยกมือ", p: { armsUp: 1 } },
+            ] as { id: string; x: number; l: string; p: Record<string, unknown> }[]).map((c, i) => (
+              <g key={i}>
+                {!!c.p.sit && <rect x={c.x - 46} y={ground - 70} width={130} height={70} fill="#8a6a42" stroke="#0f0b09" strokeWidth={7} />}
+                <g transform={`translate(${c.x},${ground})`}><Figure look={LOOKS[c.id]} mood="calm" t={0} {...(c.p as object)} /></g>
+                <Label x={c.x} y={70} th={c.l} en="" />
+              </g>
+            ))}
+          </g>
+        ) : face ? (
           <g transform={`translate(960,1620) scale(2.5)`}><Figure look={LOOKS.you} mood="calm" t={t} /></g>
         ) : options ? (
           <g>

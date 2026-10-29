@@ -53,7 +53,7 @@ export const LOOKS: Record<string, Look> = {
   oldman: { badge: true, sleeve: "long", pants: "#4b463f", hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
 };
 
-export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, facing = 1, t = 0, creep }) => {
+export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; point?: number; sit?: boolean; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, point = 0, sit = false, facing = 1, t = 0, creep }) => {
   const S = silhouette ? "#0a1022" : null;
   const fill = (c: string) => S ?? c;
   const stroke = S ?? INK;
@@ -70,8 +70,10 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const headId = `hd-${skin.slice(1)}`;
   const pantsId = `pn-${(look.pants ?? "#000000").slice(1)}`;
   const bodyD = `M${-bw} ${hipY} Q${-bw - 8} ${topY + bh * 0.3} ${-bw * 0.7} ${topY + 24} Q0 ${topY - 16} ${bw * 0.7} ${topY + 24} Q${bw + 8} ${topY + bh * 0.3} ${bw} ${hipY} Q0 ${hipY + 26} ${-bw} ${hipY} Z`;
-  const lw = Math.sin(t * 0.25) * 18 * walk;
-  const aw = Math.sin(t * 0.25 + Math.PI) * 24 * walk;
+  const sitD = sit ? -100 - hipY : 0;
+  const ay = sit ? -20 - sitD : -20;
+  const lw = Math.sin(t * 0.25) * 30 * walk;
+  const aw = Math.sin(t * 0.25 + Math.PI) * 34 * walk;
   const lift = armsUp * 70;
   const blink = (t % 160) > 154 ? 0.1 : 1;
   const eyeY = headY + 6;
@@ -103,7 +105,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
     );
   };
   return (
-    <g transform={`scale(${facing * sc},${sc})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
+    <g transform={`scale(${facing * sc},${sc}) translate(0,${sitD})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
       <defs><filter id="ss-rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" /></filter>
         <linearGradient id={bodyId} x1="0.15" y1="0" x2="0.85" y2="1"><stop offset="0" stopColor={mix(look.body, "#ffffff", 0.16)} /><stop offset="1" stopColor={mix(look.body, "#000000", 0.14)} /></linearGradient>
         <linearGradient id={pantsId} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={mix(look.pants ?? "#000000", "#ffffff", 0.1)} /><stop offset="1" stopColor={mix(look.pants ?? "#000000", "#000000", 0.25)} /></linearGradient>
@@ -113,21 +115,21 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {[-1, 1].map((s, i) => {
         const dx = s * 26;
         const sh = i === 0 ? lw : -lw;
-        const kx = dx + sh * 0.4;
-        const ky = hipY / 2;
-        const ax = dx + sh;
+        const kx = sit ? dx + 70 : dx + sh * 0.4;
+        const ky = sit ? hipY : hipY / 2;
+        const ax = sit ? dx + 70 : dx + sh;
         return (
           <g key={s}>
             {look.pants ? (
               <g>
-                <path d={`M${dx - 20} ${hipY} L${kx - 18} ${ky} L${ax - 15} -20 L${ax + 15} -20 L${kx + 18} ${ky} L${dx + 20} ${hipY} Z`} fill={silhouette ? S! : `url(#${pantsId})`} stroke={stroke} strokeWidth={sw - 1} />
-                {!silhouette && <path d={`M${dx} ${hipY + 20} L${kx} ${ky + 6} L${ax} -26`} fill="none" stroke="#0f0b09" strokeWidth={3} opacity={0.18} />}
-                {!silhouette && <path d={`M${ax - 16} -30 L${ax + 16} -30`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />}
+                <path d={sit ? `M${dx - 14} ${hipY - 8} L${kx + 16} ${hipY - 8} L${ax + 16} ${ay} L${ax - 16} ${ay} L${ax - 16} ${hipY + 30} L${dx - 14} ${hipY + 30} Z` : `M${dx - 20} ${hipY} L${kx - 18} ${ky} L${ax - 15} ${ay} L${ax + 15} ${ay} L${kx + 18} ${ky} L${dx + 20} ${hipY} Z`} fill={silhouette ? S! : `url(#${pantsId})`} stroke={stroke} strokeWidth={sw - 1} />
+                {!silhouette && <path d={`M${dx} ${hipY + 20} L${kx} ${ky + 6} L${ax} ${ay - 6}`} fill="none" stroke="#0f0b09" strokeWidth={3} opacity={0.18} />}
+                {!silhouette && <path d={`M${ax - 16} ${ay - 10} L${ax + 16} ${ay - 10}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />}
               </g>
             ) : (
-              <path d={`M${dx} ${hipY} L${kx} ${ky} L${ax} -14`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+              <path d={`M${dx} ${hipY} L${kx} ${ky} L${ax} ${ay + 6}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
             )}
-            <ellipse cx={ax + 8} cy={-8} rx={26} ry={12} fill={fill("#5a4638")} stroke={stroke} strokeWidth={sw - 2} />
+            <ellipse cx={ax + 8} cy={ay + 12} rx={26} ry={12} fill={fill("#5a4638")} stroke={stroke} strokeWidth={sw - 2} />
           </g>
         );
       })}
@@ -136,14 +138,15 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         const x0 = s * (bw * 0.5);
         const y0 = topY + 40;
         const swing = (i === 0 ? aw : -aw);
-        const hx = s * (bw + 14) + swing * 0.4;
-        const hy = y0 + 124 - lift * (i === 1 ? 1 : 0.4) ;
+        const pt = i === 1 ? point : 0;
+        const hx = s * (bw + 14) + swing * 0.4 + pt * 110;
+        const hy = y0 + 124 - lift * (i === 1 ? 1 : 0.4) - pt * 100;
         return (
           <g key={s}>
-            <path d={`M${x0} ${y0} Q${s * (bw + 22)} ${y0 + 56} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+            <path d={`M${x0} ${y0} Q${s * (bw + 22) + pt * 60} ${y0 + 56 - pt * 30} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
             {(() => {
               const P0: [number, number] = [x0, y0];
-              const P1: [number, number] = [s * (bw + 22), y0 + 56];
+              const P1: [number, number] = [s * (bw + 22) + pt * 60, y0 + 56 - pt * 30];
               const P2: [number, number] = [hx, hy];
               const tt = look.sleeve === "long" ? 0.8 : 0.5;
               const c: [number, number] = [P0[0] + tt * (P1[0] - P0[0]), P0[1] + tt * (P1[1] - P0[1])];
