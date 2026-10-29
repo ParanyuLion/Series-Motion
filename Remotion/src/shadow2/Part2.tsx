@@ -42,7 +42,7 @@ const SHOTS = (): Shot[] => [
   [0, ls(1), { x: 600, y: 1060, z: 1.25 }, { x: 660, y: 1060, z: 1.35 }],
   [ls(1), ls(2), { x: 260, y: 960, z: 2.0 }, { x: 260, y: 955, z: 2.35 }],
   // the noon meal in the glare
-  [ls(2), ls(3), { x: 540, y: 1000, z: 1.3 }, { x: 610, y: 1000, z: 1.4 }],
+  [ls(2), ls(3), { x: 520, y: 960, z: 1.7 }, { x: 640, y: 960, z: 1.8 }],
   [ls(3), ls(4), { x: 880, y: 990, z: 2.0 }, { x: 890, y: 1000, z: 2.2 }],
   [ls(5), BARN_AT(), { x: 420, y: 880, z: 2.0 }, { x: 760, y: 880, z: 2.0 }],
   // the granary
@@ -137,10 +137,10 @@ export const Part2: React.FC<{ g?: number }> = ({ g: gOverride }) => {
       { id: "child", x: 655, y: 1100, s: 0.66, mood: "smile", up: eat(3), seed: 3 },
       { id: "head", x: 780, y: 1100, s: 0.55, mood: "smile", up: eat(4), seed: 4 },
     );
-    you = { ...you, x: 1010, y: 1190, s: 0.78, yaw: 290 };
-    const cook = track(g, [[ls(3) - 4, 230, 1190, 0.6], [ls(3) + 40, 860, 1190, 0.6]]);
+    you = { ...you, x: 1045, y: 1190, s: 0.78, yaw: 290 };
+    const cook = track(g, [[ls(3) - 4, 230, 1190, 0.6], [ls(3) + 40, 830, 1190, 0.6], [le(3), 830, 1190, 0.6], [le(3) + 40, 230, 1190, 0.6]]);
     const serving = g >= ls(3) + 40 && g < ls(4);
-    people.push({ id: "cook", x: g < ls(3) ? 230 : cook.x, y: 1190, s: 0.6, mood: "smile", walk: g < ls(3) ? 0 : cook.walk, face: cook.walk > 0.05 ? 1 : 1, up: serving ? 0.4 + 0.4 * Math.abs(Math.sin((g - ls(3)) / 4)) : 0, seed: 5 });
+    if (g < ls(4) || g >= ls(5)) people.push({ id: "cook", x: g < ls(3) ? 230 : cook.x, y: 1190, s: 0.6, mood: "smile", walk: g < ls(3) ? 0 : cook.walk, face: cook.dir as 1 | -1, up: serving ? 0.4 + 0.4 * Math.abs(Math.sin((g - ls(3)) / 4)) : 0, seed: 5 });
   }
   const riceK = clamp01((g - ls(3) - 40) / Math.max(1, le(3) - ls(3) - 40));
 
@@ -166,7 +166,7 @@ export const Part2: React.FC<{ g?: number }> = ({ g: gOverride }) => {
     const tr = track(g, [[ALLEY_AT(), 160, 1185, 0.85], [ALLEY_AT() + 30, 480, 1185, 0.85]]);
     you = { ...you, x: tr.x, y: tr.y, walk: tr.walk, phase: t * 0.5, yaw: tr.walk > 0.05 ? 90 : 70 };
     const pt = g >= ls(12) ? smooth(clamp01((g - ls(12)) / 16)) : 0;
-    people.push({ id: "head", x: 770, y: 1170, s: 0.72, mood: g >= ls(11) ? "calm" : "smile", face: -1, talk: g >= ls(11) + 2 && g < le(11) ? 1 : 0, point: pt, seed: 1 });
+    people.push({ id: "head", x: 770, y: 1170, s: 0.72, mood: g >= ls(11) ? "calm" : "smile", face: g >= ls(12) ? 1 : -1, talk: g >= ls(11) + 2 && g < le(11) ? 1 : 0, point: pt, seed: 1 });
   }
 
   // the tree: the post's shadow sweeps round (a time-lapse) while the tree's shadow stays where it is
@@ -234,8 +234,8 @@ export const Part2: React.FC<{ g?: number }> = ({ g: gOverride }) => {
             {place === "lane" && g >= ls(2) && <Table />}
             {place === "lane" && g >= ls(3) && (
               <g>
-                <ellipse cx={930} cy={1060} rx={48} ry={12} fill="#fbf6ea" stroke={INK} strokeWidth={4} />
-                <path d={`M${930 - 34} 1058 Q930 ${1058 - 10 - 60 * riceK} ${930 + 34} 1058 Z`} fill="#fbf8ee" stroke={INK} strokeWidth={3} />
+                <ellipse cx={915} cy={1060} rx={48} ry={12} fill="#fbf6ea" stroke={INK} strokeWidth={4} />
+                <path d={`M${915 - 34} 1058 Q915 ${1058 - 10 - 60 * riceK} ${915 + 34} 1058 Z`} fill="#fbf8ee" stroke={INK} strokeWidth={3} />
               </g>
             )}
             {/* the door's beam in the granary */}
