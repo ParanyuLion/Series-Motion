@@ -1,0 +1,130 @@
+import React from "react";
+
+// Characters of "หมู่บ้านที่ไม่มีใครมีเงา": a round pale head, a thick brown outline, dot eyes with expressive brows, a bean-shaped body in one colour
+// and thin bent limbs. A figure is drawn around its feet at (0,0), about 560 tall. `silhouette` draws the same figure as one dark flat shape
+// so it can be squashed and skewed into a cast shadow (only the traveller "you" has one; the villagers cast none).
+
+export const INK = "#2b211c";
+export const SKIN = "#f6ecdc";
+
+export type Look = {
+  hair: "messy" | "bowl" | "bun" | "bald" | "scarf" | "none";
+  hairColor: string;
+  hat?: "straw";
+  body: string;
+  bodyKind: "bean" | "long" | "round" | "thin";
+  detail?: "charm" | "strap" | "apron" | "patch" | "none";
+  glasses?: boolean;
+  scale?: number;
+  mustache?: boolean;
+};
+
+export type Mood = "calm" | "smile" | "worry" | "stare";
+
+export const LOOKS: Record<string, Look> = {
+  you: { hair: "messy", hairColor: "#3a2d26", body: "#4f86c6", bodyKind: "bean", detail: "strap" },
+  head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
+  mother: { hair: "bun", hairColor: "#2b211c", body: "#b8573f", bodyKind: "long", detail: "charm" },
+  child: { hair: "bowl", hairColor: "#2b211c", body: "#e8b84a", bodyKind: "bean", detail: "charm", scale: 0.62 },
+  cook: { hair: "scarf", hairColor: "#6d8f5a", body: "#cfc7a8", bodyKind: "round", detail: "apron" },
+  oldman: { hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
+};
+
+export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; facing?: 1 | -1; t?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, facing = 1, t = 0 }) => {
+  const S = silhouette ? "#0a1022" : null;
+  const fill = (c: string) => S ?? c;
+  const stroke = S ?? INK;
+  const sc = look.scale ?? 1;
+  const bw = look.bodyKind === "round" ? 112 : look.bodyKind === "thin" ? 60 : look.bodyKind === "long" ? 76 : 72;
+  const bh = look.bodyKind === "long" ? 290 : look.bodyKind === "thin" ? 250 : look.bodyKind === "round" ? 210 : 220;
+  const legLen = look.bodyKind === "long" ? 80 : 130;
+  const hipY = -legLen;
+  const topY = hipY - bh;
+  const headY = topY - 72;
+  const sw = 7;
+  const lw = Math.sin(t * 0.25) * 18 * walk;
+  const aw = Math.sin(t * 0.25 + Math.PI) * 24 * walk;
+  const lift = armsUp * 70;
+  const blink = (t % 160) > 154 ? 0.1 : 1;
+  const eyeY = headY + 6;
+  const brow = mood === "worry" ? -12 : mood === "stare" ? 4 : 0;
+  const hatW = 150;
+  return (
+    <g transform={`scale(${facing * sc},${sc})`} strokeLinecap="round" strokeLinejoin="round">
+      {/* legs and shoes */}
+      {[-1, 1].map((s, i) => {
+        const dx = s * 26;
+        const sh = i === 0 ? lw : -lw;
+        return (
+          <g key={s}>
+            <path d={`M${dx} ${hipY} L${dx + sh * 0.4} ${hipY / 2} L${dx + sh} -14`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+            <ellipse cx={dx + sh + 8} cy={-8} rx={24} ry={11} fill={fill("#5a4638")} stroke={stroke} strokeWidth={sw - 2} />
+          </g>
+        );
+      })}
+      {/* arms behind the body */}
+      {[-1, 1].map((s, i) => {
+        const x0 = s * (bw - 6);
+        const y0 = topY + 50;
+        const swing = (i === 0 ? aw : -aw);
+        const hx = s * (bw + 36) + swing * 0.4;
+        const hy = y0 + 120 - lift * (i === 1 ? 1 : 0.4) ;
+        return (
+          <g key={s}>
+            <path d={`M${x0} ${y0} Q${s * (bw + 44)} ${y0 + 50} ${hx} ${hy}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
+            <circle cx={hx} cy={hy + 6} r={13} fill={fill(SKIN)} stroke={stroke} strokeWidth={sw - 2} />
+          </g>
+        );
+      })}
+      {/* the body */}
+      <path d={`M${-bw} ${hipY} Q${-bw - 8} ${topY + bh * 0.3} ${-bw * 0.7} ${topY + 24} Q0 ${topY - 16} ${bw * 0.7} ${topY + 24} Q${bw + 8} ${topY + bh * 0.3} ${bw} ${hipY} Q0 ${hipY + 26} ${-bw} ${hipY} Z`} fill={fill(look.body)} stroke={stroke} strokeWidth={sw} />
+      {!silhouette && <path d={`M${bw * 0.34} ${topY + 40} Q${bw * 0.9} ${topY + bh * 0.45} ${bw * 0.9} ${hipY - 4} Q${bw * 0.5} ${hipY + 12} ${bw * 0.3} ${hipY + 8} Q${bw * 0.6} ${topY + bh * 0.5} ${bw * 0.34} ${topY + 40} Z`} fill="#1a1428" opacity={0.12} />}
+      {!silhouette && look.detail === "strap" && <path d={`M${-bw * 0.5} ${topY + 24} L${bw * 0.55} ${hipY - 30}`} stroke="#3a2d26" strokeWidth={14} opacity={0.85} />}
+      {!silhouette && look.detail === "charm" && (
+        <g><rect x={-bw * 0.35} y={topY + 70} width={20} height={34} rx={3} fill="#c8372d" stroke={INK} strokeWidth={3} /><line x1={-bw * 0.35 + 10} y1={topY + 72} x2={-bw * 0.35 + 10} y2={topY + 100} stroke="#f6e5b0" strokeWidth={2} /></g>
+      )}
+      {!silhouette && look.detail === "apron" && <path d={`M${-bw * 0.6} ${topY + 70} L${bw * 0.6} ${topY + 70} L${bw * 0.7} ${hipY - 6} L${-bw * 0.7} ${hipY - 6} Z`} fill="#f4efe0" stroke={INK} strokeWidth={4} opacity={0.95} />}
+      {!silhouette && look.detail === "patch" && <rect x={bw * 0.1} y={topY + 120} width={30} height={30} fill="#b5a37a" stroke={INK} strokeWidth={3} />}
+      {/* the head */}
+      {look.hair === "scarf" && <ellipse cx={0} cy={headY - 6} rx={90} ry={92} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
+      {look.hair === "bun" && <circle cx={0} cy={headY - 96} r={34} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
+      <ellipse cx={0} cy={headY} rx={80} ry={88} fill={fill(SKIN)} stroke={stroke} strokeWidth={sw} />
+      {!silhouette && <path d={`M30 ${headY - 78} Q82 ${headY - 20} 50 ${headY + 70} Q86 ${headY + 10} 30 ${headY - 78} Z`} fill="#6a5a8a" opacity={0.14} />}
+      {[-1, 1].map((s) => <ellipse key={s} cx={s * 80} cy={headY + 8} rx={10} ry={16} fill={fill(SKIN)} stroke={stroke} strokeWidth={sw - 2} />)}
+      {/* hair */}
+      {look.hair === "messy" && <path d={`M-84 ${headY - 8} Q-92 ${headY - 92} -20 ${headY - 92} Q10 ${headY - 120} 50 ${headY - 88} Q92 ${headY - 70} 84 ${headY - 6} Q70 ${headY - 52} 26 ${headY - 58} Q-20 ${headY - 40} -84 ${headY - 8} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {look.hair === "bowl" && <path d={`M-84 ${headY + 2} Q-90 ${headY - 92} 0 ${headY - 92} Q90 ${headY - 92} 84 ${headY + 2} Q50 ${headY - 40} 0 ${headY - 42} Q-50 ${headY - 40} -84 ${headY + 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {look.hair === "bun" && <path d={`M-82 ${headY - 6} Q-84 ${headY - 88} 0 ${headY - 88} Q84 ${headY - 88} 82 ${headY - 6} Q50 ${headY - 50} 0 ${headY - 52} Q-50 ${headY - 50} -82 ${headY - 6} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {look.hair === "scarf" && <path d={`M-84 ${headY - 4} Q-70 ${headY - 70} 0 ${headY - 70} Q70 ${headY - 70} 84 ${headY - 4} Q40 ${headY - 40} 0 ${headY - 42} Q-40 ${headY - 40} -84 ${headY - 4} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {/* face */}
+      {!silhouette && (
+        <g>
+          {[-1, 1].map((s) => (
+            <g key={s}>
+              {mood === "smile" ? <path d={`M${s * 30 - 12} ${eyeY} Q${s * 30} ${eyeY - 12} ${s * 30 + 12} ${eyeY}`} fill="none" stroke={INK} strokeWidth={6} /> : <ellipse cx={s * 30} cy={eyeY} rx={7} ry={8 * blink} fill={INK} />}
+              <path d={`M${s * 30 - 16} ${eyeY - 26 + brow * (s === -1 ? 1 : 1) } Q${s * 30} ${eyeY - 34 + brow * 0.4} ${s * 30 + 16} ${eyeY - 26 - brow}`} fill="none" stroke={INK} strokeWidth={6} transform={s === -1 ? "" : `scale(1,1)`} />
+            </g>
+          ))}
+          {mood === "worry" && <ellipse cx={0} cy={eyeY - 2} rx={66} ry={18} fill="#2a2030" opacity={0.28} filter="blur(2px)" />}
+          {look.glasses && <g fill="none" stroke={INK} strokeWidth={4}><rect x={-52} y={eyeY - 16} width={40} height={32} rx={8} /><rect x={12} y={eyeY - 16} width={40} height={32} rx={8} /><line x1={-12} y1={eyeY} x2={12} y2={eyeY} /></g>}
+          <path d={`M-3 ${eyeY + 12} Q-10 ${eyeY + 28} 2 ${eyeY + 30}`} fill="none" stroke={INK} strokeWidth={4} opacity={0.7} />
+          {look.mustache && <path d={`M-30 ${eyeY + 40} Q-14 ${eyeY + 30} 0 ${eyeY + 38} Q14 ${eyeY + 30} 30 ${eyeY + 40}`} fill="none" stroke="#7a766e" strokeWidth={6} />}
+          {mood === "smile" && <path d={`M-30 ${eyeY + 52} Q0 ${eyeY + 82} 30 ${eyeY + 52}`} fill="#7a3a30" stroke={INK} strokeWidth={5} />}
+          {mood === "calm" && <path d={`M-18 ${eyeY + 56} Q0 ${eyeY + 58} 18 ${eyeY + 56}`} fill="none" stroke={INK} strokeWidth={5} />}
+          {mood === "worry" && <path d={`M-18 ${eyeY + 62} Q0 ${eyeY + 50} 18 ${eyeY + 62}`} fill="none" stroke={INK} strokeWidth={5} />}
+          {mood === "stare" && <ellipse cx={0} cy={eyeY + 58} rx={10} ry={6} fill="#7a3a30" stroke={INK} strokeWidth={4} />}
+          {mood === "worry" && <path d={`M70 ${headY - 30} q6 18 -2 26`} fill="none" stroke="#7fb4e6" strokeWidth={7} />}
+        </g>
+      )}
+      {/* the straw hat (a portable shade) */}
+      {look.hat === "straw" && (
+        <g>
+          <ellipse cx={0} cy={headY - 52} rx={hatW} ry={30} fill={fill("#d9b865")} stroke={stroke} strokeWidth={sw} />
+          <path d={`M-70 ${headY - 56} Q-70 ${headY - 120} 0 ${headY - 120} Q70 ${headY - 120} 70 ${headY - 56} Q0 ${headY - 40} -70 ${headY - 56} Z`} fill={fill("#e6c97a")} stroke={stroke} strokeWidth={sw} />
+          {!silhouette && <path d={`M-66 ${headY - 70} Q0 ${headY - 52} 66 ${headY - 70}`} fill="none" stroke="#a8332a" strokeWidth={9} />}
+          {!silhouette && Array.from({ length: 6 }, (_, i) => <path key={i} d={`M${-120 + i * 48} ${headY - 56} q8 14 0 28`} fill="none" stroke="#a88a3e" strokeWidth={3} opacity={0.7} />)}
+        </g>
+      )}
+    </g>
+  );
+};
