@@ -25,6 +25,15 @@ export type Look = {
 const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
 export const mix=(a: string,b: string,t: number)=>{ const A=hx(a),B=hx(b); return "#"+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,"0")).join(""); };
 
+/** hair as a cloud of overlapping tufts: an outline pass (each tuft a little larger, in ink) under a fill pass, so the outer edge is one scalloped line */
+const Fluff: React.FC<{ c: [number, number, number][]; color: string; ink: string; w: number; light?: string }> = ({ c, color, ink, w, light }) => (
+  <g>
+    {c.map(([x, y, r], i) => <circle key={"o" + i} cx={x} cy={y} r={r + w / 2} fill={ink} />)}
+    {c.map(([x, y, r], i) => <circle key={"f" + i} cx={x} cy={y} r={r} fill={color} />)}
+    {light && c.slice(0, 5).map(([x, y, r], i) => <path key={"l" + i} d={`M${x - r * 0.55} ${y - r * 0.2} Q${x - r * 0.2} ${y - r * 0.7} ${x + r * 0.35} ${y - r * 0.6}`} fill="none" stroke={light} strokeWidth={5} strokeLinecap="round" opacity={0.55} />)}
+  </g>
+);
+
 export type Mood = "calm" | "smile" | "worry" | "stare" | "creepy";
 
 export const LOOKS: Record<string, Look> = {
@@ -130,7 +139,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {/* the head */}
       {look.hair === "scarf" && <ellipse cx={0} cy={headY - 6} rx={90} ry={92} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
       {look.hair === "bun" && <circle cx={0} cy={headY - 96} r={34} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
-      {look.hair === "ponytail" && <path d={`M60 ${headY - 40} Q150 ${headY - 50} 140 ${headY + 40} Q136 ${headY + 110} 96 ${headY + 150} Q120 ${headY + 70} 86 ${headY + 20} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {look.hair === "ponytail" && <g><Fluff c={[[104, headY - 6, 26], [128, headY + 28, 30], [132, headY + 70, 28], [116, headY + 108, 24], [96, headY + 132, 16]]} color={fill(look.hairColor)} ink={stroke} w={sw - 1} light={silhouette ? undefined : mix(look.hairColor, "#ffffff", 0.3)} /><rect x={86} y={headY - 20} width={26} height={16} rx={6} fill={silhouette ? S! : "#c8372d"} stroke={stroke} strokeWidth={4} /></g>}
       <ellipse cx={0} cy={headY} rx={80} ry={88} fill={silhouette ? S! : `url(#${headId})`} stroke={stroke} strokeWidth={sw} />
       {!silhouette && <path d={`M30 ${headY - 78} Q82 ${headY - 20} 50 ${headY + 70} Q86 ${headY + 10} 30 ${headY - 78} Z`} fill="#3a2a4a" opacity={0.3} />}
       {[-1, 1].map((s) => <ellipse key={s} cx={s * 80} cy={headY + 8} rx={10} ry={16} fill={fill(skin)} stroke={stroke} strokeWidth={sw - 2} />)}
@@ -139,10 +148,10 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {look.hair === "bowl" && <path d={`M-84 ${headY + 2} Q-90 ${headY - 92} 0 ${headY - 92} Q90 ${headY - 92} 84 ${headY + 2} Q50 ${headY - 40} 0 ${headY - 42} Q-50 ${headY - 40} -84 ${headY + 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "bun" && <path d={`M-82 ${headY - 6} Q-84 ${headY - 88} 0 ${headY - 88} Q84 ${headY - 88} 82 ${headY - 6} Q50 ${headY - 50} 0 ${headY - 52} Q-50 ${headY - 50} -82 ${headY - 6} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "scarf" && <path d={`M-84 ${headY - 4} Q-70 ${headY - 70} 0 ${headY - 70} Q70 ${headY - 70} 84 ${headY - 4} Q40 ${headY - 40} 0 ${headY - 42} Q-40 ${headY - 40} -84 ${headY - 4} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
-      {look.hair === "sidepart" && <g><path d={`M-84 ${headY - 2} Q-90 ${headY - 92} 6 ${headY - 94} Q92 ${headY - 88} 84 ${headY - 2} Q74 ${headY - 46} 30 ${headY - 54} Q-24 ${headY - 58} -56 ${headY - 34} Q-80 ${headY - 16} -84 ${headY - 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} /><path d={`M-22 ${headY - 92} Q-34 ${headY - 70} -50 ${headY - 52}`} fill="none" stroke={stroke} strokeWidth={4} opacity={0.6} /></g>}
-      {look.hair === "ponytail" && <path d={`M-82 ${headY - 2} Q-86 ${headY - 88} 0 ${headY - 90} Q86 ${headY - 88} 82 ${headY - 2} Q56 ${headY - 34} 0 ${headY - 38} Q-56 ${headY - 34} -82 ${headY - 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {look.hair === "sidepart" && <g><Fluff c={[[-76, headY - 20, 26], [-70, headY - 56, 34], [-36, headY - 84, 40], [12, headY - 96, 44], [56, headY - 82, 40], [82, headY - 46, 34], [86, headY - 10, 22], [-44, headY - 44, 28], [0, headY - 50, 28], [40, headY - 44, 26]]} color={fill(look.hairColor)} ink={stroke} w={sw - 1} light={silhouette ? undefined : mix(look.hairColor, "#ffffff", 0.3)} /><path d={`M-26 ${headY - 70} Q-40 ${headY - 52} -58 ${headY - 40}`} fill="none" stroke={stroke} strokeWidth={4} opacity={0.5} /></g>}
+      {look.hair === "ponytail" && <Fluff c={[[-78, headY - 18, 26], [-68, headY - 54, 34], [-32, headY - 84, 40], [14, headY - 96, 44], [58, headY - 80, 38], [82, headY - 44, 32], [84, headY - 8, 22], [-40, headY - 44, 28], [4, headY - 50, 28], [44, headY - 44, 24]]} color={fill(look.hairColor)} ink={stroke} w={sw - 1} light={silhouette ? undefined : mix(look.hairColor, "#ffffff", 0.3)} />}
       {look.hair === "curly" && <g>{Array.from({ length: 8 }, (_, i) => { const a = Math.PI * (1.05 + (i / 7) * 0.9); return <circle key={i} cx={Math.cos(a) * 74} cy={headY + Math.sin(a) * 78} r={30} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 2} />; })}</g>}
-      {look.hair === "beanie" && <g><path d={`M-84 ${headY - 30} Q-86 ${headY - 120} 0 ${headY - 122} Q86 ${headY - 120} 84 ${headY - 30} Q0 ${headY - 50} -84 ${headY - 30} Z`} fill={fill(look.beanieColor ?? "#e0782f")} stroke={stroke} strokeWidth={sw} /><rect x={-86} y={headY - 46} width={172} height={30} rx={12} fill={fill(mix(look.beanieColor ?? "#e0782f", "#000000", 0.18))} stroke={stroke} strokeWidth={sw - 2} /><circle cx={0} cy={headY - 126} r={14} fill={fill(look.beanieColor ?? "#e0782f")} stroke={stroke} strokeWidth={sw - 3} /><path d={`M-84 ${headY - 20} Q-92 ${headY - 6} -84 ${headY + 8} M84 ${headY - 20} Q92 ${headY - 6} 84 ${headY + 8}`} fill="none" stroke={fill(look.hairColor)} strokeWidth={10} /></g>}
+      {look.hair === "beanie" && <g><Fluff c={[[-94, headY - 4, 22], [-98, headY + 22, 20], [-90, headY + 44, 16], [94, headY - 4, 22], [98, headY + 22, 20], [90, headY + 44, 16], [-60, headY - 38, 22], [60, headY - 38, 22]]} color={fill(look.hairColor)} ink={stroke} w={sw - 2} /><path d={`M-90 ${headY - 36} Q-96 ${headY - 132} 0 ${headY - 136} Q96 ${headY - 132} 90 ${headY - 36} Q0 ${headY - 56} -90 ${headY - 36} Z`} fill={fill(look.beanieColor ?? "#e0782f")} stroke={stroke} strokeWidth={sw} /><rect x={-94} y={headY - 52} width={188} height={34} rx={14} fill={fill(mix(look.beanieColor ?? "#e0782f", "#000000", 0.18))} stroke={stroke} strokeWidth={sw - 2} />{[-60, -30, 0, 30, 60].map((x) => <line key={x} x1={x} y1={headY - 50} x2={x} y2={headY - 20} stroke={stroke} strokeWidth={3} opacity={0.35} />)}<Fluff c={[[0, headY - 146, 24], [-16, headY - 140, 16], [18, headY - 138, 16], [0, headY - 160, 14]]} color={fill(mix(look.beanieColor ?? "#e0782f", "#ffffff", 0.2))} ink={stroke} w={sw - 3} /></g>}
       {/* face */}
       {!silhouette && (creep === undefined ? faceFor(mood, 1) : <g>{faceFor("smile", 1 - creep)}{faceFor("creepy", creep)}</g>)}
       {/* the straw hat (a portable shade) */}
