@@ -30,13 +30,13 @@ export const VillageVert: React.FC = () => {
         <defs>
           <linearGradient id="pv-pier" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#6a5438" /><stop offset="1" stopColor="#3a2a1a" /></linearGradient>
           <radialGradient id="pv-vig" cx="0.5" cy="0.5" r="0.75"><stop offset="0.5" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#0a0604" stopOpacity="0.75" /></radialGradient>
-          <linearGradient id="pv-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0.8" stopColor="#2a2118" stopOpacity="0" /><stop offset="1" stopColor="#2a2118" stopOpacity="1" /></linearGradient>
+          <linearGradient id="pv-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0.93" stopColor="#2a2118" stopOpacity="0" /><stop offset="1" stopColor="#2a2118" stopOpacity="1" /></linearGradient>
           <filter id="pv-grade" colorInterpolationFilters="sRGB">
             <feColorMatrix type="saturate" values="0.62" />
             <feColorMatrix type="matrix" values="0.92 0 0 0 0.02  0 0.88 0 0 0.02  0 0 0.8 0 0.03  0 0 0 1 0" />
             <feComponentTransfer><feFuncR type="gamma" amplitude="0.92" exponent="1.12" /><feFuncG type="gamma" amplitude="0.92" exponent="1.12" /><feFuncB type="gamma" amplitude="0.92" exponent="1.12" /></feComponentTransfer>
           </filter>
-          <linearGradient id="pv-haze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#c9b79a" stopOpacity="0.0" /><stop offset="1" stopColor="#c9b79a" stopOpacity="0.28" /></linearGradient>
+          <linearGradient id="pv-haze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#c9b79a" stopOpacity="0.0" /><stop offset="1" stopColor="#c9b79a" stopOpacity="0.08" /></linearGradient>
           <linearGradient id="pv-skytint" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#7d8aa0" stopOpacity="0.28" /><stop offset="0.6" stopColor="#d8c3a0" stopOpacity="0" /></linearGradient>
           <filter id="pv-grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" /><feColorMatrix type="saturate" values="0" /></filter>
         </defs>
@@ -75,7 +75,7 @@ export const VillageVert: React.FC = () => {
         <g transform="translate(300,1810) scale(1.25)"><Traveller yaw={25} mood="worry" t={0} /></g>
         </g>
         {/* one overlay over everything: a pale dusty haze lifting from the water, a cold tint in the sky */}
-        <rect y={900} width={1080} height={1020} fill="url(#pv-haze)" />
+        <rect y={1000} width={1080} height={920} fill="url(#pv-haze)" />
         <rect width={1080} height={1250} fill="url(#pv-skytint)" />
         <rect width={1080} height={1920} filter="url(#pv-grain)" opacity={0.14} />
         <rect width={1080} height={1920} fill="url(#pv-vig)" />
