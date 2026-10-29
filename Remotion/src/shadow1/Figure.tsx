@@ -24,6 +24,7 @@ export type Look = {
   pants?: string;
   pattern?: "sport" | "zigzag" | "stripes" | "trim" | "breton" | "jacket";
   sleeve?: "long" | "short";
+  badge?: boolean;
 };
 
 const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
@@ -45,11 +46,11 @@ export const LOOKS: Record<string, Look> = {
   youA: { hair: "bowlcut", hairColor: "#1d1816", body: "#24252b", bodyKind: "lean", detail: "none", glasses: true, pants: "#2c3a56", pattern: "jacket", sleeve: "long" },
   youB: { hair: "swoop", hairColor: "#1c1410", body: "#8e5ab5", bodyKind: "bean", detail: "strap" },
   youC: { hair: "tousle", hairColor: "#b5502a", body: "#3b7a57", bodyKind: "bean", detail: "strap" },
-  head: { sleeve: "long", hair: "none", hairColor: "#d8d4cc", hat: "straw", pants: "#c9bd9f", pattern: "trim", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
-  mother: { pattern: "zigzag", hair: "bun", hairColor: "#2b211c", body: "#b8573f", bodyKind: "long", detail: "charm" },
-  child: { pants: "#8a6a45", pattern: "stripes", hair: "bowl", hairColor: "#2b211c", body: "#e8b84a", bodyKind: "bean", detail: "charm", scale: 0.62 },
-  cook: { hair: "scarf", hairColor: "#6d8f5a", body: "#cfc7a8", bodyKind: "round", detail: "apron" },
-  oldman: { sleeve: "long", pants: "#4b463f", hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
+  head: { sleeve: "long", hair: "none", hairColor: "#d8d4cc", hat: "straw", pants: "#c9bd9f", pattern: "trim", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", badge: true, mustache: true },
+  mother: { pattern: "zigzag", hair: "bun", hairColor: "#2b211c", body: "#b8573f", bodyKind: "long", badge: true },
+  child: { pants: "#8a6a45", pattern: "stripes", hair: "bowl", hairColor: "#2b211c", body: "#e8b84a", bodyKind: "bean", badge: true, scale: 0.62 },
+  cook: { badge: true, hair: "scarf", hairColor: "#6d8f5a", body: "#cfc7a8", bodyKind: "round", detail: "apron" },
+  oldman: { badge: true, sleeve: "long", pants: "#4b463f", hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
 };
 
 export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, facing = 1, t = 0, creep }) => {
@@ -217,11 +218,15 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       )}
       {!silhouette && Array.from({ length: 5 }, (_, i) => <path key={i} d={`M${bw * 0.55 + i * 5} ${topY + 70 + i * 36} l${-26} ${34}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />)}
       {!silhouette && look.detail === "strap" && <path d={`M${-bw * 0.5} ${topY + 24} L${bw * 0.55} ${hipY - 30}`} stroke="#3a2d26" strokeWidth={14} opacity={0.85} />}
-      {!silhouette && look.detail === "charm" && (
-        <g><rect x={-bw * 0.35} y={topY + 70} width={20} height={34} rx={3} fill="#c8372d" stroke={INK} strokeWidth={3} /><line x1={-bw * 0.35 + 10} y1={topY + 72} x2={-bw * 0.35 + 10} y2={topY + 100} stroke="#f6e5b0" strokeWidth={2} /></g>
-      )}
       {!silhouette && look.detail === "apron" && <path d={`M${-bw * 0.6} ${topY + 70} L${bw * 0.6} ${topY + 70} L${bw * 0.7} ${hipY - 6} L${-bw * 0.7} ${hipY - 6} Z`} fill="#f4efe0" stroke={INK} strokeWidth={4} opacity={0.95} />}
       {!silhouette && look.detail === "patch" && <rect x={bw * 0.1} y={topY + 120} width={30} height={30} fill="#b5a37a" stroke={INK} strokeWidth={3} />}
+      {!silhouette && look.badge && (
+        <g transform={`translate(${-bw * 0.38},${topY + 92})`}>
+          <circle r={17} fill="#f4ead2" stroke={INK} strokeWidth={4} />
+          <circle r={10} fill="none" stroke="#c8372d" strokeWidth={4} />
+          <circle r={3.5} fill={INK} />
+        </g>
+      )}
       {/* the head */}
       {look.hair === "scarf" && <ellipse cx={0} cy={headY - 6} rx={90} ry={92} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
       {look.hair === "bun" && <circle cx={0} cy={headY - 96} r={34} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
