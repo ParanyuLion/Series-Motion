@@ -77,8 +77,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       <g opacity={op}>
           {[-1, 1].map((s) => (
             <g key={s}>
-              {mood === "creepy" ? <g><ellipse cx={s * 32} cy={eyeY} rx={17} ry={15} fill="#fbf6ea" stroke={INK} strokeWidth={4} /><circle cx={s * 32} cy={eyeY} r={3.5} fill={INK} /><path d={`M${s * 32 - 22} ${eyeY + 20} Q${s * 32} ${eyeY + 34} ${s * 32 + 22} ${eyeY + 20}`} fill="none" stroke="#3a2a30" strokeWidth={7} opacity={0.7} /></g> : mood === "smile" ? <path d={`M${s * 30 - 12} ${eyeY} Q${s * 30} ${eyeY - 12} ${s * 30 + 12} ${eyeY}`} fill="none" stroke={INK} strokeWidth={6} /> : <ellipse cx={s * 30} cy={eyeY} rx={7} ry={8 * blink} fill={INK} />}
-              <path d={`M${s * 30 - 16} ${eyeY - 26 + brow * (s === -1 ? 1 : 1) } Q${s * 30} ${eyeY - 34 + brow * 0.4} ${s * 30 + 16} ${eyeY - 26 - brow}`} fill="none" stroke={INK} strokeWidth={6} transform={s === -1 ? "" : `scale(1,1)`} />
+              {mood === "creepy" ? <g><ellipse cx={s * 32} cy={eyeY} rx={17} ry={15} fill="#fbf6ea" stroke={INK} strokeWidth={4} /><circle cx={s * 32} cy={eyeY} r={3.5} fill={INK} /><path d={`M${s * 32 - 22} ${eyeY + 20} Q${s * 32} ${eyeY + 34} ${s * 32 + 22} ${eyeY + 20}`} fill="none" stroke="#3a2a30" strokeWidth={7} opacity={0.7} /></g> : mood === "smile" ? <path d={`M${s * 31 - 15} ${eyeY} Q${s * 31} ${eyeY - 15} ${s * 31 + 15} ${eyeY}`} fill="none" stroke={INK} strokeWidth={6} /> : <g><ellipse cx={s * 31} cy={eyeY} rx={10.5} ry={12 * blink} fill={INK} /><circle cx={s * 31 + 3} cy={eyeY - 4 * blink} r={3.2} fill="#fff" opacity={blink > 0.5 ? 0.85 : 0} /></g>}
+              <path d={`M${s * 30 - 16} ${eyeY - 32 + brow * (s === -1 ? 1 : 1) } Q${s * 30} ${eyeY - 40 + brow * 0.4} ${s * 30 + 16} ${eyeY - 32 - brow}`} fill="none" stroke={INK} strokeWidth={6} transform={s === -1 ? "" : `scale(1,1)`} />
             </g>
           ))}
           {mood === "worry" && <ellipse cx={0} cy={eyeY - 2} rx={66} ry={18} fill="#2a2030" opacity={0.28} filter="blur(2px)" />}
