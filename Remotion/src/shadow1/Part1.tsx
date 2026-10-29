@@ -17,7 +17,7 @@ const le = (i: number) => C[`lineEnd${i}`];
 const SUBTITLE_FIX = (t: string) => t.replace(/ใกล้เที่ยง/g, "ใกล้⁠เที่ยง").replace(/เงาสวยจังเลย/g, "เงา⁠สวย⁠จังเลย").replace(/พร้อมกัน/g, "พร้อม⁠กัน").replace(/ผู้ใหญ่บ้าน/g, "ผู้ใหญ่⁠บ้าน");
 
 const Subtitle: React.FC<{ text: string; from: number; g: number }> = ({ text, from, g }) => (
-  <div style={{ position: "absolute", left: 60, right: 160, bottom: 340, textAlign: "center", opacity: clamp01((g - from) / 6), fontFamily, fontSize: 52, lineHeight: 1.6, color: "#fff", textShadow: "0 0 12px rgba(0,0,0,0.95), 0 3px 6px rgba(0,0,0,0.95)" }}>{text}</div>
+  <div style={{ position: "absolute", left: 60, right: 160, bottom: 340, textAlign: "center", opacity: clamp01((g - from) / 6), fontFamily, fontSize: 52, lineHeight: 1.6, color: "#fff", textShadow: "0 0 12px rgba(0,0,0,0.95), 0 3px 6px rgba(0,0,0,0.95)" }}><span style={{ background: "rgba(8,6,4,0.55)", borderRadius: 18, padding: "4px 16px", boxDecoration: "clone", WebkitBoxDecorationBreak: "clone" } as React.CSSProperties}>{text}</span></div>
 );
 
 const Card: React.FC<{ a: string; b: string; at: number; dur: number; g: number }> = ({ a, b, at, dur, g }) => {
@@ -66,39 +66,37 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
 
   // ---------------------------------------------------------------- camera (world coordinates)
   const keys: Key[] = [
-    { at: 0, x: 760, y: 1310, z: 2.4 },
-    { at: ls(1) + 20, x: 800, y: 1330, z: 2.0 },
-    { at: ls(2) - 8, x: 540, y: 1040, z: 1.05 },
-    { at: le(2), x: 560, y: 1000, z: 1.2 },
-    { at: ls(3) - 8, x: 700, y: 1150, z: 1.15 },
-    { at: ls(3) + 60, x: 520, y: 1330, z: 1.3 },
-    { at: ls(4) - 6, x: 420, y: 1250, z: 1.3 },
-    { at: ls(4), x: 200, y: 1190, z: 2.6 }, // the child's bare feet
-    { at: le(4), x: 210, y: 1180, z: 2.7 },
-    { at: ls(5) - 4, x: 460, y: 1060, z: 1.25 },
-    { at: ls(6) - 4, x: 480, y: 1030, z: 1.35 },
-    { at: ls(6) + 30, x: 390, y: 880, z: 2.5 }, // the head's face
-    { at: ls(7), x: 390, y: 885, z: 2.5 },
-    { at: ls(7) + 40, x: 780, y: 1250, z: 2.1 }, // his eyes drop to your feet
-    { at: le(7), x: 790, y: 1260, z: 2.1 },
-    { at: ls(8), x: 650, y: 1150, z: 1.2 }, // set C: the walk
-    { at: le(8), x: 520, y: 1160, z: 1.25 },
-    { at: ls(9), x: 480, y: 1250, z: 1.35 },
-    { at: le(9), x: 520, y: 1300, z: 1.3 },
-    { at: ls(10), x: 560, y: 1500, z: 2.8 }, // sweat on the planks
-    { at: le(10), x: 560, y: 1500, z: 2.8 },
-    { at: ls(11), x: 940, y: 1760, z: 1.9 }, // set D: the clapper on the post
-    { at: le(11), x: 930, y: 1740, z: 1.7 },
-    { at: ls(12), x: 460, y: 1060, z: 1.15 },
-    { at: le(12), x: 480, y: 1070, z: 1.2 },
-    { at: ls(13), x: 520, y: 1170, z: 1.5 },
-    { at: le(13), x: 500, y: 1180, z: 1.6 },
-    { at: ls(14), x: 560, y: 1230, z: 1.15 }, // set E: afternoon
-    { at: le(14), x: 600, y: 1330, z: 1.05 },
-    { at: ls(15), x: 600, y: 1260, z: 1.0 },
-    { at: le(15) + 30, x: 590, y: 1230, z: 1.1 },
+    { at: 0, x: 730, y: 1180, z: 1.6 }, // your feet and your shadow
+    { at: ls(1) + 20, x: 760, y: 1170, z: 1.5 },
+    { at: ls(2) - 8, x: 560, y: 1120, z: 1.1 },
+    { at: le(2), x: 570, y: 1100, z: 1.2 },
+    { at: ls(3) - 8, x: 640, y: 1420, z: 1.15 }, // props and their shadows
+    { at: ls(3) + 80, x: 500, y: 1480, z: 1.25 },
+    { at: ls(4) - 3, x: 500, y: 1480, z: 1.25 }, // a straight cut to the child
+    { at: ls(4), x: 240, y: 1090, z: 2.5 }, // the child's bare feet next to the bucket and its shadow
+    { at: le(4), x: 250, y: 1090, z: 2.6 },
+    { at: ls(5) - 4, x: 460, y: 1030, z: 1.3 },
+    { at: ls(6) - 4, x: 470, y: 1020, z: 1.4 },
+    { at: ls(6) + 30, x: 390, y: 870, z: 2.4 }, // the head's face
+    { at: ls(7), x: 390, y: 875, z: 2.4 },
+    { at: ls(7) + 40, x: 760, y: 1280, z: 1.8 }, // his eyes drop to your feet and shadow
+    { at: le(7), x: 760, y: 1290, z: 1.8 },
+    { at: ls(8), x: 650, y: 1150, z: 1.3 },
+    { at: le(9), x: 520, y: 1150, z: 1.3 },
+    { at: ls(10), x: 560, y: 1130, z: 2.0 }, // a villager sweating in the glare
+    { at: le(10), x: 560, y: 1150, z: 2.1 },
+    { at: ls(11), x: 900, y: 1690, z: 1.5 }, // the clapper on the post
+    { at: le(11), x: 900, y: 1690, z: 1.45 },
+    { at: ls(12), x: 440, y: 1020, z: 1.2 },
+    { at: le(12), x: 450, y: 1030, z: 1.25 },
+    { at: ls(13), x: 430, y: 1030, z: 1.5 },
+    { at: le(13), x: 430, y: 1030, z: 1.7 },
+    { at: ls(14), x: 560, y: 1150, z: 1.2 }, // afternoon
+    { at: le(14), x: 520, y: 1230, z: 1.1 },
+    { at: ls(15), x: 520, y: 1200, z: 1.05 },
+    { at: le(15) + 30, x: 500, y: 1180, z: 1.4 },
   ];
-  const cam: Cam = camAt(g, keys);
+  let cam: Cam = camAt(g, keys);
 
   const setA = g < ls(3) - 8;
   const setB = g >= ls(3) - 8 && g < ls(8) - 6;
@@ -138,11 +136,13 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
       { id: "oldman", x: 700, y: 1110, s: 0.5, mood: "calm" },
     );
   }
+  if (setC && g >= ls(10) - 6) people.push({ id: "cook", x: 560, y: 1260, s: 0.85, mood: "worry" });
+  if (setD && g < ls(12) - 6) people.push({ id: "oldman", x: 800, y: 1860, s: 0.95, mood: "calm", up: g < C.clapAt ? clamp01((g - ls(11)) / Math.max(1, C.clapAt - ls(11))) : clamp01(1 - (g - C.clapAt) / 6) });
   if (setD) {
     const down = g >= ls(12) && g < ls(12) + 40 ? clamp01((g - ls(12)) / 10) : g >= ls(12) + 40 && g < ls(13) ? clamp01(1 - (g - ls(12) - 40) / 12) : 0;
     const m: Mood = g >= ls(12) + 46 ? "smile" : "calm";
     const toHat = g >= ls(13) ? smooth(clamp01((g - ls(13)) / 40)) : 0;
-    you = { ...you, x: lerp(800, 450, toHat), y: lerp(1300, 1190, toHat), yaw: 270, shadowK: lerp(1, 0.12, toHat), sq: lerp(0.34, 0.2, toHat) };
+    you = { ...you, x: lerp(800, 485, toHat), y: lerp(1300, 1222, toHat), yaw: 270, shadowK: lerp(1, 0.12, toHat), sq: lerp(0.34, 0.2, toHat) };
     people.push(
       { id: "head", x: 380, y: 1180, s: 0.68, mood: m, nod: down },
       { id: "mother", x: 585, y: 1190, s: 0.66, mood: m, nod: down },
@@ -164,6 +164,8 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
     );
   }
 
+  if (setC && g < ls(10) - 4) cam = { x: you.x - 40, y: 1140, z: 1.3 };
+  cam = { ...cam, x: Math.min(Math.max(cam.x, 540 / cam.z), 1080 - 540 / cam.z), y: Math.max(cam.y, 900 / cam.z) };
   const boatX = lerp(460, 1260, smooth(clamp01((g - ls(2) + 40) / (le(2) - ls(2) + 80))));
   const clapHit = g >= C.clapAt && g < C.clapAt + 5 ? 1 : 0;
   const flash = g >= C.clapAt && g < C.clapAt + 6 ? 0.5 * (1 - (g - C.clapAt) / 6) : 0;
@@ -220,15 +222,17 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
             <g transform="translate(640,1700)"><Rope /></g>
             <g transform="translate(470,1330) scale(0.9)"><Net /></g>
             {/* the stilt house's shadow lies across the walkway in set C: nobody steps into it */}
-            {setC && <polygon points="260,1360 620,1360 700,1560 150,1560" fill={SHADOW} opacity={0.6} />}
+            {setC && <Shade x={440} y={1500} k={1.5} skew={-55} sq={0.34}><rect x={-120} y={-110} width={240} height={110} fill={SHADOW} /><polygon points="-150,-110 0,-190 150,-110" fill={SHADOW} /></Shade>}
             {setC && g >= ls(9) && g < le(9) && <rect x={clothX + 30} y={1150} width={46} height={60} fill="#e9dcc0" stroke={INK} strokeWidth={4} />}
-            {[...people].sort((a, b) => a.y - b.y).map((p, i) => <Villager key={p.id + i} {...p} t={t} />)}
+            {setB && g >= ls(4) - 8 && g < ls(5) && <g><Shade x={330} y={1200} k={0.9} skew={you.skew} sq={you.sq}><Bucket shadow /></Shade><g transform="translate(330,1200) scale(0.9)"><Bucket /></g></g>}
+            {setD && g >= ls(13) && <ellipse cx={420} cy={1192} rx={110} ry={16} fill={SHADOW} opacity={clamp01((g - ls(13)) / 20) * 0.5} />}
+            {[...people].sort((a, b) => a.y - b.y).map((p, i) => <Villager key={p.id + i} {...p} t={setE && g >= ls(15) ? 0 : t} />)}
             <Shade x={you.x} y={you.y} k={you.s * you.shadowK} skew={you.skew} sq={you.sq}><Traveller yaw={you.yaw} silhouette walk={you.walk} phase={t * 0.25} /></Shade>
             <g transform={`translate(${you.x},${you.y}) scale(${you.s})`}><Traveller yaw={you.yaw} mood={you.mood} walk={you.walk} phase={t * 0.25} t={t} /></g>
             {g >= ls(10) && g <= le(10) && (
-              <g transform="translate(560,1500)">
-                {sweatT >= 0.8 && <ellipse cx={0} cy={0} rx={30 + sweatT * 40} ry={8 + sweatT * 10} fill="#2a1d10" opacity={0.6} />}
-                {sweatT < 0.8 && <path d={`M0 ${-120 + sweatT * 140} q-10 18 0 26 q10 -8 0 -26 Z`} fill="#9cd0f2" stroke={INK} strokeWidth={2.5} />}
+              <g transform="translate(540,0)">
+                {sweatT >= 0.8 && <g><ellipse cx={0} cy={1268} rx={24 + (sweatT - 0.8) * 160} ry={7 + (sweatT - 0.8) * 30} fill="none" stroke="#2a1d10" strokeWidth={4} opacity={0.7} /><ellipse cx={0} cy={1268} rx={14} ry={5} fill="#2a1d10" opacity={0.6} /></g>}
+                {sweatT < 0.8 && <path d={`M0 ${940 + (sweatT / 0.8) * 322} q-14 24 0 36 q14 -12 0 -36 Z`} fill="#9cd0f2" stroke={INK} strokeWidth={3} />}
               </g>
             )}
           </g>
@@ -251,6 +255,7 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           <div style={{ fontSize: 74, marginTop: 20 }}>ห้ามยืนในที่ร่ม</div>
         </div>
       )}
+      <Audio src={staticFile("shadow1v/bed.wav")} volume={0.6} />
     </AbsoluteFill>
   );
 };
