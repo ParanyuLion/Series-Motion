@@ -1,0 +1,187 @@
+{
+ "fps": 30,
+ "total": 2661,
+ "storyEnd": 2519,
+ "outroStart": 2531,
+ "shots": [
+  {
+   "text": "จะเกิดอะไรขึ้น ถ้าคุณเป็นคนเดียวในหมู่บ้านที่มีเงา",
+   "audio": "shadow1v/n0.mp3",
+   "audioFrames": 145,
+   "leadFrames": 21,
+   "frames": 172
+  },
+  {
+   "text": "และทุกคนในหมู่บ้านนั้น สังเกตเห็นมันแล้ว",
+   "audio": "shadow1v/n1.mp3",
+   "audioFrames": 87,
+   "leadFrames": 6,
+   "frames": 135
+  },
+  {
+   "text": "เรือหางยาวจอดให้คุณขึ้นท่าตอนใกล้เที่ยง ฟ้าขาวซีดจนแสบตา",
+   "audio": "shadow1v/n2.mp3",
+   "audioFrames": 192,
+   "leadFrames": 6,
+   "frames": 204
+  },
+  {
+   "text": "เสา ลัง และบ้านบนเสาสูง ทุกอย่างมีเงาคมทอดยาวบนพื้นไม้",
+   "audio": "shadow1v/n3.mp3",
+   "audioFrames": 206,
+   "leadFrames": 6,
+   "frames": 218
+  },
+  {
+   "text": "มีแต่เด็กที่วิ่งเล่นบนสะพานไม้ ที่ไม่มีเงาติดเท้าเลย",
+   "audio": "shadow1v/n4.mp3",
+   "audioFrames": 143,
+   "leadFrames": 6,
+   "frames": 155
+  },
+  {
+   "text": "ชาวบ้านออกมายืนต้อนรับ ทักทายคุณพร้อมกันเป๊ะ",
+   "audio": "shadow1v/n5.mp3",
+   "audioFrames": 121,
+   "leadFrames": 6,
+   "frames": 133
+  },
+  {
+   "text": "ผู้ใหญ่บ้านสวมหมวกฟาง มองลงที่เท้าคุณ แล้วยิ้ม",
+   "audio": "shadow1v/n6.mp3",
+   "audioFrames": 150,
+   "leadFrames": 6,
+   "frames": 162
+  },
+  {
+   "text": "เงาสวยจังเลย เขาพูด และไม่มีใครถามว่าคุณมาจากไหน",
+   "audio": "shadow1v/n7.mp3",
+   "audioFrames": 171,
+   "leadFrames": 6,
+   "frames": 183
+  },
+  {
+   "text": "คุณเดินตามเขาไปตามสะพานไม้ ทุกคนเดินกลางแจ้งเท่านั้น",
+   "audio": "shadow1v/n8.mp3",
+   "audioFrames": 142,
+   "leadFrames": 6,
+   "frames": 154
+  },
+  {
+   "text": "ผู้หญิงคนหนึ่งยกผ้าที่ตากไว้ ออกจากเงาของบ้านทันที",
+   "audio": "shadow1v/n9.mp3",
+   "audioFrames": 136,
+   "leadFrames": 6,
+   "frames": 148
+  },
+  {
+   "text": "ไม่มีใครเข้าไปยืนในที่ร่ม แม้เหงื่อจะหยดลงพื้น",
+   "audio": "shadow1v/n10.mp3",
+   "audioFrames": 126,
+   "leadFrames": 6,
+   "frames": 138
+  },
+  {
+   "text": "พอเที่ยงตรง มีเสียงไม้เคาะดังขึ้นหนึ่งครั้ง",
+   "audio": "shadow1v/n11.mp3",
+   "audioFrames": 117,
+   "leadFrames": 6,
+   "frames": 129
+  },
+  {
+   "text": "ทุกคนก้มลงมองเท้าตัวเองพร้อมกัน แล้วเงยขึ้นยิ้มให้คุณ",
+   "audio": "shadow1v/n12.mp3",
+   "audioFrames": 167,
+   "leadFrames": 6,
+   "frames": 179
+  },
+  {
+   "text": "คุณรีบยืนใต้หมวกของผู้ใหญ่ ให้เงาหดอยู่แค่ใต้เท้า",
+   "audio": "shadow1v/n13.mp3",
+   "audioFrames": 129,
+   "leadFrames": 6,
+   "frames": 141
+  },
+  {
+   "text": "แต่แสงเริ่มเอียง เงาของคุณยาวขึ้นทีละนิ้ว",
+   "audio": "shadow1v/n14.mp3",
+   "audioFrames": 125,
+   "leadFrames": 6,
+   "frames": 137
+  },
+  {
+   "text": "ชาวบ้านหยุดทำงานทุกอย่าง แล้วหันมามองมันเงียบๆ",
+   "audio": "shadow1v/n15.mp3",
+   "audioFrames": 125,
+   "leadFrames": 6,
+   "frames": 143
+  }
+ ],
+ "starts": [
+  0,
+  172,
+  307,
+  511,
+  729,
+  884,
+  1017,
+  1179,
+  1362,
+  1516,
+  1664,
+  1802,
+  1931,
+  2110,
+  2251,
+  2388
+ ],
+ "cues": {
+  "hookCut": 307,
+  "titleAt": 269,
+  "boatAt": 313,
+  "shadowsAt": 517,
+  "childAt": 735,
+  "greetAt": 890,
+  "headAt": 1023,
+  "praiseAt": 1185,
+  "walkAt": 1368,
+  "washingAt": 1522,
+  "clapAt": 1808,
+  "lookDownAt": 1937,
+  "hatAt": 2116,
+  "stretchAt": 2257,
+  "stareAt": 2394,
+  "lineStart0": 21,
+  "lineEnd0": 166,
+  "lineStart1": 178,
+  "lineEnd1": 265,
+  "lineStart2": 313,
+  "lineEnd2": 505,
+  "lineStart3": 517,
+  "lineEnd3": 723,
+  "lineStart4": 735,
+  "lineEnd4": 878,
+  "lineStart5": 890,
+  "lineEnd5": 1011,
+  "lineStart6": 1023,
+  "lineEnd6": 1173,
+  "lineStart7": 1185,
+  "lineEnd7": 1356,
+  "lineStart8": 1368,
+  "lineEnd8": 1510,
+  "lineStart9": 1522,
+  "lineEnd9": 1658,
+  "lineStart10": 1670,
+  "lineEnd10": 1796,
+  "lineStart11": 1808,
+  "lineEnd11": 1925,
+  "lineStart12": 1937,
+  "lineEnd12": 2104,
+  "lineStart13": 2116,
+  "lineEnd13": 2245,
+  "lineStart14": 2257,
+  "lineEnd14": 2382,
+  "lineStart15": 2394,
+  "lineEnd15": 2519
+ }
+}
