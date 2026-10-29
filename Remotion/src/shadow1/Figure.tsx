@@ -105,7 +105,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
     );
   };
   return (
-    <g transform={`scale(${facing * sc * (1 - 0.12 * turn)},${sc}) translate(0,${sitD})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
+    <g transform={`scale(${facing * sc},${sc}) translate(0,${sitD})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
       <defs><filter id="ss-rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" /></filter>
         <linearGradient id={bodyId} x1="0.15" y1="0" x2="0.85" y2="1"><stop offset="0" stopColor={mix(look.body, "#ffffff", 0.16)} /><stop offset="1" stopColor={mix(look.body, "#000000", 0.14)} /></linearGradient>
         <linearGradient id={pantsId} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={mix(look.pants ?? "#000000", "#ffffff", 0.1)} /><stop offset="1" stopColor={mix(look.pants ?? "#000000", "#000000", 0.25)} /></linearGradient>
@@ -245,7 +245,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {(look.hair === "wave" || look.hair === "swoop" || look.hair === "tousle" || look.hair === "bangs" || look.hair === "bowlcut") && <HairFront kind={look.hair} hy={headY} color={look.hairColor} ink={stroke} sw={sw} flat={silhouette} />}
       {look.hair === "curly" && <g>{Array.from({ length: 8 }, (_, i) => { const a = Math.PI * (1.05 + (i / 7) * 0.9); return <circle key={i} cx={Math.cos(a) * 74} cy={headY + Math.sin(a) * 78} r={30} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 2} />; })}</g>}
       {/* face */}
-      {!silhouette && <g transform={`translate(${16 * turn},0) scale(${1 - 0.08 * turn},1)`}>{creep === undefined ? faceFor(mood, 1) : <g>{faceFor("smile", 1 - creep)}{faceFor("creepy", creep)}</g>}</g>}
+      {!silhouette && <g transform={`translate(${14 * turn},0)`}>{creep === undefined ? faceFor(mood, 1) : <g>{faceFor("smile", 1 - creep)}{faceFor("creepy", creep)}</g>}</g>}
       {/* the straw hat (a portable shade) */}
       {look.hat === "straw" && (
         <g>
