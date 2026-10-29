@@ -54,9 +54,10 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
   const H = 1080;
   const ground = 860;
   const sheet = which === "sheet";
+  const options = which === "you";
   const cast: { id: string; x: number; th: string; en: string; mood: Mood }[] = [
     { id: "you", x: 220, th: "คุณ", en: "the traveller (has a shadow)", mood: "worry" },
-    { id: "head", x: 520, th: "ผู้ใหญ่", en: "the head", mood: "creepy" },
+    { id: "head", x: 520, th: "ผู้ใหญ่", en: "the head", mood: "smile" },
     { id: "mother", x: 820, th: "แม่", en: "mother", mood: "smile" },
     { id: "child", x: 1030, th: "เด็ก", en: "child", mood: "calm" },
     { id: "cook", x: 1330, th: "แม่ครัว", en: "the cook", mood: "smile" },
@@ -66,7 +67,17 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
     <AbsoluteFill>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
         <Ground w={W} h={H} horizon={600} />
-        {sheet ? (
+        {options ? (
+          <g>
+            {([["youA", "A: ผมแสกข้าง · เสื้อเขียวน้ำทะเล"], ["youB", "B: ผมหางม้า · เสื้อม่วง"], ["youC", "C: หมวกไหมพรมส้ม · เสื้อเขียวป่า"]] as [string, string][]).map(([id, label], i) => (
+              <g key={id}>
+                <Cast x={360 + i * 600} y={ground} id={id} />
+                <g transform={`translate(${360 + i * 600},${ground}) scale(1.15)`}><Figure look={LOOKS[id]} mood={i === 1 ? "worry" : "calm"} t={t} /></g>
+                <Label x={360 + i * 600} y={70} th={label} en="" />
+              </g>
+            ))}
+          </g>
+        ) : sheet ? (
           <g>
             {/* an object with a shadow, to show the rule: a post and a bucket */}
             <g transform="translate(1890,860)"><rect x={-12} y={-300} width={24} height={300} fill="#8a6a42" stroke="#0f0b09" strokeWidth={7} /></g>
@@ -81,10 +92,10 @@ export const Sheet: React.FC<{ which?: string }> = ({ which = "sheet" }) => {
           </g>
         ) : (
           <g>
-            {(["calm", "creepy", "worry", "stare"] as Mood[]).map((m, i) => (
-              <g key={m}>
-                <g transform={`translate(${260 + i * 460},${ground}) scale(1.5)`}><Figure look={LOOKS[i === 1 ? "head" : "you"]} mood={m} t={t} /></g>
-                <Label x={260 + i * 460} y={1030} th={m} en="" />
+            {([{ id: "you", mood: "calm", l: "you calm" }, { id: "you", mood: "worry", l: "you worry" }, { id: "head", mood: "smile", creep: 0, l: "head: kind (start)" }, { id: "head", mood: "smile", creep: 0.5, l: "head: turning" }, { id: "head", mood: "smile", creep: 1, l: "head: the truth" }] as { id: string; mood: Mood; creep?: number; l: string }[]).map((c, i) => (
+              <g key={i}>
+                <g transform={`translate(${210 + i * 375},${ground}) scale(1.15)`}><Figure look={LOOKS[c.id]} mood={c.mood} creep={c.creep} t={t} /></g>
+                <Label x={210 + i * 375} y={1010} th={c.l} en="" />
               </g>
             ))}
           </g>

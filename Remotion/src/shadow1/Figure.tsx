@@ -8,7 +8,8 @@ export const INK = "#0f0b09";
 export const SKIN = "#e7b890";
 
 export type Look = {
-  hair: "messy" | "bowl" | "bun" | "bald" | "scarf" | "none";
+  hair: "messy" | "bowl" | "bun" | "bald" | "scarf" | "none" | "sidepart" | "ponytail" | "curly" | "beanie";
+  beanieColor?: string;
   hairColor: string;
   hat?: "straw";
   body: string;
@@ -18,20 +19,27 @@ export type Look = {
   scale?: number;
   mustache?: boolean;
   skin?: string;
+  creepSkin?: string;
 };
+
+const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+export const mix=(a: string,b: string,t: number)=>{ const A=hx(a),B=hx(b); return "#"+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,"0")).join(""); };
 
 export type Mood = "calm" | "smile" | "worry" | "stare" | "creepy";
 
 export const LOOKS: Record<string, Look> = {
   you: { hair: "messy", hairColor: "#3a2d26", body: "#4f86c6", bodyKind: "bean", detail: "strap" },
-  head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", skin: "#c8b296", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
+  youA: { hair: "sidepart", hairColor: "#2a1d16", body: "#2f9e9a", bodyKind: "bean", detail: "strap" },
+  youB: { hair: "ponytail", hairColor: "#1c1410", body: "#8e5ab5", bodyKind: "bean", detail: "strap" },
+  youC: { hair: "beanie", hairColor: "#201510", beanieColor: "#e0782f", body: "#3b7a57", bodyKind: "bean", detail: "strap" },
+  head: { hair: "none", hairColor: "#d8d4cc", hat: "straw", skin: "#e4b78f", creepSkin: "#bfae96", scale: 1.08, body: "#eee6d4", bodyKind: "long", detail: "charm", mustache: true },
   mother: { hair: "bun", hairColor: "#2b211c", body: "#b8573f", bodyKind: "long", detail: "charm" },
   child: { hair: "bowl", hairColor: "#2b211c", body: "#e8b84a", bodyKind: "bean", detail: "charm", scale: 0.62 },
   cook: { hair: "scarf", hairColor: "#6d8f5a", body: "#cfc7a8", bodyKind: "round", detail: "apron" },
   oldman: { hair: "bald", hairColor: "#d8d4cc", body: "#8f8a80", bodyKind: "thin", detail: "patch", glasses: true, mustache: true },
 };
 
-export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; facing?: 1 | -1; t?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, facing = 1, t = 0 }) => {
+export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, facing = 1, t = 0, creep }) => {
   const S = silhouette ? "#0a1022" : null;
   const fill = (c: string) => S ?? c;
   const stroke = S ?? INK;
@@ -42,8 +50,10 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const hipY = -legLen;
   const topY = hipY - bh;
   const headY = topY - 72;
-  const sw = 9;
-  const skin = look.skin ?? SKIN;
+  const sw = 8;
+  const skin = creep !== undefined && look.creepSkin ? mix(look.skin ?? SKIN, look.creepSkin, creep) : look.skin ?? SKIN;
+  const bodyId = `bg-${look.body.slice(1)}`;
+  const headId = `hd-${skin.slice(1)}`;
   const lw = Math.sin(t * 0.25) * 18 * walk;
   const aw = Math.sin(t * 0.25 + Math.PI) * 24 * walk;
   const lift = armsUp * 70;
@@ -51,9 +61,37 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const eyeY = headY + 6;
   const brow = mood === "worry" ? -12 : mood === "stare" ? 4 : 0;
   const hatW = 150;
+  const faceFor = (mood: Mood, op: number) => {
+    const brow = mood === "worry" ? -12 : mood === "stare" ? 4 : 0;
+    return (
+      <g opacity={op}>
+          {[-1, 1].map((s) => (
+            <g key={s}>
+              {mood === "creepy" ? <g><ellipse cx={s * 32} cy={eyeY} rx={17} ry={15} fill="#fbf6ea" stroke={INK} strokeWidth={4} /><circle cx={s * 32} cy={eyeY} r={3.5} fill={INK} /><path d={`M${s * 32 - 22} ${eyeY + 20} Q${s * 32} ${eyeY + 34} ${s * 32 + 22} ${eyeY + 20}`} fill="none" stroke="#3a2a30" strokeWidth={7} opacity={0.7} /></g> : mood === "smile" ? <path d={`M${s * 30 - 12} ${eyeY} Q${s * 30} ${eyeY - 12} ${s * 30 + 12} ${eyeY}`} fill="none" stroke={INK} strokeWidth={6} /> : <ellipse cx={s * 30} cy={eyeY} rx={7} ry={8 * blink} fill={INK} />}
+              <path d={`M${s * 30 - 16} ${eyeY - 26 + brow * (s === -1 ? 1 : 1) } Q${s * 30} ${eyeY - 34 + brow * 0.4} ${s * 30 + 16} ${eyeY - 26 - brow}`} fill="none" stroke={INK} strokeWidth={6} transform={s === -1 ? "" : `scale(1,1)`} />
+            </g>
+          ))}
+          {mood === "worry" && <ellipse cx={0} cy={eyeY - 2} rx={66} ry={18} fill="#2a2030" opacity={0.28} filter="blur(2px)" />}
+          {look.glasses && <g fill="none" stroke={INK} strokeWidth={4}><rect x={-52} y={eyeY - 16} width={40} height={32} rx={8} /><rect x={12} y={eyeY - 16} width={40} height={32} rx={8} /><line x1={-12} y1={eyeY} x2={12} y2={eyeY} /></g>}
+          <path d={`M-3 ${eyeY + 12} Q-10 ${eyeY + 28} 2 ${eyeY + 30}`} fill="none" stroke={INK} strokeWidth={4} opacity={0.7} />
+          {look.mustache && <path d={`M-30 ${eyeY + 40} Q-14 ${eyeY + 30} 0 ${eyeY + 38} Q14 ${eyeY + 30} 30 ${eyeY + 40}`} fill="none" stroke="#7a766e" strokeWidth={6} />}
+          {mood === "smile" && <path d={`M-30 ${eyeY + 52} Q0 ${eyeY + 82} 30 ${eyeY + 52}`} fill="#7a3a30" stroke={INK} strokeWidth={5} />}
+          {mood === "calm" && <path d={`M-18 ${eyeY + 56} Q0 ${eyeY + 58} 18 ${eyeY + 56}`} fill="none" stroke={INK} strokeWidth={5} />}
+          {mood === "worry" && <path d={`M-18 ${eyeY + 62} Q0 ${eyeY + 50} 18 ${eyeY + 62}`} fill="none" stroke={INK} strokeWidth={5} />}
+          {mood === "creepy" && (
+            <g><path d={`M-56 ${eyeY + 50} Q0 ${eyeY + 92} 56 ${eyeY + 50} Q0 ${eyeY + 62} -56 ${eyeY + 50} Z`} fill="#f7efe0" stroke={INK} strokeWidth={5} />{[-36, -18, 0, 18, 36].map((x) => <line key={x} x1={x} y1={eyeY + 58 + Math.abs(x) * 0.02} x2={x} y2={eyeY + 76 - Math.abs(x) * 0.25} stroke={INK} strokeWidth={2.5} />)}</g>
+          )}
+          {mood === "stare" && <ellipse cx={0} cy={eyeY + 58} rx={10} ry={6} fill="#7a3a30" stroke={INK} strokeWidth={4} />}
+          {mood === "worry" && <path d={`M70 ${headY - 30} q6 18 -2 26`} fill="none" stroke="#7fb4e6" strokeWidth={7} />}
+      </g>
+    );
+  };
   return (
     <g transform={`scale(${facing * sc},${sc})`} strokeLinecap="round" strokeLinejoin="round" filter={silhouette ? undefined : "url(#ss-rough)"}>
-      <defs><filter id="ss-rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" /></filter></defs>
+      <defs><filter id="ss-rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" /></filter>
+        <linearGradient id={bodyId} x1="0.15" y1="0" x2="0.85" y2="1"><stop offset="0" stopColor={mix(look.body, "#ffffff", 0.16)} /><stop offset="1" stopColor={mix(look.body, "#000000", 0.14)} /></linearGradient>
+        <radialGradient id={headId} cx="0.38" cy="0.3" r="0.85"><stop offset="0" stopColor={mix(skin, "#ffffff", 0.14)} /><stop offset="0.6" stopColor={skin} /><stop offset="1" stopColor={mix(skin, "#3a1f18", 0.2)} /></radialGradient>
+      </defs>
       {/* legs and shoes */}
       {[-1, 1].map((s, i) => {
         const dx = s * 26;
@@ -80,7 +118,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         );
       })}
       {/* the body */}
-      <path d={`M${-bw} ${hipY} Q${-bw - 8} ${topY + bh * 0.3} ${-bw * 0.7} ${topY + 24} Q0 ${topY - 16} ${bw * 0.7} ${topY + 24} Q${bw + 8} ${topY + bh * 0.3} ${bw} ${hipY} Q0 ${hipY + 26} ${-bw} ${hipY} Z`} fill={fill(look.body)} stroke={stroke} strokeWidth={sw} />
+      <path d={`M${-bw} ${hipY} Q${-bw - 8} ${topY + bh * 0.3} ${-bw * 0.7} ${topY + 24} Q0 ${topY - 16} ${bw * 0.7} ${topY + 24} Q${bw + 8} ${topY + bh * 0.3} ${bw} ${hipY} Q0 ${hipY + 26} ${-bw} ${hipY} Z`} fill={silhouette ? S! : `url(#${bodyId})`} stroke={stroke} strokeWidth={sw} />
       {!silhouette && <path d={`M${bw * 0.34} ${topY + 40} Q${bw * 0.9} ${topY + bh * 0.45} ${bw * 0.9} ${hipY - 4} Q${bw * 0.5} ${hipY + 12} ${bw * 0.3} ${hipY + 8} Q${bw * 0.6} ${topY + bh * 0.5} ${bw * 0.34} ${topY + 40} Z`} fill="#1a1428" opacity={0.28} />}
       {!silhouette && Array.from({ length: 5 }, (_, i) => <path key={i} d={`M${bw * 0.55 + i * 5} ${topY + 70 + i * 36} l${-26} ${34}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />)}
       {!silhouette && look.detail === "strap" && <path d={`M${-bw * 0.5} ${topY + 24} L${bw * 0.55} ${hipY - 30}`} stroke="#3a2d26" strokeWidth={14} opacity={0.85} />}
@@ -92,7 +130,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {/* the head */}
       {look.hair === "scarf" && <ellipse cx={0} cy={headY - 6} rx={90} ry={92} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
       {look.hair === "bun" && <circle cx={0} cy={headY - 96} r={34} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw} />}
-      <ellipse cx={0} cy={headY} rx={80} ry={88} fill={fill(skin)} stroke={stroke} strokeWidth={sw} />
+      {look.hair === "ponytail" && <path d={`M60 ${headY - 40} Q150 ${headY - 50} 140 ${headY + 40} Q136 ${headY + 110} 96 ${headY + 150} Q120 ${headY + 70} 86 ${headY + 20} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      <ellipse cx={0} cy={headY} rx={80} ry={88} fill={silhouette ? S! : `url(#${headId})`} stroke={stroke} strokeWidth={sw} />
       {!silhouette && <path d={`M30 ${headY - 78} Q82 ${headY - 20} 50 ${headY + 70} Q86 ${headY + 10} 30 ${headY - 78} Z`} fill="#3a2a4a" opacity={0.3} />}
       {[-1, 1].map((s) => <ellipse key={s} cx={s * 80} cy={headY + 8} rx={10} ry={16} fill={fill(skin)} stroke={stroke} strokeWidth={sw - 2} />)}
       {/* hair */}
@@ -100,29 +139,12 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {look.hair === "bowl" && <path d={`M-84 ${headY + 2} Q-90 ${headY - 92} 0 ${headY - 92} Q90 ${headY - 92} 84 ${headY + 2} Q50 ${headY - 40} 0 ${headY - 42} Q-50 ${headY - 40} -84 ${headY + 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "bun" && <path d={`M-82 ${headY - 6} Q-84 ${headY - 88} 0 ${headY - 88} Q84 ${headY - 88} 82 ${headY - 6} Q50 ${headY - 50} 0 ${headY - 52} Q-50 ${headY - 50} -82 ${headY - 6} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "scarf" && <path d={`M-84 ${headY - 4} Q-70 ${headY - 70} 0 ${headY - 70} Q70 ${headY - 70} 84 ${headY - 4} Q40 ${headY - 40} 0 ${headY - 42} Q-40 ${headY - 40} -84 ${headY - 4} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {look.hair === "sidepart" && <g><path d={`M-84 ${headY - 2} Q-90 ${headY - 92} 6 ${headY - 94} Q92 ${headY - 88} 84 ${headY - 2} Q74 ${headY - 46} 30 ${headY - 54} Q-24 ${headY - 58} -56 ${headY - 34} Q-80 ${headY - 16} -84 ${headY - 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} /><path d={`M-22 ${headY - 92} Q-34 ${headY - 70} -50 ${headY - 52}`} fill="none" stroke={stroke} strokeWidth={4} opacity={0.6} /></g>}
+      {look.hair === "ponytail" && <path d={`M-82 ${headY - 2} Q-86 ${headY - 88} 0 ${headY - 90} Q86 ${headY - 88} 82 ${headY - 2} Q56 ${headY - 34} 0 ${headY - 38} Q-56 ${headY - 34} -82 ${headY - 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {look.hair === "curly" && <g>{Array.from({ length: 8 }, (_, i) => { const a = Math.PI * (1.05 + (i / 7) * 0.9); return <circle key={i} cx={Math.cos(a) * 74} cy={headY + Math.sin(a) * 78} r={30} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 2} />; })}</g>}
+      {look.hair === "beanie" && <g><path d={`M-84 ${headY - 30} Q-86 ${headY - 120} 0 ${headY - 122} Q86 ${headY - 120} 84 ${headY - 30} Q0 ${headY - 50} -84 ${headY - 30} Z`} fill={fill(look.beanieColor ?? "#e0782f")} stroke={stroke} strokeWidth={sw} /><rect x={-86} y={headY - 46} width={172} height={30} rx={12} fill={fill(mix(look.beanieColor ?? "#e0782f", "#000000", 0.18))} stroke={stroke} strokeWidth={sw - 2} /><circle cx={0} cy={headY - 126} r={14} fill={fill(look.beanieColor ?? "#e0782f")} stroke={stroke} strokeWidth={sw - 3} /><path d={`M-84 ${headY - 20} Q-92 ${headY - 6} -84 ${headY + 8} M84 ${headY - 20} Q92 ${headY - 6} 84 ${headY + 8}`} fill="none" stroke={fill(look.hairColor)} strokeWidth={10} /></g>}
       {/* face */}
-      {!silhouette && (
-        <g>
-          {[-1, 1].map((s) => (
-            <g key={s}>
-              {mood === "creepy" ? <g><ellipse cx={s * 32} cy={eyeY} rx={17} ry={15} fill="#fbf6ea" stroke={INK} strokeWidth={4} /><circle cx={s * 32} cy={eyeY} r={3.5} fill={INK} /><path d={`M${s * 32 - 22} ${eyeY + 20} Q${s * 32} ${eyeY + 34} ${s * 32 + 22} ${eyeY + 20}`} fill="none" stroke="#3a2a30" strokeWidth={7} opacity={0.7} /></g> : mood === "smile" ? <path d={`M${s * 30 - 12} ${eyeY} Q${s * 30} ${eyeY - 12} ${s * 30 + 12} ${eyeY}`} fill="none" stroke={INK} strokeWidth={6} /> : <ellipse cx={s * 30} cy={eyeY} rx={7} ry={8 * blink} fill={INK} />}
-              <path d={`M${s * 30 - 16} ${eyeY - 26 + brow * (s === -1 ? 1 : 1) } Q${s * 30} ${eyeY - 34 + brow * 0.4} ${s * 30 + 16} ${eyeY - 26 - brow}`} fill="none" stroke={INK} strokeWidth={6} transform={s === -1 ? "" : `scale(1,1)`} />
-            </g>
-          ))}
-          {mood === "worry" && <ellipse cx={0} cy={eyeY - 2} rx={66} ry={18} fill="#2a2030" opacity={0.28} filter="blur(2px)" />}
-          {look.glasses && <g fill="none" stroke={INK} strokeWidth={4}><rect x={-52} y={eyeY - 16} width={40} height={32} rx={8} /><rect x={12} y={eyeY - 16} width={40} height={32} rx={8} /><line x1={-12} y1={eyeY} x2={12} y2={eyeY} /></g>}
-          <path d={`M-3 ${eyeY + 12} Q-10 ${eyeY + 28} 2 ${eyeY + 30}`} fill="none" stroke={INK} strokeWidth={4} opacity={0.7} />
-          {look.mustache && <path d={`M-30 ${eyeY + 40} Q-14 ${eyeY + 30} 0 ${eyeY + 38} Q14 ${eyeY + 30} 30 ${eyeY + 40}`} fill="none" stroke="#7a766e" strokeWidth={6} />}
-          {mood === "smile" && <path d={`M-30 ${eyeY + 52} Q0 ${eyeY + 82} 30 ${eyeY + 52}`} fill="#7a3a30" stroke={INK} strokeWidth={5} />}
-          {mood === "calm" && <path d={`M-18 ${eyeY + 56} Q0 ${eyeY + 58} 18 ${eyeY + 56}`} fill="none" stroke={INK} strokeWidth={5} />}
-          {mood === "worry" && <path d={`M-18 ${eyeY + 62} Q0 ${eyeY + 50} 18 ${eyeY + 62}`} fill="none" stroke={INK} strokeWidth={5} />}
-          {mood === "creepy" && (
-            <g><path d={`M-56 ${eyeY + 50} Q0 ${eyeY + 92} 56 ${eyeY + 50} Q0 ${eyeY + 62} -56 ${eyeY + 50} Z`} fill="#f7efe0" stroke={INK} strokeWidth={5} />{[-36, -18, 0, 18, 36].map((x) => <line key={x} x1={x} y1={eyeY + 58 + Math.abs(x) * 0.02} x2={x} y2={eyeY + 76 - Math.abs(x) * 0.25} stroke={INK} strokeWidth={2.5} />)}</g>
-          )}
-          {mood === "stare" && <ellipse cx={0} cy={eyeY + 58} rx={10} ry={6} fill="#7a3a30" stroke={INK} strokeWidth={4} />}
-          {mood === "worry" && <path d={`M70 ${headY - 30} q6 18 -2 26`} fill="none" stroke="#7fb4e6" strokeWidth={7} />}
-        </g>
-      )}
+      {!silhouette && (creep === undefined ? faceFor(mood, 1) : <g>{faceFor("smile", 1 - creep)}{faceFor("creepy", creep)}</g>)}
       {/* the straw hat (a portable shade) */}
       {look.hat === "straw" && (
         <g>
