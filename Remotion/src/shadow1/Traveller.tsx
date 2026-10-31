@@ -7,7 +7,7 @@ import { INK, SKIN, mix } from "./Figure";
 // The head is a sphere: features (eyes, glasses, brows, nose, mouth) sit at a longitude and are foreshortened and hidden by that longitude, the hair is a shell with a
 // face window cut out of it, so the bowl cut with its fringe is right from every side. Feet are at (0,0), about 440 tall to the top of the hair.
 
-export type TravellerMood = "calm" | "smile" | "worry" | "stare" | "scared";
+export type TravellerMood = "calm" | "smile" | "worry" | "stare" | "scared" | "agony";
 
 export const TRAVELLER_COLORS = { hair: "#1d1816", jacket: "#24252b", under: "#f4f1ea", pants: "#2c3a56", shoes: "#5a4638" };
 
@@ -213,7 +213,8 @@ export const Traveller: React.FC<{
   const hd = (phi: number) => Math.cos(norm(phi + hyaw) * RAD);
   const blink = t % 160 > 154 ? 0.1 : 1;
   const eyeY = headY + 6;
-  const scared = mood === "scared";
+  const agony = mood === "agony";
+  const scared = mood === "scared" || agony;
   const skin = SKIN;
   const hairC = C.hair;
   const headGradId = id + "-head" + (scared ? "-pale" : "");
@@ -278,7 +279,7 @@ export const Traveller: React.FC<{
 
   const eyeOpen = mood !== "smile";
   const eyeBig = mood === "stare" ? 1.18 : 1;
-  const browTilt = mood === "worry" ? -9 : scared ? 11 : 0;
+  const browTilt = mood === "worry" ? -9 : agony ? 18 : scared ? 11 : 0;
   const browRaise = mood === "stare" ? -9 : mood === "worry" ? -3 : scared ? -7 : 0;
   const features = [-1, 1].map((side) => {
     const phiC = side * 25;
@@ -316,7 +317,9 @@ export const Traveller: React.FC<{
     } else if (mood === "worry") {
       mouth = <polyline points={sample(10, (u) => hp(14 * u, eyeY + 62 - 12 * (1 - u * u)))} fill="none" stroke={ink} strokeWidth={5} strokeLinecap="round" />;
     } else if (scared) {
-      mouth = <polygon points={ellipsePoly(0, eyeY + 62, 17, 7.5)} fill="#5a1414" stroke={ink} strokeWidth={4.5} strokeLinejoin="round" />;
+      mouth = agony
+        ? <g><polygon points={ellipsePoly(0, eyeY + 66, 24, 22)} fill="#241210" stroke={ink} strokeWidth={5} strokeLinejoin="round" /><polygon points={ellipsePoly(0, eyeY + 78, 14, 9)} fill="#b8705f" /></g>
+        : <polygon points={ellipsePoly(0, eyeY + 62, 17, 7.5)} fill="#5a1414" stroke={ink} strokeWidth={4.5} strokeLinejoin="round" />;
     } else if (mood === "stare") {
       mouth = <polygon points={ellipsePoly(0, eyeY + 58, 8, 7)} fill="#7a3a30" stroke={ink} strokeWidth={4} />;
     } else {

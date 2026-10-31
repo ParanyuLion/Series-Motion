@@ -39,6 +39,8 @@ import { Part3 as ShadowPart3 } from "./shadow3/Part3";
 import shadow3 from "./shadow3/manifest.json";
 import { Part4 as ShadowPart4 } from "./shadow4/Part4";
 import shadow4 from "./shadow4/manifest.json";
+import { Part1 as DormPart1 } from "./dorm1/Part1";
+import dorm1 from "./dorm1/manifest.json";
 import { Test3 as OneStar3Test } from "./onestar3/Test3";
 import onestar2 from "./onestar2/manifest.json";
 import onestar1 from "./onestar1/manifest.json";
@@ -69,6 +71,7 @@ export const Root: React.FC = () => (
     <Composition id="OneStar3" component={OneStarPart3} durationInFrames={onestar3.total} fps={onestar3.fps} width={W} height={H} />
     <Composition id="ShadowStyle" component={ShadowSheet} durationInFrames={1} fps={30} width={1920} height={1080} defaultProps={{ which: "sheet" }} />
     <Composition id="ShadowVillage1" component={ShadowPart1} durationInFrames={shadow1.total} fps={shadow1.fps} width={1080} height={1920} />
+    <Composition id="DormRules1" component={DormPart1} durationInFrames={dorm1.total} fps={dorm1.fps} width={1080} height={1920} />
     <Composition id="ShadowVillage4" component={ShadowPart4} durationInFrames={shadow4.total} fps={shadow4.fps} width={1080} height={1920} />
     <Composition id="ShadowVillage3" component={ShadowPart3} durationInFrames={shadow3.total} fps={shadow3.fps} width={1080} height={1920} />
     <Composition id="ShadowVillage2" component={ShadowPart2} durationInFrames={shadow2.total} fps={shadow2.fps} width={1080} height={1920} />

@@ -1,0 +1,153 @@
+{
+ "fps": 30,
+ "total": 2637,
+ "storyEnd": 2415,
+ "outroStart": 2427,
+ "shots": [
+  {
+   "text": "เมื่อเสียงไซเรนดังตอนตีสาม หอพักของผมก็กลายเป็นลานประหาร",
+   "audio": "dorm1v/n0.mp3",
+   "audioFrames": 158,
+   "leadFrames": 21,
+   "frames": 185
+  },
+  {
+   "text": "กฎเหล็กบอกว่า ผู้ฝ่าฝืนตายทันที และกฎจะเปลี่ยนใหม่ทุกชั่วโมง",
+   "audio": "dorm1v/n1.mp3",
+   "audioFrames": 202,
+   "leadFrames": 6,
+   "frames": 250
+  },
+  {
+   "text": "ผมสะดุ้งตื่น ไฟดับหมด เหลือแต่แสงแดงหมุนวนจากไซเรนหน้าห้อง",
+   "audio": "dorm1v/n2.mp3",
+   "audioFrames": 171,
+   "leadFrames": 6,
+   "frames": 183
+  },
+  {
+   "text": "แล้วลำโพงทั้งตึกก็ประกาศเสียงเรียบๆ กฎข้อแรก ห้ามเปิดไฟ จนกว่าจะรุ่งเช้า",
+   "audio": "dorm1v/n3.mp3",
+   "audioFrames": 222,
+   "leadFrames": 6,
+   "frames": 234
+  },
+  {
+   "text": "ต้น เพื่อนร่วมห้องผม หัวเราะ แล้วบอกว่า ใครจะไปเชื่อ",
+   "audio": "dorm1v/n4.mp3",
+   "audioFrames": 154,
+   "leadFrames": 6,
+   "frames": 166
+  },
+  {
+   "text": "เขาเอื้อมมือไปกดสวิตช์โคมไฟข้างเตียง",
+   "audio": "dorm1v/n5.mp3",
+   "audioFrames": 81,
+   "leadFrames": 6,
+   "frames": 93
+  },
+  {
+   "text": "แสงสว่างขึ้นแค่วินาทีเดียว ต้นก็กรีดร้อง เลือดทะลักจากตาและปาก แล้วร่างก็ทรุดลงเป็นศพ",
+   "audio": "dorm1v/n6.mp3",
+   "audioFrames": 207,
+   "leadFrames": 6,
+   "frames": 219
+  },
+  {
+   "text": "เขาตาเบิกกว้าง หน้าบิดเบี้ยวด้วยความทรมาน ไม่ขยับอีกเลย",
+   "audio": "dorm1v/n7.mp3",
+   "audioFrames": 161,
+   "leadFrames": 6,
+   "frames": 173
+  },
+  {
+   "text": "ผมรอดมาได้เพราะมือถือแบตหมด ไม่งั้นผมคงกดไฟฉายไปแล้ว",
+   "audio": "dorm1v/n8.mp3",
+   "audioFrames": 166,
+   "leadFrames": 6,
+   "frames": 178
+  },
+  {
+   "text": "ผมคลานออกไปที่ทางเดินมืด ได้ยินเสียงไม้ถูพื้นดังเบาๆ",
+   "audio": "dorm1v/n9.mp3",
+   "audioFrames": 155,
+   "leadFrames": 6,
+   "frames": 167
+  },
+  {
+   "text": "ป้าแม่บ้านยืนอยู่ปลายทางเดิน ทั้งที่ผมไม่เคยเห็นป้ามาก่อน",
+   "audio": "dorm1v/n10.mp3",
+   "audioFrames": 119,
+   "leadFrames": 6,
+   "frames": 131
+  },
+  {
+   "text": "ป้ายื่นกระดาษมาแผ่นหนึ่ง อ่านได้แค่ใต้แสงแดงของไซเรน",
+   "audio": "dorm1v/n11.mp3",
+   "audioFrames": 139,
+   "leadFrames": 6,
+   "frames": 151
+  },
+  {
+   "text": "บนนั้นเขียนว่า ชั่วโมงหน้า กฎจะตรงข้ามกับตอนนี้",
+   "audio": "dorm1v/n12.mp3",
+   "audioFrames": 157,
+   "leadFrames": 6,
+   "frames": 169
+  },
+  {
+   "text": "ถ้าผมยังติดนิสัยเดิมอยู่ ผมจะตายเหมือนต้น",
+   "audio": "dorm1v/n13.mp3",
+   "audioFrames": 110,
+   "leadFrames": 6,
+   "frames": 128
+  }
+ ],
+ "starts": [
+  0,
+  185,
+  435,
+  618,
+  852,
+  1018,
+  1111,
+  1330,
+  1503,
+  1681,
+  1848,
+  1979,
+  2130,
+  2299
+ ],
+ "cues": {
+  "titleAt": 397,
+  "lineStart0": 21,
+  "lineEnd0": 179,
+  "lineStart1": 191,
+  "lineEnd1": 393,
+  "lineStart2": 441,
+  "lineEnd2": 612,
+  "lineStart3": 624,
+  "lineEnd3": 846,
+  "lineStart4": 858,
+  "lineEnd4": 1012,
+  "lineStart5": 1024,
+  "lineEnd5": 1105,
+  "lineStart6": 1117,
+  "lineEnd6": 1324,
+  "lineStart7": 1336,
+  "lineEnd7": 1497,
+  "lineStart8": 1509,
+  "lineEnd8": 1675,
+  "lineStart9": 1687,
+  "lineEnd9": 1842,
+  "lineStart10": 1854,
+  "lineEnd10": 1973,
+  "lineStart11": 1985,
+  "lineEnd11": 2124,
+  "lineStart12": 2136,
+  "lineEnd12": 2293,
+  "lineStart13": 2305,
+  "lineEnd13": 2415
+ }
+}
