@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
 import manifest from "./manifest.json";
+import env from "./env.json";
 import { fontFamily } from "../island/fonts";
 import { Figure, LOOKS, Mood } from "../shadow1/Figure";
 import { Traveller, TravellerMood } from "../shadow1/Traveller";
@@ -9,8 +10,8 @@ import { Card, Villager, dipOf, idle, track } from "../shadow1/Part1";
 import { clamp01, lerp, smooth } from "../onestar3/util";
 
 // "กฎเหล็กหอพัก ตี 3" Part 1, "03:00 กฎข้อแรก". Three places, each a photo backdrop with code-drawn cast and props:
-//   ext  (lines 0-1): the dormitory at 03:00, a siren beacon on the roof (the hook)
-//   room (lines 2-8): a dorm room with two beds, in the dark; the loudspeaker announces the rule (a speaker picture, then the rule card); ต้น switches on his lamp and dies; your dead phone
+//   ext  (line 0): the dormitory at 03:00, a siren beacon on the roof (the hook, kept short)
+//   room (lines 1-8): a dorm room with two beds, in the dark; the loudspeaker announces the rule (a speaker picture, then the rule card); ต้น switches on his lamp and dies; your dead phone
 //   corr (lines 9-13): the dark corridor; the cleaner with her trolley hands you a card, readable only in the red light
 // The siren sounds only while the rule is announced. The red light breathes slowly. All timing comes from manifest.json (the narration audio).
 
@@ -24,7 +25,7 @@ LOOKS.cleaner = { hair: "bun", hairColor: "#b9b4ac", body: "#6f8f93", bodyKind: 
 LOOKS.ton = { hair: "messy", hairColor: "#2a1c14", body: "#d9683a", bodyKind: "bean", detail: "none", pants: "#4b6a8a", sleeve: "short" };
 
 type Place = "ext" | "room" | "corr";
-const ROOM_AT = () => ls(2) - 6;
+const ROOM_AT = () => ls(1) - 6;
 const CORR_AT = () => ls(9) - 6;
 const placeAt = (g: number): Place => (g < ROOM_AT() ? "ext" : g < CORR_AT() ? "room" : "corr");
 const EDGES = () => [-999, ROOM_AT(), CORR_AT(), 99999];
@@ -46,8 +47,8 @@ const Sub: React.FC<{ text: string; from: number; g: number }> = ({ text, from, 
 type Cam = { x: number; y: number; z: number };
 type Shot = [number, number, Cam, Cam];
 const SHOTS = (): Shot[] => [
-  [0, ls(1), { x: 760, y: 760, z: 1.15 }, { x: 740, y: 700, z: 1.45 }],
-  [ls(1), ls(2), { x: 700, y: 520, z: 1.9 }, { x: 700, y: 480, z: 2.3 }],
+  [0, ls(1), { x: 760, y: 760, z: 1.15 }, { x: 740, y: 680, z: 1.6 }],
+  [ls(1), ls(2), { x: 540, y: 960, z: 1.05 }, { x: 520, y: 960, z: 1.18 }],
   // the room: you on the near bed (left), ต้น on the far bed (right)
   [ls(2), ls(3), { x: 540, y: 960, z: 1.05 }, { x: 520, y: 980, z: 1.2 }],
   [ls(3), ls(4), { x: 400, y: 960, z: 1.3 }, { x: 420, y: 960, z: 1.2 }],
@@ -85,36 +86,45 @@ const RedSweep: React.FC<{ g: number; k: number }> = ({ g, k }) => {
   );
 };
 
-/** the loudspeaker with a siren light on top "speaking": a picture that pops up while the rule is announced */
-const SpeakerInsert: React.FC<{ g: number; from: number; to: number }> = ({ g, from, to }) => {
-  const o = clamp01(Math.min((g - from) / 6, (to - g) / 6));
+/** loudness of the narration line the loudspeaker is "speaking" (0..1), from scripts/dorm1/envelope.py */
+const ampOf = (line: number, g: number) => ((env as Record<string, number[]>)[String(line)] ?? [])[Math.max(0, g - ls(line))] ?? 0;
+
+/** the loudspeaker with a siren light on top, overlaid on the picture while it speaks: the horn pulses and the waves, the level meter and the red glow follow the voice */
+const SpeakerOverlay: React.FC<{ g: number; from: number; to: number; amp: number }> = ({ g, from, to, amp }) => {
+  const o = clamp01(Math.min((g - from) / 8, (to - g) / 8));
   if (o <= 0) return null;
-  const q = (g - from) / 14;
+  const q = (g - from) / 9;
+  const horn = 1 + 0.07 * amp;
   return (
-    <div style={{ position: "absolute", inset: 0, opacity: o, background: "#0a0606" }}>
+    <div style={{ position: "absolute", inset: 0, opacity: o, pointerEvents: "none" }}>
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 50% 22%, rgba(210,30,20,${0.16 + 0.3 * amp}), transparent 62%)` }} />
       <svg width={1080} height={1920} viewBox="0 0 1080 1920">
         <defs>
-          <radialGradient id="sp-red"><stop offset="0" stopColor="#ff3a28" stopOpacity="0.9" /><stop offset="1" stopColor="#ff2a1a" stopOpacity="0" /></radialGradient>
-          <linearGradient id="sp-horn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#d9d4c8" /><stop offset="0.55" stopColor="#9a968c" /><stop offset="1" stopColor="#5a5850" /></linearGradient>
-          <linearGradient id="sp-box" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#8a867c" /><stop offset="1" stopColor="#3e3c38" /></linearGradient>
+          <radialGradient id="sp-red"><stop offset="0" stopColor="#ff3a28" stopOpacity="0.85" /><stop offset="1" stopColor="#ff2a1a" stopOpacity="0" /></radialGradient>
+          <linearGradient id="sp-horn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ebe6da" /><stop offset="0.55" stopColor="#a29e92" /><stop offset="1" stopColor="#5a5850" /></linearGradient>
+          <linearGradient id="sp-box" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#9a968c" /><stop offset="1" stopColor="#3e3c38" /></linearGradient>
+          <linearGradient id="sp-panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#1a0a0a" stopOpacity="0.78" /><stop offset="1" stopColor="#0a0505" stopOpacity="0.5" /></linearGradient>
         </defs>
-        <rect width={1080} height={1920} fill="#150a0a" />
-        <circle cx={380} cy={780} r={460} fill="url(#sp-red)" opacity={0.55 + 0.3 * Math.sin(q)} />
-        <g transform="translate(300,760) scale(1.25)" strokeLinejoin="round">
-          {/* a wall-mounted horn loudspeaker with a siren lamp on top */}
+        <rect x={150} y={150} width={720} height={460} rx={34} fill="url(#sp-panel)" stroke="#b01818" strokeWidth={5} opacity={0.95} />
+        <circle cx={330} cy={380} r={230 + 50 * amp} fill="url(#sp-red)" opacity={0.5 + 0.4 * amp} />
+        <g transform={`translate(285,300) scale(${0.62 * horn})`} strokeLinejoin="round">
           <rect x={-90} y={150} width={140} height={190} rx={14} fill="url(#sp-box)" stroke={INK} strokeWidth={9} />
           <path d="M40 170 L300 20 L300 400 L40 320 Z" fill="url(#sp-horn)" stroke={INK} strokeWidth={9} />
           <ellipse cx={300} cy={210} rx={56} ry={190} fill="#26241f" stroke={INK} strokeWidth={9} />
           <ellipse cx={296} cy={210} rx={34} ry={140} fill="#0e0d0b" />
           <rect x={-40} y={110} width={40} height={44} fill="#6a685f" stroke={INK} strokeWidth={7} />
           <path d="M-70 110 Q-20 0 30 110 Z" fill="#d8302a" stroke={INK} strokeWidth={8} />
-          <ellipse cx={-20} cy={70} rx={20} ry={34} fill="#ffb0a0" opacity={0.7 + 0.3 * Math.sin(q * 1.5)} />
-          {/* the sound waves leaving the mouth of the horn */}
-          {[0, 1, 2, 3].map((i) => {
-            const ph = (((g - from) / 22 + i * 0.25) % 1);
-            return <path key={i} d={`M${330 + ph * 220} ${210 - 90 - ph * 90} Q${360 + ph * 260} 210 ${330 + ph * 220} ${210 + 90 + ph * 90}`} fill="none" stroke="#ffd0c0" strokeWidth={14 - ph * 10} strokeLinecap="round" opacity={0.9 * (1 - ph)} />;
-          })}
+          <ellipse cx={-20} cy={70} rx={20} ry={34} fill="#ffb0a0" opacity={0.5 + 0.5 * amp} />
         </g>
+        {[0, 1, 2, 3].map((i) => {
+          const ph = (((g - from) / 20 + i * 0.25) % 1);
+          const r = 40 + ph * 230;
+          return <path key={i} d={`M${470 + r * 0.45} ${380 - r * 0.55} Q${470 + r * 1.1} 380 ${470 + r * 0.45} ${380 + r * 0.55}`} fill="none" stroke="#ffd0c0" strokeWidth={(14 - ph * 10) * (0.5 + 0.7 * amp)} strokeLinecap="round" opacity={(0.9 * (1 - ph)) * (0.25 + 0.75 * amp)} />;
+        })}
+        {Array.from({ length: 7 }, (_, i) => {
+          const h = 20 + 150 * Math.max(0.05, amp * (0.55 + 0.45 * Math.sin(q * 1.7 + i * 1.3) ** 2));
+          return <rect key={i} x={690 + i * 20} y={380 - h / 2} width={11} height={h} rx={5} fill="#ff4a3a" opacity={0.85} />;
+        })}
       </svg>
     </div>
   );
@@ -246,17 +256,20 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   // ---------------------------------------------------------------- the cast
   let you = { x: 330, y: 1120, s: 0.9, yaw: 20, mood: "worry" as TravellerMood, walk: 0, sit: false, phase: t * 0.25, show: false };
   let ton = { x: 830, y: 770, s: 0.42, mood: "smile" as Mood, show: false, rot: 0, point: 0, shake: 0, sit: true };
+  let talk = 0;
   let cleaner: { x: number; y: number; s: number; walk: number; show: boolean; o: number } = { x: 0, y: 0, s: 0.3, walk: 0, show: false, o: 0 };
 
   if (place === "room") {
     const jolt = g >= ls(2) + 4 && g < ls(2) + 16 ? Math.sin(((g - ls(2) - 4) / 12) * Math.PI) * 20 : 0;
     you = { ...you, show: true, sit: true, x: 330, y: 1120 - jolt, yaw: 20, mood: g >= ls(6) ? "scared" : g >= ls(2) ? "worry" : "calm" };
+    if (g < ls(2) + 4) you = { ...you, sit: false, x: 520, y: 960, yaw: 90, mood: "calm" };
     ton = {
       ...ton, show: true, mood: g >= lampPress ? "agony" : g >= ls(4) ? "smile" : "calm",
       rot: slump * -82, point: g >= ls(5) + 10 && g < dieAt ? smooth(clamp01((g - ls(5) - 10) / 20)) : 0,
       shake: g >= ls(4) && g < ls(5) ? Math.sin(g * 1.3) * 3 : g >= lampPress && g < dieAt ? Math.sin(g * 2.1) * 6 * scream : 0,
       sit: slump < 0.05,
     };
+    talk = g >= ls(4) && g < le(4) ? 1 : 0;
     if (slump > 0) ton = { ...ton, x: 905, y: 718 };
   }
 
@@ -273,7 +286,7 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   // ---------------------------------------------------------------- camera
   const shots = SHOTS();
   let cam: Cam = { x: 540, y: 1000, z: 1.2 };
-  const startOf = (a: number) => (a === ls(2) || a === ls(9) ? a - 6 : a);
+  const startOf = (a: number) => (a === ls(1) || a === ls(9) ? a - 6 : a);
   const cur = shots.find(([a, b]) => g >= startOf(a) && g < b);
   if (cur) {
     const [a, b, c0, c1] = cur;
@@ -284,10 +297,11 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
     if (prev) cam = { ...prev[3] };
   }
   cam = { ...cam, x: Math.min(Math.max(cam.x, 540 / cam.z), 1080 - 540 / cam.z), y: Math.max(cam.y, 900 / cam.z) };
+  cam = { ...cam, x: cam.x + 3.2 * Math.sin(t * 0.021) + 1.6 * Math.sin(t * 0.057), y: cam.y + 2.4 * Math.sin(t * 0.017 + 1) };
   const bg = BG[place];
   const yi = idle(t, 0.7, you.walk < 0.05);
   const night = place === "ext" ? 0.22 : place === "room" ? 0.8 : 0.58;
-  const redK = place === "ext" ? 0.7 : place === "room" ? (g >= ls(2) ? 1 : 0) : 1;
+  const redK = place === "ext" ? 0.7 : 1;
   const beacon = 0.4 + 0.6 * breathOf(g);
 
   return (
@@ -308,6 +322,8 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           <linearGradient id="d1-wood" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#b08a5c" /><stop offset="1" stopColor="#6a4c2c" /></linearGradient>
           <linearGradient id="d1-shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#e6dcc0" /><stop offset="1" stopColor="#b2a584" /></linearGradient>
           <linearGradient id="d1-shade-on" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff6cc" /><stop offset="1" stopColor="#ffd870" /></linearGradient>
+          <linearGradient id="d1-deadshade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#020308" stopOpacity="0.88" /><stop offset="0.5" stopColor="#060a16" stopOpacity="0.62" /><stop offset="1" stopColor="#1c2433" stopOpacity="0.3" /></linearGradient>
+          <filter id="d1-soft"><feGaussianBlur stdDeviation="9" /></filter>
           <linearGradient id="d1-card" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ffffff" /><stop offset="1" stopColor="#c9c4b8" /></linearGradient>
           <filter id="d1-grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" /><feColorMatrix type="saturate" values="0" /></filter>
         </defs>
@@ -332,24 +348,33 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
 
           {place === "corr" && cleaner.show && (
             <g opacity={cleaner.o}>
+              <ellipse cx={cleaner.x - 80 * cleaner.s} cy={cleaner.y + 6} rx={170 * cleaner.s} ry={13 * cleaner.s} fill="#000" opacity={0.4} filter="url(#d1-soft)" />
               <Trolley x={cleaner.x - 200 * cleaner.s} y={cleaner.y} s={cleaner.s * 1.1} />
               <Mop x={cleaner.x + 130 * cleaner.s} y={cleaner.y} s={cleaner.s} sway={Math.sin(t * 0.07) * 4} />
               <g filter="url(#d1-grade)"><Villager id="cleaner" x={cleaner.x} y={cleaner.y} s={cleaner.s} mood="calm" face={-1} walk={cleaner.walk} seed={3} t={t} /></g>
             </g>
           )}
 
+          {you.show && g >= ls(2) + 4 && <ellipse cx={you.x} cy={you.y + 6} rx={60 * you.s} ry={11 * you.s} fill="#000" opacity={0.4} filter="url(#d1-soft)" />}
+          {ton.show && <ellipse cx={ton.x - (ton.rot < -10 ? 80 : 0)} cy={ton.y + 6} rx={(ton.rot < -10 ? 180 : 55) * ton.s} ry={11 * ton.s} fill="#000" opacity={0.4} filter="url(#d1-soft)" />}
           {you.show && (
             <g filter="url(#d1-grade)">
               <g transform={`translate(${you.x},${you.y + yi.dy}) rotate(${yi.rot}) scale(${you.s},${you.s * yi.sy})`}>
                 <Traveller yaw={you.yaw} mood={you.mood} walk={you.walk} phase={you.phase} sit={you.sit} t={t} />
-                <Lanyard yaw={you.yaw} />
               </g>
             </g>
           )}
           {ton.show && (
             <g filter="url(#d1-grade)">
               <g transform={`translate(${ton.x + ton.shake},${ton.y}) rotate(${ton.rot}) scale(${ton.s})`}>
-                <Figure look={LOOKS.ton} mood={ton.mood} sit={ton.sit} point={ton.point} facing={-1} t={t + 30} />
+                <Figure look={LOOKS.ton} mood={ton.mood} sit={ton.sit} point={ton.point} facing={-1} talk={talk} t={t + 30} />
+                {slump > 0.4 && (
+                  <g opacity={clamp01((slump - 0.4) / 0.4)}>
+                    <ellipse cx={0} cy={-422} rx={92} ry={96} fill="url(#d1-deadshade)" />
+                    <ellipse cx={-34} cy={-406} rx={34} ry={28} fill="#010206" opacity={0.5} />
+                    <ellipse cx={34} cy={-406} rx={34} ry={28} fill="#010206" opacity={0.5} />
+                  </g>
+                )}
               </g>
             </g>
           )}
@@ -357,12 +382,18 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           {place === "room" && lampLit > 0 && <circle cx={940} cy={680} r={300} fill="url(#d1-lamp)" opacity={0.9} />}
         </g>
         <RedSweep g={g} k={redK} />
+        {place !== "ext" && Array.from({ length: 26 }, (_, i) => {
+          const x = (rnd(i, 1) * 1200 + t * (0.25 + rnd(i, 2) * 0.5)) % 1200 - 60;
+          const y = (rnd(i, 3) * 2000 - t * (0.2 + rnd(i, 4) * 0.4) + 2000) % 2000;
+          return <circle key={"d" + i} cx={x} cy={y} r={1.5 + rnd(i, 5) * 2.8} fill="#ffe8e0" opacity={0.1 + 0.18 * rnd(i, 6)} />;
+        })}
         <rect width={1080} height={1920} fill="url(#d1-vig)" />
         <rect width={1080} height={1920} filter="url(#d1-grain)" opacity={0.14} />
         <rect width={1080} height={1920} fill="#fff3d0" opacity={g >= lampPress && g < lampPress + 4 ? 0.5 * (1 - (g - lampPress) / 4) : 0} />
         <rect width={1080} height={1920} fill="#030202" opacity={dark} />
       </svg>
-      <SpeakerInsert g={g} from={speakerAt} to={cardAt} />
+      <SpeakerOverlay g={g} from={ls(1)} to={le(1) + 6} amp={ampOf(1, g)} />
+      <SpeakerOverlay g={g} from={speakerAt} to={cardAt} amp={ampOf(3, g)} />
       <RuleCard g={g} from={cardAt} dur={96} />
       {showPhone && <PhoneInsert g={g} />}
       {showPaper && <PaperInsert g={g} />}

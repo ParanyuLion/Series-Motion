@@ -16,3 +16,8 @@ Gemini Sulafat, a normal speaking level with a cold, slightly eerie calm (not wh
 - The red light breathes slowly (a 4 s breath, a slow soft band); fast pulses made the user dizzy. No heart-monitor line in the corner.
 - Backdrops must stay readable: the soft cartoon pass, not the heavy 14-colour one. The room photo must contain beds.
 - Code-drawn props get gradients. A second character is a new design (hair, clothes, no glasses), never a recoloured main character.
+
+## Round-3 rules from the user (2026-10-31)
+- Never keep one establishing picture for more than about 5 s (the exterior hook was 10 s and felt too long): cut to the room as soon as the premise lines allow.
+- A loudspeaker/PA speaks as an overlay on the picture with a speaking effect tied to the voice loudness, not as a separate full-screen picture.
+- A character who speaks on screen moves the mouth. A dead face gets dark shadows to look scarier. The lanyard on the main character looked like a bug and was removed (the wristband clue is dropped). Render with `--crf=15`.
