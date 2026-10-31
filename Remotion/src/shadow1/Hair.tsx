@@ -4,7 +4,7 @@ import { mix } from "./Figure";
 // Hair built the way a cartoonist does it: a few big clumps (pointed leaf shapes) stacked back to front, each with one clean outline, so the
 // silhouette has flow and the clump seams are the only "texture". Head centre (0, hy), ellipse 80 x 88 (top at hy - 88, eyes at hy + 6, brows at hy - 20).
 
-type P = { kind: "wave" | "swoop" | "tousle" | "bangs" | "bowlcut"; hy: number; color: string; ink: string; sw: number; flat: boolean };
+type P = { kind: "wave" | "long" | "swoop" | "tousle" | "bangs" | "bowlcut"; hy: number; color: string; ink: string; sw: number; flat: boolean };
 
 /** a pointed clump from base b to tip t: w is its width, bend sweeps the middle to one side */
 const leaf = (b: [number, number], t: [number, number], w: number, bend: number) => {
@@ -52,6 +52,13 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
       <g strokeLinejoin="round">
         <path d={`M-96 ${hy + 86} Q-120 ${hy - 20} -88 ${hy - 70} Q-50 ${hy - 116} 0 ${hy - 116} Q50 ${hy - 116} 88 ${hy - 70} Q120 ${hy - 20} 98 ${hy + 90} Q112 ${hy + 104} 128 ${hy + 100} Q104 ${hy + 128} 70 ${hy + 112} Q40 ${hy + 100} 0 ${hy + 104} Q-40 ${hy + 100} -70 ${hy + 112} Q-104 ${hy + 128} -128 ${hy + 100} Q-110 ${hy + 104} -96 ${hy + 86} Z`} fill={f} stroke={ink} strokeWidth={sw} />
       </g>
+    );
+  }
+  if (kind === "long") {
+    // long hair behind the head and shoulders: drawn before the body, so the body covers it and the head never floats
+    const f = flat ? ink : mix(color, "#000000", 0.18);
+    return (
+      <path d={`M-90 ${hy - 20} Q-112 ${hy - 110} 0 ${hy - 114} Q112 ${hy - 110} 90 ${hy - 20} Q104 ${hy + 90} 88 ${hy + 190} Q40 ${hy + 210} 0 ${hy + 200} Q-40 ${hy + 210} -88 ${hy + 190} Q-104 ${hy + 90} -90 ${hy - 20} Z`} fill={f} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
     );
   }
   return null;

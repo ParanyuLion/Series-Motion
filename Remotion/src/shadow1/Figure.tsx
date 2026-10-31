@@ -9,7 +9,7 @@ export const INK = "#0f0b09";
 export const SKIN = "#e7b890";
 
 export type Look = {
-  hair: "messy" | "bowl" | "bun" | "bald" | "scarf" | "none" | "sidepart" | "ponytail" | "curly" | "beanie" | "quiff" | "bob" | "spiky" | "wave" | "swoop" | "tousle" | "bangs" | "bowlcut";
+  hair: "messy" | "bowl" | "bun" | "bald" | "scarf" | "none" | "sidepart" | "ponytail" | "curly" | "beanie" | "quiff" | "bob" | "spiky" | "wave" | "swoop" | "tousle" | "bangs" | "bowlcut" | "long";
   beanieColor?: string;
   hairColor: string;
   hat?: "straw";
@@ -25,6 +25,8 @@ export type Look = {
   pattern?: "sport" | "zigzag" | "stripes" | "trim" | "breton" | "jacket";
   sleeve?: "long" | "short";
   badge?: boolean;
+  /** eyelashes, blush and coloured lips */
+  lady?: boolean;
 };
 
 const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
@@ -99,10 +101,17 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
           ))}
           {mood === "worry" && <ellipse cx={0} cy={eyeY - 2} rx={66} ry={18} fill="#2a2030" opacity={0.28} filter="blur(2px)" />}
           {look.glasses && <g><circle cx={-34} cy={eyeY} r={27} fill="#cfd8de" fillOpacity={0.35} stroke={INK} strokeWidth={6} /><circle cx={34} cy={eyeY} r={27} fill="#cfd8de" fillOpacity={0.35} stroke={INK} strokeWidth={6} /><line x1={-8} y1={eyeY - 2} x2={8} y2={eyeY - 2} stroke={INK} strokeWidth={5} /></g>}
+          {look.lady && !silhouette && mood !== "agony" && mood !== "creepy" && [-1, 1].map((s) => (
+            <g key={"l" + s} fill="none" stroke={INK} strokeLinecap="round">
+              <path d={`M${s * 31 - 15} ${eyeY - 6 * blink} Q${s * 31} ${eyeY - 19 * blink} ${s * 31 + 15} ${eyeY - 6 * blink}`} strokeWidth={5} opacity={mood === "smile" ? 0 : 1} />
+              {[0, 1, 2].map((k) => <path key={k} d={`M${s * (31 + 12 + k * 3)} ${eyeY - 8 + k * 4} l${s * (9 - k)} ${-9 + k * 2}`} strokeWidth={3.6} />)}
+              <ellipse cx={s * 52} cy={eyeY + 26} rx={14} ry={8} fill="#e8808a" stroke="none" opacity={0.32} />
+            </g>
+          ))}
           <path d={`M-3 ${eyeY + 12} Q-10 ${eyeY + 28} 2 ${eyeY + 30}`} fill="none" stroke={INK} strokeWidth={4} opacity={0.7} />
           {look.mustache && <path d={`M-30 ${eyeY + 40} Q-14 ${eyeY + 30} 0 ${eyeY + 38} Q14 ${eyeY + 30} 30 ${eyeY + 40}`} fill="none" stroke="#7a766e" strokeWidth={6} />}
           {mood === "smile" && <path d={`M-30 ${eyeY + 52} Q0 ${eyeY + 82 + 28 * ta} 30 ${eyeY + 52}`} fill="#7a3a30" stroke={INK} strokeWidth={5} />}
-          {mood === "calm" && (ta > 0.04 ? <ellipse cx={0} cy={eyeY + 58} rx={15} ry={3 + 12 * ta} fill="#7a3a30" stroke={INK} strokeWidth={4} /> : <path d={`M-18 ${eyeY + 56} Q0 ${eyeY + 58} 18 ${eyeY + 56}`} fill="none" stroke={INK} strokeWidth={5} />)}
+          {mood === "calm" && (ta > 0.04 ? <ellipse cx={0} cy={eyeY + 58} rx={15} ry={3 + 12 * ta} fill="#7a3a30" stroke={INK} strokeWidth={4} /> : <path d={`M-18 ${eyeY + 56} Q0 ${eyeY + 58} 18 ${eyeY + 56}`} fill="none" stroke={look.lady ? "#b03a4a" : INK} strokeWidth={look.lady ? 6 : 5} />)}
           {mood === "worry" && <path d={`M-18 ${eyeY + 62} Q0 ${eyeY + 50} 18 ${eyeY + 62}`} fill="none" stroke={INK} strokeWidth={5} />}
           {mood === "creepy" && (
             <g><path d={`M-56 ${eyeY + 50} Q0 ${eyeY + 92} 56 ${eyeY + 50} Q0 ${eyeY + 62} -56 ${eyeY + 50} Z`} fill="#f7efe0" stroke={INK} strokeWidth={5} />{[-36, -18, 0, 18, 36].map((x) => <line key={x} x1={x} y1={eyeY + 58 + Math.abs(x) * 0.02} x2={x} y2={eyeY + 76 - Math.abs(x) * 0.25} stroke={INK} strokeWidth={2.5} />)}</g>
@@ -120,6 +129,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         <linearGradient id={pantsId} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={mix(look.pants ?? "#000000", "#ffffff", 0.1)} /><stop offset="1" stopColor={mix(look.pants ?? "#000000", "#000000", 0.25)} /></linearGradient>
         <radialGradient id={headId} cx="0.38" cy="0.3" r="0.85"><stop offset="0" stopColor={mix(skin, "#ffffff", 0.14)} /><stop offset="0.6" stopColor={skin} /><stop offset="1" stopColor={mix(skin, "#3a1f18", 0.2)} /></radialGradient>
       </defs>
+      {look.hair === "long" && <HairBack kind="long" hy={headY} color={look.hairColor} ink={stroke} sw={sw} flat={silhouette} />}
       {/* legs (trousers when the look has them) and shoes */}
       {[-1, 1].map((s, i) => {
         const dx = s * 26;
@@ -254,6 +264,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {look.hair === "bowl" && <path d={`M-84 ${headY + 2} Q-90 ${headY - 92} 0 ${headY - 92} Q90 ${headY - 92} 84 ${headY + 2} Q50 ${headY - 40} 0 ${headY - 42} Q-50 ${headY - 40} -84 ${headY + 2} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "bun" && <path d={`M-82 ${headY - 6} Q-84 ${headY - 88} 0 ${headY - 88} Q84 ${headY - 88} 82 ${headY - 6} Q50 ${headY - 50} 0 ${headY - 52} Q-50 ${headY - 50} -82 ${headY - 6} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
       {look.hair === "scarf" && <path d={`M-84 ${headY - 4} Q-70 ${headY - 70} 0 ${headY - 70} Q70 ${headY - 70} 84 ${headY - 4} Q40 ${headY - 40} 0 ${headY - 42} Q-40 ${headY - 40} -84 ${headY - 4} Z`} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 1} />}
+      {look.hair === "long" && <HairFront kind="swoop" hy={headY} color={look.hairColor} ink={stroke} sw={sw} flat={silhouette} />}
       {(look.hair === "wave" || look.hair === "swoop" || look.hair === "tousle" || look.hair === "bangs" || look.hair === "bowlcut") && <HairFront kind={look.hair} hy={headY} color={look.hairColor} ink={stroke} sw={sw} flat={silhouette} />}
       {look.hair === "curly" && <g>{Array.from({ length: 8 }, (_, i) => { const a = Math.PI * (1.05 + (i / 7) * 0.9); return <circle key={i} cx={Math.cos(a) * 74} cy={headY + Math.sin(a) * 78} r={30} fill={fill(look.hairColor)} stroke={stroke} strokeWidth={sw - 2} />; })}</g>}
       {/* face */}
