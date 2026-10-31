@@ -4,7 +4,7 @@ import { mix } from "./Figure";
 // Hair built the way a cartoonist does it: a few big clumps (pointed leaf shapes) stacked back to front, each with one clean outline, so the
 // silhouette has flow and the clump seams are the only "texture". Head centre (0, hy), ellipse 80 x 88 (top at hy - 88, eyes at hy + 6, brows at hy - 20).
 
-type P = { kind: "wave" | "long" | "swoop" | "tousle" | "bangs" | "bowlcut"; hy: number; color: string; ink: string; sw: number; flat: boolean };
+type P = { kind: "wave" | "long" | "hime" | "swoop" | "tousle" | "bangs" | "bowlcut"; hy: number; color: string; ink: string; sw: number; flat: boolean };
 
 /** a pointed clump from base b to tip t: w is its width, bend sweeps the middle to one side */
 const leaf = (b: [number, number], t: [number, number], w: number, bend: number) => {
@@ -54,7 +54,7 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
       </g>
     );
   }
-  if (kind === "long") {
+  if (kind === "long" || kind === "hime") {
     // long hair behind the head and shoulders: drawn before the body, so the body covers it and the head never floats
     const f = flat ? ink : mix(color, "#000000", 0.18);
     return (
@@ -66,6 +66,21 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
 
 /** drawn after the head ellipse and before the face */
 export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
+  if (kind === "hime") {
+    // hime cut: blunt straight bangs across the forehead and two straight cheek-length side locks that frame the face
+    const f = flat ? ink : color;
+    const hi = mix(color, "#ffffff", 0.35);
+    return (
+      <g strokeLinejoin="round" strokeLinecap="round">
+        <path d={`M-88 ${hy + 6} Q-104 ${hy - 104} 0 ${hy - 108} Q104 ${hy - 104} 88 ${hy + 6} L76 ${hy - 22} Q72 ${hy - 40} 56 ${hy - 42} Q0 ${hy - 34} -56 ${hy - 42} Q-72 ${hy - 40} -76 ${hy - 22} Z`} fill={f} stroke={ink} strokeWidth={sw} />
+        {[-1, 1].map((k) => (
+          <path key={k} d={`M${k * 90} ${hy - 40} Q${k * 100} ${hy + 40} ${k * 84} ${hy + 150} L${k * 58} ${hy + 156} Q${k * 64} ${hy + 60} ${k * 70} ${hy - 10} Q${k * 74} ${hy - 30} ${k * 90} ${hy - 40} Z`} fill={f} stroke={ink} strokeWidth={sw} />
+        ))}
+        {!flat && <path d={`M-40 ${hy - 90} Q-6 ${hy - 104} 40 ${hy - 90}`} fill="none" stroke={hi} strokeWidth={8} opacity={0.5} />}
+        {!flat && [-1, 1].map((k) => <path key={"h" + k} d={`M${k * 84} ${hy + 10} Q${k * 90} ${hy + 60} ${k * 78} ${hy + 120}`} fill="none" stroke={hi} strokeWidth={5} opacity={0.4} />)}
+      </g>
+    );
+  }
   if (kind === "wave") {
     // undercut with a swept-up top: the sides are short, three big clumps roll up and forward
     const top: L[] = [
