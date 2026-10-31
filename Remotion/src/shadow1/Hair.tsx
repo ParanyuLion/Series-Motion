@@ -73,7 +73,7 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
     return (
       <g strokeLinejoin="round" strokeLinecap="round">
         {[-1, 1].map((k) => (
-          <path key={k} d={`M${k * 94} ${hy - 20} L${k * 96} ${hy + 130} Q${k * 96} ${hy + 146} ${k * 74} ${hy + 146} Q${k * 50} ${hy + 146} ${k * 50} ${hy + 130} Q${k * 54} ${hy + 40} ${k * 66} ${hy - 20} Z`} fill={f} stroke={ink} strokeWidth={sw - 2} />
+          <path key={k} d={`M${k * 94} ${hy - 44} L${k * 96} ${hy + 130} Q${k * 96} ${hy + 146} ${k * 74} ${hy + 146} Q${k * 50} ${hy + 146} ${k * 50} ${hy + 130} Q${k * 52} ${hy + 40} ${k * 58} ${hy - 44} Z`} fill={f} stroke={ink} strokeWidth={sw - 2} />
         ))}
         <path d={`M-94 ${hy - 6} C-100 ${hy - 76} -64 ${hy - 112} 0 ${hy - 112} C64 ${hy - 112} 100 ${hy - 76} 94 ${hy - 6} Q86 ${hy - 26} 76 ${hy - 32} Q38 ${hy - 26} 0 ${hy - 28} Q-38 ${hy - 26} -76 ${hy - 32} Q-86 ${hy - 26} -94 ${hy - 6} Z`} fill={f} stroke={ink} strokeWidth={sw} />
         {!flat && <path d={`M-52 ${hy - 92} Q-6 ${hy - 108} 52 ${hy - 92}`} fill="none" stroke={hi} strokeWidth={8} opacity={0.45} />}
