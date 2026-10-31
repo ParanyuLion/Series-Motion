@@ -252,12 +252,6 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         </g>
       )}
       {!silhouette && Array.from({ length: 5 }, (_, i) => <path key={i} d={`M${bw * 0.55 + i * 5} ${topY + 70 + i * 36} l${-26} ${34}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />)}
-      {look.lady && !silhouette && (
-        <g fill="none" strokeLinecap="round">
-          {[-1, 1].map((k) => <path key={"b" + k} d={`M${k * bw * 0.52 - 14} ${topY + 96} Q${k * bw * 0.52} ${topY + 116} ${k * bw * 0.52 + 14} ${topY + 96}`} stroke="#000" strokeWidth={4} opacity={0.3} />)}
-          {[-1, 1].map((k) => <path key={"c" + k} d={`M${k * bw * 0.52 - 9} ${topY + 84} Q${k * bw * 0.52 - 2} ${topY + 80} ${k * bw * 0.52 + 6} ${topY + 84}`} stroke="#fff" strokeWidth={4} opacity={0.5} />)}
-        </g>
-      )}
       {look.skirt && (
         <g>
           <path d={`M${-bw * 0.8} ${hipY - 34} Q${-bw * 1.5} ${hipY + 20} ${-bw * 1.55} ${hipY + (look.skirtLen ?? 64)} Q0 ${hipY + (look.skirtLen ?? 64) + 20} ${bw * 1.55} ${hipY + (look.skirtLen ?? 64)} Q${bw * 1.5} ${hipY + 20} ${bw * 0.8} ${hipY - 34} Q0 ${hipY - 20} ${-bw * 0.8} ${hipY - 34} Z`} fill={silhouette ? S! : look.skirt} stroke={stroke} strokeWidth={sw - 1} />
