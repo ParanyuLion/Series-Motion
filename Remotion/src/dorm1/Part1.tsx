@@ -35,10 +35,10 @@ const BG: Record<Place, { src: string; edge: string }> = {
   corr: { src: "shadow1/bg_dcorr.png", edge: "#a2c0da" },
 };
 
-const SUBTITLE_FIX = (t: string) => t.replace(/เพื่อนร่วมห้อง/g, "เพื่อน⁠ร่วม⁠ห้อง").replace(/ไซเรน/g, "ไซ⁠เรน").replace(/ป้าแม่บ้าน/g, "ป้า⁠แม่บ้าน").replace(/หอพัก/g, "หอ⁠พัก").replace(/ทางเดิน/g, "ทาง⁠เดิน");
+export const SUBTITLE_FIX = (t: string) => t.replace(/เพื่อนร่วมห้อง/g, "เพื่อน⁠ร่วม⁠ห้อง").replace(/ไซเรน/g, "ไซ⁠เรน").replace(/ป้าแม่บ้าน/g, "ป้า⁠แม่บ้าน").replace(/หอพัก/g, "หอ⁠พัก").replace(/ทางเดิน/g, "ทาง⁠เดิน");
 
 /** subtitles a little higher than the other series (user, 2026-10-31) */
-const Sub: React.FC<{ text: string; from: number; g: number }> = ({ text, from, g }) => (
+export const Sub: React.FC<{ text: string; from: number; g: number }> = ({ text, from, g }) => (
   <div style={{ position: "absolute", left: 60, right: 160, bottom: 420, textAlign: "center", opacity: clamp01((g - from) / 6), fontFamily, fontSize: 52, lineHeight: 1.6, color: "#fff", textShadow: "0 0 12px rgba(0,0,0,0.95), 0 3px 6px rgba(0,0,0,0.95)" }}>
     <span style={{ background: "rgba(8,6,4,0.55)", borderRadius: 18, padding: "4px 16px", WebkitBoxDecorationBreak: "clone" } as React.CSSProperties}>{text}</span>
   </div>
@@ -68,11 +68,11 @@ const SHOTS = (): Shot[] => [
 
 const rnd = (i: number, k: number) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
 /** the red light breathes slowly (one breath every 4 s), not a flash */
-const BREATH = 120;
-const breathOf = (g: number) => { const ph = (g % BREATH) / BREATH; return Math.pow(Math.sin(ph * Math.PI), 2); };
+export const BREATH = 120;
+export const breathOf = (g: number) => { const ph = (g % BREATH) / BREATH; return Math.pow(Math.sin(ph * Math.PI), 2); };
 
 /** the red light in a dark place: a slow glow and a slow, soft band drifting across */
-const RedSweep: React.FC<{ g: number; k: number }> = ({ g, k }) => {
+export const RedSweep: React.FC<{ g: number; k: number }> = ({ g, k }) => {
   if (k <= 0) return null;
   const p = breathOf(g);
   const bx = ((g * 4.5) % 2300) - 600;
@@ -90,7 +90,7 @@ const RedSweep: React.FC<{ g: number; k: number }> = ({ g, k }) => {
 const ampOf = (line: number, g: number) => ((env as Record<string, number[]>)[String(line)] ?? [])[Math.max(0, g - ls(line))] ?? 0;
 
 /** the loudspeaker with a siren light on top, overlaid on the picture while it speaks: the horn pulses and the waves, the level meter and the red glow follow the voice */
-const SpeakerOverlay: React.FC<{ g: number; from: number; to: number; amp: number }> = ({ g, from, to, amp }) => {
+export const SpeakerOverlay: React.FC<{ g: number; from: number; to: number; amp: number }> = ({ g, from, to, amp }) => {
   const o = clamp01(Math.min((g - from) / 8, (to - g) / 8));
   if (o <= 0) return null;
   const q = (g - from) / 9;
@@ -202,7 +202,7 @@ const Lanyard: React.FC<{ yaw: number }> = ({ yaw }) => {
   );
 };
 
-const Lamp: React.FC<{ lit: number }> = ({ lit }) => (
+export const Lamp: React.FC<{ lit: number }> = ({ lit }) => (
   <g strokeLinejoin="round">
     <rect x={-9} y={0} width={18} height={70} fill="url(#d1-metal)" stroke={INK} strokeWidth={5} />
     <ellipse cx={0} cy={72} rx={34} ry={9} fill="url(#d1-metal)" stroke={INK} strokeWidth={5} />
@@ -210,7 +210,7 @@ const Lamp: React.FC<{ lit: number }> = ({ lit }) => (
   </g>
 );
 
-const Trolley: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s }) => (
+export const Trolley: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s }) => (
   <g transform={`translate(${x},${y}) scale(${s})`} strokeLinejoin="round">
     <rect x={-110} y={-190} width={220} height={20} fill="url(#d1-metal)" stroke={INK} strokeWidth={6} />
     <rect x={-100} y={-170} width={200} height={72} fill="url(#d1-metal)" stroke={INK} strokeWidth={6} />
@@ -224,7 +224,7 @@ const Trolley: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s }) => 
   </g>
 );
 
-const Mop: React.FC<{ x: number; y: number; s: number; sway: number }> = ({ x, y, s, sway }) => (
+export const Mop: React.FC<{ x: number; y: number; s: number; sway: number }> = ({ x, y, s, sway }) => (
   <g transform={`translate(${x},${y}) scale(${s}) rotate(${sway})`} strokeLinejoin="round" strokeLinecap="round">
     <line x1={0} y1={0} x2={22} y2={-330} stroke={INK} strokeWidth={14} />
     <line x1={0} y1={0} x2={22} y2={-330} stroke="url(#d1-wood)" strokeWidth={8} />

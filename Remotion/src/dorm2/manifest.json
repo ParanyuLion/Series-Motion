@@ -1,0 +1,153 @@
+{
+ "fps": 30,
+ "total": 2380,
+ "storyEnd": 2158,
+ "outroStart": 2170,
+ "shots": [
+  {
+   "text": "ไซเรนดังตอนตีสาม หอพักของผมก็กลายเป็นลานประหาร",
+   "audio": "dorm2v/n0.mp3",
+   "audioFrames": 114,
+   "leadFrames": 21,
+   "frames": 141
+  },
+  {
+   "text": "กฎเหล็กบอกว่า ผู้ฝ่าฝืนตายทันที และกฎจะเปลี่ยนใหม่ทุกชั่วโมง",
+   "audio": "dorm2v/n1.mp3",
+   "audioFrames": 160,
+   "leadFrames": 6,
+   "frames": 208
+  },
+  {
+   "text": "ตีสี่ตรง ลำโพงทั้งตึกประกาศอีกครั้ง กฎข้อสอง ห้ามอยู่ในห้อง",
+   "audio": "dorm2v/n2.mp3",
+   "audioFrames": 165,
+   "leadFrames": 6,
+   "frames": 177
+  },
+  {
+   "text": "แล้วเสียงเดิมก็พูดต่อ และห้ามอยู่นอกห้องด้วย",
+   "audio": "dorm2v/n3.mp3",
+   "audioFrames": 108,
+   "leadFrames": 6,
+   "frames": 120
+  },
+  {
+   "text": "ป้าแม่บ้านถูพื้นอยู่หน้าห้องสามศูนย์สี่ แล้ววางป้ายพื้นเปียกพาดตรงธรณีประตูไว้",
+   "audio": "dorm2v/n4.mp3",
+   "audioFrames": 132,
+   "leadFrames": 6,
+   "frames": 144
+  },
+  {
+   "text": "รุ่นพี่ปีสี่ที่รอดมาตั้งแต่คืนแรกกอดสมุดเล่มหนา บอกว่า กฎแบบนี้ไม่มีใครรอด",
+   "audio": "dorm2v/n5.mp3",
+   "audioFrames": 194,
+   "leadFrames": 6,
+   "frames": 206
+  },
+  {
+   "text": "ผู้หญิงชั้นสามตกใจ วิ่งเข้าห้องแล้วปิดประตู เธอล้มลงตายทันที",
+   "audio": "dorm2v/n6.mp3",
+   "audioFrames": 124,
+   "leadFrames": 6,
+   "frames": 136
+  },
+  {
+   "text": "ผู้ชายอีกคนวิ่งหนีออกไปทางบันได ไปไม่ถึงชั้นล่างก็ล้มตาม",
+   "audio": "dorm2v/n7.mp3",
+   "audioFrames": 126,
+   "leadFrames": 6,
+   "frames": 138
+  },
+  {
+   "text": "ไซเรนเริ่มนับถอยหลังหกสิบวินาที ผมไม่มีที่ให้ไป",
+   "audio": "dorm2v/n8.mp3",
+   "audioFrames": 111,
+   "leadFrames": 6,
+   "frames": 123
+  },
+  {
+   "text": "คุณคิดออกมั้ย ว่ามีที่ไหนที่ไม่ใช่ทั้งในห้อง และไม่ใช่ทั้งนอกห้อง",
+   "audio": "dorm2v/n9.mp3",
+   "audioFrames": 154,
+   "leadFrames": 6,
+   "frames": 166
+  },
+  {
+   "text": "ผมมองไปที่ป้ายพื้นเปียก แล้วนึกขึ้นได้ว่า ธรณีประตู",
+   "audio": "dorm2v/n10.mp3",
+   "audioFrames": 114,
+   "leadFrames": 6,
+   "frames": 126
+  },
+  {
+   "text": "ผมกับรุ่นพี่ยืนเท้าสองข้างบนธรณีประตู ไม่ล้ำเข้าห้อง ไม่ก้าวออกทางเดิน",
+   "audio": "dorm2v/n11.mp3",
+   "audioFrames": 183,
+   "leadFrames": 6,
+   "frames": 195
+  },
+  {
+   "text": "ตัวเลขถึงศูนย์ ไฟแดงดับลง ไม่มีใครตายเพิ่ม",
+   "audio": "dorm2v/n12.mp3",
+   "audioFrames": 115,
+   "leadFrames": 6,
+   "frames": 127
+  },
+  {
+   "text": "รุ่นพี่เปิดสมุดให้ดู ลายมือกฎทุกคืนเหมือนกับลายมือบนกระดาษของป้าแม่บ้าน",
+   "audio": "dorm2v/n13.mp3",
+   "audioFrames": 145,
+   "leadFrames": 6,
+   "frames": 163
+  }
+ ],
+ "starts": [
+  0,
+  141,
+  349,
+  526,
+  646,
+  790,
+  996,
+  1132,
+  1270,
+  1393,
+  1559,
+  1685,
+  1880,
+  2007
+ ],
+ "cues": {
+  "titleAt": 311,
+  "lineStart0": 21,
+  "lineEnd0": 135,
+  "lineStart1": 147,
+  "lineEnd1": 307,
+  "lineStart2": 355,
+  "lineEnd2": 520,
+  "lineStart3": 532,
+  "lineEnd3": 640,
+  "lineStart4": 652,
+  "lineEnd4": 784,
+  "lineStart5": 796,
+  "lineEnd5": 990,
+  "lineStart6": 1002,
+  "lineEnd6": 1126,
+  "lineStart7": 1138,
+  "lineEnd7": 1264,
+  "lineStart8": 1276,
+  "lineEnd8": 1387,
+  "lineStart9": 1399,
+  "lineEnd9": 1553,
+  "lineStart10": 1565,
+  "lineEnd10": 1679,
+  "lineStart11": 1691,
+  "lineEnd11": 1874,
+  "lineStart12": 1886,
+  "lineEnd12": 2001,
+  "lineStart13": 2013,
+  "lineEnd13": 2158
+ }
+}
