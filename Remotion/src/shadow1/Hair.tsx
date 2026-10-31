@@ -58,7 +58,7 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
     // long hair behind the head and shoulders: drawn before the body, so the body covers it and the head never floats
     const f = flat ? ink : mix(color, "#000000", 0.18);
     return (
-      <path d={`M-90 ${hy - 20} Q-112 ${hy - 110} 0 ${hy - 114} Q112 ${hy - 110} 90 ${hy - 20} Q104 ${hy + 100} 90 ${hy + 232} Q40 ${hy + 248} 0 ${hy + 240} Q-40 ${hy + 248} -90 ${hy + 232} Q-104 ${hy + 100} -90 ${hy - 20} Z`} fill={f} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
+      <path d={`M-90 ${hy - 20} Q-112 ${hy - 110} 0 ${hy - 114} Q112 ${hy - 110} 90 ${hy - 20} Q104 ${hy + 60} 90 ${hy + 150} Q40 ${hy + 166} 0 ${hy + 158} Q-40 ${hy + 166} -90 ${hy + 150} Q-104 ${hy + 60} -90 ${hy - 20} Z`} fill={f} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
     );
   }
   return null;
@@ -67,20 +67,17 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
 /** drawn after the head ellipse and before the face */
 export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
   if (kind === "fringe") {
-    // long straight hair with a centre part: two curtains sweep from the parting to the temples (the forehead shows between them), long thin strands hang in front of the shoulders
+    // long hair to the chest with straight blunt bangs just above the brows; a thin lock falls in front of each shoulder
     const f = flat ? ink : color;
     const hi = mix(color, "#ffffff", 0.35);
     return (
       <g strokeLinejoin="round" strokeLinecap="round">
         {[-1, 1].map((k) => (
-          <g key={k}>
-            <path d={`M${k * 86} ${hy - 6} Q${k * 104} ${hy + 90} ${k * 96} ${hy + 218} Q${k * 88} ${hy + 228} ${k * 80} ${hy + 216} Q${k * 76} ${hy + 100} ${k * 66} ${hy + 6} Z`} fill={f} stroke={ink} strokeWidth={sw - 2} />
-            <path d={`M${k * 66} ${hy + 30} Q${k * 78} ${hy + 110} ${k * 70} ${hy + 190} Q${k * 62} ${hy + 196} ${k * 58} ${hy + 186} Q${k * 62} ${hy + 100} ${k * 56} ${hy + 40} Z`} fill={f} stroke={ink} strokeWidth={sw - 3} />
-            <path d={`M0 ${hy - 108} Q${k * 104} ${hy - 104} ${k * 88} ${hy + 10} Q${k * 78} ${hy - 4} ${k * 62} ${hy - 10} Q${k * 24} ${hy - 34} 0 ${hy - 96} Z`} fill={f} stroke={ink} strokeWidth={sw} />
-          </g>
+          <path key={k} d={`M${k * 86} ${hy - 16} Q${k * 100} ${hy + 50} ${k * 94} ${hy + 138} Q${k * 84} ${hy + 146} ${k * 74} ${hy + 136} Q${k * 74} ${hy + 60} ${k * 68} ${hy - 6} Z`} fill={f} stroke={ink} strokeWidth={sw - 2} />
         ))}
-        {!flat && <path d={`M-48 ${hy - 90} Q-6 ${hy - 106} 48 ${hy - 90}`} fill="none" stroke={hi} strokeWidth={8} opacity={0.45} />}
-        {!flat && [-1, 1].map((k) => <path key={"h" + k} d={`M${k * 90} ${hy + 40} Q${k * 96} ${hy + 110} ${k * 90} ${hy + 190}`} fill="none" stroke={hi} strokeWidth={4} opacity={0.35} />)}
+        <path d={`M-90 ${hy - 10} Q-106 ${hy - 104} 0 ${hy - 108} Q106 ${hy - 104} 90 ${hy - 10} Q82 ${hy - 28} 74 ${hy - 34} Q40 ${hy - 28} 0 ${hy - 30} Q-40 ${hy - 28} -74 ${hy - 34} Q-82 ${hy - 28} -90 ${hy - 10} Z`} fill={f} stroke={ink} strokeWidth={sw} />
+        {!flat && <path d={`M-46 ${hy - 92} Q-6 ${hy - 106} 46 ${hy - 92}`} fill="none" stroke={hi} strokeWidth={8} opacity={0.45} />}
+        {!flat && <path d={`M-30 ${hy - 56} L-26 ${hy - 36} M10 ${hy - 58} L12 ${hy - 36} M44 ${hy - 54} L42 ${hy - 36}`} fill="none" stroke={hi} strokeWidth={3} opacity={0.3} />}
       </g>
     );
   }
