@@ -11,7 +11,7 @@ ann_a = L(3) + 4 / fps; ann_b = L(3) + 0.46 * (E(3) - L(3)) + 96 / fps
 P = 42 / fps
 wail = np.sin(2 * np.pi * np.cumsum(560 + 140 * np.sin(2 * np.pi * t / (2 * P))) / SR)
 bed += 0.2 * wail * env(ann_a, ann_b, 0.25)
-die = L(6) + 0.62 * (E(6) - L(6)); flat_a, flat_b = die, L(9) + 0.6
+die = L(6) + 0.62 * (E(6) - L(6)); flat_a, flat_b = die, die + 1.6
 beep = np.zeros(n)
 for k in range(int(ann_a / P), int(ann_b / P) + 1):
     s0 = k * P
