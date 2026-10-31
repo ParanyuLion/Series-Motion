@@ -21,3 +21,4 @@ Gemini Sulafat, a normal speaking level with a cold, slightly eerie calm (not wh
 - Never keep one establishing picture for more than about 5 s (the exterior hook was 10 s and felt too long): cut to the room as soon as the premise lines allow.
 - A loudspeaker/PA speaks as an overlay on the picture with a speaking effect tied to the voice loudness, not as a separate full-screen picture.
 - A character who speaks on screen moves the mouth. A dead face gets dark shadows to look scarier. The lanyard on the main character looked like a bug and was removed (the wristband clue is dropped). Render with `--crf=15`.
+- Framing (user, 2026-10-31): the main character's body sits at the middle height of the screen in every shot; overlays (the speaker panel at the top) must not cover the character; a sleeper lies on the bed, never stands on it.

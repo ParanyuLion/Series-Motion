@@ -48,16 +48,16 @@ type Cam = { x: number; y: number; z: number };
 type Shot = [number, number, Cam, Cam];
 const SHOTS = (): Shot[] => [
   [0, ls(1), { x: 760, y: 760, z: 1.15 }, { x: 740, y: 680, z: 1.6 }],
-  [ls(1), ls(2), { x: 540, y: 960, z: 1.05 }, { x: 520, y: 960, z: 1.18 }],
+  [ls(1), ls(2), { x: 380, y: 900, z: 1.25 }, { x: 400, y: 900, z: 1.4 }],
   // the room: you on the near bed (left), ต้น on the far bed (right)
-  [ls(2), ls(3), { x: 540, y: 960, z: 1.05 }, { x: 520, y: 980, z: 1.2 }],
-  [ls(3), ls(4), { x: 400, y: 960, z: 1.3 }, { x: 420, y: 960, z: 1.2 }],
+  [ls(2), ls(3), { x: 380, y: 900, z: 1.3 }, { x: 340, y: 894, z: 1.3 }],
+  [ls(3), ls(4), { x: 340, y: 894, z: 1.3 }, { x: 340, y: 894, z: 1.25 }],
   [ls(4), ls(5), { x: 830, y: 700, z: 3.0 }, { x: 840, y: 700, z: 3.3 }],
   [ls(5), ls(6), { x: 860, y: 700, z: 2.7 }, { x: 880, y: 700, z: 3.0 }],
   [ls(6), mid(6, 0.55), { x: 860, y: 700, z: 2.7 }, { x: 850, y: 700, z: 3.0 }],
   [mid(6, 0.55), ls(7), { x: 830, y: 710, z: 3.0 }, { x: 800, y: 715, z: 3.4 }],
   [ls(7), ls(8), { x: 790, y: 712, z: 4.4 }, { x: 790, y: 712, z: 4.8 }],
-  [ls(8), ls(9), { x: 330, y: 1000, z: 1.7 }, { x: 330, y: 1000, z: 1.9 }],
+  [ls(8), ls(9), { x: 330, y: 900, z: 1.7 }, { x: 330, y: 900, z: 1.9 }],
   // the corridor
   [ls(9), ls(10), { x: 540, y: 1000, z: 1.1 }, { x: 540, y: 960, z: 1.2 }],
   [ls(10), ls(11), { x: 480, y: 900, z: 1.6 }, { x: 460, y: 880, z: 1.9 }],
@@ -254,15 +254,16 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   const showPaper = g >= ls(12) && g < ls(13);
 
   // ---------------------------------------------------------------- the cast
-  let you = { x: 330, y: 1120, s: 0.9, yaw: 20, mood: "worry" as TravellerMood, walk: 0, sit: false, phase: t * 0.25, show: false };
+  let you = { rot: 0, x: 330, y: 1120, s: 0.9, yaw: 20, mood: "worry" as TravellerMood, walk: 0, sit: false, phase: t * 0.25, show: false };
   let ton = { x: 830, y: 770, s: 0.42, mood: "smile" as Mood, show: false, rot: 0, point: 0, shake: 0, sit: true };
   let talk = 0;
   let cleaner: { x: number; y: number; s: number; walk: number; show: boolean; o: number } = { x: 0, y: 0, s: 0.3, walk: 0, show: false, o: 0 };
 
   if (place === "room") {
-    const jolt = g >= ls(2) + 4 && g < ls(2) + 16 ? Math.sin(((g - ls(2) - 4) / 12) * Math.PI) * 20 : 0;
-    you = { ...you, show: true, sit: true, x: 330, y: 1120 - jolt, yaw: 20, mood: g >= ls(6) ? "scared" : g >= ls(2) ? "worry" : "calm" };
-    if (g < ls(2) + 4) you = { ...you, sit: false, x: 520, y: 960, yaw: 90, mood: "calm" };
+    // line 1: you lie asleep on the near bed (head on the pillow); at "สะดุ้งตื่น" you sit bolt upright
+    const k = smooth(clamp01((g - ls(2) - 2) / 14));
+    const kick = g >= ls(2) + 2 && g < ls(2) + 18 ? Math.sin(((g - ls(2) - 2) / 16) * Math.PI) * 14 : 0;
+    you = { ...you, show: true, sit: k > 0.55, rot: lerp(-88, 0, k), x: lerp(570, 330, k), y: lerp(935, 1120, k) - kick, yaw: lerp(0, 20, k), mood: g >= ls(6) ? "scared" : g >= ls(2) ? "worry" : "calm" };
     ton = {
       ...ton, show: true, mood: g >= lampPress ? "agony" : g >= ls(4) ? "smile" : "calm",
       rot: slump * -82, point: g >= ls(5) + 10 && g < dieAt ? smooth(clamp01((g - ls(5) - 10) / 20)) : 0,
@@ -359,7 +360,7 @@ export const Part1: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           {ton.show && <ellipse cx={ton.x - (ton.rot < -10 ? 80 : 0)} cy={ton.y + 6} rx={(ton.rot < -10 ? 180 : 55) * ton.s} ry={11 * ton.s} fill="#000" opacity={0.4} filter="url(#d1-soft)" />}
           {you.show && (
             <g filter="url(#d1-grade)">
-              <g transform={`translate(${you.x},${you.y + yi.dy}) rotate(${yi.rot}) scale(${you.s},${you.s * yi.sy})`}>
+              <g transform={`translate(${you.x},${you.y + yi.dy}) rotate(${yi.rot + you.rot}) scale(${you.s},${you.s * yi.sy})`}>
                 <Traveller yaw={you.yaw} mood={you.mood} walk={you.walk} phase={you.phase} sit={you.sit} t={t} />
               </g>
             </g>
