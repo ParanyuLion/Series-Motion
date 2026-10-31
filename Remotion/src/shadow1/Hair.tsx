@@ -67,15 +67,18 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
 /** drawn after the head ellipse and before the face */
 export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
   if (kind === "fringe") {
-    // long hair to the chest with straight blunt bangs just above the brows: a round dome on top that runs into a lock in front of each shoulder, no gaps between the pieces
+    // long hair to the chest with straight blunt bangs just above the brows. One merged shape: every piece is stroked in ink first (double width), then all pieces
+    // are filled on top, so the outline exists only on the OUTER edge and there is no dark seam where the bangs meet the side locks
     const f = flat ? ink : color;
     const hi = mix(color, "#ffffff", 0.35);
+    const shapes = [
+      ...[-1, 1].map((k) => `M${k * 94} ${hy - 44} L${k * 96} ${hy + 130} Q${k * 96} ${hy + 146} ${k * 74} ${hy + 146} Q${k * 50} ${hy + 146} ${k * 50} ${hy + 130} Q${k * 52} ${hy + 40} ${k * 58} ${hy - 44} Z`),
+      `M-94 ${hy - 6} C-100 ${hy - 76} -64 ${hy - 112} 0 ${hy - 112} C64 ${hy - 112} 100 ${hy - 76} 94 ${hy - 6} Q86 ${hy - 26} 76 ${hy - 32} Q38 ${hy - 26} 0 ${hy - 28} Q-38 ${hy - 26} -76 ${hy - 32} Q-86 ${hy - 26} -94 ${hy - 6} Z`,
+    ];
     return (
       <g strokeLinejoin="round" strokeLinecap="round">
-        {[-1, 1].map((k) => (
-          <path key={k} d={`M${k * 94} ${hy - 44} L${k * 96} ${hy + 130} Q${k * 96} ${hy + 146} ${k * 74} ${hy + 146} Q${k * 50} ${hy + 146} ${k * 50} ${hy + 130} Q${k * 52} ${hy + 40} ${k * 58} ${hy - 44} Z`} fill={f} stroke={ink} strokeWidth={sw - 2} />
-        ))}
-        <path d={`M-94 ${hy - 6} C-100 ${hy - 76} -64 ${hy - 112} 0 ${hy - 112} C64 ${hy - 112} 100 ${hy - 76} 94 ${hy - 6} Q86 ${hy - 26} 76 ${hy - 32} Q38 ${hy - 26} 0 ${hy - 28} Q-38 ${hy - 26} -76 ${hy - 32} Q-86 ${hy - 26} -94 ${hy - 6} Z`} fill={f} stroke={ink} strokeWidth={sw} />
+        {shapes.map((d, i) => <path key={"o" + i} d={d} fill={ink} stroke={ink} strokeWidth={sw * 2} />)}
+        {shapes.map((d, i) => <path key={"f" + i} d={d} fill={f} />)}
         {!flat && <path d={`M-52 ${hy - 92} Q-6 ${hy - 108} 52 ${hy - 92}`} fill="none" stroke={hi} strokeWidth={8} opacity={0.45} />}
         {!flat && <path d={`M-30 ${hy - 56} L-26 ${hy - 36} M10 ${hy - 58} L12 ${hy - 36} M44 ${hy - 54} L42 ${hy - 36}`} fill="none" stroke={hi} strokeWidth={3} opacity={0.3} />}
       </g>

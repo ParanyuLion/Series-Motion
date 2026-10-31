@@ -113,7 +113,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
             <g key={"l" + s} fill="none" stroke={INK} strokeLinecap="round">
               <path d={`M${s * 31 - 15} ${eyeY - 6 * blink} Q${s * 31} ${eyeY - 19 * blink} ${s * 31 + 15} ${eyeY - 6 * blink}`} strokeWidth={5} opacity={mood === "smile" ? 0 : 1} />
               {[0, 1, 2].map((k) => <path key={k} d={`M${s * (31 + 12 + k * 3)} ${eyeY - 8 + k * 4} l${s * (9 - k)} ${-9 + k * 2}`} strokeWidth={3.6} />)}
-              <ellipse cx={s * 52} cy={eyeY + 26} rx={14} ry={8} fill="#e8808a" stroke="none" opacity={0.32} />
+              <ellipse cx={s * 40} cy={eyeY + 26} rx={11} ry={7} fill="#e8808a" stroke="none" opacity={0.32} />
             </g>
           ))}
           <path d={`M-3 ${eyeY + 12} Q-10 ${eyeY + 28} 2 ${eyeY + 30}`} fill="none" stroke={INK} strokeWidth={4} opacity={0.7} />
