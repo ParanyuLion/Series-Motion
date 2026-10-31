@@ -69,7 +69,7 @@ const POOL = "#16224a";
 const POOL_DARK = "#050816";
 
 /** a standing figure about 380 high: body, round head, thin arms; `wave` raises one arm and swings it */
-const Sil: React.FC<{ x: number; y: number; s: number; lean?: number; wave?: number; t?: number; fill?: string; thin?: number; flip?: number; rim?: string }> = ({ x, y, s, lean = 0, wave = 0, t = 0, fill = POOL_DARK, thin = 1, flip = 1, rim }) => (
+export const Sil: React.FC<{ x: number; y: number; s: number; lean?: number; wave?: number; t?: number; fill?: string; thin?: number; flip?: number; rim?: string }> = ({ x, y, s, lean = 0, wave = 0, t = 0, fill = POOL_DARK, thin = 1, flip = 1, rim }) => (
   <g transform={`translate(${x},${y}) rotate(${lean}) scale(${s * thin * flip},${s})`} fill={fill} stroke={rim} strokeWidth={rim ? 6 : 0}>
     <path d="M-34 0 L-27 -225 Q-25 -296 0 -296 Q25 -296 27 -225 L34 0 Z" />
     <circle cx={0} cy={-340} r={34} />
@@ -100,7 +100,7 @@ const Crowd: React.FC<{ k: number; cx: number; cy: number; rx: number; ry: numbe
 };
 
 /** a lantern: a warm glow, a paper body with red bands, a flame; `lit` 0..1 */
-const Lantern: React.FC<{ lit: number; s?: number; t: number; seed?: number }> = ({ lit, s = 1, t, seed = 0 }) => {
+export const Lantern: React.FC<{ lit: number; s?: number; t: number; seed?: number }> = ({ lit, s = 1, t, seed = 0 }) => {
   const fl = 1 + Math.sin(t * 0.45 + seed * 3) * 0.07;
   return (
     <g transform={`scale(${s})`}>
@@ -193,7 +193,7 @@ const GripInsert: React.FC<{ k: number; t: number }> = ({ k, t }) => {
 };
 
 /** a wooden post with a clapper (the noon/dusk signal), struck at `hit` 0..1 */
-const Clapper: React.FC<{ hit: number }> = ({ hit }) => (
+export const Clapper: React.FC<{ hit: number }> = ({ hit }) => (
   <g strokeLinejoin="round">
     <rect x={-22} y={-340} width={44} height={340} fill="#5a4630" stroke={INK} strokeWidth={7} />
     <g transform={`translate(0,-300) rotate(${-34 * (1 - hit)})`}>

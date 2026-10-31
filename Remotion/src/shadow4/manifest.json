@@ -1,0 +1,153 @@
+{
+ "fps": 30,
+ "total": 2309,
+ "storyEnd": 2057,
+ "outroStart": 2069,
+ "shots": [
+  {
+   "text": "คุณเป็นคนเดียวในหมู่บ้านนี้ที่มีเงา",
+   "audio": "shadow4v/n0.mp3",
+   "audioFrames": 108,
+   "leadFrames": 21,
+   "frames": 135
+  },
+  {
+   "text": "และคืนนี้ ทุกคนถือตะเกียงออกมาตามหาเงาของคุณ",
+   "audio": "shadow4v/n1.mp3",
+   "audioFrames": 132,
+   "leadFrames": 6,
+   "frames": 180
+  },
+  {
+   "text": "แสงตะเกียงทอดเงาคุณยาวเต็มผนัง ใหญ่ขึ้นทุกก้าวที่วิ่ง",
+   "audio": "shadow4v/n2.mp3",
+   "audioFrames": 145,
+   "leadFrames": 6,
+   "frames": 157
+  },
+  {
+   "text": "ยิ่งมีแสง เงายิ่งชัด และพวกเขาก็ยิ่งตามทัน",
+   "audio": "shadow4v/n3.mp3",
+   "audioFrames": 147,
+   "leadFrames": 6,
+   "frames": 159
+  },
+  {
+   "text": "คุณถึงเข้าใจ ต้นไม้เอาได้แค่เงาที่แสงสร้างขึ้น",
+   "audio": "shadow4v/n4.mp3",
+   "audioFrames": 143,
+   "leadFrames": 6,
+   "frames": 155
+  },
+  {
+   "text": "คุณเป่าตะเกียงของตัวเองดับ",
+   "audio": "shadow4v/n5.mp3",
+   "audioFrames": 49,
+   "leadFrames": 6,
+   "frames": 61
+  },
+  {
+   "text": "ความมืดกลืนทุกอย่าง และเงาของคุณก็หายไปด้วย",
+   "audio": "shadow4v/n6.mp3",
+   "audioFrames": 162,
+   "leadFrames": 6,
+   "frames": 174
+  },
+  {
+   "text": "ชาวบ้านมองไม่เห็นคุณ เห็นแต่แสงตะเกียงของพวกเขา เหมือนดวงดาว",
+   "audio": "shadow4v/n7.mp3",
+   "audioFrames": 180,
+   "leadFrames": 6,
+   "frames": 192
+  },
+  {
+   "text": "คุณเดินเงียบๆ ผ่านพวกเขาไปทีละก้าว",
+   "audio": "shadow4v/n8.mp3",
+   "audioFrames": 80,
+   "leadFrames": 6,
+   "frames": 92
+  },
+  {
+   "text": "จนถึงถนน และรถคันแรกของเช้านั้นก็จอดรับคุณ",
+   "audio": "shadow4v/n9.mp3",
+   "audioFrames": 131,
+   "leadFrames": 6,
+   "frames": 143
+  },
+  {
+   "text": "ถึงบ้าน คุณเปิดไฟดวงแรก แล้วมองไปที่ผนัง",
+   "audio": "shadow4v/n10.mp3",
+   "audioFrames": 132,
+   "leadFrames": 6,
+   "frames": 144
+  },
+  {
+   "text": "ไม่มีเงาอยู่เลย ต้นไม้ได้มันไปตั้งแต่เมื่อไหร่ก็ไม่รู้",
+   "audio": "shadow4v/n11.mp3",
+   "audioFrames": 129,
+   "leadFrames": 6,
+   "frames": 141
+  },
+  {
+   "text": "หลายวันต่อมา คุณยืนอยู่ที่ปากทางหมู่บ้านนั้นอีกครั้ง",
+   "audio": "shadow4v/n12.mp3",
+   "audioFrames": 115,
+   "leadFrames": 6,
+   "frames": 127
+  },
+  {
+   "text": "มีคนแปลกหน้าลงจากรถ คุณยิ้มแล้วพูดว่า เงาสวยจังเลย",
+   "audio": "shadow4v/n13.mp3",
+   "audioFrames": 191,
+   "leadFrames": 6,
+   "frames": 209
+  }
+ ],
+ "starts": [
+  0,
+  135,
+  315,
+  472,
+  631,
+  786,
+  847,
+  1021,
+  1213,
+  1305,
+  1448,
+  1592,
+  1733,
+  1860
+ ],
+ "cues": {
+  "titleAt": 277,
+  "lineStart0": 21,
+  "lineEnd0": 129,
+  "lineStart1": 141,
+  "lineEnd1": 273,
+  "lineStart2": 321,
+  "lineEnd2": 466,
+  "lineStart3": 478,
+  "lineEnd3": 625,
+  "lineStart4": 637,
+  "lineEnd4": 780,
+  "lineStart5": 792,
+  "lineEnd5": 841,
+  "lineStart6": 853,
+  "lineEnd6": 1015,
+  "lineStart7": 1027,
+  "lineEnd7": 1207,
+  "lineStart8": 1219,
+  "lineEnd8": 1299,
+  "lineStart9": 1311,
+  "lineEnd9": 1442,
+  "lineStart10": 1454,
+  "lineEnd10": 1586,
+  "lineStart11": 1598,
+  "lineEnd11": 1727,
+  "lineStart12": 1739,
+  "lineEnd12": 1854,
+  "lineStart13": 1866,
+  "lineEnd13": 2057
+ }
+}
