@@ -72,7 +72,7 @@ export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
     const f = flat ? ink : color;
     const hi = mix(color, "#ffffff", 0.35);
     const shapes = [
-      ...[-1, 1].map((k) => `M${k * 94} ${hy - 44} L${k * 96} ${hy + 130} Q${k * 96} ${hy + 146} ${k * 74} ${hy + 146} Q${k * 50} ${hy + 146} ${k * 50} ${hy + 130} Q${k * 52} ${hy + 40} ${k * 58} ${hy - 44} Z`),
+      ...[-1, 1].map((k) => `M${k * 94} ${hy - 44} L${k * 96} ${hy + 130} Q${k * 96} ${hy + 146} ${k * 82} ${hy + 146} Q${k * 68} ${hy + 146} ${k * 68} ${hy + 130} Q${k * 68} ${hy + 40} ${k * 66} ${hy - 44} Z`),
       `M-94 ${hy - 6} C-100 ${hy - 76} -64 ${hy - 112} 0 ${hy - 112} C64 ${hy - 112} 100 ${hy - 76} 94 ${hy - 6} Q86 ${hy - 26} 76 ${hy - 32} Q38 ${hy - 26} 0 ${hy - 28} Q-38 ${hy - 26} -76 ${hy - 32} Q-86 ${hy - 26} -94 ${hy - 6} Z`,
     ];
     return (
