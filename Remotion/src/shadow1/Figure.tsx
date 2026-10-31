@@ -27,6 +27,8 @@ export type Look = {
   badge?: boolean;
   /** eyelashes, blush and coloured lips */
   lady?: boolean;
+  /** a knee-length skirt in this colour; the legs are bare skin */
+  skirt?: string;
 };
 
 const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
@@ -145,6 +147,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
                 {!silhouette && <path d={`M${dx} ${hipY + 20} L${kx} ${ky + 6} L${ax} ${ay - 6}`} fill="none" stroke="#0f0b09" strokeWidth={3} opacity={0.18} />}
                 {!silhouette && <path d={`M${ax - 16} ${ay - 10} L${ax + 16} ${ay - 10}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />}
               </g>
+            ) : look.skirt ? (
+              <g fill="none"><path d={`M${dx} ${hipY} L${kx} ${ky} L${ax} ${ay + 6}`} stroke={stroke} strokeWidth={21} /><path d={`M${dx} ${hipY} L${kx} ${ky} L${ax} ${ay + 6}`} stroke={silhouette ? S! : mix(skin, "#ffffff", 0.05)} strokeWidth={12} /></g>
             ) : (
               <path d={`M${dx} ${hipY} L${kx} ${ky} L${ax} ${ay + 6}`} fill="none" stroke={stroke} strokeWidth={sw + 1} />
             )}
@@ -242,6 +246,13 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         </g>
       )}
       {!silhouette && Array.from({ length: 5 }, (_, i) => <path key={i} d={`M${bw * 0.55 + i * 5} ${topY + 70 + i * 36} l${-26} ${34}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />)}
+      {look.skirt && (
+        <g>
+          <path d={`M${-bw * 0.8} ${hipY - 34} Q${-bw * 1.5} ${hipY + 20} ${-bw * 1.55} ${hipY + 64} Q0 ${hipY + 84} ${bw * 1.55} ${hipY + 64} Q${bw * 1.5} ${hipY + 20} ${bw * 0.8} ${hipY - 34} Q0 ${hipY - 20} ${-bw * 0.8} ${hipY - 34} Z`} fill={silhouette ? S! : look.skirt} stroke={stroke} strokeWidth={sw - 1} />
+          {!silhouette && [-0.9, -0.45, 0, 0.45, 0.9].map((k) => <path key={k} d={`M${k * bw * 0.7} ${hipY - 22} Q${k * bw * 1.2} ${hipY + 30} ${k * bw * 1.45} ${hipY + 70}`} fill="none" stroke="#000" strokeWidth={3} opacity={0.2} />)}
+          {!silhouette && <path d={`M${-bw * 0.8} ${hipY - 34} Q0 ${hipY - 20} ${bw * 0.8} ${hipY - 34}`} fill="none" stroke={mix(look.skirt, "#ffffff", 0.3)} strokeWidth={5} opacity={0.6} />}
+        </g>
+      )}
       {!silhouette && look.detail === "strap" && <path d={`M${-bw * 0.5} ${topY + 24} L${bw * 0.55} ${hipY - 30}`} stroke="#3a2d26" strokeWidth={14} opacity={0.85} />}
       {!silhouette && look.detail === "apron" && <path d={`M${-bw * 0.6} ${topY + 70} L${bw * 0.6} ${topY + 70} L${bw * 0.7} ${hipY - 6} L${-bw * 0.7} ${hipY - 6} Z`} fill="#f4efe0" stroke={INK} strokeWidth={4} opacity={0.95} />}
       {!silhouette && look.detail === "patch" && <rect x={bw * 0.1} y={topY + 120} width={30} height={30} fill="#b5a37a" stroke={INK} strokeWidth={3} />}

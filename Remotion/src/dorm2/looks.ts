@@ -1,4 +1,4 @@
 import { LOOKS } from "../shadow1/Figure";
 
-// พี่ปีสี่ (a woman): long dark hair swept to one side and flicked at the ends, a burgundy hoodie with a bag strap, light jeans, no glasses
-LOOKS.senior = { hair: "long", hairColor: "#2a1a1e", body: "#9a3d4c", bodyKind: "lean", lady: true, detail: "strap", pants: "#6f86a8", sleeve: "long", skin: "#e2b48e" };
+// พี่ปีสี่ (a woman): long dark hair swept to one side, a pale lavender top, a burgundy knee-length skirt, fair skin, eyelashes, no glasses
+LOOKS.senior = { hair: "long", hairColor: "#2a1a1e", body: "#b7a6d8", bodyKind: "lean", lady: true, skirt: "#7a2f45", detail: "none", sleeve: "long", skin: "#f7e0cd" };
