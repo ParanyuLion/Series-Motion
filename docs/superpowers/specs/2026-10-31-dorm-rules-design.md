@@ -8,7 +8,7 @@ Same DNA as the blind village hit: a closed place with a rule everybody obeys, o
 ## Format
 - First person "ผม" (the user's pitch uses it; the BTS series did too). A standalone hook in every part ("เมื่อเสียงไซเรนดังตอนตี 3 หอพักธรรมดากลายเป็นลานประหาร กฎเหล็กบอกว่าผู้ฝ่าฝืนตายทันที และกฎจะเปลี่ยนใหม่ทุกชั่วโมง"), the title card names the series and the hour.
 - Five parts of about 70 to 85 s, one part per hour: 03:00, 04:00, 05:00, 06:00, and the finale at dawn. Gemini Charon narration, burned-in Thai subtitles, 9:16, code-drawn like the other series, plus cartoonised photo backdrops.
-- Deaths may be shown (user, 2026-10-31): the characters are cartoons, so the roommate's death is played on screen as a cartoon death, but with no blood at all (no red liquid, no wounds, no gore). The cruelty comes from how fast and how certain it is, a flash of red siren light and a hard cut, not from injury.
+- Deaths may be shown (user, 2026-10-31): the characters are cartoons, so the roommate's death is played on screen: he goes limp and slumps like a corpse with an agonised, twisted face (eyes wide, mouth open). The narration may say that blood comes out, but no blood is ever drawn (no red liquid, no wounds, no gore). The cruelty comes from the face, the speed and the certainty.
 
 ## The rule board (the motif) and the puzzle (user, 2026-10-31)
 Each hour a new "iron rule" appears on a notice card on the corridor wall and through the PA. The card is a full-screen graphic with a siren sound and a red light sweep. The user wants the rules to feel brutal, as if there is no way to survive, and each part to be a puzzle game in which an unexpected way out exists. The design rules for every card:
