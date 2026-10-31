@@ -8,9 +8,10 @@ import "./looks";
 // a look sheet of the dorm cast, for design review only
 export const DormCastPreview: React.FC = () => {
   const cast: { look: string; x: number; label: string }[] = [
-    { look: "ton", x: 380, label: "ton" },
-    { look: "senior", x: 650, label: "senior" },
-    { look: "cleaner", x: 930, label: "cleaner" },
+    { look: "ton", x: 330, label: "ton" },
+    { look: "senior", x: 560, label: "senior" },
+    { look: "seniorB", x: 790, label: "seniorB" },
+    { look: "cleaner", x: 1000, label: "cleaner" },
   ];
   return (
     <AbsoluteFill style={{ background: "linear-gradient(#cfd6da,#8d979c)" }}>
@@ -22,7 +23,7 @@ export const DormCastPreview: React.FC = () => {
           </svg>
         </div>
       ))}
-      <div style={{ position: "absolute", left: 140, top: 1100, width: 0, height: 0 }}>
+      <div style={{ position: "absolute", left: 110, top: 1100, width: 0, height: 0 }}>
         <svg width={1} height={1} style={{ overflow: "visible" }}><g transform="scale(0.5) translate(0,0)"><Traveller mood="calm" /></g></svg>
       </div>
     </AbsoluteFill>
