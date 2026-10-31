@@ -114,3 +114,4 @@ Newest at the bottom. One line per piece of feedback: what the user said, what w
 - 2026-10-31 (dorm series, senior design): give a female character her own proportions through look overrides (a short torso, long legs, a slim body) and draw long hair behind the body so the head never floats; build hair from pieces that share one outline (no seams or gaps); keep blush and lashes inside the face.
 - 2026-10-31 (dorm Part 2): a prop a character holds (a notebook) must be held: hide the hanging arms (Figure hideArms) and draw both forearms and the hands over the prop; never draw the prop alone in front of the body.
 - 2026-11-01 (dorm Part 2): the user preferred the senior to carry the notebook in one hand rather than hug it; when a prop changes, change the narration word too (กอด to ถือ) and regenerate the voice.
+- 2026-11-01 (dorm Part 2): text drawn on a prop must fit inside the prop (use textLength / a smaller size); check a close still of every prop with text.

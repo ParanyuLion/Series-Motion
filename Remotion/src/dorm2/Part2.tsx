@@ -127,7 +127,7 @@ const WetSign: React.FC<{ x: number; y: number; s: number; glow: number }> = ({ 
     <path d="M-62 0 L-46 -190 L46 -190 L62 0 Z" fill="url(#d2-sign)" stroke={INK} strokeWidth={7} />
     <path d="M-52 -14 L-40 -176 L40 -176 L52 -14 Z" fill="none" stroke="#c08a10" strokeWidth={4} opacity={0.7} />
     <path d="M0 -168 L26 -120 L-26 -120 Z" fill="#1c1a16" />
-    <text x={0} y={-52} textAnchor="middle" fontFamily={fontFamily} fontSize={38} fontWeight={700} fill="#1c1a16">พื้นเปียก</text>
+    <text x={0} y={-46} textAnchor="middle" fontFamily={fontFamily} fontSize={27} fontWeight={700} fill="#1c1a16" textLength={78} lengthAdjust="spacingAndGlyphs">พื้นเปียก</text>
     <rect x={-66} y={-6} width={132} height={8} rx={3} fill="#8a6a10" opacity={0.6} />
   </g>
 );
