@@ -63,16 +63,35 @@ const rnd = (i: number, k: number) => { const x = Math.sin(i * 127.1 + k * 311.7
 type Lant = { x: number; y: number; s: number; lit: number; gy: number };
 
 const Truck: React.FC<{ x: number; y: number; s: number; tilt?: number }> = ({ x, y, s, tilt = 0 }) => (
-  <g transform={`translate(${x},${y}) scale(${s}) rotate(${tilt})`} strokeLinejoin="round">
-    <ellipse cx={0} cy={4} rx={260} ry={14} fill="#000" opacity={0.25} />
-    <rect x={-250} y={-150} width={300} height={110} fill="#8a6a44" stroke={INK} strokeWidth={8} />
-    {[-210, -150, -90, -30, 20].map((px) => <line key={px} x1={px} y1={-150} x2={px} y2={-40} stroke={INK} strokeWidth={3} opacity={0.5} />)}
-    <path d="M50 -40 L50 -170 L150 -170 L220 -95 L250 -85 L250 -40 Z" fill="#6d8a5a" stroke={INK} strokeWidth={8} />
-    <path d="M90 -150 L140 -150 L190 -100 L90 -100 Z" fill="#cfe0e8" stroke={INK} strokeWidth={6} />
-    <rect x={-260} y={-48} width={520} height={16} fill="#3a3028" stroke={INK} strokeWidth={6} />
-    {[-150, 140].map((cx) => (
-      <g key={cx}><circle cx={cx} cy={-18} r={42} fill="#1c1a18" stroke={INK} strokeWidth={7} /><circle cx={cx} cy={-18} r={18} fill="#8a8478" stroke={INK} strokeWidth={4} /></g>
+  <g transform={`translate(${x},${y}) scale(${s}) rotate(${tilt})`} strokeLinejoin="round" strokeLinecap="round">
+    <ellipse cx={0} cy={6} rx={280} ry={16} fill="#000" opacity={0.28} />
+    {/* the bed: slatted wooden sides with a rail, a rusty tailgate, a tarp-covered load */}
+    <rect x={-262} y={-158} width={312} height={118} fill="#8a6a44" stroke={INK} strokeWidth={8} />
+    {[-224, -186, -148, -110, -72, -34, 4].map((px) => <line key={px} x1={px} y1={-152} x2={px} y2={-46} stroke="#5a4326" strokeWidth={4} opacity={0.7} />)}
+    <rect x={-268} y={-168} width={324} height={16} fill="#6a5030" stroke={INK} strokeWidth={6} />
+    <path d="M-250 -168 Q-200 -226 -120 -214 Q-60 -236 10 -200 L30 -168 Z" fill="#b9a67a" stroke={INK} strokeWidth={6} />
+    <path d="M-190 -200 q10 18 0 34 M-100 -208 q10 20 0 40 M-20 -196 q8 16 0 30" fill="none" stroke="#8c7a52" strokeWidth={4} />
+    <rect x={-268} y={-56} width={14} height={40} fill="#7a3624" stroke={INK} strokeWidth={4} />
+    {/* the cab: roof, window with a pillar, door with a handle and a seam, mirror, grille, bumper, headlight */}
+    <path d="M50 -40 L50 -176 L148 -176 L214 -100 L254 -92 L254 -40 Z" fill="#6d8a5a" stroke={INK} strokeWidth={8} />
+    <path d="M56 -176 L148 -176 L150 -186 L56 -186 Z" fill="#587346" stroke={INK} strokeWidth={5} />
+    <path d="M84 -156 L140 -156 L192 -104 L84 -104 Z" fill="#cfe0e8" stroke={INK} strokeWidth={6} />
+    <path d="M96 -150 L120 -150 L96 -112 Z" fill="#ffffff" opacity={0.5} />
+    <line x1={112} y1={-104} x2={112} y2={-44} stroke={INK} strokeWidth={4} opacity={0.8} />
+    <rect x={92} y={-90} width={20} height={6} rx={3} fill="#3a3028" stroke={INK} strokeWidth={2} />
+    <path d="M70 -120 L48 -130 L48 -100 L70 -96 Z" fill="#3a3028" stroke={INK} strokeWidth={4} />
+    <rect x={226} y={-84} width={26} height={30} fill="#3a3028" stroke={INK} strokeWidth={5} />
+    {[-78, -70, -62].map((gy) => <line key={gy} x1={228} y1={gy} x2={250} y2={gy} stroke="#8a8478" strokeWidth={3} />)}
+    <circle cx={242} cy={-96} r={10} fill="#f3e6a8" stroke={INK} strokeWidth={4} />
+    <rect x={216} y={-50} width={44} height={14} fill="#8a8478" stroke={INK} strokeWidth={5} />
+    <rect x={-270} y={-48} width={500} height={14} fill="#3a3028" stroke={INK} strokeWidth={6} />
+    <path d="M-170 -34 q0 -50 40 -50 q40 0 40 50 M120 -34 q0 -50 44 -50 q44 0 44 50" fill="#2a2320" stroke={INK} strokeWidth={5} />
+    {/* mud and dust on the lower body */}
+    <path d="M-262 -40 q30 12 70 4 q40 8 80 0 q50 10 120 2 q60 8 124 -2 L254 -40 Z" fill="#7a5c3a" opacity={0.55} />
+    {[-130, 150].map((cx) => (
+      <g key={cx}><circle cx={cx} cy={-18} r={44} fill="#1c1a18" stroke={INK} strokeWidth={7} /><circle cx={cx} cy={-18} r={20} fill="#8a8478" stroke={INK} strokeWidth={4} />{[0, 60, 120, 180, 240, 300].map((a) => <line key={a} x1={cx} y1={-18} x2={cx + 20 * Math.cos((a * Math.PI) / 180)} y2={-18 + 20 * Math.sin((a * Math.PI) / 180)} stroke={INK} strokeWidth={3} />)}<circle cx={cx} cy={-18} r={6} fill="#3a3028" /></g>
     ))}
+    <rect x={-300} y={-30} width={22} height={34} fill="#2a2320" stroke={INK} strokeWidth={4} />
   </g>
 );
 
@@ -241,7 +260,17 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
         <g transform={`translate(540,900) scale(${cam.z}) translate(${-cam.x},${-cam.y})`}>
           {isPhoto && <image href={staticFile(bg.src)} x={0} y={0} width={1080} height={1250} filter={place === "home" ? undefined : "url(#p4-desat)"} />}
           {isPhoto && <rect y={0} width={1080} height={1250} fill="url(#p4-fade)" />}
-          {place === "home" ? <rect x={-200} y={1236} width={1480} height={1500} fill={bg.edge} /> : <Ground kind={place === "alley" ? "alley" : "lane"} edge={bg.edge} />}
+          {place === "home" && <rect x={-200} y={1236} width={1480} height={1500} fill="#b88c78" />}
+          {place === "home" && (
+            <g>
+              <rect x={-200} y={0} width={1480} height={925} fill="#efe2cc" opacity={0.3} />
+              <rect x={-200} y={925} width={1480} height={1800} fill="#b97f8a" opacity={0.5} />
+              <rect x={-200} y={905} width={1480} height={26} fill="#7a4e56" opacity={0.7} />
+              {Array.from({ length: 9 }, (_, i) => <line key={"hl" + i} x1={-200} y1={940 + Math.pow(i / 8, 1.6) * 520} x2={1280} y2={940 + Math.pow(i / 8, 1.6) * 520} stroke="#6a3a46" strokeWidth={3} opacity={0.35} />)}
+              {Array.from({ length: 9 }, (_, i) => <line key={"vl" + i} x1={540 + (i - 4) * 70} y1={925} x2={540 + (i - 4) * 260} y2={1500} stroke="#6a3a46" strokeWidth={3} opacity={0.3} />)}
+            </g>
+          )}
+          {place === "home" ? null : <Ground kind={place === "alley" ? "alley" : "lane"} edge={bg.edge} />}
           {place === "home" && <Room lamp={lamp} t={t} />}
           {(place === "dawn" || place === "mouth") && <Truck x={truckX} y={1225} s={place === "dawn" ? 2.3 : 1.9} />}
 
