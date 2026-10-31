@@ -1,153 +1,153 @@
 {
  "fps": 30,
- "total": 2380,
- "storyEnd": 2158,
- "outroStart": 2170,
+ "total": 2400,
+ "storyEnd": 2178,
+ "outroStart": 2190,
  "shots": [
   {
    "text": "ไซเรนดังตอนตีสาม หอพักของผมก็กลายเป็นลานประหาร",
    "audio": "dorm2v/n0.mp3",
-   "audioFrames": 114,
+   "audioFrames": 116,
    "leadFrames": 21,
-   "frames": 141
+   "frames": 143
   },
   {
    "text": "กฎเหล็กบอกว่า ผู้ฝ่าฝืนตายทันที และกฎจะเปลี่ยนใหม่ทุกชั่วโมง",
    "audio": "dorm2v/n1.mp3",
-   "audioFrames": 160,
+   "audioFrames": 137,
    "leadFrames": 6,
-   "frames": 208
+   "frames": 185
   },
   {
    "text": "ตีสี่ตรง ลำโพงทั้งตึกประกาศอีกครั้ง กฎข้อสอง ห้ามอยู่ในห้อง",
    "audio": "dorm2v/n2.mp3",
-   "audioFrames": 165,
+   "audioFrames": 156,
    "leadFrames": 6,
-   "frames": 177
+   "frames": 168
   },
   {
    "text": "แล้วเสียงเดิมก็พูดต่อ และห้ามอยู่นอกห้องด้วย",
    "audio": "dorm2v/n3.mp3",
-   "audioFrames": 108,
+   "audioFrames": 110,
    "leadFrames": 6,
-   "frames": 120
+   "frames": 122
   },
   {
    "text": "ป้าแม่บ้านถูพื้นอยู่หน้าห้องสามศูนย์สี่ แล้ววางป้ายพื้นเปียกพาดตรงธรณีประตูไว้",
    "audio": "dorm2v/n4.mp3",
-   "audioFrames": 132,
+   "audioFrames": 153,
    "leadFrames": 6,
-   "frames": 144
+   "frames": 165
   },
   {
-   "text": "รุ่นพี่ปีสี่ที่รอดมาตั้งแต่คืนแรกกอดสมุดเล่มหนา บอกว่า กฎแบบนี้ไม่มีใครรอด",
+   "text": "รุ่นพี่ปีสี่ที่รอดมาตั้งแต่คืนแรกถือสมุดเล่มหนา บอกว่า กฎแบบนี้ไม่มีใครรอด",
    "audio": "dorm2v/n5.mp3",
-   "audioFrames": 194,
+   "audioFrames": 210,
    "leadFrames": 6,
-   "frames": 206
+   "frames": 222
   },
   {
    "text": "ผู้หญิงชั้นสามตกใจ วิ่งเข้าห้องแล้วปิดประตู เธอล้มลงตายทันที",
    "audio": "dorm2v/n6.mp3",
-   "audioFrames": 124,
+   "audioFrames": 152,
    "leadFrames": 6,
-   "frames": 136
+   "frames": 164
   },
   {
    "text": "ผู้ชายอีกคนวิ่งหนีออกไปทางบันได ไปไม่ถึงชั้นล่างก็ล้มตาม",
    "audio": "dorm2v/n7.mp3",
-   "audioFrames": 126,
+   "audioFrames": 123,
    "leadFrames": 6,
-   "frames": 138
+   "frames": 135
   },
   {
    "text": "ไซเรนเริ่มนับถอยหลังหกสิบวินาที ผมไม่มีที่ให้ไป",
    "audio": "dorm2v/n8.mp3",
-   "audioFrames": 111,
+   "audioFrames": 118,
    "leadFrames": 6,
-   "frames": 123
+   "frames": 130
   },
   {
    "text": "คุณคิดออกมั้ย ว่ามีที่ไหนที่ไม่ใช่ทั้งในห้อง และไม่ใช่ทั้งนอกห้อง",
    "audio": "dorm2v/n9.mp3",
-   "audioFrames": 154,
+   "audioFrames": 139,
    "leadFrames": 6,
-   "frames": 166
+   "frames": 151
   },
   {
    "text": "ผมมองไปที่ป้ายพื้นเปียก แล้วนึกขึ้นได้ว่า ธรณีประตู",
    "audio": "dorm2v/n10.mp3",
-   "audioFrames": 114,
+   "audioFrames": 117,
    "leadFrames": 6,
-   "frames": 126
+   "frames": 129
   },
   {
    "text": "ผมกับรุ่นพี่ยืนเท้าสองข้างบนธรณีประตู ไม่ล้ำเข้าห้อง ไม่ก้าวออกทางเดิน",
    "audio": "dorm2v/n11.mp3",
-   "audioFrames": 183,
+   "audioFrames": 164,
    "leadFrames": 6,
-   "frames": 195
+   "frames": 176
   },
   {
    "text": "ตัวเลขถึงศูนย์ ไฟแดงดับลง ไม่มีใครตายเพิ่ม",
    "audio": "dorm2v/n12.mp3",
-   "audioFrames": 115,
+   "audioFrames": 101,
    "leadFrames": 6,
-   "frames": 127
+   "frames": 113
   },
   {
    "text": "รุ่นพี่เปิดสมุดให้ดู ลายมือกฎทุกคืนเหมือนกับลายมือบนกระดาษของป้าแม่บ้าน",
    "audio": "dorm2v/n13.mp3",
-   "audioFrames": 145,
+   "audioFrames": 169,
    "leadFrames": 6,
-   "frames": 163
+   "frames": 187
   }
  ],
  "starts": [
   0,
-  141,
-  349,
-  526,
-  646,
-  790,
-  996,
-  1132,
-  1270,
-  1393,
-  1559,
-  1685,
-  1880,
-  2007
+  143,
+  328,
+  496,
+  618,
+  783,
+  1005,
+  1169,
+  1304,
+  1434,
+  1585,
+  1714,
+  1890,
+  2003
  ],
  "cues": {
-  "titleAt": 311,
+  "titleAt": 290,
   "lineStart0": 21,
-  "lineEnd0": 135,
-  "lineStart1": 147,
-  "lineEnd1": 307,
-  "lineStart2": 355,
-  "lineEnd2": 520,
-  "lineStart3": 532,
-  "lineEnd3": 640,
-  "lineStart4": 652,
-  "lineEnd4": 784,
-  "lineStart5": 796,
-  "lineEnd5": 990,
-  "lineStart6": 1002,
-  "lineEnd6": 1126,
-  "lineStart7": 1138,
-  "lineEnd7": 1264,
-  "lineStart8": 1276,
-  "lineEnd8": 1387,
-  "lineStart9": 1399,
-  "lineEnd9": 1553,
-  "lineStart10": 1565,
-  "lineEnd10": 1679,
-  "lineStart11": 1691,
-  "lineEnd11": 1874,
-  "lineStart12": 1886,
-  "lineEnd12": 2001,
-  "lineStart13": 2013,
-  "lineEnd13": 2158
+  "lineEnd0": 137,
+  "lineStart1": 149,
+  "lineEnd1": 286,
+  "lineStart2": 334,
+  "lineEnd2": 490,
+  "lineStart3": 502,
+  "lineEnd3": 612,
+  "lineStart4": 624,
+  "lineEnd4": 777,
+  "lineStart5": 789,
+  "lineEnd5": 999,
+  "lineStart6": 1011,
+  "lineEnd6": 1163,
+  "lineStart7": 1175,
+  "lineEnd7": 1298,
+  "lineStart8": 1310,
+  "lineEnd8": 1428,
+  "lineStart9": 1440,
+  "lineEnd9": 1579,
+  "lineStart10": 1591,
+  "lineEnd10": 1708,
+  "lineStart11": 1720,
+  "lineEnd11": 1884,
+  "lineStart12": 1896,
+  "lineEnd12": 1997,
+  "lineStart13": 2009,
+  "lineEnd13": 2178
  }
 }
