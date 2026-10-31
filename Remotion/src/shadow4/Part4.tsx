@@ -178,7 +178,7 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
     if (g < blow + 6) {
       const l = lit(g) * 1;
       youLantern = { lit: l };
-      lanterns.push({ x: you.x + 70 * you.s, y: you.y - 330 * you.s, s: 0.75 * you.s + 0.25, lit: l, gy: you.y + 4 });
+      lanterns.push({ x: you.x + 105 * you.s, y: you.y - 330 * you.s, s: 0.75 * you.s + 0.25, lit: l, gy: you.y + 4 });
       puff = g >= blow ? clamp01(1 - (g - blow) / 20) : 0;
     }
     if (g >= blow) {
@@ -228,8 +228,7 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   cam = { ...cam, x: Math.min(Math.max(cam.x, 540 / cam.z), 1080 - 540 / cam.z), y: Math.max(cam.y, 900 / cam.z) };
   const bg = BG[place] ?? BG.lane;
   const yi = idle(t, 0.7, you.walk < 0.05);
-  const sorted = [...people].sort((a, b) => a.y - b.y);
-  const isPhoto = place !== "home";
+    const isPhoto = place !== "home";
   const dawnK = place === "dawn" ? 1 : 0;
   const truckX = place === "dawn" ? lerp(1500, 840, smooth(clamp01((g - ls(9) + 6) / 70))) : place === "mouth" ? 960 : 0;
 
@@ -246,6 +245,8 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
             <feColorMatrix type="saturate" values="0.5" />
             <feColorMatrix type="matrix" values="0.7 0 0 0 0.02  0 0.8 0 0 0.03  0 0 1.05 0 0.07  0 0 0 1 0" />
           </filter>
+          <filter id="p4-dimp" colorInterpolationFilters="sRGB"><feComponentTransfer><feFuncR type="linear" slope={1 - night} intercept={night * 0.063} /><feFuncG type="linear" slope={1 - night} intercept={night * 0.086} /><feFuncB type="linear" slope={1 - night} intercept={night * 0.235} /></feComponentTransfer></filter>
+          <filter id="p4-dimy" colorInterpolationFilters="sRGB"><feComponentTransfer><feFuncR type="linear" slope={1 - night * 0.45} intercept={night * 0.028} /><feFuncG type="linear" slope={1 - night * 0.45} intercept={night * 0.039} /><feFuncB type="linear" slope={1 - night * 0.45} intercept={night * 0.106} /></feComponentTransfer></filter>
           <filter id="p4-desat" colorInterpolationFilters="sRGB"><feColorMatrix type="saturate" values="0.72" /></filter>
           <linearGradient id="p4-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0.93" stopColor={bg.edge} stopOpacity="0" /><stop offset="1" stopColor={bg.edge} stopOpacity="1" /></linearGradient>
           <radialGradient id="p4-vig" cx="0.5" cy="0.5" r="0.75"><stop offset="0.5" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#0a0604" stopOpacity="0.75" /></radialGradient>
@@ -260,48 +261,47 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           {place === "home" && <Room lamp={lamp} t={t} />}
           {(place === "dawn" || place === "mouth") && <Truck x={truckX} y={1225} s={place === "dawn" ? 0.9 : 0.6} />}
 
-          <g filter={you.cold ? "url(#p4-cold)" : "url(#pv-grade)"}>
-            {sorted.filter((p) => p.y <= you.y).map((p, i) => <Villager key={p.id + i + "a"} {...p} t={t} />)}
-            {place === "mouth" && newcomer && (
-              <g>
-                <Shade x={newcomer.x} y={newcomer.y} k={0.82} skew={-55} sq={0.34}><Traveller yaw={newcomer.walk > 0.05 ? 270 : 300} silhouette walk={newcomer.walk} phase={t * 0.25} /></Shade>
-                <g transform={`translate(${newcomer.x},${newcomer.y}) scale(0.82)`}><g stroke={INK} strokeWidth={6} strokeLinejoin="round"><rect x={26} y={-310} width={72} height={130} rx={18} fill="#d9782a" /><rect x={40} y={-290} width={44} height={36} rx={8} fill="#b85f1c" /></g><Traveller yaw={newcomer.walk > 0.05 ? 270 : 300} mood="worry" walk={newcomer.walk} phase={t * 0.25} t={t + 40} /></g>
-              </g>
-            )}
+          {night > 0 && <rect x={-200} y={0} width={1480} height={2700} fill="#10163c" opacity={night} />}
+          {/* things on the ground that lie under everyone: the newcomer's shadow and yours */}
+          <g filter="url(#pv-grade)">
+            {place === "mouth" && newcomer && <Shade x={newcomer.x} y={newcomer.y} k={0.82} skew={-55} sq={0.34}><Traveller yaw={newcomer.walk > 0.05 ? 270 : 300} silhouette walk={newcomer.walk} phase={t * 0.25} /></Shade>}
             {you.shadow && shadows.map((sh, i) => (
               <g key={i} opacity={sh.o}><Shade x={you.x} y={you.y} k={you.s * sh.k} skew={sh.skew} sq={sh.sq}><Traveller yaw={you.yaw} silhouette walk={you.walk} phase={you.phase} /></Shade></g>
             ))}
-            {!darkAlley && <g transform={`translate(${you.x},${you.y + yi.dy}) rotate(${yi.rot}) scale(${you.s},${you.s * yi.sy})`}>
-              <Traveller yaw={you.yaw} mood={you.mood} walk={you.walk} phase={you.phase} t={t} />
-              {place === "mouth" && <g transform="translate(34,-292)"><circle r={19} fill="#f1e6cf" stroke={INK} strokeWidth={4} /><circle r={12} fill="none" stroke="#b9382c" strokeWidth={5} /><circle r={4.5} fill={INK} /></g>}
-            </g>}
-            {sorted.filter((p) => p.y > you.y).map((p, i) => <Villager key={"f" + p.id + i} {...p} t={t} />)}
           </g>
-
-          {/* lantern staffs: a pole from the ground, the lantern hung at its top */}
-          {lanterns.map((l, i) => (
-            <g key={"p" + i}>
-              <line x1={l.x} y1={l.gy} x2={l.x} y2={l.y - 70 * l.s} stroke={INK} strokeWidth={11 * l.s} />
-              <line x1={l.x} y1={l.gy} x2={l.x} y2={l.y - 70 * l.s} stroke="#6a5236" strokeWidth={6 * l.s} />
-            </g>
-          ))}
-          {lanterns.map((l, i) => <g key={i} transform={`translate(${l.x},${l.y})`}><Lantern lit={l.lit} s={l.s} t={t} seed={i} /></g>)}
+          {/* everyone and every lantern staff, in depth order, so a lantern in front of you hides you and one behind you does not */}
+          {[
+            ...people.map((p, i) => ({ y: p.y, k: "v" + i, n: <g filter={night > 0 ? "url(#p4-dimp)" : undefined}><g filter="url(#pv-grade)"><Villager {...p} t={t} /></g></g> })),
+            ...lanterns.map((l, i) => ({
+              y: l.gy + 0.5, k: "l" + i, n: (
+                <g>
+                  <line x1={l.x} y1={l.gy} x2={l.x} y2={l.y - 70 * l.s} stroke={INK} strokeWidth={11 * l.s} />
+                  <line x1={l.x} y1={l.gy} x2={l.x} y2={l.y - 70 * l.s} stroke="#6a5236" strokeWidth={6 * l.s} />
+                  <g transform={`translate(${l.x},${l.y})`}><Lantern lit={l.lit} s={l.s} t={t} seed={i} /></g>
+                </g>
+              ),
+            })),
+            ...(place === "mouth" && newcomer ? [{ y: newcomer.y, k: "nc", n: <g filter="url(#pv-grade)"><g transform={`translate(${newcomer.x},${newcomer.y}) scale(0.82)`}><g stroke={INK} strokeWidth={6} strokeLinejoin="round"><rect x={26} y={-310} width={72} height={130} rx={18} fill="#d9782a" /><rect x={40} y={-290} width={44} height={36} rx={8} fill="#b85f1c" /></g><Traveller yaw={newcomer.walk > 0.05 ? 270 : 300} mood="worry" walk={newcomer.walk} phase={t * 0.25} t={t + 40} /></g></g> }] : []),
+            {
+              y: you.y, k: "you", n: (
+                <g filter={you.cold ? "url(#p4-cold)" : undefined}>
+                  <g filter={night > 0 ? "url(#p4-dimy)" : undefined}>
+                    <g filter="url(#pv-grade)">
+                      <g transform={`translate(${you.x},${you.y + yi.dy}) rotate(${yi.rot}) scale(${you.s},${you.s * yi.sy})`}>
+                        <Traveller yaw={you.yaw} mood={you.mood} walk={you.walk} phase={you.phase} t={t} />
+                        {place === "mouth" && <g transform="translate(34,-292)"><circle r={19} fill="#f1e6cf" stroke={INK} strokeWidth={4} /><circle r={12} fill="none" stroke="#b9382c" strokeWidth={5} /><circle r={4.5} fill={INK} /></g>}
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              ),
+            },
+          ].sort((a, b) => a.y - b.y).map((it) => <g key={it.k}>{it.n}</g>)}
           {/* your puff of smoke as the flame goes out */}
-          {puff > 0 && youLantern && [0, 1, 2].map((i) => <ellipse key={i} cx={you.x + 70 * you.s + i * 6 * (1 - puff)} cy={you.y - 330 * you.s - 50 - (1 - puff) * 60 - i * 14} rx={(14 + i * 6) * (2 - puff)} ry={(10 + i * 4) * (2 - puff)} fill="#cfd4dc" opacity={0.5 * puff} />)}
+          {puff > 0 && youLantern && [0, 1, 2].map((i) => <ellipse key={i} cx={you.x + 105 * you.s + i * 6 * (1 - puff)} cy={you.y - 330 * you.s - 50 - (1 - puff) * 60 - i * 14} rx={(14 + i * 6) * (2 - puff)} ry={(10 + i * 4) * (2 - puff)} fill="#cfd4dc" opacity={0.5 * puff} />)}
         </g>
-        {(place === "lane" || place === "alley") && <rect width={1080} height={1920} fill="#10163c" opacity={night} />}
         {dawnK > 0 && <rect width={1080} height={1920} fill="#ffb08a" opacity={0.22} />}
         {dawnK > 0 && <rect width={1080} height={1920} fill="#5a6aa8" opacity={0.18} />}
-        {darkAlley && (
-          <g transform={`translate(540,900) scale(${cam.z}) translate(${-cam.x},${-cam.y})`} filter="url(#p4-cold)" opacity={0.92}>
-            <g transform={`translate(${you.x},${you.y + yi.dy}) rotate(${yi.rot}) scale(${you.s},${you.s * yi.sy})`}><Traveller yaw={you.yaw} mood={you.mood} walk={you.walk} phase={you.phase} t={t} /></g>
-          </g>
-        )}
-        {(place === "lane" || place === "alley") && (
-          <g transform={`translate(540,900) scale(${cam.z}) translate(${-cam.x},${-cam.y})`}>
-            {lanterns.map((l, i) => <circle key={i} cx={l.x} cy={l.y} r={(darkAlley ? 200 : 120) * l.s} fill="url(#p3-glow)" opacity={(darkAlley ? 0.9 : 0.5) * l.lit} />)}
-          </g>
-        )}
         <rect width={1080} height={1920} filter="url(#p4-grain)" opacity={0.14} />
         <rect width={1080} height={1920} fill="url(#p4-vig)" />
         <rect width={1080} height={1920} fill="#050403" opacity={dark} />
