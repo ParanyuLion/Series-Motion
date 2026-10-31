@@ -29,6 +29,9 @@ export type Look = {
   lady?: boolean;
   /** a knee-length skirt in this colour; the legs are bare skin */
   skirt?: string;
+  /** overrides of the body height and the leg length of the body kind */
+  bodyH?: number;
+  legH?: number;
 };
 
 const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
@@ -67,8 +70,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const stroke = S ?? INK;
   const sc = look.scale ?? 1;
   const bw = look.bodyKind === "round" ? 112 : look.bodyKind === "thin" ? 60 : look.bodyKind === "lean" ? 54 : look.bodyKind === "long" ? 76 : 72;
-  const bh = look.bodyKind === "long" ? 290 : look.bodyKind === "thin" ? 250 : look.bodyKind === "lean" ? 236 : look.bodyKind === "round" ? 210 : 220;
-  const legLen = look.bodyKind === "long" ? 80 : 130;
+  const bh = look.bodyH ?? (look.bodyKind === "long" ? 290 : look.bodyKind === "thin" ? 250 : look.bodyKind === "lean" ? 236 : look.bodyKind === "round" ? 210 : 220);
+  const legLen = look.legH ?? (look.bodyKind === "long" ? 80 : 130);
   const hipY = -legLen;
   const topY = hipY - bh;
   const headY = topY - 72;
