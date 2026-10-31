@@ -132,12 +132,23 @@ const WetSign: React.FC<{ x: number; y: number; s: number; glow: number }> = ({ 
   </g>
 );
 
-/** the notebook the senior hugs (drawn over her chest, in figure units) */
-const Notebook: React.FC = () => (
-  <g transform="translate(-6,-250) rotate(-6)" strokeLinejoin="round">
-    <rect x={-58} y={-72} width={116} height={146} rx={8} fill="url(#d2-book)" stroke={INK} strokeWidth={6} />
-    <rect x={-58} y={-72} width={20} height={146} rx={6} fill="#3a2418" stroke={INK} strokeWidth={5} />
-    <rect x={-22} y={-50} width={62} height={34} rx={4} fill="#e9dcbc" stroke={INK} strokeWidth={3} />
+/** the notebook the senior hugs, in figure units: pressed against the chest, both forearms across it with the hands over its edges (her own hanging arms are hidden) */
+const Notebook: React.FC<{ skin: string; sleeve: string }> = ({ skin, sleeve }) => (
+  <g strokeLinejoin="round" strokeLinecap="round">
+    <g transform="translate(0,-244) rotate(-3)">
+      <rect x={-46} y={-58} width={92} height={116} rx={7} fill="url(#d2-book)" stroke={INK} strokeWidth={6} />
+      <rect x={-46} y={-58} width={16} height={116} rx={5} fill="#3a2418" stroke={INK} strokeWidth={4} />
+      <rect x={-16} y={-40} width={50} height={28} rx={4} fill="#e9dcbc" stroke={INK} strokeWidth={3} />
+    </g>
+    {[-1, 1].map((k) => (
+      <g key={k}>
+        <path d={`M${k * 24} -290 Q${k * 46} -266 ${k * 38} -240`} fill="none" stroke={INK} strokeWidth={19} />
+        <path d={`M${k * 24} -290 Q${k * 46} -266 ${k * 38} -240`} fill="none" stroke={skin} strokeWidth={12} />
+        <path d={`M${k * 24} -290 Q${k * 36} -276 ${k * 33} -262`} fill="none" stroke={INK} strokeWidth={22} />
+        <path d={`M${k * 24} -290 Q${k * 36} -276 ${k * 33} -262`} fill="none" stroke={sleeve} strokeWidth={15} />
+        <circle cx={k * 34} cy={-238} r={13} fill={skin} stroke={INK} strokeWidth={4} />
+      </g>
+    ))}
   </g>
 );
 
@@ -148,8 +159,8 @@ const PersonView: React.FC<Person & { t: number }> = ({ look, x, y, s, mood, wal
   const i = idle(t, seed, walk < 0.05 && rot === 0);
   return (
     <g opacity={o} transform={`translate(${x},${y + i.dy}) rotate(${i.rot + rot}) scale(${sc},${sc * i.sy})`}>
-      <Figure look={LOOKS[look]} mood={mood} facing={face} walk={walk} talk={talk} t={t + seed * 40} />
-      {book && <g transform={`scale(${face},1)`}><Notebook /></g>}
+      <Figure look={LOOKS[look]} mood={mood} facing={face} walk={walk} talk={talk} t={t + seed * 40} hideArms={book} />
+      {book && <Notebook skin={LOOKS[look].skin ?? "#e8b88f"} sleeve={LOOKS[look].body} />}
       {dead > 0.4 && (
         <g opacity={clamp01((dead - 0.4) / 0.4)}>
           <ellipse cx={0} cy={-422} rx={92} ry={96} fill="url(#d2-deadshade)" />

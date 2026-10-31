@@ -69,7 +69,7 @@ export const LOOKS: Record<string, Look> = {
 export const HAT_HOLD_END: [number, number] = [232, -560];
 const smoothstep = (x: number) => { const k = Math.max(0, Math.min(1, x)); return k * k * (3 - 2 * k); };
 
-export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; point?: number; sit?: boolean; talk?: number; hatHold?: number; turn?: number; facing?: 1 | -1; t?: number; creep?: number }> = ({ look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, point = 0, sit = false, talk = 0, hatHold = 0, turn = 0, facing = 1, t = 0, creep }) => {
+export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; walk?: number; armsUp?: number; point?: number; sit?: boolean; talk?: number; hatHold?: number; turn?: number; facing?: 1 | -1; t?: number; creep?: number; hideArms?: boolean }> = ({ hideArms = false, look, mood = "calm", silhouette = false, walk = 0, armsUp = 0, point = 0, sit = false, talk = 0, hatHold = 0, turn = 0, facing = 1, t = 0, creep }) => {
   const S = silhouette ? "#0a1022" : null;
   const fill = (c: string) => S ?? c;
   const stroke = S ?? INK;
@@ -165,7 +165,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
         );
       })}
       {/* arms hang close at the sides, tucked behind the body so the shoulder is the body outline */}
-      {[-1, 1].map((s, i) => {
+      {!hideArms && [-1, 1].map((s, i) => {
         const x0 = s * (bw * 0.5);
         const y0 = topY + 40;
         const swing = (i === 0 ? aw : -aw);
