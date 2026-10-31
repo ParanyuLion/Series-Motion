@@ -1,153 +1,153 @@
 {
  "fps": 30,
- "total": 2637,
- "storyEnd": 2415,
- "outroStart": 2427,
+ "total": 2201,
+ "storyEnd": 1979,
+ "outroStart": 1991,
  "shots": [
   {
    "text": "เมื่อเสียงไซเรนดังตอนตีสาม หอพักของผมก็กลายเป็นลานประหาร",
    "audio": "dorm1v/n0.mp3",
-   "audioFrames": 158,
+   "audioFrames": 127,
    "leadFrames": 21,
-   "frames": 185
+   "frames": 154
   },
   {
    "text": "กฎเหล็กบอกว่า ผู้ฝ่าฝืนตายทันที และกฎจะเปลี่ยนใหม่ทุกชั่วโมง",
    "audio": "dorm1v/n1.mp3",
-   "audioFrames": 202,
+   "audioFrames": 162,
    "leadFrames": 6,
-   "frames": 250
+   "frames": 210
   },
   {
    "text": "ผมสะดุ้งตื่น ไฟดับหมด เหลือแต่แสงแดงหมุนวนจากไซเรนหน้าห้อง",
    "audio": "dorm1v/n2.mp3",
-   "audioFrames": 171,
+   "audioFrames": 137,
    "leadFrames": 6,
-   "frames": 183
+   "frames": 149
   },
   {
    "text": "แล้วลำโพงทั้งตึกก็ประกาศเสียงเรียบๆ กฎข้อแรก ห้ามเปิดไฟ จนกว่าจะรุ่งเช้า",
    "audio": "dorm1v/n3.mp3",
-   "audioFrames": 222,
+   "audioFrames": 178,
    "leadFrames": 6,
-   "frames": 234
+   "frames": 190
   },
   {
    "text": "ต้น เพื่อนร่วมห้องผม หัวเราะ แล้วบอกว่า ใครจะไปเชื่อ",
    "audio": "dorm1v/n4.mp3",
-   "audioFrames": 154,
+   "audioFrames": 123,
    "leadFrames": 6,
-   "frames": 166
+   "frames": 135
   },
   {
    "text": "เขาเอื้อมมือไปกดสวิตช์โคมไฟข้างเตียง",
    "audio": "dorm1v/n5.mp3",
-   "audioFrames": 81,
+   "audioFrames": 65,
    "leadFrames": 6,
-   "frames": 93
+   "frames": 77
   },
   {
    "text": "แสงสว่างขึ้นแค่วินาทีเดียว ต้นก็กรีดร้อง เลือดทะลักจากตาและปาก แล้วร่างก็ทรุดลงเป็นศพ",
    "audio": "dorm1v/n6.mp3",
-   "audioFrames": 207,
-   "leadFrames": 6,
-   "frames": 219
-  },
-  {
-   "text": "เขาตาเบิกกว้าง หน้าบิดเบี้ยวด้วยความทรมาน ไม่ขยับอีกเลย",
-   "audio": "dorm1v/n7.mp3",
-   "audioFrames": 161,
-   "leadFrames": 6,
-   "frames": 173
-  },
-  {
-   "text": "ผมรอดมาได้เพราะมือถือแบตหมด ไม่งั้นผมคงกดไฟฉายไปแล้ว",
-   "audio": "dorm1v/n8.mp3",
    "audioFrames": 166,
    "leadFrames": 6,
    "frames": 178
   },
   {
+   "text": "เขาตาเบิกกว้าง หน้าบิดเบี้ยวด้วยความทรมาน ไม่ขยับอีกเลย",
+   "audio": "dorm1v/n7.mp3",
+   "audioFrames": 129,
+   "leadFrames": 6,
+   "frames": 141
+  },
+  {
+   "text": "ผมรอดมาได้เพราะมือถือแบตหมด ไม่งั้นผมคงกดไฟฉายไปแล้ว",
+   "audio": "dorm1v/n8.mp3",
+   "audioFrames": 133,
+   "leadFrames": 6,
+   "frames": 145
+  },
+  {
    "text": "ผมคลานออกไปที่ทางเดินมืด ได้ยินเสียงไม้ถูพื้นดังเบาๆ",
    "audio": "dorm1v/n9.mp3",
-   "audioFrames": 155,
+   "audioFrames": 124,
    "leadFrames": 6,
-   "frames": 167
+   "frames": 136
   },
   {
    "text": "ป้าแม่บ้านยืนอยู่ปลายทางเดิน ทั้งที่ผมไม่เคยเห็นป้ามาก่อน",
    "audio": "dorm1v/n10.mp3",
-   "audioFrames": 119,
+   "audioFrames": 96,
    "leadFrames": 6,
-   "frames": 131
+   "frames": 108
   },
   {
    "text": "ป้ายื่นกระดาษมาแผ่นหนึ่ง อ่านได้แค่ใต้แสงแดงของไซเรน",
    "audio": "dorm1v/n11.mp3",
-   "audioFrames": 139,
+   "audioFrames": 112,
    "leadFrames": 6,
-   "frames": 151
+   "frames": 124
   },
   {
    "text": "บนนั้นเขียนว่า ชั่วโมงหน้า กฎจะตรงข้ามกับตอนนี้",
    "audio": "dorm1v/n12.mp3",
-   "audioFrames": 157,
+   "audioFrames": 126,
    "leadFrames": 6,
-   "frames": 169
+   "frames": 138
   },
   {
    "text": "ถ้าผมยังติดนิสัยเดิมอยู่ ผมจะตายเหมือนต้น",
    "audio": "dorm1v/n13.mp3",
-   "audioFrames": 110,
+   "audioFrames": 88,
    "leadFrames": 6,
-   "frames": 128
+   "frames": 106
   }
  ],
  "starts": [
   0,
-  185,
-  435,
-  618,
-  852,
-  1018,
-  1111,
-  1330,
-  1503,
-  1681,
-  1848,
-  1979,
-  2130,
-  2299
+  154,
+  364,
+  513,
+  703,
+  838,
+  915,
+  1093,
+  1234,
+  1379,
+  1515,
+  1623,
+  1747,
+  1885
  ],
  "cues": {
-  "titleAt": 397,
+  "titleAt": 326,
   "lineStart0": 21,
-  "lineEnd0": 179,
-  "lineStart1": 191,
-  "lineEnd1": 393,
-  "lineStart2": 441,
-  "lineEnd2": 612,
-  "lineStart3": 624,
-  "lineEnd3": 846,
-  "lineStart4": 858,
-  "lineEnd4": 1012,
-  "lineStart5": 1024,
-  "lineEnd5": 1105,
-  "lineStart6": 1117,
-  "lineEnd6": 1324,
-  "lineStart7": 1336,
-  "lineEnd7": 1497,
-  "lineStart8": 1509,
-  "lineEnd8": 1675,
-  "lineStart9": 1687,
-  "lineEnd9": 1842,
-  "lineStart10": 1854,
-  "lineEnd10": 1973,
-  "lineStart11": 1985,
-  "lineEnd11": 2124,
-  "lineStart12": 2136,
-  "lineEnd12": 2293,
-  "lineStart13": 2305,
-  "lineEnd13": 2415
+  "lineEnd0": 148,
+  "lineStart1": 160,
+  "lineEnd1": 322,
+  "lineStart2": 370,
+  "lineEnd2": 507,
+  "lineStart3": 519,
+  "lineEnd3": 697,
+  "lineStart4": 709,
+  "lineEnd4": 832,
+  "lineStart5": 844,
+  "lineEnd5": 909,
+  "lineStart6": 921,
+  "lineEnd6": 1087,
+  "lineStart7": 1099,
+  "lineEnd7": 1228,
+  "lineStart8": 1240,
+  "lineEnd8": 1373,
+  "lineStart9": 1385,
+  "lineEnd9": 1509,
+  "lineStart10": 1521,
+  "lineEnd10": 1617,
+  "lineStart11": 1629,
+  "lineEnd11": 1741,
+  "lineStart12": 1753,
+  "lineEnd12": 1879,
+  "lineStart13": 1891,
+  "lineEnd13": 1979
  }
 }
