@@ -32,6 +32,9 @@ export type Look = {
   /** overrides of the body height and the leg length of the body kind */
   bodyH?: number;
   legH?: number;
+  bodyW?: number;
+  /** skirt hem below the hip (default 64) */
+  skirtLen?: number;
 };
 
 const hx=(h: string)=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
@@ -69,7 +72,7 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
   const fill = (c: string) => S ?? c;
   const stroke = S ?? INK;
   const sc = look.scale ?? 1;
-  const bw = look.bodyKind === "round" ? 112 : look.bodyKind === "thin" ? 60 : look.bodyKind === "lean" ? 54 : look.bodyKind === "long" ? 76 : 72;
+  const bw = look.bodyW ?? (look.bodyKind === "round" ? 112 : look.bodyKind === "thin" ? 60 : look.bodyKind === "lean" ? 54 : look.bodyKind === "long" ? 76 : 72);
   const bh = look.bodyH ?? (look.bodyKind === "long" ? 290 : look.bodyKind === "thin" ? 250 : look.bodyKind === "lean" ? 236 : look.bodyKind === "round" ? 210 : 220);
   const legLen = look.legH ?? (look.bodyKind === "long" ? 80 : 130);
   const hipY = -legLen;
@@ -251,8 +254,8 @@ export const Figure: React.FC<{ look: Look; mood?: Mood; silhouette?: boolean; w
       {!silhouette && Array.from({ length: 5 }, (_, i) => <path key={i} d={`M${bw * 0.55 + i * 5} ${topY + 70 + i * 36} l${-26} ${34}`} stroke="#0f0b09" strokeWidth={4} opacity={0.35} />)}
       {look.skirt && (
         <g>
-          <path d={`M${-bw * 0.8} ${hipY - 34} Q${-bw * 1.5} ${hipY + 20} ${-bw * 1.55} ${hipY + 64} Q0 ${hipY + 84} ${bw * 1.55} ${hipY + 64} Q${bw * 1.5} ${hipY + 20} ${bw * 0.8} ${hipY - 34} Q0 ${hipY - 20} ${-bw * 0.8} ${hipY - 34} Z`} fill={silhouette ? S! : look.skirt} stroke={stroke} strokeWidth={sw - 1} />
-          {!silhouette && [-0.9, -0.45, 0, 0.45, 0.9].map((k) => <path key={k} d={`M${k * bw * 0.7} ${hipY - 22} Q${k * bw * 1.2} ${hipY + 30} ${k * bw * 1.45} ${hipY + 70}`} fill="none" stroke="#000" strokeWidth={3} opacity={0.2} />)}
+          <path d={`M${-bw * 0.8} ${hipY - 34} Q${-bw * 1.5} ${hipY + 20} ${-bw * 1.55} ${hipY + (look.skirtLen ?? 64)} Q0 ${hipY + (look.skirtLen ?? 64) + 20} ${bw * 1.55} ${hipY + (look.skirtLen ?? 64)} Q${bw * 1.5} ${hipY + 20} ${bw * 0.8} ${hipY - 34} Q0 ${hipY - 20} ${-bw * 0.8} ${hipY - 34} Z`} fill={silhouette ? S! : look.skirt} stroke={stroke} strokeWidth={sw - 1} />
+          {!silhouette && [-0.9, -0.45, 0, 0.45, 0.9].map((k) => <path key={k} d={`M${k * bw * 0.7} ${hipY - 22} Q${k * bw * 1.2} ${hipY + 30} ${k * bw * 1.45} ${hipY + (look.skirtLen ?? 64) + 6}`} fill="none" stroke="#000" strokeWidth={3} opacity={0.2} />)}
           {!silhouette && <path d={`M${-bw * 0.8} ${hipY - 34} Q0 ${hipY - 20} ${bw * 0.8} ${hipY - 34}`} fill="none" stroke={mix(look.skirt, "#ffffff", 0.3)} strokeWidth={5} opacity={0.6} />}
         </g>
       )}
