@@ -33,6 +33,7 @@ const BG: Record<string, { src: string; edge: string }> = {
   lane: { src: "shadow1/bg_lane.png", edge: "#95754d" },
   alley: { src: "shadow1/bg_alley.png", edge: "#8b6c52" },
   dawn: { src: "shadow1/bg_lane.png", edge: "#95754d" },
+  home: { src: "shadow1/bg_home.png", edge: "#815c3c" },
   mouth: { src: "shadow1/bg_lane.png", edge: "#95754d" },
 };
 const SUBTITLE_FIX = (t: string) => t.replace(/ตะเกียง/g, "ตะ⁠เกียง").replace(/เงาสวยจังเลย/g, "เงา⁠สวย⁠จังเลย").replace(/ปากทาง/g, "ปาก⁠ทาง").replace(/แปลกหน้า/g, "แปลก⁠หน้า");
@@ -49,9 +50,9 @@ const SHOTS = (): Shot[] => [
   [ls(6), ls(7), { x: 540, y: 1050, z: 1.8 }, { x: 540, y: 1100, z: 1.5 }],
   [ls(7), ls(8), { x: 540, y: 1000, z: 1.0 }, { x: 540, y: 1000, z: 1.0 }],
   [ls(8), ls(9), { x: 540, y: 1010, z: 1.5 }, { x: 540, y: 1020, z: 1.7 }],
-  [ls(9), ls(10), { x: 540, y: 1020, z: 1.1 }, { x: 540, y: 1020, z: 1.25 }],
+  [ls(9), ls(10), { x: 540, y: 1020, z: 1.0 }, { x: 540, y: 1020, z: 1.0 }],
   [ls(10), ls(11), { x: 540, y: 960, z: 1.05 }, { x: 540, y: 960, z: 1.2 }],
-  [ls(11), ls(12), { x: 400, y: 900, z: 1.9 }, { x: 400, y: 900, z: 2.1 }],
+  [ls(11), ls(12), { x: 450, y: 900, z: 1.9 }, { x: 450, y: 900, z: 2.1 }],
   [ls(12), ls(13), { x: 540, y: 1020, z: 1.15 }, { x: 540, y: 1020, z: 1.25 }],
   [ls(13), le(13) + 40, { x: 540, y: 1010, z: 1.3 }, { x: 540, y: 1000, z: 1.6 }],
 ];
@@ -75,35 +76,17 @@ const Truck: React.FC<{ x: number; y: number; s: number; tilt?: number }> = ({ x
   </g>
 );
 
-/** a bare-walled room: window, ceiling lamp, a chair and a plant with shadows on the wall; yours is missing */
+/** over the photo of a room: the ceiling lamp on its cord, its warm pool, a plant with a shadow on the wall; yours is missing */
 const Room: React.FC<{ lamp: number; t: number }> = ({ lamp, t }) => (
   <g strokeLinejoin="round">
-    <rect x={-200} y={0} width={1480} height={1236} fill="#9a9690" />
-    {Array.from({ length: 16 }, (_, i) => <path key={i} d={`M${rnd(i, 1) * 1100} ${rnd(i, 2) * 1100} q${(rnd(i, 3) - 0.5) * 50} 40 ${(rnd(i, 4) - 0.5) * 30} ${60 + rnd(i, 5) * 60}`} fill="none" stroke="#7a766e" strokeWidth={2.5} opacity={0.5} />)}
-    <rect x={-200} y={1090} width={1480} height={150} fill="#85817a" stroke={INK} strokeWidth={6} />
-    <rect x={-200} y={1236} width={1480} height={1400} fill="#6a5240" />
-    {Array.from({ length: 14 }, (_, i) => <line key={i} x1={-200} y1={1236 + i * 60} x2={1280} y2={1236 + i * 60} stroke="#4a3828" strokeWidth={3} opacity={0.5} />)}
-    {/* the window: a pale dawn, no light enters */}
-    <rect x={70} y={330} width={200} height={340} fill="#a8b6cc" stroke={INK} strokeWidth={8} />
-    <line x1={170} y1={330} x2={170} y2={670} stroke={INK} strokeWidth={6} /><line x1={70} y1={500} x2={270} y2={500} stroke={INK} strokeWidth={6} />
-    {/* the lamp's warm pool on the wall */}
-    <ellipse cx={700} cy={600} rx={560} ry={620} fill="url(#p4-room-glow)" opacity={lamp} />
-    {/* shadows on the wall, offset from each object by the lamp: the chair's and the plant's */}
+    <ellipse cx={700} cy={620} rx={620} ry={640} fill="url(#p4-room-glow)" opacity={lamp} />
     <g fill={SHADOW} opacity={0.5 * lamp}>
-      <rect x={512} y={720} width={20} height={380} /><rect x={512} y={880} width={150} height={20} /><rect x={645} y={880} width={18} height={220} />
-      <ellipse cx={1020} cy={860} rx={90} ry={120} /><rect x={1008} y={940} width={24} height={150} />
+      <ellipse cx={150} cy={900} rx={80} ry={115} /><rect x={138} y={980} width={24} height={150} />
     </g>
-    {/* the chair */}
     <g stroke={INK} strokeWidth={6}>
-      <rect x={480} y={740} width={20} height={360} fill="#7a5a3a" /><rect x={480} y={900} width={150} height={20} fill="#8a6a44" /><rect x={612} y={900} width={18} height={200} fill="#7a5a3a" />
-      <rect x={480} y={740} width={20} height={20} fill="#8a6a44" />
+      <path d="M215 1010 L325 1010 L310 1100 L230 1100 Z" fill="#b8573f" />
+      <path d="M270 1010 Q210 930 220 830 Q260 890 270 1010 Z M270 1010 Q330 910 320 820 Q290 900 270 1010 Z M270 1010 Q270 890 270 790 Q280 890 270 1010 Z" fill="#4f7d34" />
     </g>
-    {/* the plant in a pot */}
-    <g stroke={INK} strokeWidth={6}>
-      <path d="M965 1020 L1075 1020 L1060 1100 L980 1100 Z" fill="#b8573f" />
-      <path d="M1020 1020 Q960 940 970 840 Q1010 900 1020 1020 Z M1020 1020 Q1080 920 1070 830 Q1040 910 1020 1020 Z M1020 1020 Q1020 900 1020 800 Q1030 900 1020 1020 Z" fill="#4f7d34" />
-    </g>
-    {/* the ceiling lamp on its cord */}
     <line x1={700} y1={0} x2={700} y2={300} stroke={INK} strokeWidth={6} />
     <g transform="translate(700,330)">
       <path d="M-50 20 Q-50 -40 0 -40 Q50 -40 50 20 Z" fill="#cfc7a8" stroke={INK} strokeWidth={7} />
@@ -175,10 +158,11 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
       void toward;
     });
     // your own lantern, on a staff held at your side
-    if (g < blow + 6) {
+    if (g >= ls(2) + 90 && g < blow + 6) {
       const l = lit(g) * 1;
+      const grow = smooth(clamp01((g - ls(2) - 90) / 10));
       youLantern = { lit: l };
-      lanterns.push({ x: you.x + 105 * you.s, y: you.y - 330 * you.s, s: 0.75 * you.s + 0.25, lit: l, gy: you.y + 4 });
+      lanterns.push({ x: you.x + 105 * you.s, y: you.y - 330 * you.s * grow, s: (0.75 * you.s + 0.25) * (0.3 + 0.7 * grow), lit: l * grow, gy: you.y + 4 });
       puff = g >= blow ? clamp01(1 - (g - blow) / 20) : 0;
     }
     if (g >= blow) {
@@ -192,7 +176,7 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   // dawn: the road and the first truck
   if (place === "dawn") {
     const arrive = smooth(clamp01((g - ls(9) + 6) / 60));
-    const go = track(g, [[ls(9) + 40, 210, 1215, 0.85], [le(9) - 10, 640, 1210, 0.85]]);
+    const go = track(g, [[ls(9) + 40, 150, 1215, 0.85], [le(9) - 10, 330, 1210, 0.85]]);
     you = { ...you, x: go.x, y: go.y, s: go.s, walk: go.walk, phase: t * 0.28, yaw: 90, mood: "calm", shadow: false };
     void arrive;
   }
@@ -200,7 +184,7 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   // home
   const lamp = place === "home" ? smooth(clamp01((g - ls(10) - 50) / 12)) : 0;
   if (place === "home") {
-    const w = track(g, [[ls(10) - 2, 120, 1215, 0.9], [ls(10) + 46, 380, 1215, 0.9]]);
+    const w = track(g, [[ls(10) - 2, 160, 1215, 0.9], [ls(10) + 46, 560, 1215, 0.9]]);
     you = { ...you, x: w.x, y: w.y, s: w.s, walk: w.walk, phase: t * 0.28, yaw: w.walk > 0.05 ? 90 : g >= ls(11) ? 0 : 60, mood: g >= ls(11) ? "scared" : "calm", shadow: false };
   }
 
@@ -228,9 +212,9 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
   cam = { ...cam, x: Math.min(Math.max(cam.x, 540 / cam.z), 1080 - 540 / cam.z), y: Math.max(cam.y, 900 / cam.z) };
   const bg = BG[place] ?? BG.lane;
   const yi = idle(t, 0.7, you.walk < 0.05);
-    const isPhoto = place !== "home";
+    const isPhoto = true;
   const dawnK = place === "dawn" ? 1 : 0;
-  const truckX = place === "dawn" ? lerp(1500, 840, smooth(clamp01((g - ls(9) + 6) / 70))) : place === "mouth" ? 960 : 0;
+  const truckX = place === "dawn" ? lerp(1900, 470, smooth(clamp01((g - ls(9) + 6) / 80))) : place === "mouth" ? 1010 : 0;
 
   return (
     <AbsoluteFill style={{ background: "#0a0706" }}>
@@ -255,11 +239,11 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
           <filter id="p4-grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" /><feColorMatrix type="saturate" values="0" /></filter>
         </defs>
         <g transform={`translate(540,900) scale(${cam.z}) translate(${-cam.x},${-cam.y})`}>
-          {isPhoto && <image href={staticFile(bg.src)} x={0} y={0} width={1080} height={1250} filter="url(#p4-desat)" />}
+          {isPhoto && <image href={staticFile(bg.src)} x={0} y={0} width={1080} height={1250} filter={place === "home" ? undefined : "url(#p4-desat)"} />}
           {isPhoto && <rect y={0} width={1080} height={1250} fill="url(#p4-fade)" />}
-          {isPhoto && <Ground kind={place === "alley" ? "alley" : "lane"} edge={bg.edge} />}
+          {place === "home" ? <rect x={-200} y={1236} width={1480} height={1500} fill={bg.edge} /> : <Ground kind={place === "alley" ? "alley" : "lane"} edge={bg.edge} />}
           {place === "home" && <Room lamp={lamp} t={t} />}
-          {(place === "dawn" || place === "mouth") && <Truck x={truckX} y={1225} s={place === "dawn" ? 0.9 : 0.6} />}
+          {(place === "dawn" || place === "mouth") && <Truck x={truckX} y={1225} s={place === "dawn" ? 2.3 : 1.9} />}
 
           {night > 0 && <rect x={-200} y={0} width={1480} height={2700} fill="#10163c" opacity={night} />}
           {/* things on the ground that lie under everyone: the newcomer's shadow and yours */}
@@ -281,7 +265,7 @@ export const Part4: React.FC<{ g?: number }> = ({ g: gOverride }) => {
                 </g>
               ),
             })),
-            ...(place === "mouth" && newcomer ? [{ y: newcomer.y, k: "nc", n: <g filter="url(#pv-grade)"><g transform={`translate(${newcomer.x},${newcomer.y}) scale(0.82)`}><g stroke={INK} strokeWidth={6} strokeLinejoin="round"><rect x={26} y={-310} width={72} height={130} rx={18} fill="#d9782a" /><rect x={40} y={-290} width={44} height={36} rx={8} fill="#b85f1c" /></g><Traveller yaw={newcomer.walk > 0.05 ? 270 : 300} mood="worry" walk={newcomer.walk} phase={t * 0.25} t={t + 40} /></g></g> }] : []),
+            ...(place === "mouth" && newcomer ? [{ y: newcomer.y, k: "nc", n: <g filter="url(#pv-grade)"><g transform={`translate(${newcomer.x},${newcomer.y}) scale(0.82)`}><g stroke={INK} strokeWidth={6} strokeLinejoin="round"><rect x={26} y={-310} width={72} height={130} rx={18} fill="#3f66a0" /><rect x={40} y={-290} width={44} height={36} rx={8} fill="#2d4a7a" /></g><Traveller yaw={newcomer.walk > 0.05 ? 270 : 300} mood="worry" walk={newcomer.walk} phase={t * 0.25} t={t + 40} colors={{ jacket: "#3f7a55", under: "#f1d98a", pants: "#8a6a45", hair: "#6a4428" }} /></g></g> }] : []),
             {
               y: you.y, k: "you", n: (
                 <g filter={you.cold ? "url(#p4-cold)" : undefined}>

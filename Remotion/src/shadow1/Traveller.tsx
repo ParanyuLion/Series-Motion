@@ -33,11 +33,12 @@ export const Traveller: React.FC<{
   sit?: boolean;
   lookYaw?: number; // the head turns this much more than the body (degrees)
   t?: number; // frame, for the blink
-}> = ({ yaw = 0, mood = "calm", silhouette = false, walk = 0, phase = 0, point = 0, pointArm = 1, pointYaw = 0, armsUp = 0, sit = false, lookYaw = 0, t = 0 }) => {
+  colors?: Partial<typeof TRAVELLER_COLORS>; // another traveller: different clothes and hair
+}> = ({ yaw = 0, mood = "calm", silhouette = false, walk = 0, phase = 0, point = 0, pointArm = 1, pointYaw = 0, armsUp = 0, sit = false, lookYaw = 0, t = 0, colors }) => {
   const S = silhouette ? "#0a1022" : null;
   const ink = S ?? INK;
   const col = (c: string) => S ?? c;
-  const C = TRAVELLER_COLORS;
+  const C = { ...TRAVELLER_COLORS, ...colors };
   const sw = 8;
   const th = yaw * RAD;
   const c = Math.cos(th);
