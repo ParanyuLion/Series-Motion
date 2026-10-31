@@ -58,7 +58,7 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
     // long hair behind the head and shoulders: drawn before the body, so the body covers it and the head never floats
     const f = flat ? ink : mix(color, "#000000", 0.18);
     return (
-      <path d={`M-90 ${hy - 20} Q-112 ${hy - 110} 0 ${hy - 114} Q112 ${hy - 110} 90 ${hy - 20} Q104 ${hy + 60} 90 ${hy + 150} Q40 ${hy + 166} 0 ${hy + 158} Q-40 ${hy + 166} -90 ${hy + 150} Q-104 ${hy + 60} -90 ${hy - 20} Z`} fill={f} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
+      <path d={`M-94 ${hy + 20} C-100 ${hy - 70} -64 ${hy - 114} 0 ${hy - 114} C64 ${hy - 114} 100 ${hy - 70} 94 ${hy + 20} L96 ${hy + 132} Q96 ${hy + 150} 78 ${hy + 150} L-78 ${hy + 150} Q-96 ${hy + 150} -96 ${hy + 132} Z`} fill={f} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
     );
   }
   return null;
@@ -67,16 +67,16 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
 /** drawn after the head ellipse and before the face */
 export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
   if (kind === "fringe") {
-    // long hair to the chest with straight blunt bangs just above the brows; a thin lock falls in front of each shoulder
+    // long hair to the chest with straight blunt bangs just above the brows: a round dome on top that runs into a lock in front of each shoulder, no gaps between the pieces
     const f = flat ? ink : color;
     const hi = mix(color, "#ffffff", 0.35);
     return (
       <g strokeLinejoin="round" strokeLinecap="round">
         {[-1, 1].map((k) => (
-          <path key={k} d={`M${k * 86} ${hy - 16} Q${k * 100} ${hy + 50} ${k * 94} ${hy + 138} Q${k * 84} ${hy + 146} ${k * 74} ${hy + 136} Q${k * 74} ${hy + 60} ${k * 68} ${hy - 6} Z`} fill={f} stroke={ink} strokeWidth={sw - 2} />
+          <path key={k} d={`M${k * 94} ${hy - 20} L${k * 96} ${hy + 130} Q${k * 96} ${hy + 146} ${k * 80} ${hy + 146} Q${k * 68} ${hy + 146} ${k * 68} ${hy + 130} Q${k * 70} ${hy + 40} ${k * 66} ${hy - 20} Z`} fill={f} stroke={ink} strokeWidth={sw - 2} />
         ))}
-        <path d={`M-90 ${hy - 10} Q-106 ${hy - 104} 0 ${hy - 108} Q106 ${hy - 104} 90 ${hy - 10} Q82 ${hy - 28} 74 ${hy - 34} Q40 ${hy - 28} 0 ${hy - 30} Q-40 ${hy - 28} -74 ${hy - 34} Q-82 ${hy - 28} -90 ${hy - 10} Z`} fill={f} stroke={ink} strokeWidth={sw} />
-        {!flat && <path d={`M-46 ${hy - 92} Q-6 ${hy - 106} 46 ${hy - 92}`} fill="none" stroke={hi} strokeWidth={8} opacity={0.45} />}
+        <path d={`M-94 ${hy - 6} C-100 ${hy - 76} -64 ${hy - 112} 0 ${hy - 112} C64 ${hy - 112} 100 ${hy - 76} 94 ${hy - 6} Q86 ${hy - 26} 76 ${hy - 32} Q38 ${hy - 26} 0 ${hy - 28} Q-38 ${hy - 26} -76 ${hy - 32} Q-86 ${hy - 26} -94 ${hy - 6} Z`} fill={f} stroke={ink} strokeWidth={sw} />
+        {!flat && <path d={`M-52 ${hy - 92} Q-6 ${hy - 108} 52 ${hy - 92}`} fill="none" stroke={hi} strokeWidth={8} opacity={0.45} />}
         {!flat && <path d={`M-30 ${hy - 56} L-26 ${hy - 36} M10 ${hy - 58} L12 ${hy - 36} M44 ${hy - 54} L42 ${hy - 36}`} fill="none" stroke={hi} strokeWidth={3} opacity={0.3} />}
       </g>
     );
