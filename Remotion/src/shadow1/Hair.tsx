@@ -4,7 +4,7 @@ import { mix } from "./Figure";
 // Hair built the way a cartoonist does it: a few big clumps (pointed leaf shapes) stacked back to front, each with one clean outline, so the
 // silhouette has flow and the clump seams are the only "texture". Head centre (0, hy), ellipse 80 x 88 (top at hy - 88, eyes at hy + 6, brows at hy - 20).
 
-type P = { kind: "wave" | "long" | "hime" | "swoop" | "tousle" | "bangs" | "bowlcut"; hy: number; color: string; ink: string; sw: number; flat: boolean };
+type P = { kind: "wave" | "long" | "hime" | "fringe" | "swoop" | "tousle" | "bangs" | "bowlcut"; hy: number; color: string; ink: string; sw: number; flat: boolean };
 
 /** a pointed clump from base b to tip t: w is its width, bend sweeps the middle to one side */
 const leaf = (b: [number, number], t: [number, number], w: number, bend: number) => {
@@ -54,7 +54,7 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
       </g>
     );
   }
-  if (kind === "long" || kind === "hime") {
+  if (kind === "long" || kind === "hime" || kind === "fringe") {
     // long hair behind the head and shoulders: drawn before the body, so the body covers it and the head never floats
     const f = flat ? ink : mix(color, "#000000", 0.18);
     return (
@@ -66,6 +66,21 @@ export const HairBack: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
 
 /** drawn after the head ellipse and before the face */
 export const HairFront: React.FC<P> = ({ kind, hy, color, ink, sw, flat }) => {
+  if (kind === "fringe") {
+    // ordinary long hair with soft curtain bangs: the fringe parts a little in the middle and sweeps to both sides, thin strands fall in front of the ears
+    const f = flat ? ink : color;
+    const hi = mix(color, "#ffffff", 0.35);
+    return (
+      <g strokeLinejoin="round" strokeLinecap="round">
+        <path d={`M-88 ${hy + 4} Q-104 ${hy - 104} 0 ${hy - 108} Q104 ${hy - 104} 88 ${hy + 4} Q80 ${hy - 20} 70 ${hy - 36} Q40 ${hy - 14} 6 ${hy - 44} Q-20 ${hy - 14} -66 ${hy - 36} Q-78 ${hy - 20} -88 ${hy + 4} Z`} fill={f} stroke={ink} strokeWidth={sw} />
+        {[-1, 1].map((k) => (
+          <path key={k} d={`M${k * 86} ${hy - 20} Q${k * 96} ${hy + 40} ${k * 88} ${hy + 104} Q${k * 78} ${hy + 60} ${k * 74} ${hy + 6} Q${k * 76} ${hy - 12} ${k * 86} ${hy - 20} Z`} fill={f} stroke={ink} strokeWidth={sw - 2} />
+        ))}
+        {!flat && <path d={`M-44 ${hy - 92} Q-6 ${hy - 106} 44 ${hy - 90}`} fill="none" stroke={hi} strokeWidth={8} opacity={0.5} />}
+        {!flat && <path d={`M-56 ${hy - 40} Q-30 ${hy - 28} -10 ${hy - 50}`} fill="none" stroke={hi} strokeWidth={4} opacity={0.35} />}
+      </g>
+    );
+  }
   if (kind === "hime") {
     // hime cut: blunt straight bangs across the forehead and two straight cheek-length side locks that frame the face
     const f = flat ? ink : color;
