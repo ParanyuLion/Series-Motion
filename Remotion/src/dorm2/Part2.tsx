@@ -57,10 +57,10 @@ const SHOTS = (): Shot[] => [
 ];
 
 /** loudness of the narration line the loudspeaker "speaks" (0..1), from scripts/dorm2/envelope.py */
-const ampOf = (line: number, g: number) => ((env as Record<string, number[]>)[String(line)] ?? [])[Math.max(0, g - ls(line))] ?? 0;
+export const ampOf = (line: number, g: number) => ((env as Record<string, number[]>)[String(line)] ?? [])[Math.max(0, g - ls(line))] ?? 0;
 
 /** figure scale by the y of its feet on the corridor floor (far end 720 -> 0.24, near 1235 -> 0.78) */
-const scAt = (y: number) => Math.max(0.2, 0.24 + ((y - 720) * 0.54) / 515);
+export const scAt = (y: number) => Math.max(0.2, 0.24 + ((y - 720) * 0.54) / 515);
 /** the threshold of room 304 on the backdrop */
 const DOOR = { x: 770, y: 1052 };
 
@@ -133,7 +133,7 @@ const WetSign: React.FC<{ x: number; y: number; s: number; glow: number }> = ({ 
 );
 
 /** the notebook the senior carries in her right hand at her side (figure units, on the figure's right; the hand follows the arm swing of the walk) */
-const Notebook: React.FC<{ skin: string; swing: number }> = ({ skin, swing }) => {
+export const Notebook: React.FC<{ skin: string; swing: number }> = ({ skin, swing }) => {
   const hx = 57 + swing * 0.4;
   return (
     <g transform={`translate(${hx},-166) rotate(${-swing * 0.15})`} strokeLinejoin="round" strokeLinecap="round">
@@ -147,9 +147,9 @@ const Notebook: React.FC<{ skin: string; swing: number }> = ({ skin, swing }) =>
   );
 };
 
-type Person = { look: string; x: number; y: number; s?: number; mood: Mood; walk?: number; face?: 1 | -1; rot?: number; dead?: number; talk?: number; seed?: number; o?: number; book?: boolean };
+export type Person = { look: string; x: number; y: number; s?: number; mood: Mood; walk?: number; face?: 1 | -1; rot?: number; dead?: number; talk?: number; seed?: number; o?: number; book?: boolean };
 
-const PersonView: React.FC<Person & { t: number }> = ({ look, x, y, s, mood, walk = 0, face = 1, rot = 0, dead = 0, talk = 0, seed = 0, o = 1, book = false, t }) => {
+export const PersonView: React.FC<Person & { t: number }> = ({ look, x, y, s, mood, walk = 0, face = 1, rot = 0, dead = 0, talk = 0, seed = 0, o = 1, book = false, t }) => {
   const sc = s ?? scAt(y);
   const i = idle(t, seed, walk < 0.05 && rot === 0);
   return (

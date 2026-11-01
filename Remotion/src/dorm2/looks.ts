@@ -9,3 +9,7 @@ LOOKS.seniorB = { ...LOOKS.senior, lashesOnly: true };
 // the two who die in Part 2: a third-floor girl (pink top, jeans, bob-like bowl hair) and a man (green tee, grey trousers, tousled hair)
 LOOKS.girl3 = { hair: "bowl", hairColor: "#3a2418", body: "#e07fa6", bodyKind: "bean", detail: "none", pants: "#5a6f94", sleeve: "short" };
 LOOKS.man3 = { hair: "tousle", hairColor: "#2a2220", body: "#5c9a6e", bodyKind: "bean", detail: "none", pants: "#6a6a72", sleeve: "short", skin: "#d9a67c" };
+
+// the two friends from the second floor who die in Part 3
+LOOKS.friendA = { hair: "tousle", hairColor: "#4a2f1e", body: "#d9b13b", bodyKind: "bean", detail: "none", pants: "#4b4f5e", sleeve: "short" };
+LOOKS.friendB = { hair: "bowl", hairColor: "#1d1816", body: "#3a6fb0", bodyKind: "bean", detail: "none", pants: "#6a5a48", sleeve: "short", skin: "#d9a67c" };

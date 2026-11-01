@@ -1,0 +1,153 @@
+{
+ "fps": 30,
+ "total": 2471,
+ "storyEnd": 2249,
+ "outroStart": 2261,
+ "shots": [
+  {
+   "text": "ไซเรนดังตอนตีสาม หอพักของผมก็กลายเป็นลานประหาร",
+   "audio": "dorm3v/n0.mp3",
+   "audioFrames": 123,
+   "leadFrames": 21,
+   "frames": 150
+  },
+  {
+   "text": "กฎเหล็กบอกว่า ผู้ฝ่าฝืนตายทันที และกฎจะเปลี่ยนใหม่ทุกชั่วโมง",
+   "audio": "dorm3v/n1.mp3",
+   "audioFrames": 194,
+   "leadFrames": 6,
+   "frames": 242
+  },
+  {
+   "text": "ตีห้าตรง ลำโพงประกาศกฎข้อสาม ห้ามพูดความจริง และห้ามพูดโกหก",
+   "audio": "dorm3v/n2.mp3",
+   "audioFrames": 162,
+   "leadFrames": 6,
+   "frames": 174
+  },
+  {
+   "text": "ป้าแม่บ้านยืนเงียบอยู่ข้างผม เหมือนทุกครั้ง ป้าไม่เคยพูดสักคำตั้งแต่คืนแรก",
+   "audio": "dorm3v/n3.mp3",
+   "audioFrames": 141,
+   "leadFrames": 6,
+   "frames": 153
+  },
+  {
+   "text": "แล้วลำโพงก็ถามทุกคนในตึกว่า คุณรู้สึกผิดไหม ที่ปล่อยให้เพื่อนตาย",
+   "audio": "dorm3v/n4.mp3",
+   "audioFrames": 159,
+   "leadFrames": 6,
+   "frames": 171
+  },
+  {
+   "text": "เพื่อนสองคนจากชั้นสองตอบพร้อมกัน คนหนึ่งบอกว่า ใช่ อีกคนบอกว่า ไม่",
+   "audio": "dorm3v/n5.mp3",
+   "audioFrames": 162,
+   "leadFrames": 6,
+   "frames": 174
+  },
+  {
+   "text": "ทั้งคู่ล้มลงทันที คนที่พูดความจริงตาย และคนที่โกหกก็ตายเหมือนกัน",
+   "audio": "dorm3v/n6.mp3",
+   "audioFrames": 182,
+   "leadFrames": 6,
+   "frames": 194
+  },
+  {
+   "text": "ลำโพงหันมาถามผม ผมอ้าปากจะตอบ",
+   "audio": "dorm3v/n7.mp3",
+   "audioFrames": 92,
+   "leadFrames": 6,
+   "frames": 104
+  },
+  {
+   "text": "ถ้าตอบว่าใช่ คือความจริง ถ้าตอบว่าไม่ ก็คือโกหก",
+   "audio": "dorm3v/n8.mp3",
+   "audioFrames": 130,
+   "leadFrames": 6,
+   "frames": 142
+  },
+  {
+   "text": "คุณคิดออกมั้ย ว่าผมต้องทำยังไงถึงจะรอด",
+   "audio": "dorm3v/n9.mp3",
+   "audioFrames": 103,
+   "leadFrames": 6,
+   "frames": 115
+  },
+  {
+   "text": "ผมนึกถึงป้าแม่บ้าน คนเดียวในตึกที่ไม่เคยพูด และไม่เคยตาย",
+   "audio": "dorm3v/n10.mp3",
+   "audioFrames": 132,
+   "leadFrames": 6,
+   "frames": 144
+  },
+  {
+   "text": "ผมปิดปากสนิท ไม่พูดอะไรเลย แม้แต่คำว่า ไม่ตอบ",
+   "audio": "dorm3v/n11.mp3",
+   "audioFrames": 122,
+   "leadFrames": 6,
+   "frames": 134
+  },
+  {
+   "text": "ลำโพงเงียบไปนาน แล้วก็ตัดไป ผมยังหายใจอยู่",
+   "audio": "dorm3v/n12.mp3",
+   "audioFrames": 113,
+   "leadFrames": 6,
+   "frames": 125
+  },
+  {
+   "text": "รุ่นพี่ยื่นการ์ดที่ไม่เคยอยู่บนบอร์ดมาให้ เขียนว่า ห้ามไว้ใจกฎ และห้ามไว้ใจคนที่เขียนกฎ",
+   "audio": "dorm3v/n13.mp3",
+   "audioFrames": 221,
+   "leadFrames": 6,
+   "frames": 239
+  }
+ ],
+ "starts": [
+  0,
+  150,
+  392,
+  566,
+  719,
+  890,
+  1064,
+  1258,
+  1362,
+  1504,
+  1619,
+  1763,
+  1897,
+  2022
+ ],
+ "cues": {
+  "titleAt": 354,
+  "lineStart0": 21,
+  "lineEnd0": 144,
+  "lineStart1": 156,
+  "lineEnd1": 350,
+  "lineStart2": 398,
+  "lineEnd2": 560,
+  "lineStart3": 572,
+  "lineEnd3": 713,
+  "lineStart4": 725,
+  "lineEnd4": 884,
+  "lineStart5": 896,
+  "lineEnd5": 1058,
+  "lineStart6": 1070,
+  "lineEnd6": 1252,
+  "lineStart7": 1264,
+  "lineEnd7": 1356,
+  "lineStart8": 1368,
+  "lineEnd8": 1498,
+  "lineStart9": 1510,
+  "lineEnd9": 1613,
+  "lineStart10": 1625,
+  "lineEnd10": 1757,
+  "lineStart11": 1769,
+  "lineEnd11": 1891,
+  "lineStart12": 1903,
+  "lineEnd12": 2016,
+  "lineStart13": 2028,
+  "lineEnd13": 2249
+ }
+}

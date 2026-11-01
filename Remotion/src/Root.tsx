@@ -1,5 +1,7 @@
 import { DormCastPreview } from "./dorm2/CastPreview";
 import { Part2 as DormPart2 } from "./dorm2/Part2";
+import { Part3 as DormPart3 } from "./dorm3/Part3";
+import dorm3 from "./dorm3/manifest.json";
 import dorm2 from "./dorm2/manifest.json";
 import React from "react";
 import { Composition } from "remotion";
@@ -76,6 +78,7 @@ export const Root: React.FC = () => (
     <Composition id="ShadowVillage1" component={ShadowPart1} durationInFrames={shadow1.total} fps={shadow1.fps} width={1080} height={1920} />
     <Composition id="DormRules1" component={DormPart1} durationInFrames={dorm1.total} fps={dorm1.fps} width={1080} height={1920} />
     <Composition id="DormRules2" component={DormPart2} durationInFrames={dorm2.total} fps={dorm2.fps} width={1080} height={1920} />
+    <Composition id="DormRules3" component={DormPart3} durationInFrames={dorm3.total} fps={dorm3.fps} width={1080} height={1920} />
     <Composition id="DormCast" component={DormCastPreview} durationInFrames={1} fps={30} width={1080} height={1920} />
     <Composition id="ShadowVillage4" component={ShadowPart4} durationInFrames={shadow4.total} fps={shadow4.fps} width={1080} height={1920} />
     <Composition id="ShadowVillage3" component={ShadowPart3} durationInFrames={shadow3.total} fps={shadow3.fps} width={1080} height={1920} />
