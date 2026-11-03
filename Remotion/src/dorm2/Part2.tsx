@@ -147,14 +147,14 @@ export const Notebook: React.FC<{ skin: string; swing: number }> = ({ skin, swin
   );
 };
 
-export type Person = { look: string; x: number; y: number; s?: number; mood: Mood; walk?: number; face?: 1 | -1; rot?: number; dead?: number; talk?: number; seed?: number; o?: number; book?: boolean };
+export type Person = { look: string; x: number; y: number; s?: number; mood: Mood; walk?: number; face?: 1 | -1; rot?: number; dead?: number; talk?: number; seed?: number; o?: number; book?: boolean; sit?: boolean };
 
-export const PersonView: React.FC<Person & { t: number }> = ({ look, x, y, s, mood, walk = 0, face = 1, rot = 0, dead = 0, talk = 0, seed = 0, o = 1, book = false, t }) => {
+export const PersonView: React.FC<Person & { t: number }> = ({ look, x, y, s, mood, walk = 0, face = 1, rot = 0, dead = 0, talk = 0, seed = 0, o = 1, book = false, sit = false, t }) => {
   const sc = s ?? scAt(y);
   const i = idle(t, seed, walk < 0.05 && rot === 0);
   return (
     <g opacity={o} transform={`translate(${x},${y + i.dy}) rotate(${i.rot + rot}) scale(${sc},${sc * i.sy})`}>
-      <Figure look={LOOKS[look]} mood={mood} facing={face} walk={walk} talk={talk} t={t + seed * 40} />
+      <Figure look={LOOKS[look]} mood={mood} facing={face} walk={walk} talk={talk} sit={sit} t={t + seed * 40} />
       {book && <g transform={`scale(${face},1)`}><Notebook skin={LOOKS[look].skin ?? "#e8b88f"} swing={Math.sin((t + seed * 40) * 0.25) * 34 * walk} /></g>}
       {dead > 0.4 && (
         <g opacity={clamp01((dead - 0.4) / 0.4)}>

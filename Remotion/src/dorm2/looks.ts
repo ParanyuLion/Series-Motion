@@ -13,3 +13,7 @@ LOOKS.man3 = { hair: "tousle", hairColor: "#2a2220", body: "#5c9a6e", bodyKind: 
 // the two friends from the second floor who die in Part 3
 LOOKS.friendA = { hair: "tousle", hairColor: "#4a2f1e", body: "#d9b13b", bodyKind: "bean", detail: "none", pants: "#4b4f5e", sleeve: "short" };
 LOOKS.friendB = { hair: "bowl", hairColor: "#1d1816", body: "#3a6fb0", bodyKind: "bean", detail: "none", pants: "#6a5a48", sleeve: "short", skin: "#d9a67c" };
+
+// Part 4: a first-year girl (short bob, white school blouse, navy skirt) and the man who locks himself in a room
+LOOKS.fresh4 = { ...LOOKS.senior, hair: "bowl", hairColor: "#1c1418", skirt: "#2a3558", skirtLen: 46, legH: 140, bodyH: 170 };
+LOOKS.man4 = { hair: "messy", hairColor: "#1f1a18", body: "#8a5a9a", bodyKind: "bean", detail: "none", pants: "#3e4a5c", sleeve: "short", skin: "#d9a67c" };

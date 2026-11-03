@@ -1,0 +1,153 @@
+{
+ "fps": 30,
+ "total": 2387,
+ "storyEnd": 2165,
+ "outroStart": 2177,
+ "shots": [
+  {
+   "text": "ไซเรนดังตอนตีสาม หอพักของผมก็กลายเป็นลานประหาร",
+   "audio": "dorm4v/n0.mp3",
+   "audioFrames": 126,
+   "leadFrames": 21,
+   "frames": 153
+  },
+  {
+   "text": "กฎเหล็กบอกว่า ผู้ฝ่าฝืนตายทันที และกฎจะเปลี่ยนใหม่ทุกชั่วโมง",
+   "audio": "dorm4v/n1.mp3",
+   "audioFrames": 163,
+   "leadFrames": 6,
+   "frames": 211
+  },
+  {
+   "text": "หกโมงตรง ลำโพงประกาศกฎข้อสี่ ห้ามอยู่ใกล้ใคร และห้ามอยู่คนเดียว",
+   "audio": "dorm4v/n2.mp3",
+   "audioFrames": 159,
+   "leadFrames": 6,
+   "frames": 171
+  },
+  {
+   "text": "ผมกับรุ่นพี่ถอยห่างกันทันที แต่พอเหลือตัวคนเดียว ไฟแดงก็เริ่มกะพริบใส่ผม",
+   "audio": "dorm4v/n3.mp3",
+   "audioFrames": 177,
+   "leadFrames": 6,
+   "frames": 189
+  },
+  {
+   "text": "ปลายทางเดิน มีน้องปีหนึ่งนั่งร้องไห้อยู่คนเดียว เธอไม่กล้าขยับ",
+   "audio": "dorm4v/n4.mp3",
+   "audioFrames": 119,
+   "leadFrames": 6,
+   "frames": 131
+  },
+  {
+   "text": "รุ่นพี่บอกว่า ทิ้งเธอไว้เถอะ ไปช่วยเธอเราก็ต้องอยู่ใกล้กัน",
+   "audio": "dorm4v/n5.mp3",
+   "audioFrames": 137,
+   "leadFrames": 6,
+   "frames": 149
+  },
+  {
+   "text": "ไซเรนเริ่มนับถอยหลังหกสิบวินาที เด็กคนนั้นเริ่มหายใจติดขัด",
+   "audio": "dorm4v/n6.mp3",
+   "audioFrames": 126,
+   "leadFrames": 6,
+   "frames": 138
+  },
+  {
+   "text": "ผู้ชายห้องข้างๆ ที่ล็อกตัวเองอยู่ในห้องคนเดียว ล้มลงตายหลังประตู",
+   "audio": "dorm4v/n7.mp3",
+   "audioFrames": 126,
+   "leadFrames": 6,
+   "frames": 138
+  },
+  {
+   "text": "คุณคิดออกมั้ย ว่าต้องยืนยังไง ถึงจะไม่ใกล้ใคร และไม่ได้อยู่คนเดียว",
+   "audio": "dorm4v/n8.mp3",
+   "audioFrames": 140,
+   "leadFrames": 6,
+   "frames": 152
+  },
+  {
+   "text": "ผมมองไปที่ป้าแม่บ้าน เธอยืนอยู่ไกลสุดทางเดิน แต่มองเห็นผมตลอด",
+   "audio": "dorm4v/n9.mp3",
+   "audioFrames": 125,
+   "leadFrames": 6,
+   "frames": 137
+  },
+  {
+   "text": "ผมเดินกลับไปหาน้อง แล้วเรียกรุ่นพี่ให้มายืนอีกฟากของทางเดิน",
+   "audio": "dorm4v/n10.mp3",
+   "audioFrames": 121,
+   "leadFrames": 6,
+   "frames": 133
+  },
+  {
+   "text": "เรายืนห่างกันคนละปลายทาง ไม่ใกล้กัน แต่เห็นหน้ากันครบทุกคน",
+   "audio": "dorm4v/n11.mp3",
+   "audioFrames": 125,
+   "leadFrames": 6,
+   "frames": 137
+  },
+  {
+   "text": "ตัวเลขถึงศูนย์ ไฟแดงหยุดกะพริบ น้องคนนั้นหายใจได้อีกครั้ง",
+   "audio": "dorm4v/n12.mp3",
+   "audioFrames": 154,
+   "leadFrames": 6,
+   "frames": 166
+  },
+  {
+   "text": "รุ่นพี่เปิดสมุดหน้าสุดท้าย ลายมือเดียวกับบัตรทุกใบ แต่เป็นลายมือของเธอเอง",
+   "audio": "dorm4v/n13.mp3",
+   "audioFrames": 154,
+   "leadFrames": 6,
+   "frames": 172
+  }
+ ],
+ "starts": [
+  0,
+  153,
+  364,
+  535,
+  724,
+  855,
+  1004,
+  1142,
+  1280,
+  1432,
+  1569,
+  1702,
+  1839,
+  2005
+ ],
+ "cues": {
+  "titleAt": 326,
+  "lineStart0": 21,
+  "lineEnd0": 147,
+  "lineStart1": 159,
+  "lineEnd1": 322,
+  "lineStart2": 370,
+  "lineEnd2": 529,
+  "lineStart3": 541,
+  "lineEnd3": 718,
+  "lineStart4": 730,
+  "lineEnd4": 849,
+  "lineStart5": 861,
+  "lineEnd5": 998,
+  "lineStart6": 1010,
+  "lineEnd6": 1136,
+  "lineStart7": 1148,
+  "lineEnd7": 1274,
+  "lineStart8": 1286,
+  "lineEnd8": 1426,
+  "lineStart9": 1438,
+  "lineEnd9": 1563,
+  "lineStart10": 1575,
+  "lineEnd10": 1696,
+  "lineStart11": 1708,
+  "lineEnd11": 1833,
+  "lineStart12": 1845,
+  "lineEnd12": 1999,
+  "lineStart13": 2011,
+  "lineEnd13": 2165
+ }
+}
