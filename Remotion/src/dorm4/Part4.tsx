@@ -38,20 +38,34 @@ const SUBTITLE_FIX = (t: string) =>
 
 type Cam = { x: number; y: number; z: number };
 type Shot = [number, number, Cam, Cam];
+// hard cuts every 2-3 s: a wide, then a close-up on whoever the line is about (a slow push inside each shot)
+const S = (a: number, b: number, x: number, y: number, z: number, push = 0.07): Shot => [a, b, { x, y, z }, { x, y, z: z * (1 + push) }];
 const SHOTS = (): Shot[] => [
-  [0, ls(2), { x: 560, y: 1000, z: 1.0 }, { x: 560, y: 980, z: 1.15 }],
-  [ls(2), ls(3), { x: 560, y: 1000, z: 1.1 }, { x: 580, y: 1000, z: 1.15 }],
-  [ls(3), ls(4), { x: 540, y: 1060, z: 1.0 }, { x: 540, y: 1060, z: 1.05 }],
-  [ls(4), ls(5), { x: 430, y: 930, z: 1.6 }, { x: 435, y: 920, z: 1.75 }],
-  [ls(5), ls(6), { x: 540, y: 1060, z: 1.0 }, { x: 540, y: 1060, z: 1.08 }],
-  [ls(6), ROOM_FROM(), { x: 540, y: 1060, z: 1.2 }, { x: 560, y: 1050, z: 1.3 }],
-  [ROOM_FROM(), ROOM_TO(), { x: 650, y: 1010, z: 1.3 }, { x: 650, y: 1010, z: 1.3 }],
-  [ls(8), ls(9), { x: 540, y: 1060, z: 1.0 }, { x: 540, y: 1060, z: 1.06 }],
-  [ls(9), ls(10), { x: 530, y: 960, z: 1.8 }, { x: 530, y: 950, z: 2.0 }],
-  [ls(10), ls(11), { x: 540, y: 1070, z: 1.15 }, { x: 540, y: 1060, z: 1.05 }],
-  [ls(11), ls(12), { x: 540, y: 1060, z: 1.0 }, { x: 540, y: 1060, z: 1.0 }],
-  [ls(12), ls(13), { x: 560, y: 1040, z: 1.2 }, { x: 600, y: 1040, z: 1.35 }],
-  [ls(13), le(13) + 40, { x: 540, y: 1060, z: 1.1 }, { x: 540, y: 1060, z: 1.1 }],
+  S(0, ls(1), 560, 1000, 1.0),
+  S(ls(1), ls(2), 700, 1040, 1.9),                  // you, close, while the loudspeaker speaks
+  S(ls(2), mid(2, 0.5), 560, 1000, 1.1),
+  S(mid(2, 0.5), ls(3), 540, 1060, 1.0),
+  S(ls(3), mid(3, 0.45), 540, 1060, 1.0),           // you and the senior step apart
+  S(mid(3, 0.45), ls(4), 720, 1050, 2.0),           // you alone, the red blink
+  S(ls(4), mid(4, 0.5), 450, 830, 2.2),             // the girl at the far end, close
+  S(mid(4, 0.5), ls(5), 540, 1060, 1.0),            // wide: how far apart
+  S(ls(5), mid(5, 0.5), 220, 1050, 2.0),            // the senior speaks
+  S(mid(5, 0.5), ls(6), 720, 1050, 2.0),            // your reaction
+  S(ls(6), mid(6, 0.5), 450, 830, 2.4),             // the girl gasps
+  S(mid(6, 0.5), ROOM_FROM(), 540, 1060, 1.2),
+  S(ROOM_FROM(), mid(7, 0.5), 650, 1010, 1.3),      // the room
+  S(mid(7, 0.5), ROOM_TO(), 800, 1010, 1.9),        // the man falls
+  S(ls(8), mid(8, 0.5), 700, 1050, 2.0),            // you, the viewer beat
+  S(mid(8, 0.5), ls(9), 540, 1060, 1.0),            // wide with the question
+  S(ls(9), mid(9, 0.5), 520, 700, 2.8),             // the cleaner at the far end
+  S(mid(9, 0.5), ls(10), 700, 1050, 1.8),
+  S(ls(10), mid(10, 0.5), 600, 1070, 1.15),         // you walk back
+  S(mid(10, 0.5), ls(11), 440, 1000, 1.7),          // with the girl
+  S(ls(11), mid(11, 0.5), 540, 1060, 1.0),          // wide: three far apart
+  S(mid(11, 0.5), ls(12), 835, 960, 2.0),           // the senior on the other side
+  S(ls(12), mid(12, 0.5), 450, 830, 2.2),           // the girl breathes again
+  S(mid(12, 0.5), ls(13), 540, 1060, 1.0),
+  S(ls(13), le(13) + 40, 540, 1060, 1.1),
 ];
 
 /** loudness of the narration line the loudspeaker "speaks" (0..1), from scripts/dorm4/envelope.py */
